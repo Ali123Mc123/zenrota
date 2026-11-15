@@ -1,0 +1,1383 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <style>
+    html, body { margin: 0; width: 100%; height: 100%; overflow: hidden; background: #000; }
+    /* 4:3 internal canvas, letterboxed inside the cabinet glass */
+    #wrap { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; background: #000; }
+    canvas { display: block; image-rendering: pixelated; image-rendering: crisp-edges; background: #000; }
+  </style>
+</head>
+<body>
+  <div id="wrap"><canvas id="c" width="1024" height="768"></canvas></div>
+  <script>
+  'use strict';
+  // ===========================================================================
+  //  SPACE MONKEY  —  self-contained DUI minigame for ch_prop_arcade_space_01a
+  //  Asteroids-style retro shooter: an astronaut monkey in a flying saucer slides
+  //  left/right along the bottom and fires upward at descending TEAL asteroids.
+  //  Big rocks split into smaller ones; small rocks pop for points. 4:3 landscape,
+  //  16-bit pixel art, parallax starfield, warm CRT vignette, scrolling lunar
+  //  surface. Lua forwards key state each frame via window 'message'
+  //  {action:'input', keys:{left,right,fire}}. We POST lifecycle + game-over score
+  //  back to the Lua side. No frameworks, no CDNs, offline; procedural art only.
+  // ===========================================================================
+
+  // NUI callbacks live at https://<resourceName>/<cb> — strip cfx-nui- off the host.
+  var RES = (location.host || '').replace(/^cfx-nui-/, '') || 'prompt_arcade_games';
+
+  function flog(msg) {
+    try {
+      fetch('https://' + RES + '/spaceLog', {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ msg: String(msg) })
+      }).catch(function(){});
+    } catch (e) {}
+  }
+  window.onerror = function (m, src, ln, col) { flog('JS ERROR: ' + m + ' @' + ln + ':' + col); };
+  flog('script start · host=' + location.host + ' · res=' + RES);
+
+  var W = 1024, H = 768;
+  var canvas = document.getElementById('c');
+  var ctx = canvas.getContext('2d');
+  ctx.imageSmoothingEnabled = false;
+
+  var FLOOR_H = 70;                 // grey lunar surface strip at the very bottom
+  var PLAY_BOTTOM = H - FLOOR_H;    // saucer rides just above the surface
+
+  // -------------------------------------------------------------------------
+  //  WebAudio SFX (procedural — no asset files; chiptune blips)
+  // -------------------------------------------------------------------------
+  var AC = null;
+  var MASTER = null;            // single master GainNode — ALL sound routes through here
+  var masterVol = 0.5;          // 0..1 master volume (default 50%)
+  function actx() {
+    if (!AC) { try { AC = new (window.AudioContext || window.webkitAudioContext)(); } catch (e) { flog('no WebAudio: ' + e); } }
+    // lazily create the master gain so it exists whenever audio plays
+    if (AC && !MASTER) {
+      try { MASTER = AC.createGain(); MASTER.gain.value = masterVol; MASTER.connect(AC.destination); }
+      catch (e) { flog('no master gain: ' + e); }
+    }
+    if (AC && AC.state === 'suspended') { AC.resume().catch(function(){}); }
+    return AC;
+  }
+  function blip(freq, dur, type, vol, slideTo) {
+    var a = actx(); if (!a) return;
+    try {
+      var o = a.createOscillator(), g = a.createGain();
+      o.type = type || 'square';
+      o.frequency.setValueAtTime(freq, a.currentTime);
+      if (slideTo) o.frequency.exponentialRampToValueAtTime(Math.max(40, slideTo), a.currentTime + dur);
+      g.gain.setValueAtTime(0.0001, a.currentTime);
+      g.gain.exponentialRampToValueAtTime(vol || 0.18, a.currentTime + 0.008);
+      g.gain.exponentialRampToValueAtTime(0.0001, a.currentTime + dur);
+      o.connect(g); g.connect(MASTER || a.destination);
+      o.start(); o.stop(a.currentTime + dur + 0.02);
+    } catch (e) {}
+  }
+  function noise(dur, vol) {
+    var a = actx(); if (!a) return;
+    try {
+      var n = Math.floor(a.sampleRate * dur), buf = a.createBuffer(1, n, a.sampleRate), d = buf.getChannelData(0);
+      for (var i = 0; i < n; i++) d[i] = (Math.random() * 2 - 1) * (1 - i / n);
+      var s = a.createBufferSource(), g = a.createGain();
+      s.buffer = buf; g.gain.value = vol || 0.2;
+      s.connect(g); g.connect(MASTER || a.destination); s.start();
+    } catch (e) {}
+  }
+  var SFX = {
+    shoot:  function () { blip(820, 0.09, 'square', 0.08, 1400); },
+    crack:  function () { blip(240, 0.10, 'sawtooth', 0.12, 110); noise(0.06, 0.08); },     // big rock split
+    boom:   function () { noise(0.30, 0.24); blip(120, 0.30, 'sawtooth', 0.16, 50); },       // small rock pop
+    power:  function () { blip(660, 0.08, 'sine', 0.16); setTimeout(function(){ blip(990, 0.10, 'sine', 0.16); }, 80); },
+    wave:   function () { blip(440, 0.10, 'triangle', 0.16); setTimeout(function(){ blip(660, 0.14, 'triangle', 0.16); }, 110); },
+    hurt:   function () { blip(300, 0.45, 'sawtooth', 0.22, 60); noise(0.4, 0.20); },
+    die:    function () { [392, 311, 247, 196].forEach(function (f, i) { setTimeout(function () { blip(f, 0.22, 'sawtooth', 0.18); }, i * 130); }); },
+    // ---- new effects --------------------------------------------------------
+    bomb:   function () {                                   // deep boom + descending rumble (smart bomb)
+              noise(0.55, 0.30); blip(90, 0.55, 'sawtooth', 0.26, 38);
+              setTimeout(function(){ blip(70, 0.40, 'triangle', 0.20, 30); }, 60);
+            },
+    shieldUp:   function () { blip(520, 0.10, 'sine', 0.16, 880); setTimeout(function(){ blip(880, 0.16, 'sine', 0.14, 1180); }, 90); },
+    shieldHit:  function () { blip(1200, 0.08, 'sine', 0.14, 600); noise(0.05, 0.06); },
+    shieldDown: function () { blip(660, 0.18, 'sine', 0.14, 200); },
+    jingle: function () {                                   // power-up pickup arpeggio
+              [660, 880, 1320].forEach(function (f, i) { setTimeout(function () { blip(f, 0.09, 'triangle', 0.16); }, i * 55); });
+            },
+    multi:  function (n) { blip(700 + Math.min(8, n) * 70, 0.05, 'square', 0.08); },   // combo tick (pitch rises)
+    alien:  function () { blip(180, 0.14, 'sawtooth', 0.10, 90); },                     // UFO shot
+    bossHit:function () { blip(160, 0.07, 'square', 0.12, 110); noise(0.04, 0.06); },
+    bossDie:function () { noise(0.5, 0.26); [220,165,130,98].forEach(function (f,i){ setTimeout(function(){ blip(f,0.26,'sawtooth',0.18); }, i*120); }); },
+    bossWarn:function () { blip(330, 0.16, 'square', 0.10); setTimeout(function(){ blip(330, 0.16, 'square', 0.10); }, 200); }
+  };
+
+  // -------------------------------------------------------------------------
+  //  Parallax starfield (3 layers of fine twinkling white dots)
+  // -------------------------------------------------------------------------
+  var stars = [];
+  function initStars() {
+    stars = [];
+    for (var i = 0; i < 170; i++) {
+      var layer = i % 3;
+      stars.push({
+        x: Math.random() * W, y: Math.random() * H, l: layer,
+        s: 8 + layer * 16,                          // drift speed (downward)
+        r: layer === 2 ? 2 : (layer === 1 ? 1.5 : 1),
+        tw: Math.random() * Math.PI * 2             // twinkle phase
+      });
+    }
+  }
+  function updateStars(dt) {
+    for (var i = 0; i < stars.length; i++) {
+      var s = stars[i];
+      s.y += s.s * dt; s.tw += dt * (2 + s.l);
+      if (s.y > H) { s.y = 0; s.x = Math.random() * W; }
+    }
+  }
+  function drawStars() {
+    for (var i = 0; i < stars.length; i++) {
+      var s = stars[i];
+      var tw = 0.5 + 0.5 * Math.sin(s.tw);
+      ctx.globalAlpha = s.l === 0 ? 0.35 + tw * 0.35 : 0.55 + tw * 0.45;
+      ctx.fillStyle = s.l === 2 ? '#ffffff' : (s.l === 1 ? '#dfeaff' : '#9fb0d0');
+      ctx.fillRect(s.x | 0, s.y | 0, s.r, s.r);
+    }
+    ctx.globalAlpha = 1;
+  }
+
+  // -------------------------------------------------------------------------
+  //  Game state
+  // -------------------------------------------------------------------------
+  var STATE = { ATTRACT: 0, PLAY: 1, OVER: 3 };
+  var game = null;
+  var input = { left: false, right: false, fire: false, bomb: false };
+  var prevBomb = false;   // edge-detect the bomb button (one press = one bomb, not hold)
+  var running = false;       // master loop on/off (start/stop from Lua)
+  var attractT = 0;
+  var floorScroll = 0;       // shared scroll of the lunar surface (attract + play)
+
+  function newGame() {
+    return {
+      state: STATE.PLAY,
+      score: 0, lives: 3, wave: 1,
+      // ship: powers is a map of active timers, e.g. { rapid: 9.2, spread: 4.1, ... }
+      ship: { x: W / 2, y: PLAY_BOTTOM - 26, w: 64, h: 50, cd: 0, inv: 1.4, thr: 0,
+              powers: {}, shield: 0, shieldHits: 0, shieldMax: 0 },
+      bullets: [], rocks: [], particles: [], powerups: [], floaters: [],
+      ebullets: [], enemies: [], shocks: [],          // enemy fire, UFOs/bosses, bomb shockwaves
+      bombs: 2,                                        // smart-bomb stock (panic/auto)
+      bombCd: 0,                                       // brief lockout so one threat can't burn two bombs
+      combo: 0, mult: 1, comboT: 0,                    // combo / score multiplier
+      boss: null, bossTimer: 0,                        // active mini-boss ref + spawn pacing
+      shake: 0, waveMsgT: 1.6, flashT: 0, flashCol: '255,255,255',
+      spawnT: 1.2, alienT: 6
+    };
+  }
+
+  // ---- asteroid factory ------------------------------------------------------
+  // size: 3 = big, 2 = medium, 1 = small. Big rocks split into 2 of size-1 each.
+  var ROCK_R = { 3: 52, 2: 34, 1: 20 };
+  function makeRock(g, x, y, size, vx, vy) {
+    var r = ROCK_R[size];
+    // pre-bake a lumpy outline (8-11 verts) so the silhouette stays stable while it tumbles
+    var verts = 8 + (Math.random() * 4 | 0), shape = [];
+    for (var i = 0; i < verts; i++) {
+      shape.push(0.74 + Math.random() * 0.34);   // radial wobble per vertex
+    }
+    // crater pockmarks (darker teal), positions in local unit space
+    var craters = [], cn = size + 1 + (Math.random() * 2 | 0);
+    for (var c = 0; c < cn; c++) {
+      var a = Math.random() * Math.PI * 2, rr = Math.random() * 0.5;
+      craters.push({ x: Math.cos(a) * rr, y: Math.sin(a) * rr, r: 0.14 + Math.random() * 0.16 });
+    }
+    g.rocks.push({
+      x: x, y: y, r: r, size: size,
+      vx: vx, vy: vy,
+      rot: Math.random() * Math.PI * 2, vr: (Math.random() - 0.5) * 1.4,
+      hp: size,                       // big rocks take a couple hits before splitting
+      verts: verts, shape: shape, craters: craters,
+      hitT: 0
+    });
+  }
+  function spawnRockTop(g) {
+    var size = Math.random() < 0.62 ? 3 : 2;
+    var x = 80 + Math.random() * (W - 160);
+    var vx = (Math.random() - 0.5) * (40 + g.wave * 6);
+    var vy = (26 + g.wave * 7 + Math.random() * 22);
+    makeRock(g, x, -ROCK_R[size], size, vx, vy);
+  }
+
+  // ---- active-power helpers (mirrors the old single power slot, now a small map) ----
+  function hasPower(s, k) { return (s.powers[k] || 0) > 0; }
+  function grantPower(s, k, dur) { s.powers[k] = Math.max(s.powers[k] || 0, dur); }
+
+  // ---- enemy factory: hunter UFO that tracks the player and fires ----
+  function spawnAlien(g) {
+    var fromLeft = Math.random() < 0.5;
+    g.enemies.push({
+      type: 'ufo',
+      x: fromLeft ? -40 : W + 40, y: 90 + Math.random() * 150,
+      vx: (fromLeft ? 1 : -1) * (60 + g.wave * 5),
+      r: 24, hp: 2 + (g.wave >= 5 ? 1 : 0), hitT: 0,
+      fireT: 1.0 + Math.random() * 1.2, bob: Math.random() * Math.PI * 2
+    });
+  }
+
+  // ---- mini-boss: big saucer mothership with a health bar + telegraphed volley ----
+  function spawnBoss(g) {
+    var boss = {
+      type: 'boss',
+      x: W / 2, y: -120, ty: 150, r: 80, w: 220, h: 110,
+      hpMax: 28 + g.wave * 5, hitT: 0,
+      dir: Math.random() < 0.5 ? -1 : 1,
+      fireT: 2.4, telegraph: 0, phase: 0, entering: true
+    };
+    boss.hp = boss.hpMax;
+    g.enemies.push(boss);
+    g.boss = boss;
+    g.waveMsgT = 0;       // boss banner handled separately
+    g.bossWarnT = 2.0;
+    SFX.bossWarn();
+  }
+
+  function enemyFire(g, x, y, tx, ty, spd, r) {
+    var dx = tx - x, dy = ty - y, d = Math.hypot(dx, dy) || 1;
+    g.ebullets.push({ x: x, y: y, vx: dx / d * spd, vy: dy / d * spd, r: r || 6, t: 0 });
+  }
+
+  // ---- smart bomb: clear all rocks + enemy fire, ring shockwave, big shake ----
+  function detonateBomb(g, reason) {
+    if (g.bombs <= 0) return false;
+    g.bombs--;
+    g.bombCd = 0.6;
+    g.shocks.push({ x: g.ship.x, y: g.ship.y, r: 10, max: Math.hypot(W, H) * 0.9, t: 0 });
+    g.shake = Math.max(g.shake, 22);
+    g.flashT = 0.22; g.flashCol = '255,236,160';
+    SFX.bomb();
+    // wipe every asteroid for points (no further splitting)
+    for (var i = g.rocks.length - 1; i >= 0; i--) {
+      var rk = g.rocks[i];
+      g.score += 10 * g.mult;
+      spawnParticles(g, rk.x, rk.y, '#bff7f0', 8, 220);
+    }
+    g.rocks.length = 0;
+    // clear all incoming enemy fire
+    g.ebullets.length = 0;
+    // damage all on-screen enemies (UFOs die; boss takes a chunk)
+    for (var e = g.enemies.length - 1; e >= 0; e--) {
+      var en = g.enemies[e];
+      if (en.type === 'boss') { en.hp -= 8; en.hitT = 0.18; if (en.hp <= 0) killEnemy(g, en, e); }
+      else { spawnParticles(g, en.x, en.y, '#ffd166', 12, 240); killEnemy(g, en, e); }
+    }
+    addFloater(g, g.ship.x, g.ship.y - 40, 'SMART BOMB!');
+    flog('bomb detonated (' + (reason || 'manual') + ') · left=' + g.bombs);
+    return true;
+  }
+
+  // -------------------------------------------------------------------------
+  //  Update
+  // -------------------------------------------------------------------------
+  function update(dt) {
+    updateStars(dt);
+    floorScroll += dt * 46;
+    if (!game) return;
+    var g = game;
+    if (g.flashT > 0) g.flashT -= dt;
+    if (g.shake > 0) g.shake = Math.max(0, g.shake - dt * 60);
+    if (g.waveMsgT > 0) g.waveMsgT -= dt;
+    if (g.bossWarnT > 0) g.bossWarnT -= dt;
+    if (g.bombCd > 0) g.bombCd -= dt;
+
+    // ---- manual smart bomb (edge-triggered: one [SHIFT] press = one bomb) ----
+    if (input.bomb && !prevBomb && g.state === STATE.PLAY) {
+      if (!detonateBomb(g, 'manual')) addFloater(g, g.ship.x, g.ship.y - 40, 'NO BOMBS');
+    }
+    prevBomb = input.bomb;
+
+    // ---- shockwave rings (from smart bombs) — purely visual after detonation ----
+    for (var sh = g.shocks.length - 1; sh >= 0; sh--) {
+      var sw = g.shocks[sh];
+      sw.t += dt; sw.r += 1100 * dt;
+      if (sw.r > sw.max) g.shocks.splice(sh, 1);
+    }
+
+    if (g.state === STATE.OVER) {
+      // let particles/shocks settle on the death screen
+      decayParticles(g, dt);
+      return;
+    }
+
+    // ---- combo / multiplier decay (no kills for a while => combo cools off) ----
+    if (g.comboT > 0) { g.comboT -= dt; if (g.comboT <= 0) { g.combo = 0; g.mult = 1; } }
+
+    // ---- saucer movement (left / right only) ----
+    var s = g.ship;
+    var spd = hasPower(s, 'speed') ? 600 : 430;
+    s.thr = 0;
+    if (input.left)  { s.x -= spd * dt; s.thr = -1; }
+    if (input.right) { s.x += spd * dt; s.thr = 1; }
+    if (s.x < s.w / 2) s.x = s.w / 2;
+    if (s.x > W - s.w / 2) s.x = W - s.w / 2;
+    if (s.inv > 0) s.inv -= dt;
+    if (s.shield > 0) { s.shield -= dt; if (s.shield <= 0) { s.shieldHits = 0; SFX.shieldDown(); } }
+
+    // tick down every active power timer
+    for (var pk in s.powers) { if (s.powers[pk] > 0) { s.powers[pk] -= dt; if (s.powers[pk] <= 0) delete s.powers[pk]; } }
+
+    // ---- firing (upward) ----
+    s.cd -= dt;
+    if (input.fire && s.cd <= 0) {
+      var pierce = hasPower(s, 'pierce');
+      var angles = hasPower(s, 'spread') ? [-0.26, -0.13, 0, 0.13, 0.26] : [0];
+      for (var i = 0; i < angles.length; i++) {
+        g.bullets.push({ x: s.x, y: s.y - s.h * 0.42, vx: Math.sin(angles[i]) * 760, vy: -760,
+                         r: pierce ? 5 : 4, t: 0, pierce: pierce, hits: 0 });
+      }
+      s.cd = hasPower(s, 'rapid') ? 0.085 : 0.20;          // rapid-fire powerup
+      SFX.shoot();
+    }
+
+    // ---- player bullets ----
+    for (var b = g.bullets.length - 1; b >= 0; b--) {
+      var bl = g.bullets[b];
+      bl.y += bl.vy * dt; bl.x += bl.vx * dt; bl.t += dt;
+      if (bl.y < -12 || bl.x < -12 || bl.x > W + 12) { g.bullets.splice(b, 1); }
+    }
+
+    // ---- spawn asteroids (escalating cadence + count by wave) ----
+    // suppressed while a boss is on screen so the fight stays readable
+    if (!g.boss) {
+      g.spawnT -= dt;
+      if (g.spawnT <= 0) {
+        g.spawnT = Math.max(0.40, 1.4 - g.wave * 0.09) * (0.7 + Math.random() * 0.6);
+        spawnRockTop(g);
+        if (g.wave >= 3 && Math.random() < 0.4) spawnRockTop(g);
+        if (g.wave >= 6 && Math.random() < 0.3) spawnRockTop(g);
+      }
+      // ---- hunter UFOs appear from wave 2 on, rate climbs with wave ----
+      if (g.wave >= 2) {
+        g.alienT -= dt;
+        if (g.alienT <= 0) {
+          g.alienT = Math.max(2.6, 7.5 - g.wave * 0.5) * (0.7 + Math.random() * 0.6);
+          if (countType(g, 'ufo') < 3) spawnAlien(g);
+        }
+      }
+    }
+
+    // ---- mini-boss every 3rd wave (wave 3, 6, 9 ...) ----
+    if (!g.boss && g.wave >= 3 && g.wave % 3 === 0 && g.wave !== g.lastBossWave) {
+      g.lastBossWave = g.wave;
+      spawnBoss(g);
+    }
+
+    // wave escalation: every ~600 score, ramp difficulty
+    var targetWave = 1 + Math.floor(g.score / 600);
+    if (targetWave > g.wave) { g.wave = targetWave; if (!g.boss) { g.waveMsgT = 1.4; SFX.wave(); } }
+
+    // ---- asteroids move / tumble / drift down ----
+    for (var k = g.rocks.length - 1; k >= 0; k--) {
+      var ro = g.rocks[k];
+      ro.x += ro.vx * dt; ro.y += ro.vy * dt; ro.rot += ro.vr * dt;
+      if (ro.hitT > 0) ro.hitT -= dt;
+      // bounce off side walls so they stay in play a bit
+      if (ro.x < ro.r && ro.vx < 0) ro.vx = -ro.vx;
+      if (ro.x > W - ro.r && ro.vx > 0) ro.vx = -ro.vx;
+      // fell past the bottom — gone (no penalty; only collisions cost a life)
+      if (ro.y - ro.r > PLAY_BOTTOM + 10) { g.rocks.splice(k, 1); continue; }
+    }
+
+    // ---- enemies (UFOs + boss) move / fire ----
+    for (var en = g.enemies.length - 1; en >= 0; en--) {
+      var em = g.enemies[en];
+      if (em.hitT > 0) em.hitT -= dt;
+      if (em.type === 'ufo') {
+        em.bob += dt * 4;
+        em.x += em.vx * dt;
+        em.y += Math.sin(em.bob) * 22 * dt;
+        // gentle vertical homing toward the player's row
+        if (em.x > 0 && em.x < W) {
+          var want = Math.min(PLAY_BOTTOM - 160, Math.max(70, s.y - 220));
+          em.y += Math.sign(want - em.y) * 26 * dt;
+        }
+        em.fireT -= dt;
+        if (em.fireT <= 0 && em.x > 20 && em.x < W - 20) {
+          em.fireT = Math.max(0.9, 2.2 - g.wave * 0.1);
+          enemyFire(g, em.x, em.y + 14, s.x, s.y, 240 + g.wave * 8, 6);
+          SFX.alien();
+        }
+        if (em.x < -60 || em.x > W + 60) { g.enemies.splice(en, 1); continue; }
+      } else if (em.type === 'boss') {
+        if (em.entering) {
+          em.y += (em.ty - em.y) * Math.min(1, dt * 2);
+          if (em.y > em.ty - 2) { em.y = em.ty; em.entering = false; }
+        } else {
+          em.x += em.dir * (70 + g.wave * 4) * dt;
+          if (em.x < em.w * 0.5 + 20) { em.x = em.w * 0.5 + 20; em.dir = 1; }
+          if (em.x > W - em.w * 0.5 - 20) { em.x = W - em.w * 0.5 - 20; em.dir = -1; }
+          // attack cycle: charge (telegraph) -> fan volley
+          if (em.telegraph > 0) {
+            em.telegraph -= dt;
+            if (em.telegraph <= 0) {
+              // telegraphed fan of shots
+              for (var a = -2; a <= 2; a++) {
+                enemyFire(g, em.x, em.y + em.h * 0.4, s.x + a * 90, s.y, 230 + g.wave * 6, 7);
+              }
+              SFX.alien();
+            }
+          } else {
+            em.fireT -= dt;
+            if (em.fireT <= 0) {
+              em.fireT = Math.max(1.6, 3.0 - g.wave * 0.08);
+              em.telegraph = 0.8;          // wind-up before the volley
+              SFX.bossWarn();
+            }
+          }
+        }
+      }
+    }
+
+    // ---- player bullet vs asteroid + enemies ----
+    for (var b2 = g.bullets.length - 1; b2 >= 0; b2--) {
+      var bl2 = g.bullets[b2];
+      var consumed = false;
+      // rocks
+      for (var r2 = 0; r2 < g.rocks.length; r2++) {
+        var rk = g.rocks[r2];
+        var dx = bl2.x - rk.x, dy = bl2.y - rk.y;
+        if (dx * dx + dy * dy < rk.r * rk.r) {
+          rk.hp--; rk.hitT = 0.12;
+          spawnParticles(g, bl2.x, bl2.y, '#bff7f0', 4, 200);
+          if (rk.hp <= 0) destroyRock(g, rk, r2); else SFX.crack();
+          if (bl2.pierce) { bl2.hits++; if (bl2.hits >= 4) consumed = true; }
+          else consumed = true;
+          break;
+        }
+      }
+      if (consumed) { g.bullets.splice(b2, 1); continue; }
+      // enemies
+      for (var e2 = 0; e2 < g.enemies.length; e2++) {
+        var ee = g.enemies[e2];
+        var edx = bl2.x - ee.x, edy = bl2.y - ee.y;
+        if (edx * edx + edy * edy < ee.r * ee.r) {
+          ee.hp--; ee.hitT = 0.12;
+          spawnParticles(g, bl2.x, bl2.y, '#ffd9a0', 4, 200);
+          if (ee.type === 'boss') SFX.bossHit();
+          if (ee.hp <= 0) killEnemy(g, ee, e2);
+          if (bl2.pierce) { bl2.hits++; if (bl2.hits >= 4) consumed = true; }
+          else consumed = true;
+          break;
+        }
+      }
+      if (consumed) g.bullets.splice(b2, 1);
+    }
+
+    // ---- enemy bullets move + hit player ----
+    for (var eb = g.ebullets.length - 1; eb >= 0; eb--) {
+      var ebl = g.ebullets[eb];
+      ebl.x += ebl.vx * dt; ebl.y += ebl.vy * dt; ebl.t += dt;
+      if (ebl.y > H + 20 || ebl.y < -20 || ebl.x < -20 || ebl.x > W + 20) { g.ebullets.splice(eb, 1); continue; }
+      if (s.inv > 0) continue;                          // ignore hits while invulnerable
+      var pdx = ebl.x - s.x, pdy = ebl.y - s.y;
+      if (pdx * pdx + pdy * pdy < (s.w * 0.30) * (s.w * 0.30)) {
+        g.ebullets.splice(eb, 1);
+        if (!absorbHit(g, ebl.x, ebl.y)) loseLife(g);
+      }
+    }
+
+    // ---- saucer vs asteroid (shield/bomb/life) ----
+    if (s.inv <= 0) {
+      for (var r3 = 0; r3 < g.rocks.length; r3++) {
+        var rk3 = g.rocks[r3];
+        var ddx = rk3.x - s.x, ddy = rk3.y - s.y;
+        var rad = rk3.r + s.w * 0.32;
+        if (ddx * ddx + ddy * ddy < rad * rad) {
+          var hx = rk3.x, hy = rk3.y;
+          destroyRock(g, rk3, r3, true);                 // pop the rock for feedback
+          if (!absorbHit(g, hx, hy)) loseLife(g);
+          break;
+        }
+      }
+    }
+    // ---- saucer vs enemy body (ramming) ----
+    if (s.inv <= 0) {
+      for (var r4 = 0; r4 < g.enemies.length; r4++) {
+        var em2 = g.enemies[r4];
+        var rdx = em2.x - s.x, rdy = em2.y - s.y, rad2 = em2.r + s.w * 0.30;
+        if (rdx * rdx + rdy * rdy < rad2 * rad2) {
+          if (em2.type !== 'boss') { em2.hp -= 2; em2.hitT = 0.15; if (em2.hp <= 0) killEnemy(g, em2, r4); }
+          if (!absorbHit(g, s.x, s.y - 20)) loseLife(g);
+          break;
+        }
+      }
+    }
+
+    // ---- powerups fall ----
+    for (var p = g.powerups.length - 1; p >= 0; p--) {
+      var pu = g.powerups[p];
+      pu.y += 110 * dt; pu.t += dt;
+      if (pu.y > H + 20) { g.powerups.splice(p, 1); continue; }
+      if (Math.abs(pu.x - s.x) < (s.w * 0.5 + 18) && Math.abs(pu.y - s.y) < (s.h * 0.5 + 18)) {
+        applyPower(g, pu.kind);
+        g.powerups.splice(p, 1);
+      }
+    }
+
+    decayParticles(g, dt);
+  }
+
+  // particle + floater aging, shared by PLAY and OVER states
+  function decayParticles(g, dt) {
+    for (var pa = g.particles.length - 1; pa >= 0; pa--) {
+      var pt = g.particles[pa];
+      pt.x += pt.vx * dt; pt.y += pt.vy * dt; pt.life -= dt; pt.vy += 120 * dt;
+      if (pt.life <= 0) g.particles.splice(pa, 1);
+    }
+    for (var f = g.floaters.length - 1; f >= 0; f--) {
+      var fl = g.floaters[f]; fl.t += dt; fl.y -= 34 * dt;
+      if (fl.t >= fl.life) g.floaters.splice(f, 1);
+    }
+  }
+
+  function countType(g, t) { var n = 0; for (var i = 0; i < g.enemies.length; i++) if (g.enemies[i].type === t) n++; return n; }
+
+  // award points scaled by the live multiplier, and bump the combo
+  function award(g, base, x, y) {
+    var pts = Math.round(base * g.mult);
+    g.score += pts;
+    addFloater(g, x, y, '+' + pts);
+    bumpCombo(g);
+  }
+  function bumpCombo(g) {
+    g.combo++; g.comboT = 3.2;                       // window before combo cools
+    var nm = 1 + Math.floor(g.combo / 5);            // every 5 chained kills => +1x
+    if (nm > g.mult) { g.mult = Math.min(8, nm); addFloater(g, g.ship.x, g.ship.y - 50, 'x' + g.mult + '!'); }
+    if (g.combo % 5 === 0) SFX.multi(g.combo / 5);
+  }
+
+  function destroyRock(g, rk, idx, silent) {
+    g.rocks.splice(idx, 1);
+    var col = '#3fe0d0';
+    if (rk.size === 3) {
+      // big -> split into two mediums, plus debris
+      award(g, 20, rk.x, rk.y);
+      var spd = 60 + g.wave * 6;
+      makeRock(g, rk.x - rk.r * 0.4, rk.y, 2, rk.vx - spd, rk.vy * 0.6 + 20);
+      makeRock(g, rk.x + rk.r * 0.4, rk.y, 2, rk.vx + spd, rk.vy * 0.6 + 20);
+      spawnParticles(g, rk.x, rk.y, col, 16, 220);
+      if (!silent) SFX.crack();
+      g.shake = Math.max(g.shake, 5);
+    } else if (rk.size === 2) {
+      // medium -> split into two smalls
+      award(g, 35, rk.x, rk.y);
+      var spd2 = 80 + g.wave * 6;
+      makeRock(g, rk.x - rk.r * 0.3, rk.y, 1, rk.vx - spd2, rk.vy * 0.7 + 24);
+      makeRock(g, rk.x + rk.r * 0.3, rk.y, 1, rk.vx + spd2, rk.vy * 0.7 + 24);
+      spawnParticles(g, rk.x, rk.y, col, 14, 240);
+      if (!silent) SFX.crack();
+      g.shake = Math.max(g.shake, 5);
+    } else {
+      // small -> explode for points, chance to drop a powerup
+      award(g, 50, rk.x, rk.y);
+      spawnParticles(g, rk.x, rk.y, '#eafffb', 18, 260);
+      spawnParticles(g, rk.x, rk.y, '#1f8f86', 8, 160);
+      if (!silent) SFX.boom();
+      g.shake = Math.max(g.shake, 7);
+      g.flashT = Math.max(g.flashT, 0.05); g.flashCol = '255,255,255';
+      maybeDropPower(g, rk.x, rk.y, 0.12);
+    }
+  }
+
+  // UFO/boss destruction
+  function killEnemy(g, em, idx) {
+    g.enemies.splice(idx, 1);
+    if (em.type === 'boss') {
+      g.boss = null;
+      g.score += Math.round(500 * g.mult); addFloater(g, em.x, em.y, 'BOSS +' + Math.round(500 * g.mult));
+      // big multi-burst explosion
+      for (var i = 0; i < 5; i++) {
+        spawnParticles(g, em.x + (Math.random() - 0.5) * em.w, em.y + (Math.random() - 0.5) * em.h, '#ffd166', 10, 300);
+      }
+      spawnParticles(g, em.x, em.y, '#ffffff', 24, 360);
+      g.shake = Math.max(g.shake, 20); g.flashT = 0.2; g.flashCol = '255,210,120';
+      SFX.bossDie();
+      // guaranteed reward drops
+      g.powerups.push({ x: em.x - 40, y: em.y, kind: 'shield', t: 0 });
+      g.powerups.push({ x: em.x + 40, y: em.y, kind: 'bomb', t: 0 });
+      g.waveMsgT = 1.4;
+    } else {
+      award(g, 100, em.x, em.y);
+      spawnParticles(g, em.x, em.y, '#ffd9a0', 16, 260);
+      spawnParticles(g, em.x, em.y, '#ff8a4a', 8, 180);
+      g.shake = Math.max(g.shake, 8); g.flashT = Math.max(g.flashT, 0.05); g.flashCol = '255,210,150';
+      SFX.boom();
+      maybeDropPower(g, em.x, em.y, 0.45);          // UFOs drop loot generously
+    }
+  }
+
+  function maybeDropPower(g, x, y, chance) {
+    if (Math.random() < (chance || 0.12)) {
+      // weighted pool — common attack power-ups, rarer defensive/utility
+      var pool = ['rapid','rapid','spread','spread','pierce','speed','mult','shield','bomb','life'];
+      var kind = pool[Math.floor(Math.random() * pool.length)];
+      g.powerups.push({ x: x, y: y, kind: kind, t: 0 });
+    }
+  }
+  function applyPower(g, kind) {
+    var s = g.ship, label;
+    if (kind === 'spread')      { grantPower(s, 'spread', 12); label = 'SPREAD'; }
+    else if (kind === 'rapid')  { grantPower(s, 'rapid', 12);  label = 'RAPID'; }
+    else if (kind === 'pierce') { grantPower(s, 'pierce', 10); label = 'PIERCE'; }
+    else if (kind === 'speed')  { grantPower(s, 'speed', 12);  label = 'SPEED'; }
+    else if (kind === 'mult')   { grantPower(s, 'mult', 10); g.mult = Math.min(8, Math.max(g.mult, 2)); g.comboT = Math.max(g.comboT, 10); label = '2X SCORE'; }
+    else if (kind === 'shield') { s.shieldMax = 3; s.shieldHits = 3; s.shield = 9; SFX.shieldUp(); label = 'SHIELD'; }
+    else if (kind === 'bomb')   { g.bombs = Math.min(3, g.bombs + 1); label = 'BOMB +1'; }
+    else if (kind === 'life')   { g.lives = Math.min(5, g.lives + 1); label = '1UP'; }
+    if (kind !== 'shield') SFX.jingle();
+    addFloater(g, s.x, s.y - 30, label);
+    g.flashT = Math.max(g.flashT, 0.06); g.flashCol = '180,255,230';
+  }
+
+  // Take a would-be lethal hit. Returns true if something absorbed it (no life lost).
+  // Priority: active shield -> panic smart bomb -> otherwise caller loses a life.
+  function absorbHit(g, x, y) {
+    var s = g.ship;
+    if (s.shield > 0 && s.shieldHits > 0) {
+      s.shieldHits--;
+      g.shake = Math.max(g.shake, 8);
+      g.flashT = Math.max(g.flashT, 0.06); g.flashCol = '120,230,255';
+      spawnParticles(g, x, y, '#7be3ff', 12, 240);
+      SFX.shieldHit();
+      if (s.shieldHits <= 0) { s.shield = 0; SFX.shieldDown(); }
+      // brief mercy invuln so one rock can't drain the whole shield instantly
+      s.inv = Math.max(s.inv, 0.5);
+      return true;
+    }
+    return false;
+  }
+
+  var MAX_PARTICLES = 420;        // hard cap so chained explosions can't grow unbounded
+  function spawnParticles(g, x, y, color, n, spd) {
+    if (g.particles.length > MAX_PARTICLES) return;
+    for (var i = 0; i < n; i++) {
+      var a = Math.random() * Math.PI * 2, sp = (spd || 200) * (0.3 + Math.random());
+      g.particles.push({ x: x, y: y, vx: Math.cos(a) * sp, vy: Math.sin(a) * sp, life: 0.4 + Math.random() * 0.5, color: color, r: 1 + Math.random() * 2.5 });
+    }
+  }
+  function addFloater(g, x, y, txt) { g.floaters.push({ x: x, y: y, txt: txt, t: 0, life: 0.85 }); }
+
+  function loseLife(g) {
+    var s = g.ship;
+    if (s.inv > 0) return;
+    g.lives--;
+    g.shake = 16; g.flashT = 0.16; g.flashCol = '255,120,90';
+    spawnParticles(g, s.x, s.y, '#bff7f0', 28, 240);
+    spawnParticles(g, s.x, s.y, '#ff9a6a', 14, 200);
+    SFX.hurt();
+    s.inv = 2.0; s.powers = {}; s.shield = 0; s.shieldHits = 0;   // strip buffs on death
+    g.combo = 0; g.mult = 1; g.comboT = 0;                        // reset combo chain
+    s.x = W / 2;
+    if (g.lives <= 0) gameOver(g);
+  }
+
+  var sentOver = false;
+  function gameOver(g) {
+    g.state = STATE.OVER;
+    g.overT = 0;
+    SFX.die();
+    if (!sentOver) {
+      sentOver = true;
+      flog('game over · score=' + g.score + ' wave=' + g.wave);
+      try {
+        fetch('https://' + RES + '/spaceOver', {
+          method: 'POST', headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ score: Math.floor(g.score) })
+        }).then(function(){ flog('spaceOver POST ok'); }).catch(function(e){ flog('spaceOver POST failed: ' + e); });
+      } catch (e) {}
+    }
+  }
+
+  // ===========================================================================
+  //  RENDER
+  // ===========================================================================
+
+  // warm radial vignette: orange near corners -> pink -> magenta, center stays black
+  function drawVignette() {
+    var g1 = ctx.createRadialGradient(W / 2, H / 2, H * 0.30, W / 2, H / 2, H * 0.78);
+    g1.addColorStop(0.00, 'rgba(0,0,0,0)');
+    g1.addColorStop(0.62, 'rgba(180,40,120,0.10)');   // magenta hint
+    g1.addColorStop(0.82, 'rgba(230,70,140,0.20)');   // pink
+    g1.addColorStop(1.00, 'rgba(255,140,60,0.34)');   // warm orange edge
+    ctx.fillStyle = g1; ctx.fillRect(0, 0, W, H);
+    // a touch stronger right in the corners
+    var corners = [[0, 0], [W, 0], [0, H], [W, H]];
+    for (var i = 0; i < 4; i++) {
+      var cg = ctx.createRadialGradient(corners[i][0], corners[i][1], 0, corners[i][0], corners[i][1], H * 0.5);
+      cg.addColorStop(0, 'rgba(255,150,70,0.22)');
+      cg.addColorStop(0.5, 'rgba(220,60,130,0.06)');
+      cg.addColorStop(1, 'rgba(0,0,0,0)');
+      ctx.fillStyle = cg; ctx.fillRect(0, 0, W, H);
+    }
+  }
+
+  // scrolling grey lunar surface strip along the very bottom
+  function drawSurface() {
+    var y0 = PLAY_BOTTOM;
+    var g = ctx.createLinearGradient(0, y0, 0, H);
+    g.addColorStop(0, '#6b6f78'); g.addColorStop(1, '#34373d');
+    ctx.fillStyle = g; ctx.fillRect(0, y0, W, FLOOR_H);
+    // top rim highlight
+    ctx.fillStyle = '#9aa0aa'; ctx.fillRect(0, y0, W, 3);
+    // rolling craters/bumps that scroll sideways (two parallax bands)
+    var off = floorScroll % 96;
+    ctx.fillStyle = '#4a4d54';
+    for (var x = -96; x < W + 96; x += 96) {
+      var bx = x - off;
+      ctx.beginPath();
+      ctx.ellipse(bx + 24, y0 + 30, 22, 9, 0, 0, Math.PI * 2); ctx.fill();
+      ctx.beginPath();
+      ctx.ellipse(bx + 64, y0 + 52, 14, 6, 0, 0, Math.PI * 2); ctx.fill();
+    }
+    // crater inner shade
+    var off2 = (floorScroll * 0.6) % 128;
+    ctx.fillStyle = '#2b2e33';
+    for (var x2 = -128; x2 < W + 128; x2 += 128) {
+      var bx2 = x2 - off2;
+      ctx.beginPath();
+      ctx.ellipse(bx2 + 50, y0 + 24, 10, 4, 0, 0, Math.PI * 2); ctx.fill();
+    }
+    // little pixel speckles
+    ctx.fillStyle = '#7c8088';
+    for (var s = 0; s < 40; s++) {
+      var sx = ((s * 137 - floorScroll * 1.4) % W + W) % W;
+      ctx.fillRect(sx | 0, y0 + 10 + (s * 7 % (FLOOR_H - 14)), 2, 2);
+    }
+  }
+
+  // chunky teal asteroid with darker crater pockmarks
+  function drawRock(rk) {
+    ctx.save();
+    ctx.translate(rk.x, rk.y);
+    ctx.rotate(rk.rot);
+    var r = rk.r;
+    // body
+    ctx.beginPath();
+    for (var i = 0; i < rk.verts; i++) {
+      var ang = (i / rk.verts) * Math.PI * 2;
+      var rad = r * rk.shape[i];
+      var px = Math.cos(ang) * rad, py = Math.sin(ang) * rad;
+      if (i === 0) ctx.moveTo(px, py); else ctx.lineTo(px, py);
+    }
+    ctx.closePath();
+    ctx.fillStyle = rk.hitT > 0 ? '#bff7f0' : '#3fd6c6';
+    ctx.fill();
+    // top-left lighter facet for 16-bit shading
+    ctx.save(); ctx.clip();
+    ctx.fillStyle = '#5fe9da';
+    ctx.beginPath(); ctx.ellipse(-r * 0.3, -r * 0.32, r * 0.7, r * 0.55, 0, 0, Math.PI * 2); ctx.fill();
+    // darker bottom-right shadow band
+    ctx.fillStyle = 'rgba(20,110,102,0.55)';
+    ctx.beginPath(); ctx.ellipse(r * 0.35, r * 0.42, r * 0.8, r * 0.6, 0, 0, Math.PI * 2); ctx.fill();
+    // crater pockmarks
+    for (var c = 0; c < rk.craters.length; c++) {
+      var cr = rk.craters[c];
+      ctx.fillStyle = '#1c7a72';
+      ctx.beginPath(); ctx.arc(cr.x * r, cr.y * r, cr.r * r, 0, Math.PI * 2); ctx.fill();
+      ctx.fillStyle = 'rgba(120,240,228,0.5)';
+      ctx.beginPath(); ctx.arc(cr.x * r - cr.r * r * 0.3, cr.y * r - cr.r * r * 0.3, cr.r * r * 0.45, 0, Math.PI * 2); ctx.fill();
+    }
+    ctx.restore();
+    // outline
+    ctx.lineWidth = 2; ctx.strokeStyle = '#1c7a72';
+    ctx.beginPath();
+    for (var j = 0; j < rk.verts; j++) {
+      var a2 = (j / rk.verts) * Math.PI * 2;
+      var rr2 = r * rk.shape[j];
+      var qx = Math.cos(a2) * rr2, qy = Math.sin(a2) * rr2;
+      if (j === 0) ctx.moveTo(qx, qy); else ctx.lineTo(qx, qy);
+    }
+    ctx.closePath(); ctx.stroke();
+    ctx.restore();
+  }
+
+  // the astronaut monkey in a flying saucer / pod (procedural pixel art)
+  function drawShip(s) {
+    if (s.inv > 0 && (Math.floor(s.inv * 12) % 2 === 0)) return;  // blink while invulnerable
+    ctx.save();
+    ctx.translate(s.x, s.y);
+    var w = s.w, h = s.h;
+
+    // thruster flames at the underside (flicker; lean toward movement dir)
+    var fl = 6 + Math.random() * 8;
+    ctx.fillStyle = (Math.random() < 0.5) ? '#ff8a2a' : '#ffd166';
+    for (var t = -1; t <= 1; t += 2) {
+      ctx.beginPath();
+      ctx.moveTo(t * w * 0.26 - 5, h * 0.22);
+      ctx.lineTo(t * w * 0.26 + 5, h * 0.22);
+      ctx.lineTo(t * w * 0.26 + s.thr * 3, h * 0.22 + fl);
+      ctx.closePath(); ctx.fill();
+    }
+    // center exhaust glow
+    ctx.fillStyle = 'rgba(120,230,255,0.5)';
+    ctx.beginPath(); ctx.ellipse(0, h * 0.24, w * 0.18, 5, 0, 0, Math.PI * 2); ctx.fill();
+
+    // saucer hull (metallic silver/blue ellipse)
+    var hullG = ctx.createLinearGradient(0, -h * 0.05, 0, h * 0.28);
+    hullG.addColorStop(0, '#cfe0ef'); hullG.addColorStop(0.5, '#9fb6cc'); hullG.addColorStop(1, '#5d7088');
+    ctx.fillStyle = hullG;
+    ctx.beginPath(); ctx.ellipse(0, h * 0.06, w * 0.5, h * 0.20, 0, 0, Math.PI * 2); ctx.fill();
+    // hull rim shadow
+    ctx.fillStyle = '#41566a';
+    ctx.beginPath(); ctx.ellipse(0, h * 0.13, w * 0.5, h * 0.10, 0, 0, Math.PI); ctx.fill();
+    // rim lights (little thruster bumps / running lights)
+    for (var b = -2; b <= 2; b++) {
+      ctx.fillStyle = (b % 2 === 0) ? '#ffe27a' : '#7be3ff';
+      ctx.beginPath(); ctx.arc(b * w * 0.18, h * 0.10, 2.5, 0, Math.PI * 2); ctx.fill();
+    }
+
+    // clear glass dome cockpit
+    ctx.fillStyle = 'rgba(150,225,255,0.30)';
+    ctx.beginPath(); ctx.arc(0, -h * 0.04, w * 0.30, Math.PI, 0); ctx.lineTo(w * 0.30, -h * 0.04); ctx.lineTo(-w * 0.30, -h * 0.04); ctx.closePath(); ctx.fill();
+
+    // --- monkey inside the dome ---
+    ctx.save();
+    ctx.translate(0, -h * 0.10);
+    // head (brown)
+    ctx.fillStyle = '#7a4a24';
+    ctx.beginPath(); ctx.arc(0, 0, w * 0.20, 0, Math.PI * 2); ctx.fill();
+    // ears
+    ctx.beginPath(); ctx.arc(-w * 0.19, -2, w * 0.07, 0, Math.PI * 2); ctx.fill();
+    ctx.beginPath(); ctx.arc(w * 0.19, -2, w * 0.07, 0, Math.PI * 2); ctx.fill();
+    // pink face
+    ctx.fillStyle = '#f2b9a0';
+    ctx.beginPath(); ctx.ellipse(0, 3, w * 0.14, w * 0.13, 0, 0, Math.PI * 2); ctx.fill();
+    // big eyes
+    ctx.fillStyle = '#ffffff';
+    ctx.beginPath(); ctx.arc(-w * 0.07, 0, w * 0.05, 0, Math.PI * 2); ctx.fill();
+    ctx.beginPath(); ctx.arc(w * 0.07, 0, w * 0.05, 0, Math.PI * 2); ctx.fill();
+    ctx.fillStyle = '#161616';
+    ctx.beginPath(); ctx.arc(-w * 0.06, 0, w * 0.025, 0, Math.PI * 2); ctx.fill();
+    ctx.beginPath(); ctx.arc(w * 0.08, 0, w * 0.025, 0, Math.PI * 2); ctx.fill();
+    // tiny smile
+    ctx.strokeStyle = '#5a2f1c'; ctx.lineWidth = 1.5;
+    ctx.beginPath(); ctx.arc(0, w * 0.05, w * 0.05, 0.15 * Math.PI, 0.85 * Math.PI); ctx.stroke();
+    ctx.restore();
+
+    // dome highlight glint
+    ctx.fillStyle = 'rgba(255,255,255,0.45)';
+    ctx.beginPath(); ctx.ellipse(-w * 0.12, -h * 0.20, w * 0.07, h * 0.10, -0.5, 0, Math.PI * 2); ctx.fill();
+    // dome outline
+    ctx.strokeStyle = '#bfe9ff'; ctx.lineWidth = 2;
+    ctx.beginPath(); ctx.arc(0, -h * 0.04, w * 0.30, Math.PI, 0); ctx.stroke();
+
+    ctx.restore();
+  }
+
+  function drawShipIcon(x, y) {
+    ctx.save(); ctx.translate(x, y);
+    ctx.fillStyle = '#9fb6cc';
+    ctx.beginPath(); ctx.ellipse(0, 2, 13, 6, 0, 0, Math.PI * 2); ctx.fill();
+    ctx.fillStyle = '#f2b9a0';
+    ctx.beginPath(); ctx.arc(0, -3, 5, 0, Math.PI * 2); ctx.fill();
+    ctx.restore();
+  }
+
+  // power-up visual table: colour + single-glyph badge
+  var PU_META = {
+    rapid:  { c: '#ffd166', g: 'R' },
+    spread: { c: '#7af5c0', g: 'W' },
+    pierce: { c: '#b69cff', g: 'P' },
+    speed:  { c: '#79e0ff', g: '»' },
+    mult:   { c: '#ffd0f0', g: '2' },
+    shield: { c: '#7be3ff', g: 'O' },
+    bomb:   { c: '#ff9a3a', g: '*' },
+    life:   { c: '#ff5d8f', g: '+' }
+  };
+  function drawPower(pu) {
+    var m = PU_META[pu.kind] || { c: '#ffffff', g: '?' };
+    ctx.save();
+    ctx.translate(pu.x, pu.y);
+    // soft pulsing glow capsule, badge stays upright while the frame spins
+    var pulse = 0.6 + 0.4 * Math.sin(pu.t * 6);
+    ctx.save();
+    ctx.rotate(pu.t * 3);
+    ctx.shadowColor = m.c; ctx.shadowBlur = 10 + pulse * 12; ctx.fillStyle = m.c;
+    ctx.fillRect(-13, -13, 26, 26);
+    ctx.fillStyle = 'rgba(6,18,26,0.85)';
+    ctx.fillRect(-9, -9, 18, 18);
+    ctx.restore();
+    ctx.shadowBlur = 0; ctx.fillStyle = m.c;
+    ctx.font = 'bold 18px monospace'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+    ctx.fillText(m.g, 0, 1);
+    ctx.restore();
+  }
+
+  // glowing energy ring expanding from a smart-bomb detonation
+  function drawShock(sw) {
+    var a = Math.max(0, 1 - sw.r / sw.max);
+    ctx.save();
+    ctx.globalAlpha = a * 0.9;
+    ctx.lineWidth = 6 + a * 16;
+    ctx.strokeStyle = '#ffe9a8';
+    ctx.shadowColor = '#ffd166'; ctx.shadowBlur = 24;
+    ctx.beginPath(); ctx.arc(sw.x, sw.y, sw.r, 0, Math.PI * 2); ctx.stroke();
+    ctx.globalAlpha = a * 0.5; ctx.lineWidth = 2; ctx.strokeStyle = '#fffdf2';
+    ctx.beginPath(); ctx.arc(sw.x, sw.y, sw.r * 0.82, 0, Math.PI * 2); ctx.stroke();
+    ctx.restore();
+    ctx.globalAlpha = 1; ctx.shadowBlur = 0;
+  }
+
+  // hunter UFO — little chrome alien saucer with a glowing under-dome
+  function drawUFO(em) {
+    ctx.save();
+    ctx.translate(em.x, em.y);
+    var w = em.r * 2;
+    // under-glow
+    ctx.fillStyle = 'rgba(255,90,140,0.35)';
+    ctx.beginPath(); ctx.ellipse(0, 8, w * 0.42, 7, 0, 0, Math.PI * 2); ctx.fill();
+    // dome
+    var dg = ctx.createLinearGradient(0, -16, 0, 2);
+    dg.addColorStop(0, '#ffd0ff'); dg.addColorStop(1, '#b060c0');
+    ctx.fillStyle = em.hitT > 0 ? '#ffffff' : dg;
+    ctx.beginPath(); ctx.arc(0, -2, em.r * 0.5, Math.PI, 0); ctx.fill();
+    // hull disc
+    var hg = ctx.createLinearGradient(0, -4, 0, 10);
+    hg.addColorStop(0, '#d7dde6'); hg.addColorStop(1, '#5b6776');
+    ctx.fillStyle = em.hitT > 0 ? '#ffffff' : hg;
+    ctx.beginPath(); ctx.ellipse(0, 2, em.r, em.r * 0.42, 0, 0, Math.PI * 2); ctx.fill();
+    // running lights
+    for (var i = -2; i <= 2; i++) {
+      ctx.fillStyle = (Math.floor(em.bob * 3) + i) % 2 === 0 ? '#ff5d8f' : '#7be3ff';
+      ctx.beginPath(); ctx.arc(i * em.r * 0.34, 4, 2.2, 0, Math.PI * 2); ctx.fill();
+    }
+    ctx.restore();
+  }
+
+  // mini-boss mothership with health bar + charge telegraph
+  function drawBoss(em) {
+    ctx.save();
+    ctx.translate(em.x, em.y);
+    var w = em.w, h = em.h;
+    // charge telegraph glow under the hull before a volley
+    if (em.telegraph > 0) {
+      var tg = 0.4 + 0.6 * Math.abs(Math.sin(em.telegraph * 18));
+      ctx.fillStyle = 'rgba(255,80,80,' + (0.5 * tg) + ')';
+      ctx.beginPath(); ctx.ellipse(0, h * 0.34, w * 0.34, 16, 0, 0, Math.PI * 2); ctx.fill();
+    }
+    // lower hull
+    var hg = ctx.createLinearGradient(0, -h * 0.1, 0, h * 0.5);
+    hg.addColorStop(0, '#8aa0b8'); hg.addColorStop(1, '#3a4656');
+    ctx.fillStyle = em.hitT > 0 ? '#ffffff' : hg;
+    ctx.beginPath(); ctx.ellipse(0, h * 0.1, w * 0.5, h * 0.30, 0, 0, Math.PI * 2); ctx.fill();
+    // dark belly band
+    ctx.fillStyle = 'rgba(20,28,38,0.7)';
+    ctx.beginPath(); ctx.ellipse(0, h * 0.22, w * 0.5, h * 0.14, 0, 0, Math.PI); ctx.fill();
+    // command dome
+    var dg = ctx.createLinearGradient(0, -h * 0.4, 0, 0);
+    dg.addColorStop(0, '#ffe6a0'); dg.addColorStop(1, '#c07020');
+    ctx.fillStyle = em.hitT > 0 ? '#ffffff' : dg;
+    ctx.beginPath(); ctx.arc(0, h * 0.02, w * 0.22, Math.PI, 0); ctx.fill();
+    // armoured ridges + lights
+    for (var i = -4; i <= 4; i++) {
+      ctx.fillStyle = (i % 2 === 0) ? '#ffd166' : '#7be3ff';
+      ctx.beginPath(); ctx.arc(i * w * 0.10, h * 0.12, 3, 0, Math.PI * 2); ctx.fill();
+    }
+    ctx.restore();
+
+    // health bar above the boss
+    var bw = w * 0.9, bx = em.x - bw / 2, by = em.y - h * 0.55;
+    ctx.fillStyle = 'rgba(0,0,0,0.6)'; ctx.fillRect(bx - 2, by - 2, bw + 4, 12);
+    ctx.fillStyle = '#5a1a1a'; ctx.fillRect(bx, by, bw, 8);
+    var frac = Math.max(0, em.hp / em.hpMax);
+    ctx.fillStyle = frac > 0.5 ? '#5dff8f' : (frac > 0.25 ? '#ffd166' : '#ff5d5d');
+    ctx.fillRect(bx, by, bw * frac, 8);
+  }
+
+  function drawShieldBubble(s) {
+    var r = s.w * 0.62;
+    // blink rapidly in the last 2 seconds
+    var expiring = s.shield < 2.0;
+    if (expiring && Math.floor(s.shield * 10) % 2 === 0) return;
+    var pulse = 0.55 + 0.45 * Math.sin(performance.now() / 90);
+    ctx.save();
+    ctx.translate(s.x, s.y - s.h * 0.04);
+    ctx.globalAlpha = 0.35 + pulse * 0.25;
+    ctx.strokeStyle = '#7be3ff'; ctx.lineWidth = 3;
+    ctx.shadowColor = '#36f1ff'; ctx.shadowBlur = 18;
+    ctx.beginPath(); ctx.arc(0, 0, r, 0, Math.PI * 2); ctx.stroke();
+    // faint inner fill
+    var grd = ctx.createRadialGradient(0, 0, r * 0.4, 0, 0, r);
+    grd.addColorStop(0, 'rgba(120,230,255,0)');
+    grd.addColorStop(1, 'rgba(120,230,255,' + (0.12 + pulse * 0.1) + ')');
+    ctx.globalAlpha = 1; ctx.shadowBlur = 0; ctx.fillStyle = grd;
+    ctx.beginPath(); ctx.arc(0, 0, r, 0, Math.PI * 2); ctx.fill();
+    ctx.restore();
+    ctx.globalAlpha = 1;
+  }
+
+  function drawBombIcon(x, y, lit) {
+    ctx.save(); ctx.translate(x, y);
+    ctx.fillStyle = lit ? '#ff9a3a' : '#5a4030';
+    if (lit) { ctx.shadowColor = '#ffae5a'; ctx.shadowBlur = 8; }
+    ctx.beginPath(); ctx.arc(0, 2, 8, 0, Math.PI * 2); ctx.fill();
+    ctx.shadowBlur = 0;
+    // fuse spark
+    ctx.strokeStyle = lit ? '#ffe27a' : '#3a2a1e'; ctx.lineWidth = 2;
+    ctx.beginPath(); ctx.moveTo(3, -5); ctx.lineTo(7, -10); ctx.stroke();
+    if (lit) { ctx.fillStyle = '#fff2a0'; ctx.beginPath(); ctx.arc(7, -10, 2, 0, Math.PI * 2); ctx.fill(); }
+    ctx.restore();
+  }
+
+  function drawHUD(g) {
+    var s = g.ship;
+    ctx.fillStyle = '#bff7f0';
+    ctx.font = 'bold 28px monospace'; ctx.textAlign = 'left'; ctx.textBaseline = 'top';
+    ctx.shadowColor = '#36f1ff'; ctx.shadowBlur = 8;
+    ctx.fillText('SCORE ' + String(g.score).padStart(6, '0'), 20, 18);
+    ctx.textAlign = 'center';
+    ctx.fillText('WAVE ' + g.wave, W / 2, 18);
+    ctx.shadowBlur = 0;
+    // lives as little saucers (top-right row)
+    for (var i = 0; i < g.lives; i++) drawShipIcon(W - 28 - i * 36, 32);
+
+    // multiplier (center, under wave) — pops bigger as it climbs
+    if (g.mult > 1) {
+      var mp = 1 + Math.min(0.4, g.combo * 0.01);
+      ctx.save();
+      ctx.font = 'bold ' + Math.round(26 * mp) + 'px monospace'; ctx.textAlign = 'center'; ctx.textBaseline = 'top';
+      ctx.fillStyle = '#ffd0f0'; ctx.shadowColor = '#ff79d8'; ctx.shadowBlur = 12;
+      ctx.fillText('x' + g.mult + '  (' + g.combo + ')', W / 2, 50);
+      ctx.restore();
+    }
+
+    // smart-bomb stock (top-right, just under the lives)
+    ctx.font = 'bold 18px monospace'; ctx.textAlign = 'right'; ctx.textBaseline = 'middle';
+    ctx.fillStyle = '#ffb066'; ctx.shadowBlur = 0;
+    ctx.fillText('BOMB', W - 20 - 3 * 22 - 8, 64);
+    for (var bI = 0; bI < 3; bI++) drawBombIcon(W - 20 - bI * 22, 64, bI < g.bombs);
+
+    // active power-up timers (left column)
+    var y = 52;
+    var order = ['rapid', 'spread', 'pierce', 'speed', 'mult'];
+    var names = { rapid: 'RAPID', spread: 'SPREAD', pierce: 'PIERCE', speed: 'SPEED', mult: '2X SCORE' };
+    ctx.textAlign = 'left'; ctx.textBaseline = 'top';
+    for (var oi = 0; oi < order.length; oi++) {
+      var key = order[oi];
+      if ((s.powers[key] || 0) > 0) {
+        var meta = PU_META[key];
+        ctx.fillStyle = meta.c; ctx.font = 'bold 19px monospace';
+        ctx.fillText(names[key] + ' ' + s.powers[key].toFixed(1) + 's', 20, y);
+        y += 24;
+      }
+    }
+    // shield status with hit pips
+    if (s.shield > 0) {
+      ctx.fillStyle = '#7be3ff'; ctx.font = 'bold 19px monospace';
+      ctx.fillText('SHIELD ' + s.shieldHits + '/' + s.shieldMax, 20, y);
+    }
+  }
+
+  function centerText(big, small, color, sub) {
+    ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+    ctx.fillStyle = color || '#bff7f0';
+    ctx.shadowColor = color || '#36f1ff'; ctx.shadowBlur = 20;
+    ctx.font = 'bold 78px monospace';
+    ctx.fillText(big, W / 2, H * 0.40);
+    ctx.shadowBlur = 6;
+    ctx.font = 'bold 28px monospace';
+    if (small) ctx.fillText(small, W / 2, H * 0.40 + 64);
+    ctx.shadowBlur = 0;
+  }
+
+  function render() {
+    // screen shake
+    var sx = 0, sy = 0;
+    if (game && game.shake > 0) { sx = (Math.random() - 0.5) * game.shake; sy = (Math.random() - 0.5) * game.shake; }
+    ctx.setTransform(1, 0, 0, 1, sx, sy);
+
+    // deep black space
+    ctx.fillStyle = '#000007'; ctx.fillRect(-20, -20, W + 40, H + 40);
+    drawStars();
+    drawVignette();
+
+    if (!game || game.state === STATE.ATTRACT) {
+      drawSurface();
+      // a couple of demo rocks drifting on the title
+      var demo = [[W * 0.26, H * 0.30, 3], [W * 0.74, H * 0.24, 2], [W * 0.5, H * 0.52, 2]];
+      for (var d = 0; d < demo.length; d++) {
+        ctx.save();
+        ctx.translate(demo[d][0], demo[d][1] + Math.sin(attractT * 1.3 + d) * 8);
+        ctx.rotate(attractT * 0.4 + d);
+        drawDemoRock(demo[d][2]);
+        ctx.restore();
+      }
+      // title
+      ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+      ctx.fillStyle = '#bff7f0'; ctx.shadowColor = '#36f1ff'; ctx.shadowBlur = 26;
+      ctx.font = 'bold 92px monospace';
+      ctx.fillText('SPACE', W / 2, H * 0.34);
+      ctx.fillStyle = '#ffb35a'; ctx.shadowColor = '#ff7a3a';
+      ctx.fillText('MONKEY', W / 2, H * 0.46);
+      ctx.shadowBlur = 8; ctx.fillStyle = '#ffd166'; ctx.font = 'bold 28px monospace';
+      if (Math.floor(attractT * 1.5) % 2 === 0) ctx.fillText('INSERT COIN  —  PRESS  FIRE', W / 2, H * 0.64);
+      ctx.fillStyle = '#bff7f0'; ctx.font = 'bold 21px monospace'; ctx.shadowBlur = 0;
+      ctx.fillText('MOVE  A / D          FIRE  [E] / SPACE          BOMB  [SHIFT]', W / 2, H * 0.71);
+      ctx.fillStyle = '#ffd166'; ctx.font = '17px monospace';
+      ctx.fillText('[SHIFT] = SMART BOMB — clears the whole screen.  You start with 2.', W / 2, H * 0.77);
+      ctx.fillStyle = '#7be3ff';
+      ctx.fillText('Grab drops for more bombs, shields, and spread / pierce / rapid fire.', W / 2, H * 0.82);
+      return;
+    }
+
+    var g = game;
+    // entities
+    for (var i = 0; i < g.powerups.length; i++) drawPower(g.powerups[i]);
+    for (var k = 0; k < g.rocks.length; k++) drawRock(g.rocks[k]);
+    // enemies (UFOs + boss)
+    for (var en = 0; en < g.enemies.length; en++) {
+      if (g.enemies[en].type === 'boss') drawBoss(g.enemies[en]); else drawUFO(g.enemies[en]);
+    }
+
+    // player bullets (glowing pellets; piercing ones run hotter/violet)
+    ctx.shadowBlur = 8;
+    for (var b = 0; b < g.bullets.length; b++) {
+      var bb = g.bullets[b];
+      ctx.shadowColor = bb.pierce ? '#b69cff' : '#36f1ff';
+      ctx.fillStyle = bb.pierce ? '#ece2ff' : '#eafcff';
+      ctx.fillRect(bb.x - (bb.pierce ? 3 : 2), bb.y - 8, bb.pierce ? 6 : 4, bb.pierce ? 18 : 14);
+    }
+    ctx.shadowBlur = 0;
+
+    // enemy bullets (hot pink plasma)
+    ctx.shadowBlur = 8; ctx.shadowColor = '#ff4d8f';
+    for (var eb = 0; eb < g.ebullets.length; eb++) {
+      var ebl = g.ebullets[eb];
+      ctx.fillStyle = '#ff9ec5';
+      ctx.beginPath(); ctx.arc(ebl.x, ebl.y, ebl.r, 0, Math.PI * 2); ctx.fill();
+    }
+    ctx.shadowBlur = 0;
+
+    // particles
+    for (var p = 0; p < g.particles.length; p++) {
+      var pt = g.particles[p];
+      ctx.globalAlpha = Math.max(0, Math.min(1, pt.life * 2));
+      ctx.fillStyle = pt.color;
+      ctx.fillRect(pt.x - pt.r, pt.y - pt.r, pt.r * 2, pt.r * 2);
+    }
+    ctx.globalAlpha = 1;
+
+    // smart-bomb shockwave rings (above field, below surface)
+    for (var sw = 0; sw < g.shocks.length; sw++) drawShock(g.shocks[sw]);
+
+    drawSurface();
+
+    // saucer + shield bubble
+    if (g.state !== STATE.OVER) {
+      drawShip(g.ship);
+      if (g.ship.shield > 0) drawShieldBubble(g.ship);
+    }
+
+    // floating score popups
+    ctx.font = 'bold 22px monospace'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+    for (var f = 0; f < g.floaters.length; f++) {
+      var ft = g.floaters[f];
+      ctx.globalAlpha = Math.max(0, 1 - ft.t / ft.life);
+      ctx.fillStyle = '#eafffb'; ctx.shadowColor = '#36f1ff'; ctx.shadowBlur = 8;
+      ctx.fillText(ft.txt, ft.x, ft.y);
+    }
+    ctx.globalAlpha = 1; ctx.shadowBlur = 0;
+
+    drawHUD(g);
+
+    // wave banner
+    if (g.waveMsgT > 0 && g.state !== STATE.OVER) {
+      centerText('WAVE ' + g.wave, 'GET READY', '#bff7f0');
+    }
+    // boss warning banner
+    if (g.bossWarnT > 0 && g.state !== STATE.OVER) {
+      if (Math.floor(g.bossWarnT * 6) % 2 === 0) centerText('WARNING', 'MOTHERSHIP INBOUND', '#ff5d5d');
+    }
+
+    // hit flash (tinted by event)
+    if (g.flashT > 0) {
+      ctx.fillStyle = 'rgba(' + (g.flashCol || '255,255,255') + ',' + Math.min(0.5, g.flashT * 3) + ')';
+      ctx.fillRect(-20, -20, W + 40, H + 40);
+    }
+
+    if (g.state === STATE.OVER) {
+      ctx.fillStyle = 'rgba(2,2,10,0.72)'; ctx.fillRect(-20, -20, W + 40, H + 40);
+      centerText('GAME OVER', 'SCORE  ' + g.score + '   ·   WAVE  ' + g.wave, '#ffb35a');
+      ctx.textAlign = 'center'; ctx.shadowBlur = 0; ctx.font = 'bold 26px monospace';
+      ctx.fillStyle = (Math.floor((g.overT || 0) * 2) % 2 === 0) ? '#ffd166' : '#6a5a2a';
+      ctx.fillText('PRESS  FIRE  TO  PLAY  AGAIN', W / 2, H * 0.40 + 135);
+    }
+
+    // CRT scanlines over everything
+    ctx.globalAlpha = 0.10; ctx.fillStyle = '#000';
+    for (var sy2 = 0; sy2 < H; sy2 += 3) ctx.fillRect(0, sy2, W, 1);
+    ctx.globalAlpha = 1;
+  }
+
+  // a simple teal rock used on the attract screen (no game object)
+  function drawDemoRock(size) {
+    var r = ROCK_R[size];
+    ctx.beginPath();
+    for (var i = 0; i < 9; i++) {
+      var ang = (i / 9) * Math.PI * 2, rad = r * (0.8 + ((i * 37) % 10) / 30);
+      var px = Math.cos(ang) * rad, py = Math.sin(ang) * rad;
+      if (i === 0) ctx.moveTo(px, py); else ctx.lineTo(px, py);
+    }
+    ctx.closePath();
+    ctx.fillStyle = '#3fd6c6'; ctx.fill();
+    ctx.lineWidth = 2; ctx.strokeStyle = '#1c7a72'; ctx.stroke();
+    ctx.fillStyle = '#1c7a72';
+    ctx.beginPath(); ctx.arc(-r * 0.2, -r * 0.1, r * 0.18, 0, Math.PI * 2); ctx.fill();
+    ctx.beginPath(); ctx.arc(r * 0.25, r * 0.2, r * 0.14, 0, Math.PI * 2); ctx.fill();
+  }
+
+  // -------------------------------------------------------------------------
+  //  Main loop (delta-time, 60fps target)
+  // -------------------------------------------------------------------------
+  // DUI SLEEP CONTRACT: after the player leaves, Lua sends {action:'sleep'} and this page STOPS
+  // rendering (the rAF loop parks). A cached CEF page drawing its attract screen at 60fps was
+  // silently costing client FPS everywhere (invisible to resmon). config/reset/start wake it.
+  var RAF_LIVE = true;
+  function duiSleep() { RAF_LIVE = false; }
+  function duiWake() { if (!RAF_LIVE) { RAF_LIVE = true; last = 0; requestAnimationFrame(loop); } }
+  var last = 0;
+  function loop(ts) {
+    if (!RAF_LIVE) return;
+    if (!last) last = ts;
+    var dt = (ts - last) / 1000; last = ts;
+    if (dt > 0.05) dt = 0.05; // clamp big stalls
+    attractT += dt;
+    if (running) {
+      update(dt);
+      // OVER screen: blink timer + restart-on-fire
+      if (game && game.state === STATE.OVER) {
+        game.overT = (game.overT || 0) + dt;
+        if (input.fire && game.overT > 1.0) { startGame(); }
+      }
+      // attract: fire starts a game
+      if (game && game.state === STATE.ATTRACT && input.fire) { startGame(); }
+    } else {
+      // keep the title/attract animating even before Lua sends 'start'
+      updateStars(dt); floorScroll += dt * 46;
+    }
+    render();
+    requestAnimationFrame(loop);
+  }
+
+  // -------------------------------------------------------------------------
+  //  Control surface from Lua
+  // -------------------------------------------------------------------------
+  function startGame() {
+    sentOver = false;
+    game = newGame();
+    running = true;
+    actx(); // unlock audio (best-effort)
+    SFX.wave();
+    flog('startGame · wave 1');
+  }
+  function resetToAttract() {
+    game = newGame();
+    game.state = STATE.ATTRACT;
+    flog('reset -> attract');
+  }
+
+  var msgCount = 0;
+  window.addEventListener('message', function (e) {
+    var d;
+    try { d = (typeof e.data === 'string') ? JSON.parse(e.data) : (e.data || {}); }
+    catch (err) { flog('message parse error: ' + err); return; }
+    msgCount++;
+    if (msgCount <= 3 || d.action !== 'input') flog('msg#' + msgCount + ' ' + JSON.stringify(d).slice(0, 120));
+    if (d.action === 'sleep') { duiSleep(); return; }
+    if (d.action === 'config' || d.action === 'reset' || d.action === 'start') duiWake();
+    if (d.action === 'input') {
+      var k = d.keys || {};
+      input.left = !!k.left; input.right = !!k.right; input.fire = !!k.fire; input.bomb = !!k.bomb;
+    } else if (d.action === 'start') {
+      running = true;
+      startGame();
+    } else if (d.action === 'stop') {
+      running = false;
+      flog('stop');
+    } else if (d.action === 'reset') {
+      running = false;           // idle: render the title silently, no self-play demo, no SFX
+      resetToAttract();
+    } else if (d.action === 'volume') {
+      // master volume 0..1 — clamp, store, and smoothly ramp the master gain
+      var lvl = Math.max(0, Math.min(1, +d.level || 0));
+      masterVol = lvl;
+      if (MASTER) {
+        try {
+          var t = AC.currentTime;
+          MASTER.gain.cancelScheduledValues(t);
+          MASTER.gain.setValueAtTime(MASTER.gain.value, t);
+          MASTER.gain.linearRampToValueAtTime(lvl, t + 0.05);
+        } catch (e) { MASTER.gain.value = lvl; }
+      }
+    }
+  });
+
+  // -------------------------------------------------------------------------
+  //  Boot
+  // -------------------------------------------------------------------------
+  initStars();
+  resetToAttract();
+  running = false; // idle: title renders (render() is unconditional) but the demo/SFX stay off until Lua sends 'start'
+  requestAnimationFrame(loop);
+
+  window.addEventListener('load', function () {
+    flog('window load — sending spaceReady');
+    fetch('https://' + RES + '/spaceReady', { method: 'POST', body: '{}' })
+      .then(function () { flog('spaceReady POST ok'); })
+      .catch(function (e) { flog('spaceReady POST failed: ' + e); });
+  });
+  flog('script end · readyState=' + document.readyState);
+  </script>
+<!-- ARCADE HIGH-SCORES overlay (attract screen). Fed by {action:'leaderboard',entries:[{name,score}]}
+     from the cabinet before play. Self-contained + own message listener; shown on 'leaderboard',
+     hidden on 'start'/'reset'. Additive — does not touch the game's own message handler. -->
+<style>
+  #arc-hs{position:fixed;top:50%;right:3.5%;transform:translateY(-50%);width:33%;max-width:440px;
+    display:none;font-family:'Consolas','Menlo','Courier New',monospace;color:#eaf6ff;z-index:99999;
+    background:rgba(6,10,20,.74);border:2px solid rgba(90,200,255,.55);border-radius:10px;
+    box-shadow:0 0 22px rgba(60,180,255,.35),inset 0 0 18px rgba(20,60,120,.4);padding:14px 16px 12px}
+  #arc-hs h3{margin:0 0 9px;text-align:center;font-size:21px;letter-spacing:3px;color:#5fd0ff;
+    text-shadow:0 0 8px rgba(80,200,255,.9);text-transform:uppercase}
+  #arc-hs ol{list-style:none;margin:0;padding:0}
+  #arc-hs li{display:flex;align-items:baseline;gap:9px;padding:3px 4px;font-size:16px;
+    border-bottom:1px solid rgba(90,160,220,.14)}
+  #arc-hs li:nth-child(1){color:#ffd86b;text-shadow:0 0 8px rgba(255,200,70,.7)}
+  #arc-hs li:nth-child(3){color:#e6b98a}
+  #arc-hs .r{width:24px;text-align:right;opacity:.75}
+  #arc-hs .n{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;text-transform:uppercase}
+  #arc-hs .s{font-variant-numeric:tabular-nums;font-weight:bold}
+  #arc-hs .e{opacity:.6;text-align:center;padding:12px 0;font-size:14px;letter-spacing:1px}
+</style>
+<div id="arc-hs"><h3>High Scores</h3><ol id="arc-hs-list"></ol></div>
+<script>
+(function(){
+  var box=document.getElementById('arc-hs'),list=document.getElementById('arc-hs-list'),have=[];
+  function esc(s){return String(s==null?'':s).replace(/[<&>]/g,function(c){return{'<':'&lt;','&':'&amp;','>':'&gt;'}[c];});}
+  function render(){
+    list.innerHTML='';
+    if(!have.length){list.innerHTML='<li class="e">NO SCORES YET — BE THE FIRST</li>';return;}
+    for(var i=0;i<have.length&&i<10;i++){
+      var e=have[i]||{},li=document.createElement('li');
+      li.innerHTML='<span class="r">'+(i+1)+'</span><span class="n">'+esc(e.name||'?')+'</span><span class="s">'+((parseInt(e.score,10)||0).toLocaleString())+'</span>';
+      list.appendChild(li);
+    }
+  }
+  window.addEventListener('message',function(ev){
+    var d;try{d=(typeof ev.data==='string')?JSON.parse(ev.data):(ev.data||{});}catch(x){return;}
+    var a=d.action||d.type;
+    if(a==='leaderboard'){have=Array.isArray(d.entries)?d.entries:[];render();box.style.display='block';}
+    else if(a==='start'||a==='reset'){box.style.display='none';}
+  });
+})();
+</script>
+</body>
+</html>

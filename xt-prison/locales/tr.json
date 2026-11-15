@@ -1,0 +1,44 @@
+{
+    "notify": {
+        "freedom": "Özgürlük!",
+        "new_time_by_roster": "Yeni Hapis Süresi",
+        "new_time_by_roster_description": "Hapis süren %s ay olarak ayarlandı!",
+        "unjailed_by_roster": "Hapis süren sıfırlandı, serbest bırakılıyorsun!",
+        "no_access": "Bu komuta erişimin yok!",
+        "updated_players_time": "%s adlı oyuncunun hapis süresi %s ay olarak güncellendi",
+        "player_sent": "%s, %s ay süreyle hapse gönderildi",
+        "time_updated_description": "Hapis süren %s ay olarak ayarlandı",
+        "time_updated": "Hapis Süresi Güncellendi",
+        "invalid_player": "Geçersiz Oyuncu!",
+        "lost_job": "İşini kaybettin!",
+        "confiscated": "Eşyalarına el konuldu!",
+        "returned_items": "Eşyaların geri verildi!",
+        "player_released": "%s serbest bırakıldı!",
+        "lifer": "Ömür boyu hapis cezası aldın!",
+        "jail_time": "Hapis Süresi",
+        "time_left": "%s ay hapis süren kaldı.",
+        "no_time_left": "Üzerinde hapis süresi kalmadı!",
+        "time_remaining": "Kalan Süre: %s Ay",
+        "completed_hack": "Hack işlemini tamamladın!",
+        "failed_hack": "Hack başarısız oldu!",
+        "escaped": "Hapishaneden kaçtın!",
+        "checkout": "Süren doldu! Çıkış yap!"
+    },
+    "commands": {
+        "jail": "Oyuncuyu Hapse At",
+        "unjail": "Oyuncuyu Serbest Bırak",
+        "playerid": "Oyuncu ID",
+        "check_time": "Hapis süreni kontrol et",
+        "prisoners_roster": "Mevcut mahkumları görüntüle ve yönet"
+    },
+    "input": {
+        "jail_player": "Oyuncuyu Hapse At",
+        "playerid": "Oyuncu Sunucu ID",
+        "jailtime": "Hapis Süresi",
+        "months": "Ay ( Dakika )",
+        "hack_gate": "Hapishane Kapısını Hackle",
+        "hacking": "Terminal hackleniyor...",
+        "check_time": "Süreyi Kontrol Et",
+        "prison_sentence": "**Hapis Cezası:** %s  \n%s"
+    }
+}

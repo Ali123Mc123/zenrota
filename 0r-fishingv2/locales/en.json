@@ -1,0 +1,193 @@
+{
+   "NUI": {
+      "navigation": {
+         "fishermans": "Fisherman's",
+         "eatery": "Eatery",
+         "information": "Information",
+         "store": "Store",
+         "sell": "Sell",
+         "crew": "Crew",
+         "multiplayer": "Multiplayer",
+         "tasks": "Tasks"
+      },
+      "player": {
+         "fishing_level": "Fishing Level",
+         "you": "You",
+         "leader": "Leader",
+         "xp": "EXP"
+      },
+      "store": {
+         "basket": "Basket",
+         "total_price": "Total price",
+         "pay_card": "Pay Card",
+         "pay_cash": "Pay Cash",
+         "rent_boat": "Rent a Boat",
+         "return_boat": "Return Boat",
+         "basket_total": "Basket total",
+         "paying": "Paying...",
+         "add": "Add",
+         "level_required": "Level Required"
+      },
+      "multiplayer": {
+         "create_your_party": "Create your party",
+         "players": "Players",
+         "leader": "Leader",
+         "kick": "Kick",
+         "leave": "Leave",
+         "invite": "Invite",
+         "you": "You",
+         "empty_slot": "Empty slot for player",
+         "start_party_task": "Start party task",
+         "stop_party_task": "Stop party task",
+         "crew_members": "crew members",
+         "leaderboard": "Leaderboard",
+         "leaderboard_description": "See the best players in the world.",
+         "multiplayer": "Multiplayer",
+         "multiplayer_description": "Multiplayer is a mode where you can fish with your friends.",
+         "multiplayer_tasks": "Multiplayer tasks",
+         "members": "Members",
+         "tasks": {
+            "minimum": "minimum",
+            "level": "level",
+            "catch": "Catch",
+            "description": "different type of fish and exchange it on Fisherman’s Eatery, near Fisher Bob."
+         }
+      },
+      "tasks": {
+         "daily_tasks": "Daily tasks",
+         "multiplayer_tasks": "Multiplayer tasks",
+         "daily_tasks_description": "Daily tasks are tasks that you can do every day",
+         "multiplayer_tasks_description": "Multiplayer tasks are tasks that you can do with your friends",
+         "tasks_will_updated": "Tasks will updated in",
+         "track_daily_tasks": "Track daily tasks",
+         "catch": "Catch",
+         "and_receive_a_reward": "and receive a reward"
+      },
+      "descriptions": {
+         "fishermans_description": "Bob the president of Fisherman's alliance",
+         "leaderboard_description": "See the best players in the world."
+      },
+      "general": {
+         "select": "Select",
+         "select_task": "Select Task",
+         "rank": "Rank",
+         "selected": "Selected",
+         "level_required": "Level Required",
+         "not_leader": "You are not leader",
+         "requirements": "REQUIRMENTS",
+         "new": "New",
+         "press": "Press",
+         "to_set_the_distance_to_drop_the_hook": "to set the distance to drop the hook",
+         "to_try_to_keep_the_fish_in_the_yellow_area": "to try to keep the fish in the red area",
+         "invite_request": "Invite request",
+         "invited_by": "Invited by",
+         "accept": "Accept",
+         "decline": "Decline",
+         "you_has_been_invited_to_fishing_party_as_new_sailor_crewmember": "You has been invited to fishing party, as new sailor Crewmember",
+         "rod_level": "Rod Level",
+         "start_fishing": "Start Fishing",
+         "start_fishing_key": "E",
+         "craft_rod": "Craft Rod",
+         "craft_rod_key": "G",
+         "soon": "Soon..."
+      },
+      "sell": {
+         "sell": "Sell",
+         "lucky_item": "Lucky Item"
+      },
+      "review_screen": {
+         "you_caught_a_fish": "You caught a fish",
+         "take_it": "Take It",
+         "let_them_go": "Let them go"
+      },
+      "rent_boat": {
+         "rent_boat": "Rent Boat",
+         "return_boat": "Return Boat"
+      },
+      "upgrade_menu": {
+         "upgrade_menu": "Upgrade Menu",
+         "upgrade_menu_description": "Upgrade your fishing rod",
+         "upgrade": "Upgrade",
+         "lvl": "LVL"
+      },
+      "craft_rod": {
+         "title": "Craft Rod",
+         "fishing_rod": "Fishing Rod",
+         "materials": "Materials",
+         "grip": "Grip",
+         "line": "Line",
+         "reel": "Reel",
+         "hook": "Hook"
+      }
+   },
+   "LUA": {
+      "actions": {
+         "open_fishing_menu": "Open Fishing Menu",
+         "open_upgrade_menu": "Open Upgrade Menu",
+         "open_rent_boat_menu": "Open Rent Boat Menu",
+         "collect_object": "Collect Object"
+      },
+      "notifications": {
+         "success": {
+            "rod_upgraded": "You have upgraded your %s to %s",
+            "boat_rented": "You have rented a boat",
+            "boat_returned": "You have returned the boat",
+            "joined_room": "You have joined the room",
+            "player_joined_room": "%s has joined the room",
+            "task_selected": "You have successfully chosen this task",
+            "oxygen_cylinder_opened": "Oxygen cylinder opened and ready to use",
+            "you_caught_a_fish": "You caught a %s!",
+            "you_started_fishing_on_the_boat": "You have started fishing on the boat. Go out to sea with a boat and start fishing.",
+            "you_used_anchor": "You have used the anchor"
+         },
+         "error": {
+            "not_enough_money": "You don't have enough money",
+            "not_enough_items": "You don't have enough items",
+            "no_rod": "You don't have a fishing rod",
+            "player_not_found": "Player not found",
+            "player_already_in_room": "Player already in room",
+            "player_already_invited": "Player %s already invited",
+            "you_cant_invite_yourself": "You can't invite yourself",
+            "insufficient_level": "%s has insufficient level to do this task",
+            "insufficient_members": "%s does not meet the minimum number of players to perform this task",
+            "task_not_found": "Task not found",
+            "task_already_completed": "This task is already completed",
+            "you_dont_have_enough_level": "You don't have enough level to do this task",
+            "diving_gear_required": "You need to equip your diving gear first.",
+            "diving_cloth_required": "You need to wear your diving cloth first.",
+            "oxygen_tank_full": "Oxygen tank is already full",
+            "oxygen_level_low": "Oxygen level is low, refill the cylinder",
+            "upgrade_failed": "Upgrade failed",
+            "boat_not_found": "Boat not found",
+            "player_too_far": "Player is too far",
+            "you_cant_while_swimming": "You can't do this while swimming",
+            "you_cant_while_in_vehicle": "You can't do this while in a vehicle",
+            "you_cant_fish_in_this_location": "You can't fish in this location",
+            "you_cant_fish_in_vehicle_or_swimming": "You can't fish in a vehicle or while swimming",
+            "you_need_to_use_a_bait": "You need to use a bait",
+            "attach_rod_parts_to_catch_fish": "Attach the rod parts to catch fish",
+            "you_cant_kick_while_task_is_started": "You can't kick while the task is started",
+            "you_failed_to_catch_the_fish": "You missed the fish",
+            "you_are_already_using_a_rod": "You already have a fishing rod",
+            "you_are_already_fishing": "You've already started fishing.",
+            "too_far_from_net": "You cannot catch fish by moving away from the fishing net."
+         },
+         "info": {
+            "player_left_room": "%s has left the room",
+            "left_room": "You have left the room",
+            "declined_invite": "You have declined the invite",
+            "player_declined_invite": "%s has declined the invite",
+            "kicked_from_room": "You have been kicked from the room",
+            "player_kicked_from_room": "%s has been kicked from the room",
+            "underwater_task_started": "Your underwater mission has begun now rent a boat and head to the dive site",
+            "move_closer_to_area": "Move a little closer to the area and drop anchor",
+            "task_completed": "You have completed the task",
+            "press_del_to_stop_fishing": "Press [DEL] to stop fishing"
+         }
+      },
+      "logs": {
+         "buy_item_log_message": "Player %s (ID: **%s** | CID: **%s**) purchased ` %s ` products and paid a total of **$%s**.",
+         "sell_item_log_message": "Player %s (ID: **%s** | CID: **%s**) sold ` %s ` products and received a total of **$%s**."
+      }
+   }
+}

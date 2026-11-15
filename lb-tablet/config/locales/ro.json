@@ -1,0 +1,697 @@
+{
+    "LABEL": "Romana",
+    "SEARCH": "Cauta",
+    "CANCEL": "Anuleaza",
+    "NOW": "acum",
+    "D": "z",
+    "H": "o",
+    "M": "m",
+    "S": "s",
+    "APP_NAMES": {
+        "Police": "Politie",
+        "Ambulance": "Ambulanta",
+        "Registration": "Inregistrare",
+        "Notes": "Note",
+        "Browser": "Browser",
+        "Settings": "Setari",
+        "Photos": "Fotografii",
+        "Camera": "Camera",
+        "Calculator": "Calculator",
+        "Apps": "Aplicatii",
+        "Clock": "Ceas",
+        "Maps": "Harti",
+        "Mail": "Mail",
+        "Services": "Servicii",
+        "VoiceMemo": "Memo Vocal"
+    },
+    "APPS": {
+        "SETTINGS": {
+            "TITLE": "Setari",
+            "BACK": "Inapoi",
+            "DONE": "Gata",
+            "EDIT": "Editeaza",
+            "AIRPLANE_MODE": "Mod Avion",
+            "AIRPLANE_MODE_DESCRIPTION": "Dezactiveaza apelurile, datele celulare etc.",
+            "STREAMER_MODE": "Mod Streamer",
+            "STREAMER_MODE_DESCRIPTION": "Estompeaza informatiile sensibile",
+            "GENERAL": "General",
+            "GENERAL_DESCRIPTION": "Setari generale pentru tableta ta",
+            "ABOUT": "Despre",
+            "NAME": "Nume",
+            "VERSION": "Versiune",
+            "MODEL_NAME": "Nume Model",
+            "SERIAL_NUMBER": "Numar Serial",
+            "DEVELOPED_BY": "Dezvoltat de",
+            "PURCHASE_AT": "Cumpara de la",
+            "SONGS": "Cantece",
+            "VIDEOS": "Videoclipuri",
+            "PHOTOS": "Fotografii",
+            "APPLICATIONS": "Aplicatii",
+            "CAPACITY": "Capacitate",
+            "AVAILABLE": "Disponibil",
+            "SOFTWARE_UPDATE": "Actualizare Software",
+            "AUTOMATIC_UPDATES": "Actualizari Automate",
+            "DATE_TIME": "Data si Ora",
+            "24_HOUR_TIME": "Format 24 Ore",
+            "SET_AUTOMATICALLY": "Seteaza Automat",
+            "TIME_ZONE": "Fus Orar",
+            "LANGUAGE_REGION": "Limba si Regiune",
+            "LANGUAGE": "Limba",
+            "TEMPERATURE": "Temperatura",
+            "CELCIUS": "Celsius",
+            "FAHRENHEIT": "Fahrenheit",
+            "BATTERY": "Baterie",
+            "BATTERY_DESCRIPTION": "Vezi durata de viata si utilizarea bateriei",
+            "SOUND_HAPTICS": "Sunet si Vibratii",
+            "SOUND_HAPTICS_DESCRIPTION": "Schimba sunetele si vibratiile",
+            "SOUND_HAPTICS_PATTERNS": "Tipare sunet si vibratii",
+            "RINGTONE": "Ton de Apel",
+            "RINGTONE_VOLUME": "Volum Ton de Apel",
+            "TEXT_TONE": "Ton de Mesaj",
+            "DEFAULT": "Implicit",
+            "PHONE_STORAGE": "Stocare Tableta",
+            "STORAGE": "Stocare",
+            "USED": "Folosit",
+            "OF": "din",
+            "DISPLAY_BRIGHTNESS": "Ecran si Luminozitate",
+            "DISPLAY_BRIGHTNESS_DESCRIPTION": "Ajusteaza ecranul si luminozitatea",
+            "DARK": "Intunecat",
+            "LIGHT": "Luminos",
+            "APPEARANCE": "Aspect",
+            "AUTOMATIC": "Automat",
+            "BRIGHTNESS": "Luminozitate",
+            "FRAME_COLOR": "Culoare Rama",
+            "TABLET_SCALE": "Scara Tableta",
+            "WALLPAPER": "Tapet",
+            "WALLPAPER_DESCRIPTION": "Schimba tapetul si alte setari de fundal",
+            "WALLPAPERS": "Tapete",
+            "CHOOSE_NEW_WALLPAPER": "Alege un Tapet Nou",
+            "NOTIFICATIONS": "Notificari",
+            "NOTIFICATIONS_DESCRIPTION": "Alege ce aplicatii pot trimite notificari",
+            "ALLOW_NOTIFICATIONS": "Permite Notificari",
+            "SOUNDS": "Sunete",
+            "CLOUD_BACKUP": "Backup in Cloud",
+            "YOUR_PROFILE": "Profilul Tau",
+            "SUCCESS": "Succes",
+            "SUCCESS_TEXT": "Tableta se va reporni in 5 secunde...",
+            "OK": "OK",
+            "ON": "Pornit",
+            "OFF": "Oprit",
+            "RESET_POPUP": {
+                "TITLE": "Reseteaza Tableta",
+                "TEXT": "Esti sigur ca vrei sa resetezi tableta? [ACEASTA VA STERGE TOT]",
+                "CANCEL": "Anuleaza",
+                "CONFIRM": "Reseteaza"
+            },
+            "UP_TO_DATE": "Tableta ta este la zi",
+            "BLUR_HOMESCREEN": "Estompeaza Ecranul Principal"
+        },
+        "NOTES": {
+            "TITLE": "Note",
+            "SEARCH_PLACEHOLDER": "Cauta",
+            "FOOTER": "{amount} Note",
+            "NEW_NOTE": "Nota Noua",
+            "LAST_EDITED": "Ultima Editare: {date}",
+            "DELETE_TITLE": "Sterge {title}",
+            "DELETE_TEXT": "Esti sigur ca vrei sa stergi '{title}'?",
+            "BUTTON_CANCEL": "Anuleaza",
+            "BUTTON_DELETE": "Sterge"
+        },
+        "CLOCK": {
+            "WORLDCLOCK": {
+                "TITLE": "Ceas Global",
+                "TODAY": "Astazi",
+                "TOMORROW": "Maine",
+                "YESTERDAY": "Ieri",
+                "LOCAL_TIME": "Ora Locala",
+                "HRS": "{time} ore"
+            },
+            "ALARM": {
+                "TITLE": "Alarma",
+                "ADD": "Adauga Alarma",
+                "CANCEL": "Anuleaza",
+                "EDIT": "Editeaza",
+                "DONE": "Gata",
+                "SAVE": "Salveaza",
+                "LABEL": "Eticheta",
+                "SOUND": "Sunet",
+                "SNOOZE": "Amânare",
+                "DELETE_TITLE": "Sterge Alarma",
+                "DELETE_TEXT": "Esti sigur ca vrei sa stergi aceasta alarma?",
+                "BUTTON_CANCEL": "Anuleaza",
+                "BUTTON_DELETE": "Sterge",
+                "ALARMS": "Alarme",
+                "NEW_ALARM": "Alarma Noua",
+                "EDIT_ALARM": "Editeaza Alarma"
+            },
+            "STOPWATCH": {
+                "TITLE": "Cronometru",
+                "START": "Start",
+                "STOP": "Stop",
+                "RESET": "Reseteaza",
+                "LAP": "Tura",
+                "TIME": "Timp",
+                "TOTAL": "Total",
+                "NO_LAPS": "Fara Ture"
+            },
+            "TIMER": {
+                "TITLE": "Temporizator",
+                "START": "Start",
+                "STOP": "Stop",
+                "CANCEL": "Anuleaza",
+                "HOURS": "Ore",
+                "MINUTES": "Minute",
+                "SECONDS": "Secunde",
+                "NO_RECENTS": "Fara Recente"
+            },
+            "ALERT": {
+                "STOP": "Stop",
+                "RESTART": "Restart"
+            }
+        },
+        "CAMERA": {
+            "VIDEO": "Video",
+            "PHOTO": "Foto",
+            "LANDSCAPE": "Peisaj",
+            "UPLOADING": "Se incarca"
+        },
+        "APPSTORE": {
+            "TITLE": "Aplicatii",
+            "SEARCH": "Cauta",
+            "GET": "Descarca",
+            "OPEN": "Deschide",
+            "TODAY": "Astazi",
+            "POPULAR_APPS": "Aplicatii Populare",
+            "GAMES": "Jocuri",
+            "APPS": "Aplicatii",
+            "WHAT_WE_PLAYING": "Ce jucam noi",
+            "INFORMATION": "Informatii",
+            "PROVIDER": "Furnizor",
+            "SIZE": "Dimensiune",
+            "COMPATIBILITY": "Compatibilitate",
+            "IN_APP_PURCHASES": "Achizitii In-App",
+            "WORKS_WITH_PHONE": "Functioneaza cu aceasta tableta",
+            "NO": "Nu",
+            "YES": "Da",
+            "PURCHASE_APP_POPUP": {
+                "TITLE": "Cumpara Aplicatia",
+                "DESCRIPTION": "Vrei sa cumperi {app} pentru {price}?",
+                "CANCEL": "Anuleaza",
+                "PROCEED": "Cumpara"
+            }
+        },
+        "PHOTOS": {
+            "TITLE": "Fotografii",
+            "SELECT": "Selecteaza",
+            "CANCEL": "Anuleaza",
+            "EDIT": "Editeaza",
+            "DONE": "Gata",
+            "DELETE": "Sterge",
+            "SELECT_ITEMS": "Selecteaza Elemente",
+            "SELECTED_COUNT": "{count} Elemente selectate",
+            "PHOTOS": "Fotografii",
+            "ALBUMS": "Albume",
+            "LIBRARY": "Biblioteca",
+            "GALLERY": "Galerie",
+            "MY_ALBUMS": "Albumele Mele",
+            "MEDIA_TYPES": "Tipuri Media",
+            "NEW_ALBUM_POPUP": {
+                "TITLE": "Album Nou",
+                "DESCRIPTION": "Introdu un nume pentru acest album",
+                "PLACEHOLDER": "Titlu",
+                "CANCEL": "Anuleaza",
+                "PROCEED": "Salveaza"
+            },
+            "REMOVE_ALBUM": {
+                "TITLE": "Sterge \"{name}\"",
+                "DESCRIPTION": "Esti sigur ca vrei sa stergi albumul \"{name}\"? Fotografiile nu vor fi sterse",
+                "CANCEL": "Anuleaza",
+                "PROCEED": "Sterge"
+            },
+            "RENAME_ALBUM_POPUP": {
+                "TITLE": "Redenumeste Albumul",
+                "DESCRIPTION": "Introdu un nume nou pentru acest album",
+                "PLACEHOLDER": "Nume nou album",
+                "CANCEL": "Anuleaza",
+                "PROCEED": "Continua"
+            },
+            "DELETE_IMAGE_POPUP": {
+                "TITLE": "Sterge Imaginea",
+                "DESCRIPTION": "Esti sigur ca vrei sa stergi aceasta imagine?",
+                "CANCEL": "Anuleaza",
+                "PROCEED": "Sterge"
+            },
+            "IMPORT_IMAGE_POPUP": {
+                "TITLE": "Importa in Album",
+                "DESCRIPTION": "Importa o imagine in acest album",
+                "CANCEL": "Anuleaza",
+                "PROCEED": "Importa",
+                "PLACEHOLDER": "URL Imagine"
+            },
+            "NO_PHOTOS": "Fara Fotografii sau Videoclipuri",
+            "NO_PHOTOS_INSTRUCTIONS": "Poti face fotografii si videoclipuri folosind camera",
+            "PHOTO_COUNT": "{amount} Fotografii",
+            "VIDEO_COUNT": "{amount} Videoclipuri",
+            "DELETE_CONTEXT_TITLE": "Vrei sa stergi {type} sau sa le stergi din acest album",
+            "THESE_PHOTOS": "aceste fotografii",
+            "THIS_PHOTO": "aceasta fotografie",
+            "REMOVE_FROM_ALBUM": "Sterge din Album",
+            "ADD_TO_ALBUM": "Adauga in Album",
+            "ADD_TO_FAVOURITES": "Adauga la Favorite",
+            "REMOVE_FROM_FAVOURITES": "Sterge din Favorite",
+            "VIDEOS": "Videoclipuri",
+            "SELFIES": "Selfie-uri",
+            "SCREENSHOTS": "Capturi de ecran",
+            "IMPORTS": "Importuri",
+            "DUPLICATES": "Duplicate",
+            "YEARS": "Ani",
+            "MONTHS": "Luni",
+            "DAYS": "Zile",
+            "ALL_PHOTOS": "Toate Fotografiile",
+            "FAVOURITES": "Favorite",
+            "RECENTS": "Recente"
+        },
+        "MAIL": {
+            "TITLE": "Mail",
+            "YOU": "Tu",
+            "UPDATED_NOW": "Actualizat acum",
+            "NEW_MESSAGE": "Mesaj Nou",
+            "INBOX": "Inbox",
+            "TO": "Catre",
+            "FROM": "De la",
+            "SUBJECT": "Subiect",
+            "MESSAGE": "Mesaj",
+            "CANCEL": "Anuleaza",
+            "SEND": "Trimite",
+            "EMAIL": "Email",
+            "EMAIL_INVALID": "Adresa de email invalida",
+            "EMAIL_EXISTS": "Email-ul exista deja",
+            "PASSWORD": "Parola",
+            "WRONG_PASSWORD": "Parola gresita",
+            "LOGIN": "Login",
+            "NO_EMAIL": "Nu ai o adresa de email?",
+            "CREATE_ONE": "Creeaza una",
+            "UNREAD": "Necitit",
+            "CREATE_MAIL": "Creeaza Email",
+            "ALREADY_HAVE": "Ai deja o adresa de email?",
+            "ADD_EMAIL": "Adauga Email",
+            "RE": "Re: {subject}",
+            "CHANGE_ACCOUNT": "Schimba Contul",
+            "CHANGE_PASSWORD": "Schimba Parola",
+            "DELETE_ACCOUNT": "Sterge Contul",
+            "SIGN_OUT_POPUP": {
+                "TITLE": "Deconectare",
+                "DESCRIPTION": "Esti sigur ca vrei sa te deconectezi?",
+                "CANCEL": "Anuleaza",
+                "PROCEED": "Continua"
+            },
+            "DELETE_MAIL_POPUP": {
+                "TITLE": "Sterge Email",
+                "DESCRIPTION": "Esti sigur ca vrei sa stergi acest email?",
+                "CANCEL": "Anuleaza",
+                "DELETE": "Sterge"
+            }
+        },
+        "VOICEMEMO": {
+            "TITLE": "Memo Vocal",
+            "VOICE_RECORDINGS": "Inregistrari Vocale",
+            "SEARCH_RECORDINGS": "Cauta inregistrari",
+            "DEFAULT_NAME": "Inregistrare Noua",
+            "DELETE_POPUP": {
+                "TITLE": "Sterge memo vocal",
+                "DESCRIPTION": "Esti sigur ca vrei sa stergi acest memo vocal?",
+                "CANCEL": "Anuleaza",
+                "PROCEED": "Continua"
+            },
+            "NO_MICROPHONE_POPUP": {
+                "TITLE": "Fara Microfon",
+                "DESCRIPTION": "Nu avem acces la microfonul tau, asigura-te ca ai unul conectat si accepta popup-ul din partea de sus-dreapta a ecranului",
+                "OK": "OK"
+            },
+            "EMPTY_RECORDING_POPUP": {
+                "TITLE": "Inregistrare Goala",
+                "DESCRIPTION": "Nu poti stoca o inregistrare fara audio",
+                "OK": "OK"
+            }
+        },
+        "SERVICES": {
+            "ACTIONS": "Actiuni",
+            "COMPANIES": "Companii",
+            "MESSAGES": "Mesaje",
+            "SETTINGS": "Setari",
+            "CLOSED": "Inchis",
+            "YOUR_MESSAGES": "Mesajele Tale",
+            "JOB_MESSAGES": "Mesaje de Serviciu",
+            "DUTY": "Serviciu",
+            "DUTY_DESCRIPTION": "Comuta starea ta de serviciu",
+            "GO_ON_DUTY": "Intra in Serviciu",
+            "GO_OFF_DUTY": "Iesi din Serviciu",
+            "JOB_CALLS": "Apeluri de Serviciu",
+            "JOB_CALLS_DESCRIPTION": "{toggle} primirea de apeluri de la clienti.",
+            "ENABLE": "Activeaza",
+            "DISABLE": "Dezactiveaza",
+            "DISABLE_CALLS": "Dezactiveaza Apelurile",
+            "ENABLE_CALLS": "Activeaza Apelurile",
+            "BALANCE": "Balanta",
+            "CURRENT_BALANCE": "Balanta curenta a companiei",
+            "MANAGE_EMPLOYEES": "Gestioneaza Angajatii",
+            "HIRE": "Angajeaza",
+            "SET_GRADE": "Seteaza Gradul",
+            "UNEMPLOYED": "Esti somer",
+            "ALL": "Toti",
+            "AVAILABLE": "Disponibil",
+            "SEARCH_EMPLOYEES": "Cauta Angajati",
+            "PERSONAL": "Personal",
+            "JOB": "Serviciu",
+            "PLACEHOLDER": "Mesaj Text",
+            "NOT_DELIVERED": "Nelivrat",
+            "SENT_LOCATION": "A trimis locatia, apasa pentru a deschide in Harti",
+            "SENT_LOCATION_SHORT": "A trimis locatia",
+            "SEND_LOCATION_POPUP": {
+                "TITLE": "Trimite Locatia",
+                "TEXT": "Vrei sa trimiti locatia ta?",
+                "CANCEL": "Anuleaza",
+                "SEND": "Trimite"
+            },
+            "DELETE_CONVERSATION": {
+                "TITLE": "Sterge conversatia",
+                "DESCRIPTION": "Esti sigur ca vrei sa stergi aceasta conversatie?",
+                "CANCEL": "Anuleaza",
+                "DELETE": "Sterge"
+            },
+            "DEPOSIT_POPUP": {
+                "TITLE": "Depozit",
+                "DESCRIPTION": "Depoziteaza bani in contul companiei",
+                "AMOUNT": "Suma",
+                "CANCEL": "Anuleaza",
+                "PROCEED": "Continua"
+            },
+            "WITHDRAW_POPUP": {
+                "TITLE": "Retrage",
+                "DESCRIPTION": "Retrage bani din contul companiei",
+                "NOT_ENOUGH_MONEY": "Nu sunt destui bani in contul companiei",
+                "AMOUNT": "Suma",
+                "CANCEL": "Anuleaza",
+                "PROCEED": "Continua"
+            },
+            "HIRE_POPUP": {
+                "TITLE": "Angajeaza",
+                "DESCRIPTION": "Angajeaza un angajat nou",
+                "PLACEHOLDER": "ID",
+                "CANCEL": "Anuleaza",
+                "PROCEED": "Continua"
+            },
+            "FIRE_POPUP": {
+                "TITLE": "Concediaza",
+                "DESCRIPTION": "Esti sigur ca vrei sa-l concediezi pe {name}?",
+                "PLACEHOLDER": "ID",
+                "CANCEL": "Anuleaza",
+                "PROCEED": "Continua"
+            }
+        },
+        "MDT": {},
+        "BROWSER": {
+            "TITLE": "Browser",
+            "SEARCH_PLACEHOLDER": "Cauta sau introdu URL",
+            "FAILED_LOAD_PAGE": "Nu s-a putut incarca pagina, posibil sa nu suporte iframing?"
+        },
+        "REGISTRATION": {
+            "TITLE": "Inregistrare",
+            "SELECT_CHARACTER": "Selecteaza Personaj",
+            "PLEASE_SELECT_CHARACTER": "Te rugam sa selectezi un personaj",
+            "CREATE_NEW": "Creeaza Nou",
+            "EDIT": "Editeaza",
+            "SAVE": "Salveaza",
+            "DELETE": "Sterge",
+            "CANCEL": "Anuleaza",
+            "DELETE_CHARACTER": "Sterge Personaj",
+            "DESCRIPTION": "Descriere",
+            "DESCRIPTION_PLACEHOLDER": "Aceasta este o descriere...",
+            "ADD": "Adauga",
+            "CHARACTER_INFO": "Informatii Personaj",
+            "REMOVE_AVATAR": "Sterge Avatar",
+            "FIRSTNAME": "Prenume",
+            "LASTNAME": "Nume",
+            "DOB": "Data Nasterii",
+            "PHONE_NUMBER": "Numar de Telefon",
+            "GENDER": "Sex",
+            "MALE": "Masculin",
+            "FEMALE": "Feminin",
+            "JOB": "Job",
+            "HEIGHT": "Inaltime",
+            "FORMATTED_HEIGHT": "{height}cm",
+            "VEHICLES": "Vehicule",
+            "VEHICLE": "Vehicul",
+            "REMOVE_PICTURE": "Sterge Imagine",
+            "SEARCH_VEHICLES": "Cauta Vehicule",
+            "MODEL": "Model",
+            "PLATE": "Numar de Inmatriculare",
+            "COLOR": "Culoare",
+            "CREATE": "Creeaza",
+            "DELETE_VEHICLE": "Sterge Vehicul",
+            "DELETE_VEHICLE_POPUP": {
+                "TITLE": "Sterge Vehicul",
+                "DESCRIPTION": "Esti sigur ca vrei sa stergi acest vehicul?"
+            },
+            "LICENSES": "Licente",
+            "ADD_LICENSE": "Adauga Licenta",
+            "DELETE_LICENSE_POPUP": {
+                "TITLE": "Sterge Licenta",
+                "DESCRIPTION": "Esti sigur ca vrei sa stergi aceasta licenta?"
+            },
+            "PROPERTIES": "Proprietati",
+            "ADD_PROPERTY_POPUP": {
+                "TITLE": "Proprietate Noua",
+                "DESCRIPTION": "Creeaza o proprietate noua",
+                "LABEL": "Eticheta Proprietate",
+                "ADDRESS": "Adresa Proprietate"
+            },
+            "DELETE_PROPERTY_POPUP": {
+                "TITLE": "Sterge Proprietate",
+                "DESCRIPTION": "Esti sigur ca vrei sa stergi aceasta proprietate?"
+            },
+            "ERROR": {
+                "TITLE": "Eroare",
+                "MISSING_FIELDS": "Iti lipsesc urmatoarele campuri: {fields}",
+                "OK": "OK"
+            }
+        },
+        "MAPS": {
+            "GO": "Du-te"
+        }
+    },
+    "COMPONENTS": {
+        "CONTEXT_MENU": {
+            "CANCEL": "Anuleaza"
+        },
+        "IMAGE": {
+            "SAVE_TO_GALLERY": "Salveaza in Galerie"
+        },
+        "GALLERY": {
+            "CANCEL": "Anuleaza",
+            "EXTERNAL_URL": "URL Extern",
+            "EXTERNAL_URL_BLACKLISTED": "Acest URL este pe lista neagra",
+            "NO_IMAGES": "Nicio imagine"
+        },
+        "NOTIFICATIONS": {
+            "SENT_PHOTO": "A trimis o fotografie",
+            "SENT_GIF": "A trimis un GIF",
+            "NOW": "acum"
+        },
+        "SHARE": {
+            "COPY_PHOTO": "Copiaza Fotografie",
+            "COPY_VIDEO": "Copiaza Video",
+            "USE_WALLPAPER": "Foloseste ca Fundal",
+            "COPY_NUMBER": "Copiaza Numar",
+            "COPY_LINK": "Copiaza Link",
+            "AIRDROP_SENT": "Trimis",
+            "AIRDROP_ACCEPTED": "Acceptat",
+            "AIRDROP_DECLINED": "Refuzat",
+            "AIRDROP_NO_USERS": "Niciun telefon in apropiere",
+            "WALLPAPER_POPUP": {
+                "TITLE": "Foloseste ca Fundal",
+                "TEXT": "Esti sigur ca vrei sa setezi aceasta imagine ca fundal?",
+                "CANCEL": "Anuleaza",
+                "PROCEED": "Continua"
+            },
+            "COPY_POPUP": {
+                "TITLE": "Succes",
+                "DESCRIPTION": "Copiat cu succes in clipboard",
+                "OK": "OK"
+            }
+        },
+        "AIRDROP": {
+            "TITLE": "AirShare",
+            "TEXT": "{sender} vrea sa trimita un {type}",
+            "VIDEO": "video",
+            "PHOTO": "fotografie",
+            "CONTACT": "contact",
+            "LOCATION": "locatie",
+            "NOTE": "nota",
+            "VOICEMEMO": "inregistrare vocala",
+            "PLAYLIST": "playlist",
+            "DECLINE": "Refuza",
+            "ACCEPT": "Accepta"
+        },
+        "BATTERY": {
+            "LOW_BATTERY": "Baterie Scazuta",
+            "BATTERY_REMAINING": "{percent}% baterie ramasa",
+            "LOW_POWER_MODE": "Mod Economisire Energie",
+            "CLOSE": "Inchide"
+        },
+        "COLOR_PICKER": {
+            "COLOR": "Culoare"
+        }
+    },
+    "SETUP": {
+        "HELLO": "Salut",
+        "SELECT_LANGUAGE": "Selecteaza limba",
+        "NEXT": "Apasa pentru a deschide",
+        "APPEARANCE": "Tema",
+        "APPEARANCE_TEXT": "Selecteaza o tema inchisa sau deschisa pentru dispozitivul tau",
+        "CONTINUE": "Continua",
+        "WELCOME_TO": "Bun venit la",
+        "CLICK": "Apasa pentru a incepe"
+    },
+    "HOMESCREEN": {
+        "DONE": "Gata",
+        "CLOSE_ALL": "Inchide Tot",
+        "REMOVE_APP_POPUP": {
+            "TITLE": "Stergi '{app}'?",
+            "DESCRIPTION": "Stergerea acestei aplicatii NU va sterge datele. Aplicatia poate fi reinstalata ulterior din App store.",
+            "CANCEL": "Anuleaza",
+            "PROCEED": "Sterge"
+        }
+    },
+    "LOCKSCREEN": {
+        "DELETE": "Sterge",
+        "FONT_AND_COLOR": "Font si Culoare"
+    },
+    "MISC": {
+        "GENDERS": {
+            "MALE": "Barbat",
+            "FEMALE": "Femeie"
+        },
+        "AIRPLANE_MODE_POPUP": {
+            "TITLE": "Eroare",
+            "DESCRIPTION": "Incerci sa efectuezi o actiune care necesita acces la internet, dezactiveaza modul avion pentru a continua.",
+            "OK": "OK"
+        }
+    },
+    "BACKEND": {
+        "CAMERA": {
+            "TAKE_PHOTO": "{key} Captureaza",
+            "FLIP_CAMERA": "{key} Schimba Camera",
+            "TOGGLE_FLASH": "{key} Flash",
+            "TOGGLE_CURSOR": "{key} Cursor",
+            "CHANGE_MODE": "{key} {key2} Mod",
+            "ROLL": "{key} {key2} Rulare",
+            "FREEZE": "{key} Inghata",
+            "UNFREEZE": "{key} Dezgheata",
+            "TOGGLE_TIP": "{key} Ascunde"
+        },
+        "SERVICES": {
+            "NEW_MESSAGE": "Mesaj Nou",
+            "ANONYMOUS": "Anonim"
+        },
+        "MISC": {
+            "X_TABLET": "Tableta lui {firstname}"
+        },
+        "MAIL": {
+            "AUTOMATIC_PASSWORD": {
+                "SENDER": "Sistem",
+                "SUBJECT": "Parola Ta",
+                "MESSAGE": "Salut,\n\nAdresa ta de email automata este {address} si parola ta este {password}"
+            }
+        },
+        "LOGS": {
+            "TOOK_PHOTO": "A facut o fotografie",
+            "TOOK_VIDEO": "A facut un video",
+            "NEW_DISPATCH": "Dispecerat Nou: {title}"
+        },
+        "BASE_DISPATCH": {
+            "VEHICLE_CLASSES": {
+                "0": "compact",
+                "1": "sedan",
+                "2": "SUV",
+                "3": "coupe",
+                "4": "muscle car",
+                "5": "sports classic",
+                "6": "sports car",
+                "7": "supercar",
+                "8": "motorcycle",
+                "9": "off-road vehicle",
+                "10": "industrial vehicle",
+                "11": "utility vehicle",
+                "12": "van",
+                "13": "bicycle",
+                "14": "boat",
+                "15": "helicopter",
+                "16": "plane",
+                "17": "service vehicle",
+                "18": "emergency vehicle",
+                "19": "military vehicle",
+                "20": "commercial vehicle",
+                "21": "train",
+                "22": "open-wheel car"
+            },
+            "VEHICLE_DATA": {
+                "BODY_TYPE": "Tip Caroserie",
+                "MANUFACTURER": "Producator",
+                "MODEL": "Model",
+                "COLOR": "Culoare",
+                "PLATE": "Numar de Inmatriculare"
+            },
+            "VEHICLE_THEFT": {
+                "CODE": "10-31",
+                "TITLE": "Jaf Vehicul - {plate}",
+                "DESCRIPTION": "Un/O {gender_lower} a fost vazut furand un {class} {manufacturer} {model} {color_lower} cu numarul de inmatriculare {plate}."
+            },
+            "VEHICLE_JACKING": {
+                "CODE": "10-31",
+                "TITLE": "Jaf Auto - {plate}",
+                "DESCRIPTION": "Un/O {gender_lower} a fost vazut furand un {class} {manufacturer} {model} {color_lower} cu numarul de inmatriculare {plate}."
+            },
+            "WEAPON_TYPES": {
+                "DIGISCANNER": "Digiscanner",
+                "FIREEXTINGUISHER": "Extintor",
+                "HACKINGDEVICE": "Device de Hacking",
+                "HEAVY": "Mare",
+                "MELEE": "Arma Alba",
+                "METALDETECTOR": "Detector de Metal",
+                "MG": "Machine Gun",
+                "NIGHTVISION": "Night Vision",
+                "PARACHUTE": "Parasuta",
+                "PETROLCAN": "Canistra",
+                "PISTOL": "Pistol",
+                "RIFLE": "Mitraliera",
+                "SHOTGUN": "Shotgun",
+                "SMG": "SMG",
+                "SNIPER": "Sniper",
+                "STUNGUN": "Stun Gun",
+                "THROWN": "Thrown",
+                "TRANQILIZER": "Tranquilizer",
+                "UNARMED": "Neinarmat",
+                "UNKNOWN": "Firearm"
+            },
+            "GUNSHOT": {
+                "CODE": "10-31",
+                "TITLE": "Focuri de Arma - {location}",
+                "DESCRIPTION": "Un/O {gender_lower} a fost vazut tragand  dintr-o arma de tip {weapon_type_lower} in zona {location}."
+            },
+            "EXPLOSION": {
+                "TITLE": "Explozie",
+                "DESCRIPTION": "O explozie a fost auzita in zona {location}.",
+                "CODE": "10-31"
+            },
+            "ARMED": {
+                "TITLE": "{gender} inarmat",
+                "DESCRIPTION": "Un/O {gender_lower} a fost vazut cu o arma de tip {weapon_type_lower} in zona {location}.",
+                "CODE": "10-31"
+            }
+        },
+        "MDT": {},
+        "MDT_NOTIFICATIONS": {}
+    },
+    "MDT": {}
+}

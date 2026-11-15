@@ -1,0 +1,53 @@
+{
+    "error": {
+        "bled_out": "Kan kaybından hayatını kaybettin..."
+    },
+    "success": {
+        "wounds_healed": "Yaraların tedavi edildi!"
+    },
+    "info": {
+        "self_death": "Kendisi veya bir NPC",
+        "wep_unknown": "Bilinmiyor",
+        "status": "Durum Kontrolü",
+        "healthy": "Tamamen sağlıklısın!",
+        "pain_message": "%s bölgen %s hissediyor",
+        "many_places": "Vücudunun birçok yerinde ağrı hissediyorsun...",
+        "bleed_alert": "%s durumdasın",
+        "revive_player_a": "Bir Oyuncuyu veya Kendini Canlandır (Sadece Admin)",
+        "player_id": "Oyuncu ID (boş bırakılabilir)",
+        "pain_level": "Kendinin veya Bir Oyuncunun Ağrı Seviyesini Ayarla (Sadece Admin)",
+        "kill": "Bir Oyuncuyu veya Kendini Öldür (Sadece Admin)",
+        "heal_player_a": "Bir Oyuncuyu veya Kendini İyileştir (Sadece Admin)"
+    },
+    "states": {
+        "irritated": "hafif ağrılı",
+        "quite_painful": "oldukça ağrılı",
+        "painful": "ağrılı",
+        "really_painful": "çok ağrılı",
+        "little_bleed": "hafif kanıyor...",
+        "bleed": "kanıyor...",
+        "lot_bleed": "çok fazla kanıyor...",
+        "big_bleed": "aşırı derecede kanıyor..."
+    },
+    "body": {
+        "head": "Baş",
+        "neck": "Boyun",
+        "spine": "Omurga",
+        "upper_body": "Üst Vücut",
+        "lower_body": "Alt Vücut",
+        "left_arm": "Sol Kol",
+        "left_hand": "Sol El",
+        "left_fingers": "Sol Parmaklar",
+        "left_leg": "Sol Bacak",
+        "left_foot": "Sol Ayak",
+        "right_arm": "Sağ Kol",
+        "right_hand": "Sağ El",
+        "right_fingers": "Sağ Parmaklar",
+        "right_leg": "Sağ Bacak",
+        "right_foot": "Sağ Ayak"
+    },
+    "logs": {
+        "death_log_title": "%s (%s) öldü",
+        "death_log_message": "%s, %s adlı kişiyi **%s** (%s) ile öldürdü"
+    }
+}

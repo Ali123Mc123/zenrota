@@ -1,0 +1,605 @@
+{
+    "LABEL": "العربية",
+    "SEARCH": "بحث",
+    "CANCEL": "إلغاء",
+    "NOW": "الآن",
+    "D": "ي",
+    "H": "س",
+    "M": "د",
+    "S": "ث",
+    "APP_NAMES": {
+        "Police": "الشرطة",
+        "Ambulance": "الإسعاف",
+        "Registration": "التسجيل",
+        "Notes": "الملاحظات",
+        "Browser": "المتصفح",
+        "Settings": "الإعدادات",
+        "Photos": "الصور",
+        "Camera": "الكاميرا",
+        "Calculator": "الآلة الحاسبة",
+        "Apps": "التطبيقات",
+        "Clock": "الساعة",
+        "Maps": "الخرائط",
+        "Mail": "البريد",
+        "Services": "الخدمات",
+        "VoiceMemo": "مذكرات صوتية"
+    },
+    "APPS": {
+        "SETTINGS": {
+            "TITLE": "الإعدادات",
+            "BACK": "رجوع",
+            "DONE": "تم",
+            "EDIT": "تعديل",
+            "AIRPLANE_MODE": "وضع الطيران",
+            "AIRPLANE_MODE_DESCRIPTION": "تعطيل المكالمات وبيانات الهاتف الخلوي وغيرها.",
+            "STREAMER_MODE": "وضع الستريمر",
+            "STREAMER_MODE_DESCRIPTION": "يشوش المعلومات الحساسة",
+            "GENERAL": "عام",
+            "GENERAL_DESCRIPTION": "الإعدادات العامة لجهازك اللوحي",
+            "ABOUT": "حول",
+            "NAME": "الاسم",
+            "VERSION": "الإصدار",
+            "MODEL_NAME": "اسم الطراز",
+            "SERIAL_NUMBER": "الرقم التسلسلي",
+            "DEVELOPED_BY": "تم التطوير بواسطة",
+            "PURCHASE_AT": "تم الشراء من",
+            "SONGS": "الأغاني",
+            "VIDEOS": "الفيديوهات",
+            "PHOTOS": "الصور",
+            "APPLICATIONS": "التطبيقات",
+            "CAPACITY": "السعة",
+            "AVAILABLE": "متاح",
+            "SOFTWARE_UPDATE": "تحديث البرنامج",
+            "AUTOMATIC_UPDATES": "التحديثات التلقائية",
+            "DATE_TIME": "التاريخ والوقت",
+            "24_HOUR_TIME": "وقت 24 ساعة",
+            "SET_AUTOMATICALLY": "تعيين تلقائيًا",
+            "TIME_ZONE": "المنطقة الزمنية",
+            "LANGUAGE_REGION": "اللغة والمنطقة",
+            "LANGUAGE": "اللغة",
+            "TEMPERATURE": "درجة الحرارة",
+            "CELCIUS": "سيلسيوس",
+            "FAHRENHEIT": "فهرنهايت",
+            "BATTERY": "البطارية",
+            "BATTERY_DESCRIPTION": "عرض عمر البطارية والاستخدام",
+            "SOUND_HAPTICS": "الصوت والاهتزازات",
+            "SOUND_HAPTICS_DESCRIPTION": "تغيير الأصوات والاهتزازات",
+            "SOUND_HAPTICS_PATTERNS": "أنماط الصوت والاهتزازات",
+            "RINGTONE": "نغمة الرنين",
+            "RINGTONE_VOLUME": "حجم نغمة الرنين",
+            "TEXT_TONE": "نغمة النص",
+            "DEFAULT": "افتراضي",
+            "PHONE_STORAGE": "تخزين الجهاز اللوحي",
+            "STORAGE": "التخزين",
+            "USED": "مستخدم",
+            "OF": "من",
+            "DISPLAY_BRIGHTNESS": "العرض والسطوع",
+            "DISPLAY_BRIGHTNESS_DESCRIPTION": "ضبط العرض والسطوع",
+            "DARK": "داكن",
+            "LIGHT": "فاتح",
+            "APPEARANCE": "المظهر",
+            "AUTOMATIC": "تلقائي",
+            "BRIGHTNESS": "السطوع",
+            "FRAME_COLOR": "لون الإطار",
+            "WALLPAPER": "خلفية الشاشة",
+            "WALLPAPER_DESCRIPTION": "تغيير خلفية الشاشة وإعدادات الخلفية الأخرى",
+            "WALLPAPERS": "خلفيات الشاشة",
+            "CHOOSE_NEW_WALLPAPER": "اختر خلفية شاشة جديدة",
+            "NOTIFICATIONS": "الإشعارات",
+            "NOTIFICATIONS_DESCRIPTION": "اختر التطبيقات التي يمكنها إرسال الإشعارات",
+            "ALLOW_NOTIFICATIONS": "السماح بالإشعارات",
+            "SOUNDS": "الأصوات",
+            "CLOUD_BACKUP": "النسخ الاحتياطي السحابي",
+            "YOUR_PROFILE": "ملفك الشخصي",
+            "SUCCESS": "نجاح",
+            "SUCCESS_TEXT": "سيتم إعادة تشغيل الجهاز اللوحي في 5 ثوانٍ...",
+            "OK": "حسنًا",
+            "ON": "تشغيل",
+            "OFF": "إيقاف",
+            "RESET_POPUP": {
+                "TITLE": "إعادة تعيين الجهاز اللوحي",
+                "TEXT": "هل أنت متأكد أنك تريد إعادة تعيين جهازك اللوحي؟ [سيتم حذف كل شيء]",
+                "CANCEL": "إلغاء",
+                "CONFIRM": "إعادة تعيين"
+            },
+            "UP_TO_DATE": "جهازك اللوحي محدث",
+            "BLUR_HOMESCREEN": "طمس شاشة الرئيسية"
+        },
+        "NOTES": {
+            "TITLE": "الملاحظات",
+            "SEARCH_PLACEHOLDER": "بحث",
+            "FOOTER": "{amount} ملاحظات",
+            "NEW_NOTE": "ملاحظة جديدة",
+            "LAST_EDITED": "آخر تعديل: {date}",
+            "DELETE_TITLE": "حذف {title}",
+            "DELETE_TEXT": "هل أنت متأكد أنك تريد حذف '{title}'؟",
+            "BUTTON_CANCEL": "إلغاء",
+            "BUTTON_DELETE": "حذف"
+        },
+        "CLOCK": {
+            "WORLDCLOCK": {
+                "TITLE": "ساعة العالم",
+                "TODAY": "اليوم",
+                "TOMORROW": "غدًا",
+                "YESTERDAY": "أمس",
+                "LOCAL_TIME": "الوقت المحلي",
+                "HRS": "{time} ساعة"
+            },
+            "ALARM": {
+                "TITLE": "المنبه",
+                "ADD": "إضافة منبه",
+                "CANCEL": "إلغاء",
+                "EDIT": "تعديل",
+                "DONE": "تم",
+                "SAVE": "حفظ",
+                "LABEL": "التسمية",
+                "SOUND": "الصوت",
+                "SNOOZE": "تأجيل",
+                "DELETE_TITLE": "حذف المنبه",
+                "DELETE_TEXT": "هل أنت متأكد أنك تريد حذف هذا المنبه؟",
+                "BUTTON_CANCEL": "إلغاء",
+                "BUTTON_DELETE": "حذف",
+                "ALARMS": "المنبهات",
+                "NEW_ALARM": "منبه جديد",
+                "EDIT_ALARM": "تعديل المنبه"
+            },
+            "STOPWATCH": {
+                "TITLE": "الموقت",
+                "START": "ابدأ",
+                "STOP": "أوقف",
+                "RESET": "إعادة ضبط",
+                "LAP": "لفة",
+                "TIME": "الوقت",
+                "TOTAL": "الإجمالي",
+                "NO_LAPS": "لا توجد لفات"
+            },
+            "TIMER": {
+                "TITLE": "المؤقت",
+                "START": "ابدأ",
+                "STOP": "أوقف",
+                "CANCEL": "إلغاء",
+                "HOURS": "ساعات",
+                "MINUTES": "دقائق",
+                "SECONDS": "ثوانٍ",
+                "NO_RECENTS": "لا يوجد حديث"
+            },
+            "ALERT": {
+                "STOP": "إيقاف",
+                "RESTART": "إعادة تشغيل"
+            }
+        },
+        "CAMERA": {
+            "VIDEO": "فيديو",
+            "PHOTO": "صورة",
+            "LANDSCAPE": "أفقي",
+            "UPLOADING": "جارٍ الرفع"
+        },
+        "APPSTORE": {
+            "TITLE": "التطبيقات",
+            "SEARCH": "بحث",
+            "GET": "احصل على",
+            "OPEN": "افتح",
+            "TODAY": "اليوم",
+            "POPULAR_APPS": "التطبيقات الشعبية",
+            "GAMES": "الألعاب",
+            "APPS": "التطبيقات",
+            "WHAT_WE_PLAYING": "ما نلعبه",
+            "INFORMATION": "معلومات",
+            "PROVIDER": "المزود",
+            "SIZE": "الحجم",
+            "COMPATIBILITY": "التوافق",
+            "IN_APP_PURCHASES": "مشتريات داخل التطبيق",
+            "WORKS_WITH_PHONE": "يعمل مع هذا الجهاز اللوحي",
+            "NO": "لا",
+            "YES": "نعم",
+            "PURCHASE_APP_POPUP": {
+                "TITLE": "شراء التطبيق",
+                "DESCRIPTION": "هل تريد شراء {app} مقابل {price}؟",
+                "CANCEL": "إلغاء",
+                "PROCEED": "شراء"
+            }
+        },
+        "PHOTOS": {
+            "TITLE": "الصور",
+            "SELECT": "تحديد",
+            "CANCEL": "إلغاء",
+            "EDIT": "تعديل",
+            "DONE": "تم",
+            "DELETE": "حذف",
+            "SELECT_ITEMS": "تحديد العناصر",
+            "SELECTED_COUNT": "{count} عناصر محددة",
+
+            "PHOTOS": "الصور",
+            "ALBUMS": "الألبومات",
+            "LIBRARY": "المكتبة",
+            "GALLERY": "المعرض",
+            "MY_ALBUMS": "ألبوماتي",
+            "MEDIA_TYPES": "أنواع الوسائط",
+            "NEW_ALBUM_POPUP": {
+                "TITLE": "ألبوم جديد",
+                "DESCRIPTION": "أدخل اسمًا لهذا الألبوم",
+                "PLACEHOLDER": "العنوان",
+                "CANCEL": "إلغاء",
+                "PROCEED": "حفظ"
+            },
+            "REMOVE_ALBUM": {
+                "TITLE": "إزالة \"{name}\"",
+                "DESCRIPTION": "هل أنت متأكد أنك تريد حذف ألبوم \"{name}\"؟ لن يتم حذف الصور",
+                "CANCEL": "إلغاء",
+                "PROCEED": "إزالة"
+            },
+            "RENAME_ALBUM_POPUP": {
+                "TITLE": "إعادة تسمية الألبوم",
+                "DESCRIPTION": "أدخل اسمًا جديدًا لهذا الألبوم",
+                "PLACEHOLDER": "اسم الألبوم الجديد",
+                "CANCEL": "إلغاء",
+                "PROCEED": "متابعة"
+            },
+            "DELETE_IMAGE_POPUP": {
+                "TITLE": "حذف الصورة",
+                "DESCRIPTION": "هل أنت متأكد أنك تريد حذف هذه الصورة؟",
+                "CANCEL": "إلغاء",
+                "PROCEED": "حذف"
+            },
+            "IMPORT_IMAGE_POPUP": {
+                "TITLE": "استيراد إلى الألبوم",
+                "DESCRIPTION": "استيراد صورة إلى هذا الألبوم",
+                "CANCEL": "إلغاء",
+                "PROCEED": "استيراد",
+                "PLACEHOLDER": "عنوان الصورة"
+            },
+            "NO_PHOTOS": "لا توجد صور أو فيديوهات",
+            "NO_PHOTOS_INSTRUCTIONS": "يمكنك التقاط الصور والفيديوهات باستخدام الكاميرا",
+            "PHOTO_COUNT": "{amount} صور",
+            "VIDEO_COUNT": "{amount} فيديوهات",
+            "DELETE_CONTEXT_TITLE": "هل تريد حذف {type} أو إزالتها من هذا الألبوم",
+            "THESE_PHOTOS": "هذه الصور",
+            "THIS_PHOTO": "هذه الصورة",
+            "REMOVE_FROM_ALBUM": "إزالة من الألبوم",
+            "ADD_TO_ALBUM": "إضافة إلى الألبوم",
+            "ADD_TO_FAVOURITES": "إضافة إلى المفضلة",
+            "REMOVE_FROM_FAVOURITES": "إزالة من المفضلة",
+            "VIDEOS": "فيديوهات",
+            "SELFIES": "سيلفي",
+            "SCREENSHOTS": "لقطات الشاشة",
+            "IMPORTS": "استيرادات",
+            "DUPLICATES": "مكررات",
+            "YEARS": "سنوات",
+            "MONTHS": "أشهر",
+            "DAYS": "أيام",
+            "ALL_PHOTOS": "كل الصور",
+            "FAVOURITES": "المفضلة",
+            "RECENTS": "الأخيرة"
+        },
+        "MAIL": {
+            "TITLE": "البريد",
+            "YOU": "أنت",
+            "UPDATED_NOW": "تم التحديث للتو",
+            "NEW_MESSAGE": "رسالة جديدة",
+            "INBOX": "الوارد",
+            "TO": "إلى",
+            "FROM": "من",
+            "SUBJECT": "الموضوع",
+            "MESSAGE": "الرسالة",
+            "CANCEL": "إلغاء",
+            "SEND": "إرسال",
+            "EMAIL": "البريد الإلكتروني",
+            "EMAIL_INVALID": "عنوان بريد إلكتروني غير صالح",
+            "EMAIL_EXISTS": "البريد الإلكتروني موجود بالفعل",
+            "PASSWORD": "كلمة المرور",
+            "WRONG_PASSWORD": "كلمة مرور خاطئة",
+            "LOGIN": "تسجيل الدخول",
+            "NO_EMAIL": "لا تملك عنوان بريد إلكتروني؟",
+            "CREATE_ONE": "أنشئ واحدًا",
+            "UNREAD": "غير مقروء",
+            "CREATE_MAIL": "إنشاء بريد إلكتروني",
+            "ALREADY_HAVE": "هل لديك بالفعل عنوان بريد إلكتروني؟",
+            "ADD_EMAIL": "إضافة بريد إلكتروني",
+            "RE": "رد: {subject}",
+            "CHANGE_ACCOUNT": "تغيير الحساب",
+            "CHANGE_PASSWORD": "تغيير كلمة المرور",
+            "DELETE_ACCOUNT": "حذف الحساب",
+            "SIGN_OUT_POPUP": {
+                "TITLE": "تسجيل الخروج",
+                "DESCRIPTION": "هل أنت متأكد أنك تريد تسجيل الخروج؟",
+                "CANCEL": "إلغاء",
+                "PROCEED": "متابعة"
+            },
+            "DELETE_MAIL_POPUP": {
+                "TITLE": "حذف البريد الإلكتروني",
+                "DESCRIPTION": "هل أنت متأكد أنك تريد حذف هذا البريد الإلكتروني؟",
+                "CANCEL": "إلغاء",
+                "DELETE": "حذف"
+            }
+        },
+        "VOICEMEMO": {
+            "TITLE": "مذكرة صوتية",
+            "VOICE_RECORDINGS": "التسجيلات الصوتية",
+            "SEARCH_RECORDINGS": "بحث في التسجيلات",
+            "DEFAULT_NAME": "تسجيل جديد",
+            "DELETE_POPUP": {
+                "TITLE": "حذف المذكرة الصوتية",
+                "DESCRIPTION": "هل أنت متأكد أنك تريد حذف هذه المذكرة الصوتية؟",
+                "CANCEL": "إلغاء",
+                "PROCEED": "متابعة"
+            },
+            "NO_MICROPHONE_POPUP": {
+                "TITLE": "لا يوجد ميكروفون",
+                "DESCRIPTION": "لا يمكننا الوصول إلى الميكروفون الخاص بك، تأكد من توصيل واحد وقبول النافذة المنبثقة في أعلى يمين الشاشة",
+                "OK": "حسنًا"
+            },
+            "EMPTY_RECORDING_POPUP": {
+                "TITLE": "تسجيل فارغ",
+                "DESCRIPTION": "لا يمكنك تخزين تسجيل بدون صوت",
+                "OK": "حسنًا"
+            }
+        },
+        "SERVICES": {
+            "ACTIONS": "الإجراءات",
+            "COMPANIES": "الشركات",
+            "MESSAGES": "الرسائل",
+            "SETTINGS": "الإعدادات",
+            "CLOSED": "مغلق",
+            "YOUR_MESSAGES": "رسائلك",
+            "JOB_MESSAGES": "رسائل الوظيفة",
+            "DUTY": "الواجب",
+            "DUTY_DESCRIPTION": "تبديل حالة الواجب الخاصة بك",
+            "GO_ON_DUTY": "البدء في الواجب",
+            "GO_OFF_DUTY": "إنهاء الواجب",
+            "JOB_CALLS": "مكالمات الوظيفة",
+            "JOB_CALLS_DESCRIPTION": "{toggle} استقبال المكالمات من العملاء.",
+            "ENABLE": "تمكين",
+            "DISABLE": "تعطيل",
+            "DISABLE_CALLS": "تعطيل المكالمات",
+            "ENABLE_CALLS": "تمكين المكالمات",
+            "BALANCE": "الرصيد",
+            "CURRENT_BALANCE": "الرصيد الحالي للشركة",
+            "MANAGE_EMPLOYEES": "إدارة الموظفين",
+            "HIRE": "توظيف",
+            "SET_GRADE": "تعيين الدرجة",
+            "UNEMPLOYED": "أنت بلا عمل",
+            "ALL": "الكل",
+            "AVAILABLE": "متاح",
+            "SEARCH_EMPLOYEES": "بحث الموظفين",
+            "PERSONAL": "شخصي",
+            "JOB": "وظيفة",
+            "DEPOSIT_POPUP": {
+                "TITLE": "إيداع",
+                "DESCRIPTION": "إيداع المال في حساب الشركة",
+                "AMOUNT": "المبلغ",
+                "CANCEL": "إلغاء",
+                "PROCEED": "متابعة"
+            },
+            "WITHDRAW_POPUP": {
+                "TITLE": "سحب",
+                "DESCRIPTION": "سحب المال من حساب الشركة",
+                "NOT_ENOUGH_MONEY": "لا يوجد ما يكفي من المال في حساب الشركة",
+                "AMOUNT": "المبلغ",
+                "CANCEL": "إلغاء",
+                "PROCEED": "متابعة"
+            },
+            "HIRE_POPUP": {
+                "TITLE": "توظيف",
+                "DESCRIPTION": "توظيف موظف جديد",
+                "PLACEHOLDER": "الرقم التعريفي",
+                "CANCEL": "إلغاء",
+                "PROCEED": "متابعة"
+            },
+            "FIRE_POPUP": {
+                "TITLE": "فصل",
+                "DESCRIPTION": "هل أنت متأكد أنك تريد فصل {name}؟",
+                "PLACEHOLDER": "الرقم التعريفي",
+                "CANCEL": "إلغاء",
+                "PROCEED": "متابعة"
+            }
+        },
+        "MDT": {},
+        "BROWSER": {
+            "TITLE": "المتصفح",
+            "SEARCH_PLACEHOLDER": "بحث أو اكتب عنوان URL",
+            "FAILED_LOAD_PAGE": "فشل تحميل الصفحة، ربما لا تدعم التضمين؟"
+        },
+        "REGISTRATION": {
+            "TITLE": "التسجيل",
+            "SELECT_CHARACTER": "اختر شخصية",
+            "PLEASE_SELECT_CHARACTER": "يرجى اختيار شخصية",
+            "CREATE_NEW": "إنشاء جديد",
+            "EDIT": "تعديل",
+            "SAVE": "حفظ",
+            "DELETE": "حذف",
+            "CANCEL": "إلغاء",
+            "DELETE_CHARACTER": "حذف الشخصية",
+            "DESCRIPTION": "الوصف",
+            "DESCRIPTION_PLACEHOLDER": "هذا وصف...",
+            "ADD": "إضافة",
+            "CHARACTER_INFO": "معلومات الشخصية",
+            "REMOVE_AVATAR": "إزالة الصورة الرمزية",
+            "FIRSTNAME": "الاسم الأول",
+            "LASTNAME": "اسم العائلة",
+            "DOB": "تاريخ الميلاد",
+            "PHONE_NUMBER": "رقم الهاتف",
+            "GENDER": "الجنس",
+            "MALE": "ذكر",
+            "FEMALE": "أنثى",
+            "JOB": "الوظيفة",
+            "HEIGHT": "الطول",
+            "FORMATTED_HEIGHT": "{height}سم",
+
+            "VEHICLES": "المركبات",
+            "VEHICLE": "مركبة",
+            "REMOVE_PICTURE": "إزالة الصورة",
+            "SEARCH_VEHICLES": "بحث في المركبات",
+            "MODEL": "النموذج",
+            "PLATE": "اللوحة",
+            "COLOR": "اللون",
+            "CREATE": "إنشاء",
+            "DELETE_VEHICLE": "حذف المركبة",
+            "DELETE_VEHICLE_POPUP": {
+                "TITLE": "حذف المركبة",
+                "DESCRIPTION": "هل أنت متأكد أنك تريد حذف هذه المركبة؟"
+            },
+            "LICENSES": "الرخص",
+            "ADD_LICENSE": "إضافة رخصة",
+            "DELETE_LICENSE_POPUP": {
+                "TITLE": "حذف الرخصة",
+                "DESCRIPTION": "هل أنت متأكد أنك تريد حذف هذه الرخصة؟"
+            },
+            "PROPERTIES": "العقارات",
+            "ADD_PROPERTY_POPUP": {
+                "TITLE": "عقار جديد",
+                "DESCRIPTION": "إنشاء عقار جديد",
+                "LABEL": "تسمية العقار",
+                "ADDRESS": "عنوان العقار"
+            },
+            "DELETE_PROPERTY_POPUP": {
+                "TITLE": "حذف العقار",
+                "DESCRIPTION": "هل أنت متأكد أنك تريد حذف هذا العقار؟"
+            },
+            "ERROR": {
+                "TITLE": "خطأ",
+                "MISSING_FIELDS": "الحقول التالية مفقودة: {fields}",
+                "OK": "حسنًا"
+            }
+        }
+    },
+    "COMPONENTS": {
+        "CONTEXT_MENU": {
+            "CANCEL": "إلغاء"
+        },
+        "IMAGE": {
+            "SAVE_TO_GALLERY": "حفظ في المعرض"
+        },
+        "GALLERY": {
+            "CANCEL": "إلغاء",
+            "EXTERNAL_URL": "عنوان URL خارجي",
+            "EXTERNAL_URL_BLACKLISTED": "هذا العنوان محظور",
+            "NO_IMAGES": "لا توجد صور"
+        },
+        "NOTIFICATIONS": {
+            "SENT_PHOTO": "تم إرسال صورة",
+            "SENT_GIF": "تم إرسال ملف GIF",
+            "NOW": "الآن"
+        },
+        "SHARE": {
+            "COPY_PHOTO": "نسخ الصورة",
+            "COPY_VIDEO": "نسخ الفيديو",
+            "USE_WALLPAPER": "استخدام كخلفية",
+            "COPY_NUMBER": "نسخ الرقم",
+            "COPY_LINK": "نسخ الرابط",
+            "AIRDROP_SENT": "تم الإرسال",
+            "AIRDROP_ACCEPTED": "تم القبول",
+            "AIRDROP_DECLINED": "تم الرفض",
+            "AIRDROP_NO_USERS": "لا توجد هواتف قريبة",
+            "WALLPAPER_POPUP": {
+                "TITLE": "استخدام كخلفية",
+                "TEXT": "هل أنت متأكد أنك تريد تعيين هذه الصورة كخلفية؟",
+                "CANCEL": "إلغاء",
+                "PROCEED": "متابعة"
+            },
+            "COPY_POPUP": {
+                "TITLE": "نجاح",
+                "DESCRIPTION": "تم النسخ بنجاح إلى الحافظة",
+                "OK": "حسنًا"
+            }
+        },
+        "AIRDROP": {
+            "TITLE": "AirShare",
+            "TEXT": "{sender} يرغب في مشاركة {type}",
+            "VIDEO": "فيديو",
+            "PHOTO": "صورة",
+            "CONTACT": "جهة اتصال",
+            "LOCATION": "موقع",
+            "NOTE": "ملاحظة",
+            "VOICEMEMO": "مذكرة صوتية",
+            "PLAYLIST": "قائمة تشغيل",
+            "DECLINE": "رفض",
+            "ACCEPT": "قبول"
+        },
+
+        "BATTERY": {
+            "LOW_BATTERY": "بطارية منخفضة",
+            "BATTERY_REMAINING": "{percent}% بطارية متبقية",
+            "LOW_POWER_MODE": "وضع الطاقة المنخفضة",
+            "CLOSE": "إغلاق"
+        },
+        "COLOR_PICKER": {
+            "COLOR": "اللون"
+        }
+    },
+    "SETUP": {
+        "HELLO": "مرحبًا",
+        "SELECT_LANGUAGE": "اختر لغتك",
+        "NEXT": "انقر للفتح",
+        "APPEARANCE": "المظهر",
+        "APPEARANCE_TEXT": "اختر موضوعًا داكنًا أو فاتحًا لجهازك",
+        "CONTINUE": "متابعة",
+        "WELCOME_TO": "مرحبا بك في",
+        "CLICK": "انقر للبدء"
+    },
+    "HOMESCREEN": {
+        "DONE": "تم",
+        "CLOSE_ALL": "إغلاق الكل",
+        "REMOVE_APP_POPUP": {
+            "TITLE": "إزالة '{app}'؟",
+            "DESCRIPTION": "سيؤدي حذف هذا التطبيق إلى عدم حذف بياناته. يمكن إعادة تثبيت التطبيق لاحقًا من متجر التطبيقات.",
+            "CANCEL": "إلغاء",
+            "PROCEED": "حذف"
+        }
+    },
+    "LOCKSCREEN": {
+        "DELETE": "حذف",
+        "FONT_AND_COLOR": "الخط واللون"
+    },
+    "MISC": {
+        "AIRPLANE_MODE_POPUP": {
+            "TITLE": "خطأ",
+            "DESCRIPTION": "أنت تحاول تنفيذ إجراء يتطلب الوصول إلى الإنترنت، قم بإيقاف وضع الطيران للمتابعة.",
+            "OK": "حسنًا"
+        }
+    },
+    "BACKEND": {
+        "CAMERA": {
+            "TAKE_PHOTO": "{key} التقاط",
+            "FLIP_CAMERA": "{key} قلب",
+            "TOGGLE_FLASH": "{key} وميض",
+            "TOGGLE_CURSOR": "{key} مؤشر",
+            "CHANGE_MODE": "{key} {key2} وضع",
+            "ROLL": "{key} {key2} لفة",
+            "FREEZE": "{key} تجميد",
+            "UNFREEZE": "{key} فك التجميد",
+            "TOGGLE_TIP": "{key} إخفاء"
+        },
+        "SERVICES": {
+            "NEW_MESSAGE": "رسالة جديدة",
+            "ANONYMOUS": "مجهول"
+        },
+        "MISC": {
+            "X_TABLET": "جهاز لوحي {firstname}"
+        },
+        "MAIL": {
+            "AUTOMATIC_PASSWORD": {
+                "SENDER": "النظام",
+                "SUBJECT": "كلمة مرورك",
+                "MESSAGE": "مرحبًا،\n\nعنوان بريدك الإلكتروني التلقائي هو {address} وكلمة المرور الخاصة بك هي {password}"
+            }
+        },
+        "LOGS": {
+            "MAIL_TITLE": "البريد الإلكتروني",
+            "NEW_MAIL": "{sender} أرسل بريدًا إلكترونيًا إلى {recipient}",
+            "MESSAGE_TITLE": "رسالة نصية",
+            "NEW_MESSAGE": "{sender} أرسل رسالة إلى {recipient}: {message}",
+            "NEW_SERVICE_TITLE": "رسالة جديدة",
+            "NEW_SERVICE_CONTENT": "{sender} أرسل رسالة إلى {channel}: {message}",
+            "RECEIVED_TITLE": "تم استلام ${amount}",
+            "PAID_TITLE": "تم الدفع ${amount}",
+            "TRANSACTION": "{number} قام بمعاملة بقيمة ${amount} إلى {company}",
+
+            "TOOK_PHOTO": "التقط صورة",
+            "TOOK_VIDEO": "التقط فيديو"
+        },
+        "BASE_DISPATCH": {},
+        "MDT": {},
+        "MDT_NOTIFICATIONS": {}
+    },
+    "MDT": {}
+}

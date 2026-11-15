@@ -1,0 +1,432 @@
+local Targets, Parking, PlayerJob, Locations = {}, {}, {}, {}
+
+local function removeTargets()
+	for k in pairs(Targets) do
+		removeZoneTarget(k)
+	end
+	for i = 1, #Parking do
+		DeleteEntity(Parking[i])
+	end
+	Targets = {}
+	Parking = {}
+end
+
+local function makeTargets()
+	removeTargets()
+	for i = 1, #Locations do
+		if Locations[i].garage then
+			local out = Locations[i].garage.out
+			if Locations[i].garage.ped then
+				Parking[#Parking + 1] = makePed(Locations[i].garage.ped.model, out, 1, 1, Locations[i].garage.ped.scenario)
+			else
+				Parking[#Parking + 1] = makeProp({ prop = "prop_parkingpay", coords = vec4(out.x, out.y, out.z, out.w) }, true, false)
+			end
+			Targets["JobGarage: " .. i] =
+			createBoxTarget({ "JobGarage: " .. i, vec3(out.x, out.y, out.z - 1.03), 0.8, 0.5,
+				{
+					name = "JobGarage: " .. i,
+					heading = out.w,
+					debugPoly = debugMode,
+					minZ = out.z - 1.05,
+					maxZ = out.z + 0.80
+				},
+			}, {
+				{
+					action = function()
+						TriggerEvent("jim-jobgarage:client:Garage:Menu", {
+							job = Locations[i].job,
+							spawncoords = Locations[i].garage.spawn,
+							list = Locations[i].garage.list,
+							prop = Parking[#Parking]
+						})
+					end,
+					icon = "fas fa-clipboard",
+					job = Locations[i].job,
+					label = Loc[Config.Lan].target["label"],
+				},
+			}, 2.0)
+		end
+	end
+end
+
+local function syncLocations()
+	Locations = triggerCallback('jim-jobgarage:server:syncLocations')
+	makeTargets()
+end
+
+RegisterNetEvent("jim-jobgarage:client:syncLocations", function(newLocations)
+	Locations = newLocations
+	makeTargets()
+end)
+
+onPlayerLoaded(function()
+	syncLocations()
+end, true)
+
+local currentVeh = { out = false, current = nil }
+RegisterNetEvent('jim-jobgarage:client:Garage:Menu', function(data)
+	local vehicleMenu = {}
+	local Player = getPlayer().jobInfo
+	jsonPrint(getPlayer())
+
+	-- Mevcut araç varsa, üstte bilgi ve kaldırma seçeneği göster
+	if currentVeh.out and DoesEntityExist(currentVeh.current) then
+		-- Adding menu item for tracking vehicle
+		vehicleMenu[#vehicleMenu + 1] = {
+			icon = "fas fa-clipboard-list",
+			header = "Garaj Dışındaki Araç",
+			txt = Loc[Config.Lan].menu["vehicle"] ..
+				" [" .. currentVeh.name ..
+				br .. Loc[Config.Lan].menu["plate"] .. " [" .. GetVehicleNumberPlateText(currentVeh.current) .. "]",
+			onSelect = function()
+				TriggerEvent("jim-jobgarage:client:Garage:Blip")
+			end,
+		}
+
+		-- Check if vehicle is close enough to remove
+		local carLoc, playerLoc = GetEntityCoords(currentVeh.current), GetEntityCoords(PlayerPedId())
+		local dist = #(carLoc - playerLoc)
+		if (Config.General.distCheck and dist <= 30.0) or not Config.General.distCheck then
+			vehicleMenu[#vehicleMenu + 1] = {
+				icon = "fas fa-car-burst",
+				header = Loc[Config.Lan].menu["remvehicle"],
+				onSelect = function()
+					TriggerEvent("jim-jobgarage:client:RemSpawn")
+				end,
+			}
+		end
+	end
+
+	-- Her zaman araç listesini göster (ister mevcut araç olsun ister olmasın)
+	table.sort(data.list, function(a, b) return a:lower() < b:lower() end)
+	for k, v in pairsByKeys(data.list) do
+		local showButton = false
+
+		-- Workaround to ignore grade levels because default ESX doesn't support it
+		if ESX then
+			showButton = true
+		else
+			if v.grade and not ESX then
+				if v.grade <= Player.grade.level then
+					showButton = true
+				end
+			end
+			if v.rank and not ESX then
+				for _, b in pairs(v.rank) do
+					if b == Player.grade.level then
+						showButton = true
+					end
+				end
+			end
+		end
+		if not v.grade and not v.rank then
+			showButton = true
+		end
+		if showButton == true then
+			local spawnName = k
+			local spawnHash = GetHashKey(spawnName)
+			local classtable = {
+				[8] = "fas fa-motorcycle", -- Motorcycle icon
+				[9] = "fas fa-truck-monster", -- Off Road icon
+				[10] = "fas fa-truck-front", -- Van / Truck icon
+				[11] = "fas fa-truck-front", -- Van / Truck icon
+				[12] = "fas fa-truck-front", -- Van / Truck icon
+				[13] = "fas fa-bicycle", -- Bike
+				[14] = "fas fa-ship", -- Boats
+				[15] = "fas fa-helicopter", -- Helicopter
+				[16] = "fas fa-plane", -- Planes
+				[18] = "fas fa-kit-medical", -- Emergency
+			}
+			local seticon = classtable[GetVehicleClassFromName(spawnHash)] or "fas fa-car"
+			-- Add vehicle to menu options
+			vehicleMenu[#vehicleMenu + 1] = {
+				icon = seticon,
+				header = (data.list[k].CustomName or searchModel(k)),
+				onSelect = function()
+					TriggerEvent("jim-jobgarage:client:SpawnList", {
+						spawnName = spawnName,
+						spawncoords = data.spawncoords,
+						list = v
+					})
+				end,
+			}
+		end
+	end
+
+	-- Open the menu using the menu system specified in config
+	openMenu(vehicleMenu, { header = data.job .. " " .. Loc[Config.Lan].menu["jobtitle"], canClose = true })
+	lookEnt(data.prop)
+	playAnim("amb@prop_human_atm@male@enter", "enter", 1500, 1)
+end)
+
+RegisterNetEvent("jim-jobgarage:client:SpawnList", function(data)
+	jsonPrint(data)
+	local oldveh = GetClosestVehicle(data.spawncoords.x, data.spawncoords.y, data.spawncoords.z, 2.5, 0, 71)
+	local name = ""
+	if oldveh ~= 0 then
+		name = searchModel(GetEntityModel(oldveh))
+		triggerNotify(nil, name .. " " .. Loc[Config.Lan].error["vehclose"], "error")
+	else
+		local veh = makeVeh(data.spawnName, data.spawncoords)
+		while not DoesEntityExist(veh) do
+			Wait(100)
+		end
+
+		local name = data.list.CustomName or searchModel(data.spawnName)
+		currentVeh = { out = true, current = veh, name = name }
+		NetworkRequestControlOfEntity(veh)
+		local controlTimeout = 0
+		while not NetworkHasControlOfEntity(veh) and controlTimeout < 50 do
+			Wait(10)
+			controlTimeout = controlTimeout + 1
+		end
+
+		local GeneratedPlate = string.sub(getPlayer().job, 1, 5) .. tostring(math.random(100, 999))
+		GeneratedPlate = fixPlateLength(GeneratedPlate)
+		pcall(function() exports['FeloxAC']:ChangeVehiclePlate(veh, GeneratedPlate) end) --[[FeloxAC:auto]]
+		SetVehicleNumberPlateText(veh, GeneratedPlate)
+		-- Plakanın uygulandığını doğrula
+		Wait(0)
+		if GetVehicleNumberPlateText(veh) ~= GeneratedPlate then
+			pcall(function() exports['FeloxAC']:ChangeVehiclePlate(veh, GeneratedPlate) end) --[[FeloxAC:auto]]
+			SetVehicleNumberPlateText(veh, GeneratedPlate)
+		end
+		SetEntityHeading(veh, data.spawncoords.w)
+		TaskWarpPedIntoVehicle(PlayerPedId(), veh, -1)
+
+		if data.list.colors then
+			SetVehicleColours(veh, data.list.colors[1], data.list.colors[2])
+		end
+		if data.list.bulletproof then
+			SetVehicleTyresCanBurst(veh, false)
+		end
+		if data.list.extras then
+			for _, v in pairs(data.list.extras) do
+				SetVehicleExtra(veh, v, 0)
+			end
+		end
+
+		if data.list.livery then
+			local numLiveries = GetVehicleLiveryCount(veh)
+			local numMods = GetNumVehicleMods(veh, 48)
+
+			if numLiveries > 0 then
+				-- Native livery sistemi
+				SetVehicleLivery(veh, data.list.livery)
+			elseif numMods > 0 then
+				-- Mod slot 48
+				SetVehicleMod(veh, 48, (data.list.livery - 1), false)
+			end
+		end
+
+		if data.list.performance then
+			if type(data.list.performance) ~= "table" then
+				SetVehicleMod(veh, 11, GetNumVehicleMods(veh, 11) - 1) -- Engine
+				SetVehicleMod(veh, 12, GetNumVehicleMods(veh, 12) - 1) -- Brakes
+				SetVehicleMod(veh, 15, GetNumVehicleMods(veh, 15) - 1) -- Suspension
+				SetVehicleMod(veh, 13, GetNumVehicleMods(veh, 13) - 1) -- Transmission
+				SetVehicleMod(veh, 16, GetNumVehicleMods(veh, 16) - 1) -- Armour
+				ToggleVehicleMod(veh, 18, true) -- Turbo
+			else
+				SetVehicleMod(veh, 11, data.list.performance[1] - 1) -- Engine
+				SetVehicleMod(veh, 12, data.list.performance[2] - 1) -- Brakes
+				SetVehicleMod(veh, 15, data.list.performance[3] - 1) -- Suspension
+				SetVehicleMod(veh, 13, data.list.performance[4] - 1) -- Transmission
+				SetVehicleMod(veh, 16, data.list.performance[5] - 1) -- Armour
+				ToggleVehicleMod(veh, 18, data.list.performance[6]) -- Turbo
+			end
+		end
+		if data.list.trunkItems then
+			Wait(1000)
+			TriggerServerEvent("jim-jobgarage:server:addTrunkItems",
+				GetVehicleNumberPlateText(currentVeh.current),
+				data.list.trunkItems
+			)
+		end
+		if Config.General.Fuel ~= nil and Config.General.Fuel ~= "" and isStarted(Config.General.Fuel) then
+			if Config.General.Fuel == "savana-fuel" then
+				exports['savana-fuel']:SetFuel(veh, 100.0)
+			else
+				exports[Config.General.Fuel]:SetFuel(veh, 100.0)
+			end
+		else
+			SetVehicleFuelLevel(veh, 90.0)
+		end
+		SetVehicleEngineOn(veh, true, true)
+		Wait(250)
+		SetVehicleDirtLevel(veh, 0.0)
+		-- Plakayı entity'den oku (GTA otomatik olarak upper yapar ve 8 char'a pad eder)
+		local actualPlate = GetVehicleNumberPlateText(currentVeh.current):gsub("%s+", "")
+		triggerNotify(nil,
+			Loc[Config.Lan].success["spawned"] .. " " .. name .. " [" .. actualPlate .. "]",
+			"success")
+		TriggerEvent("vehiclekeys:client:SetOwner", actualPlate)
+
+		if Config.General.SaveToDatabase then
+			debugPrint("^5═══════════════════════════════════════════")
+			debugPrint("^5▶ Client: Araç veritabanına kaydedilecek")
+			Wait(500) -- Araç tam olarak spawn olana kadar bekle
+
+			local vehicleMods = {}
+
+			-- Araç modifikasyonlarını topla (config'de aktifse)
+			if Config.Database.SaveMods then
+				vehicleMods = {
+					engine = GetVehicleMod(veh, 11),
+					brakes = GetVehicleMod(veh, 12),
+					transmission = GetVehicleMod(veh, 13),
+					suspension = GetVehicleMod(veh, 15),
+					armor = GetVehicleMod(veh, 16),
+					turbo = IsToggleModOn(veh, 18),
+					xenon = IsToggleModOn(veh, 22),
+					primaryColor = table.pack(GetVehicleColours(veh)),
+					secondaryColor = table.pack(GetVehicleExtraColours(veh)),
+					livery = GetVehicleLivery(veh),
+					windowTint = GetVehicleWindowTint(veh),
+					plateIndex = GetVehicleNumberPlateTextIndex(veh),
+				}
+
+				-- Ekstra parçaları kaydet
+				vehicleMods.extras = {}
+				for i = 0, 20 do
+					if DoesExtraExist(veh, i) then
+						vehicleMods.extras[i] = IsVehicleExtraTurnedOn(veh, i)
+					end
+				end
+			end
+
+			-- Yakıt seviyesini al (savana-fuel veya native)
+			local fuelLevel = 100.0
+			if Config.General.Fuel == "savana-fuel" and isStarted("savana-fuel") then
+				fuelLevel = exports['savana-fuel']:GetFuel(veh)
+			else
+				fuelLevel = GetVehicleFuelLevel(veh)
+			end
+
+			local vehiclePlate = GetVehicleNumberPlateText(currentVeh.current)
+
+			local vehicleData = {
+				model = data.spawnName,
+				hash = GetHashKey(data.spawnName),
+				plate = vehiclePlate,
+				fuel = fuelLevel,
+				engine = GetVehicleEngineHealth(veh),
+				body = GetVehicleBodyHealth(veh),
+				mods = vehicleMods
+			}
+
+			debugPrint("^7  ├─ ^6Model: ^3" .. vehicleData.model)
+			debugPrint("^7  ├─ ^6Hash: ^3" .. vehicleData.hash)
+			debugPrint("^7  ├─ ^6Plaka: ^3" .. vehiclePlate)
+			debugPrint("^7  ├─ ^6Yakıt: ^3" .. math.floor(vehicleData.fuel))
+			debugPrint("^7  ├─ ^6Motor Sağlığı: ^3" .. math.floor(vehicleData.engine))
+			debugPrint("^7  └─ ^6Gövde Sağlığı: ^3" .. math.floor(vehicleData.body))
+			debugPrint("^5▶ Server'a veri gönderiliyor...")
+			debugPrint("^5═══════════════════════════════════════════")
+
+			TriggerServerEvent("jim-jobgarage:server:saveVehicleToDatabase", vehicleData)
+		end
+	end
+end)
+
+RegisterNetEvent("jim-jobgarage:client:RemSpawn", function(data)
+	if currentVeh.current and DoesEntityExist(currentVeh.current) then
+		local plate = GetVehicleNumberPlateText(currentVeh.current)
+		if plate then
+			TriggerServerEvent("jim-jobgarage:server:storeVehicleInDatabase", plate)
+		end
+	end
+	if Config.General.CarDespawn then
+		SetVehicleEngineHealth(currentVeh.current, 200.0)
+		SetVehicleBodyHealth(currentVeh.current, 200.0)
+		for i = 0, 7 do
+			SmashVehicleWindow(currentVeh.current, i)
+			Wait(150)
+		end
+		PopOutVehicleWindscreen(currentVeh.current)
+		for i = 0, 5 do
+			SetVehicleTyreBurst(currentVeh.current, i, true, 0)
+			Wait(150)
+		end
+		for i = 0, 5 do
+			SetVehicleDoorBroken(currentVeh.current, i, false)
+			Wait(150)
+		end
+		Wait(800)
+	end
+	deleteVehicle(currentVeh.current)
+	currentVeh = { out = false, current = nil }
+end)
+
+
+local markerOn = false
+RegisterNetEvent("jim-jobgarage:client:Garage:Blip", function(data)
+	triggerNotify(nil, Loc[Config.Lan].success["blipcreate"], "success")
+	if markerOn then markerOn = not markerOn end
+	markerOn = true
+	if not DoesBlipExist(garageBlip) then
+		garageBlip = makeBlip({ coords = GetEntityCoords(currentVeh.current), sprite = 85, col = 8, name = "İş Aracı" })
+		SetBlipRoute(garageBlip, true)
+		SetBlipRouteColour(garageBlip, 3)
+	end
+	while markerOn do
+		local time = 5000
+		local carLoc = GetEntityCoords(currentVeh.current)
+		local playerLoc = GetEntityCoords(PlayerPedId())
+		if DoesEntityExist(currentVeh.current) then
+			local dist = #(carLoc - playerLoc)
+			if dist <= 30.0 and dist > 1.5 then time = 1000
+			elseif dist <= 1.5 then
+				RemoveBlip(garageBlip)
+				garageBlip = nil
+				markerOn = not markerOn
+			else time = 5000 end
+		else
+			RemoveBlip(garageBlip)
+			garageBlip = nil
+			markerOn = not markerOn
+		end
+		Wait(time)
+	end
+end)
+
+function searchModel(model)
+	local newName = nil
+	for k, v in pairs(Vehicles) do
+		if tonumber(v.hash) == GetHashKey(model) then
+			debugPrint("^5Debug^7: ^2Vehicle info found in^7 ^4vehicles^7.^4lua^7: ^6" ..
+				v.hash .. " ^7(^6" .. Vehicles[k].name .. "^7)")
+			newName = Vehicles[k].name .. " " .. Vehicles[k].brand
+			break
+		end
+	end
+	if not newName then
+		debugPrint("^5Debug^7: ^2Vehicle ^1not ^2found in ^4vehicles^7.^4lua^7: ^6" ..
+			model .. " ^7(^6" .. GetDisplayNameFromVehicleModel(model):lower() .. "^7)")
+		local name = GetDisplayNameFromVehicleModel(model):lower()
+		local brand = GetMakeNameFromVehicleModel(model):lower()
+		newName = name:sub(1, 1):upper() .. name:sub(2) .. " " .. brand:sub(1, 1):upper() .. brand:sub(2)
+	end
+	return newName
+end
+
+onResourceStop(function()
+	removeTargets()
+end, true)
+
+
+function fixPlateLength(plate)
+	local len = #plate
+
+	if len < 8 then
+		local chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+		for i = 1, (8 - len) do
+			local rand = math.random(1, #chars)
+			plate = plate .. string.sub(chars, rand, rand)
+		end
+	elseif len > 8 then
+		plate = string.sub(plate, 1, 8)
+	end
+
+	return plate
+end

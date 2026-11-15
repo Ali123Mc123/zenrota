@@ -1,0 +1,43 @@
+{
+    "xp": "XP",
+    "name": "Nome giocatore",
+    "level": "Livello",
+    "start": "Inizia lavoro",
+    "accept": "Accetta",
+    "cancel": "Annulla",
+    "awards": "Premi:",
+    "invite": "Invita giocatore [ID]",
+    "hunting": "Caccia",
+    "hunting_desc": "%s ti ha invitato in un gruppo. Se vuoi, puoi accettare e cacciare insieme.",
+    "unknowns": {
+        "label": "Sconosciuto",
+        "level": "Sconosciuto",
+        "description": "Nessuna descrizione disponibile."
+    },
+    "progress": {
+        "title": "Progresso del livello",
+        "description": "Migliorare le tue abilità di caccia"
+    },
+    "cancel_job": "Annulla lavoro",
+
+    "header": {
+        "title": "Lavoro di caccia",
+        "description": "Benvenuto alla caccia, puoi iniziare una caccia da qui e controllare le missioni. Buona fortuna!"
+    },
+    "sections": {
+        "profile": "Profilo",
+        "mission": "Missioni",
+        "player_list": "Elenco giocatori",
+        "job_details": "Dettagli lavoro"
+    },
+
+    "steps": {
+        "progress": "Progresso",
+        "information": "Premi il tasto indicato per sapere cosa devi fare. Premi per maggiori dettagli.",
+        "details": {
+            "step1": "Vai nell'area di caccia e prendi le tue armi dal veicolo. Usa il tasto [Target],",
+            "step2": "Uccidi gli animali e scuoia gli animali con [TARGET] (se c'è una missione, procederà),",
+            "step3": "Vai nell'area dove hai iniziato la tua professione, guarda l'NPC con [TARGET] e clicca sull'opzione 'Vendi parti di animali' per venderle."
+        }
+    }
+}

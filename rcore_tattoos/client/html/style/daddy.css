@@ -1,0 +1,629 @@
+/* rcore_tattoos in the Daddy look: dark see-through plates with the top right corner cut, Archivo narrow italic caps
+   for titles, red for the chosen row and the main button, white keycaps. Loaded after the shop's own styles and the
+   daddy theme (themes/daddy.css), so the rules here only override. FiveM's browser is Chromium 103. */
+
+@font-face {
+    font-family: 'Archivo';
+    font-style: normal;
+    font-weight: 100 900;
+    font-stretch: 62% 125%;
+    src: url('./fonts/archivo-latin-ext-wdth-normal.woff2') format('woff2');
+    unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+
+@font-face {
+    font-family: 'Archivo';
+    font-style: normal;
+    font-weight: 100 900;
+    font-stretch: 62% 125%;
+    src: url('./fonts/archivo-latin-wdth-normal.woff2') format('woff2');
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+    font-family: 'Archivo';
+    font-style: italic;
+    font-weight: 100 900;
+    font-stretch: 62% 125%;
+    src: url('./fonts/archivo-latin-ext-wdth-italic.woff2') format('woff2');
+    unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+
+@font-face {
+    font-family: 'Archivo';
+    font-style: italic;
+    font-weight: 100 900;
+    font-stretch: 62% 125%;
+    src: url('./fonts/archivo-latin-wdth-italic.woff2') format('woff2');
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+:root {
+    --d-ac: #c8102e;
+    --d-ac-500: #e23a50;
+    --d-plate: linear-gradient(180deg, rgba(20, 21, 26, 0.93), rgba(12, 13, 16, 0.95));
+    --d-edge: inset 0 0 0 1px rgba(255, 255, 255, 0.07), inset 0 3px 0 #c8102e;
+    --d-line: rgba(255, 255, 255, 0.08);
+    --d-mute: rgba(255, 255, 255, 0.62);
+    --d-faint: rgba(255, 255, 255, 0.38);
+}
+
+body,
+.menu__tats-box,
+.menu__search-input,
+.notif-box,
+.menu__container,
+.help-keys,
+.minigame {
+    font-family: 'Archivo', system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+}
+
+/* ---------- Body parts ---------- */
+
+.menu__part {
+    border: 0;
+    background: rgba(14, 15, 19, 0.82);
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.12), 0 0 0 3px rgba(14, 15, 19, 0.35);
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.menu__part:hover:not(.menu__part--empty) {
+    transform: scale(1.06);
+    box-shadow: inset 0 0 0 2px var(--d-ac), 0 0 0 3px rgba(14, 15, 19, 0.35);
+}
+
+.menu__part-bg {
+    opacity: 0.6;
+}
+
+.menu__part--empty {
+    filter: opacity(0.55) grayscale(1);
+}
+
+.menu__part-title,
+.menu__part-desc {
+    font-family: 'Archivo', sans-serif;
+    text-shadow: 0 0 0.5em rgba(0, 0, 0, 0.9), 0 1px 0.15em rgba(0, 0, 0, 0.9);
+}
+
+.menu__part-title {
+    font-style: italic;
+    font-weight: 900;
+    font-stretch: 62%;
+    font-size: 21px;
+    letter-spacing: 0.02em;
+    margin-top: -30px;
+}
+
+.menu__part-desc {
+    top: 82px;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--d-mute);
+}
+
+/* ---------- Tattoo list ---------- */
+
+.menu__tats-box {
+    width: 330px;
+    height: auto;
+    top: 16vh;
+    right: 56px;
+    border-radius: 0;
+    background: var(--d-plate);
+    clip-path: polygon(0 0, calc(100% - 22px) 0, 100% 22px, 100% 100%, 0 100%);
+    box-shadow: var(--d-edge);
+}
+
+.menu__tats-logo,
+.menu__tats-wave {
+    display: none;
+}
+
+.menu__tats-content {
+    padding: 26px 24px 24px;
+    height: auto;
+}
+
+.menu__tats-header {
+    align-items: flex-end;
+    padding-bottom: 14px;
+}
+
+.menu__tats-title {
+    font-style: italic;
+    font-weight: 900;
+    font-stretch: 62%;
+    font-size: 34px;
+    line-height: 0.95;
+    padding-top: 0.12em;
+    text-transform: uppercase;
+}
+
+.menu__tats-count {
+    font-style: italic;
+    font-weight: 800;
+    font-stretch: 75%;
+    font-size: 15px;
+    color: var(--d-faint);
+}
+
+.menu__search {
+    position: relative;
+    justify-content: flex-start;
+}
+
+.menu__search--active {
+    filter: none;
+    box-shadow: none;
+}
+
+.menu__search-input {
+    height: 34px;
+    padding: 0 10px 0 30px;
+    font-size: 14px;
+    border-radius: 0;
+    background: rgba(255, 255, 255, 0.05);
+    box-shadow: inset 0 -1px 0 rgba(255, 255, 255, 0.16);
+}
+
+.menu__search--active .menu__search-input {
+    box-shadow: inset 0 -2px 0 var(--d-ac);
+}
+
+.menu__search-icon {
+    left: 4px;
+    color: var(--d-faint);
+}
+
+.menu__tats-list {
+    --tats-list-height: 260px;
+    margin: 14px 0;
+    padding: 0;
+    border-radius: 0;
+    box-shadow: none;
+}
+
+.menu__tats-list--extend {
+    --tats-list-height: calc(260px + 58px);
+}
+
+.menu__tats-list li {
+    padding: 8px 12px;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 1.25;
+    color: rgba(255, 255, 255, 0.8);
+    box-shadow: inset 0 -1px 0 var(--d-line);
+    cursor: pointer;
+}
+
+.menu__tats-list li:hover {
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.menu__tats-list li strong,
+.menu__tats-list li .js-tattoo-price {
+    font-style: italic;
+    font-weight: 900;
+    font-stretch: 62%;
+    font-size: 16px;
+    color: #fff;
+}
+
+.tat-selected {
+    border-radius: 0;
+    background: var(--d-ac);
+    box-shadow: none !important;
+    color: #fff !important;
+    clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 0 100%);
+}
+
+.menu__tats-opacity label,
+.menu__tats-henna label {
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--d-mute);
+}
+
+.menu__tats-opacity label > span:last-child {
+    font-style: italic;
+    font-weight: 900;
+    font-stretch: 62%;
+    font-size: 18px;
+    letter-spacing: 0;
+    color: #fff;
+}
+
+.menu__tats-opacity input[type='range'] {
+    -webkit-appearance: none;
+    height: 4px;
+    margin-top: 10px;
+    background: rgba(255, 255, 255, 0.14);
+}
+
+.menu__tats-opacity input[type='range']::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 12px;
+    height: 20px;
+    border-radius: 2px;
+    background: #fff;
+    cursor: pointer;
+}
+
+.menu__tats-henna input {
+    accent-color: var(--d-ac);
+}
+
+/* Buttons: the back icon plain, the buy / remove button solid red with the top right corner cut. */
+.menu__tats-btn {
+    border-radius: 0;
+    box-shadow: none;
+    font-family: 'Archivo', sans-serif;
+    font-style: italic;
+    font-weight: 800;
+    font-stretch: 75%;
+    font-size: 17px;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    background: var(--d-ac);
+    color: #fff;
+    padding: 13px 26px;
+    clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 12px, 100% 100%, 0 100%);
+    transition: background 0.1s ease;
+}
+
+.menu__tats-btn:hover {
+    box-shadow: none;
+    background: var(--d-ac-500);
+}
+
+.menu__tats-controls .menu__tats-btn:not(.menu__tats-btn--icon)::after {
+    content: '\203A\203A\203A';
+    margin-left: 10px;
+    font-weight: 900;
+    letter-spacing: -1px;
+    color: rgba(255, 255, 255, 0.75);
+}
+
+.menu__tats-btn--icon {
+    max-width: 46px;
+    max-height: 46px;
+    padding: 0 16px;
+    background: rgba(255, 255, 255, 0.07);
+    clip-path: none;
+}
+
+.menu__tats-btn--icon:hover {
+    background: rgba(255, 255, 255, 0.14);
+}
+
+.menu__tats-btn--icon svg {
+    color: #fff;
+    height: 12px;
+}
+
+/* Camera slider: a thin line with a white handle on a dark strip. */
+.menu__slider {
+    width: 30vw;
+    height: 34px;
+    margin-bottom: 4vh;
+    padding: 0 14px;
+    border: 0;
+    border-radius: 0;
+    background: linear-gradient(180deg, rgba(20, 21, 26, 0.88), rgba(12, 13, 16, 0.92));
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.07);
+}
+
+.menu__slider::-webkit-slider-runnable-track {
+    height: 34px;
+    background: linear-gradient(rgba(255, 255, 255, 0.18), rgba(255, 255, 255, 0.18)) center / 100% 2px no-repeat;
+}
+
+.menu__slider::-webkit-slider-thumb {
+    width: 34px;
+    height: 24px;
+    margin-top: 5px;
+    border-radius: 2px;
+    background-color: #fff;
+    background-size: 62%;
+}
+
+/* Waiting for the employee. */
+.menu__dialog {
+    margin: 0 24px 24px;
+    border-radius: 0;
+    font-family: 'Archivo', sans-serif;
+    font-weight: 600;
+    background: rgba(200, 16, 46, 0.16);
+    box-shadow: inset 3px 0 0 var(--d-ac);
+    text-align: left;
+}
+
+/* ---------- Notifications ---------- */
+
+.notif-box {
+    left: 46px;
+    z-index: 99999;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.notif-box__notif {
+    min-width: 300px;
+    padding: 12px 18px 14px 20px;
+    border-radius: 0;
+    background: var(--d-plate);
+    color: #fff;
+    font-size: 14px;
+    font-weight: 500;
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.07), inset 4px 0 0 rgba(255, 255, 255, 0.4);
+    clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 12px, 100% 100%, 0 100%);
+}
+
+.notif-box__notif:after {
+    height: 2px;
+    background-color: #fff;
+    opacity: 0.35;
+}
+
+.notif-box__notif--success {
+    background: var(--d-plate);
+    color: #fff;
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.07), inset 4px 0 0 var(--color-success);
+}
+
+.notif-box__notif--error {
+    background: var(--d-plate);
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.07), inset 4px 0 0 var(--d-ac);
+}
+
+.notif-box__title {
+    font-style: italic;
+    font-weight: 900;
+    font-stretch: 62%;
+    font-size: 18px;
+    text-transform: uppercase;
+}
+
+/* ---------- Tooltip ---------- */
+
+.tooltip__info {
+    border: 0;
+    border-radius: 0;
+    background: rgba(14, 15, 19, 0.96);
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.1);
+    font-size: 13px;
+    font-weight: 500;
+}
+
+/* ---------- Business menus (boss menu, margin, deposit / withdraw) ---------- */
+
+.menu__container {
+    min-width: 34vmin;
+    border-radius: 0;
+    background: var(--d-plate);
+    clip-path: polygon(0 0, calc(100% - 2vmin) 0, 100% 2vmin, 100% 100%, 0 100%);
+    box-shadow: var(--d-edge);
+    color: #fff;
+}
+
+.menu__title {
+    align-items: flex-start;
+    padding: 2.4vmin 2.4vmin 1.6vmin;
+    text-align: left;
+    background: none;
+    font-family: 'Archivo', sans-serif;
+    font-style: italic;
+    font-weight: 900;
+    font-stretch: 62%;
+    font-size: 3.2vmin;
+    line-height: 0.95;
+    text-transform: uppercase;
+    box-shadow: inset 0 -1px 0 var(--d-line);
+}
+
+.menu__subtitle {
+    margin-top: 0.8vmin;
+    font-family: 'Archivo', sans-serif;
+    font-style: italic;
+    font-weight: 800;
+    font-stretch: 75%;
+    font-size: 1.8vmin;
+    color: var(--color-success);
+}
+
+.menu__body {
+    box-shadow: none;
+}
+
+.menu__item {
+    padding: 1vmin 2.4vmin;
+    box-shadow: inset 0 -1px 0 var(--d-line);
+}
+
+.menu__item span {
+    padding-left: 0;
+    font-size: 1.45vmin;
+    color: rgba(255, 255, 255, 0.82);
+}
+
+.menu__item.active {
+    background: var(--d-ac);
+}
+
+.menu__item.active span,
+.menu__item.active p {
+    color: #fff;
+}
+
+.menu__bottom {
+    min-height: 1vmin;
+    background: none;
+}
+
+.menu__input-wrap {
+    padding: 2vmin 2.4vmin 0;
+}
+
+.menu__input-label {
+    color: var(--d-mute);
+    font-size: 1.35vmin;
+}
+
+.menu__input-label strong {
+    color: #fff;
+    font-weight: 700;
+}
+
+.menu__input {
+    accent-color: var(--d-ac);
+}
+
+.menu__input--text {
+    border-radius: 0;
+    color: #fff;
+    background: rgba(255, 255, 255, 0.06);
+    box-shadow: inset 0 -2px 0 var(--d-ac);
+    border: 0;
+    font-family: 'Archivo', sans-serif;
+    font-size: 1.6vmin;
+}
+
+.menu__btns-wrap {
+    justify-content: flex-end;
+    margin: 2vmin 2.4vmin 2.4vmin;
+    gap: 1vmin;
+}
+
+.menu__container .menu__tats-btn {
+    font-size: 1.6vmin;
+    padding: 1.1vmin 2.6vmin;
+}
+
+/* The second button (close) is the plain one. */
+.menu__btns-wrap .menu__tats-btn:last-child {
+    background: rgba(255, 255, 255, 0.07);
+    color: rgba(255, 255, 255, 0.8);
+    clip-path: none;
+}
+
+.menu__btns-wrap .menu__tats-btn:last-child:hover {
+    background: rgba(255, 255, 255, 0.14);
+    color: #fff;
+}
+
+::-webkit-scrollbar {
+    width: 3px;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    width: 3px;
+    border: 0;
+    border-radius: 0;
+    background: rgba(255, 255, 255, 0.22);
+}
+
+/* ---------- Help keys ---------- */
+
+.help-keys {
+    margin: 2vh;
+    padding: 0;
+    background: none;
+    font-size: 1.45vh;
+    font-weight: 700;
+    font-style: italic;
+    font-stretch: 75%;
+    text-transform: uppercase;
+    text-shadow: 0 0 0.5em rgba(0, 0, 0, 0.9), 0 1px 0.15em rgba(0, 0, 0, 0.9);
+}
+
+.help-keys__button {
+    min-width: 2.4vh;
+    padding: 0.35vh 0.7vh;
+    border-radius: 0.3vh;
+    background: linear-gradient(180deg, #ffffff, #d6d8e0);
+    box-shadow: 0 0.28vh 0 #7d808c;
+    color: #111;
+    font-style: normal;
+    font-weight: 800;
+    font-size: 1.1vh;
+    text-align: center;
+    text-shadow: none;
+}
+
+/* ---------- Minigame ---------- */
+
+.minigame__dialog {
+    top: 6vh;
+    border-radius: 0;
+    background: rgba(14, 15, 19, 0.9);
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.07);
+    clip-path: polygon(0 0, calc(100% - 1.6vh) 0, 100% 1.6vh, 100% 100%, 0 100%);
+}
+
+.minigame__dialog-content {
+    padding: 2.4vh 3.2vh 2vh;
+}
+
+.minigame__dialog-title {
+    margin: 0;
+    font-style: italic;
+    font-weight: 900;
+    font-stretch: 62%;
+    font-size: 4vh;
+    line-height: 0.95;
+    text-transform: uppercase;
+}
+
+.minigame__dialog-desc {
+    margin: 1vh 0 0;
+    font-size: 1.45vh;
+    font-weight: 500;
+    color: var(--d-mute);
+}
+
+.minigame__area {
+    background-color: rgba(255, 255, 255, 0.28);
+    box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.6);
+}
+
+.minigame__cursor {
+    border: 2px solid #fff;
+    background: rgba(200, 16, 46, 0.35);
+}
+
+/* ---------- Touch-ups ---------- */
+
+.menu__tats-controls .menu__tats-btn {
+    white-space: nowrap;
+    padding: 13px 18px;
+    max-width: none;
+}
+
+.menu__part {
+    background: rgba(214, 216, 224, 0.5);
+}
+
+.menu__part-desc {
+    color: rgba(255, 255, 255, 0.85);
+}
+
+#marginMenu .menu__input-wrap > .menu__input-label:first-of-type {
+    margin: 1vmin 0;
+    font-style: italic;
+    font-weight: 900;
+    font-stretch: 62%;
+    font-size: 3.4vmin;
+    color: #fff;
+}

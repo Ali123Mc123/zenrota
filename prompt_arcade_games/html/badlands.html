@@ -1,0 +1,1654 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <style>
+    html, body { margin: 0; width: 100%; height: 100%; overflow: hidden; background: #000;
+      font-family: 'Courier New', monospace; cursor: none; }
+    /* canvas fills the DUI; internal res is fixed 1024x768 (4:3) and letter-boxed by CSS */
+    #c { position: absolute; left: 0; top: 0; width: 100%; height: 100%;
+      image-rendering: pixelated; image-rendering: -moz-crisp-edges; background: #2a1a10; }
+  </style>
+</head>
+<body>
+  <canvas id="c" width="1024" height="768"></canvas>
+  <script>
+  'use strict';
+  // ===========================================================================
+  // BADLANDS REVENGE — co-op Spaghetti-Western light-gun gallery shooter.
+  // Self-contained DUI HTML5 canvas: procedural pixel art + WebAudio only.
+  //  - Up to 2 players share ONE scene with TWO crosshairs (team).
+  //  - ALL input arrives via window 'message' so a Lua/sync layer can drive P1/P2.
+  //  - SOLO mode (default) is 100% playable with only P1 input.
+  //  - simulation (update) is cleanly separated from rendering (render).
+  //  - spawns/RNG are seedable so two clients could converge later.
+  // ===========================================================================
+  var RES = (location.host || '').replace(/^cfx-nui-/, '') || 'prompt_arcade_games';
+
+  // ---- log pipe back to Lua (mirrors gun.html flog) -------------------------
+  function flog(msg) {
+    try {
+      fetch('https://' + RES + '/badlandsLog', {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ msg: String(msg) })
+      }).catch(function () {});
+    } catch (e) {}
+  }
+  window.onerror = function (m, src, ln, col) { flog('JS ERROR: ' + m + ' @' + ln + ':' + col); };
+  flog('script start - host=' + location.host + ' - res=' + RES);
+
+  var cv = document.getElementById('c');
+  var ctx = cv.getContext('2d');
+  var W = 1024, H = 768;
+  // Output split for the cabinet's screen UV. The gun prop is a HALF/HALF UV (two screen regions)
+  // and Badlands is a SHARED co-op scene, so 'shared' mirrors the full scene into BOTH halves —
+  // each physical screen shows the whole game. false = one full-canvas image (dbg / single-UV prop).
+  var SPLIT = 'shared';
+  var _off = document.createElement('canvas'); _off.width = W; _off.height = H;
+  var _offctx = _off.getContext('2d');
+  var GROUND_Y = 560;                // horizon where sand meets the action plane
+
+  // ---------------------------------------------------------------------------
+  // Seeded PRNG (mulberry32) — used for ALL gameplay-affecting randomness so two
+  // seeded clients converge. rnd()/rrange()/rpick() pull from this, NOT Math.random.
+  // ---------------------------------------------------------------------------
+  var _seed = 1 >>> 0;
+  function srand(seed) { _seed = (seed >>> 0) || 1; }
+  function rnd() {
+    _seed |= 0; _seed = (_seed + 0x6D2B79F5) | 0;
+    var t = Math.imul(_seed ^ (_seed >>> 15), 1 | _seed);
+    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  }
+  function rrange(a, b) { return a + (b - a) * rnd(); }
+  // ---- hash RNG (peer mode) — pure function of (seed, n, salt); NOTHING is consumed, so the
+  // two twin sims can never drift apart no matter when/if enemies die on each side.
+  function h32(a) {
+    a |= 0; a = Math.imul(a ^ (a >>> 16), 2246822507); a = Math.imul(a ^ (a >>> 13), 3266489909);
+    return (a ^= a >>> 16) >>> 0;
+  }
+  function hrnd(n, salt) { return h32((sim ? sim.seed : 1) ^ Math.imul(n | 0, 2654435761) ^ Math.imul(salt | 0, 40503)) / 4294967296; }
+  function hrange(n, salt, a, b) { return a + (b - a) * hrnd(n, salt); }
+  function ri(a, b) { return Math.floor(rrange(a, b + 1)); }
+
+  // ---------------------------------------------------------------------------
+  // WebAudio (lazy; western arcade blips). EVERY sound fn is only ever called
+  // from code paths gated by sim.running === true (idle silence contract).
+  // ---------------------------------------------------------------------------
+  var AC = null;
+  var MASTER = null;               // single master GainNode -> destination
+  var masterVol = 0.5;             // master volume 0..1 (default 50%)
+  function actx() {
+    if (AC) return AC;
+    try {
+      AC = new (window.AudioContext || window.webkitAudioContext)();
+      MASTER = AC.createGain();
+      MASTER.gain.value = masterVol;
+      MASTER.connect(AC.destination);
+    }
+    catch (e) { flog('WebAudio unavailable: ' + e); AC = null; MASTER = null; }
+    return AC;
+  }
+  function beep(freq, dur, type, vol) {
+    var a = actx(); if (!a) return;
+    try {
+      var o = a.createOscillator(), g = a.createGain();
+      o.type = type || 'square'; o.frequency.value = freq;
+      g.gain.value = (vol == null ? 0.14 : vol);
+      o.connect(g); g.connect(MASTER || a.destination);
+      var t = a.currentTime;
+      g.gain.setValueAtTime(g.gain.value, t);
+      g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+      o.start(t); o.stop(t + dur);
+    } catch (e) {}
+  }
+  function noiseBurst(dur, vol) {
+    var a = actx(); if (!a) return;
+    try {
+      var n = Math.floor(a.sampleRate * dur);
+      var buf = a.createBuffer(1, n, a.sampleRate);
+      var data = buf.getChannelData(0);
+      for (var i = 0; i < n; i++) data[i] = (Math.random() * 2 - 1) * (1 - i / n);
+      var src = a.createBufferSource(); src.buffer = buf;
+      var g = a.createGain(); g.gain.value = (vol == null ? 0.18 : vol);
+      var f = a.createBiquadFilter(); f.type = 'lowpass'; f.frequency.value = 1400;
+      src.connect(f); f.connect(g); g.connect(MASTER || a.destination);
+      src.start();
+    } catch (e) {}
+  }
+  function sfxShot()   { noiseBurst(0.10, 0.20); beep(150, 0.08, 'sawtooth', 0.10); }
+  function sfxHit()    { beep(440, 0.05, 'square', 0.14); setTimeout(function(){ beep(660, 0.06, 'square', 0.12); }, 25); }
+  function sfxMiss()   { beep(110, 0.10, 'sawtooth', 0.08); }
+  function sfxEmpty()  { beep(90, 0.05, 'square', 0.10); setTimeout(function(){ beep(70, 0.05, 'square', 0.08); }, 60); }
+  function sfxReload() { beep(300, 0.04, 'square', 0.08); setTimeout(function(){ beep(520, 0.06, 'triangle', 0.10); }, 140); }
+  function sfxHurt()   { beep(200, 0.14, 'sawtooth', 0.14); beep(140, 0.18, 'sawtooth', 0.10); }
+  function sfxInnocent(){ beep(180, 0.20, 'sawtooth', 0.16); setTimeout(function(){ beep(120, 0.25, 'sawtooth', 0.14); }, 80); }
+  function sfxWave()   { [392,494,587,784].forEach(function(f,i){ setTimeout(function(){ if (sim.running) beep(f,0.12,'triangle',0.13); }, i*90); }); }
+  function sfxOver()   { [392,294,247,196].forEach(function(f,i){ setTimeout(function(){ if (sim.running) beep(f,0.22,'sawtooth',0.15); }, i*150); }); }
+  function sfxPerk()   { [660,880,1320].forEach(function(f,i){ setTimeout(function(){ if (sim.running) beep(f,0.08,'triangle',0.14); }, i*45); }); }
+  function sfxBoom()   { noiseBurst(0.5, 0.30); beep(70, 0.4, 'sawtooth', 0.18); }
+  function sfxBossHit(){ beep(220, 0.04, 'square', 0.10); }
+  function sfxBossDie(){ [330,262,196,131].forEach(function(f,i){ setTimeout(function(){ if (sim.running) { beep(f,0.3,'sawtooth',0.16); noiseBurst(0.2,0.2); } }, i*130); }); }
+
+  // ---------------------------------------------------------------------------
+  // Constants
+  // ---------------------------------------------------------------------------
+  var PHASE = { TITLE: 'title', PLAY: 'play', OVER: 'over' };
+  var MODE  = { SOLO: 'solo', HOST: 'host', GUEST: 'guest', PEER: 'peer' };
+  // PEER mode (the shipping 2P model): BOTH clients run the FULL sim locally from the shared
+  // seed — my crosshair is 100% local (zero latency). Cross-client traffic is a tiny ~10Hz
+  // packet (partner crosshair/hp/score + a rolling event log: kills, grabs, dynamite) carried
+  // over player statebags by Lua. NOTHING goes through server script — the old host-auth
+  // snapshot relay overflowed FiveM's reliable event channel and crashed clients.
+  // Determinism: all GAMEPLAY randomness in peer mode comes from hash streams (pure functions
+  // of seed+counter — nothing consumed), so kill-timing differences can never desync spawns.
+  var mySlot = 1;           // my seat (1=left, 2=right) — set by the config message
+  var peerAim = null;       // partner's latest crosshair target (lerped into their ghost player)
+  function isPeer() { return sim && sim.mode === MODE.PEER; }
+  function ghostSlot() { return mySlot === 1 ? 2 : 1; }
+  var CYL_MAX = 6;                   // bullets in the cylinder
+  var PLAYER_HP_MAX = 100;
+  var MAX_ENEMIES = 14;
+  var MAX_PARTICLES = 260;
+  var MAX_BULLETS = 60;              // enemy bullets in flight
+  var MAX_POPS = 40;
+
+  // player tint per slot
+  var PCOL = { 1: '#ffb13b', 2: '#3bd6c6' };       // P1 amber, P2 teal
+  var PCOL_DK = { 1: '#a85f10', 2: '#16776c' };
+
+  // ---------------------------------------------------------------------------
+  // PERKS / POWER-UPS. Timed perks store seconds remaining on player.perks.
+  // 'dynamite' is a charge count (player.dynamite); 'special' button throws it.
+  // 'extralife' is consumed instantly into HP on pickup.
+  // ---------------------------------------------------------------------------
+  var PERK = {
+    RAPID:   { key: 'rapid',   dur: 8,  label: 'RAPID',     col: '#ff7a3a', glyph: 'R' },
+    RIFLE:   { key: 'rifle',   dur: 9,  label: 'RIFLE',     col: '#9a7bff', glyph: 'I' },
+    DEADEYE: { key: 'deadeye', dur: 5,  label: 'DEAD-EYE',  col: '#ffe24a', glyph: 'D' },
+    QUICK:   { key: 'quick',   dur: 10, label: 'QUICK-LD',  col: '#5fd06a', glyph: 'Q' },
+    DYN:     { key: 'dyn',     dur: 0,  label: 'DYNAMITE',  col: '#ff4444', glyph: 'X' },
+    LIFE:    { key: 'life',    dur: 0,  label: '+LIFE',     col: '#ff66aa', glyph: '+' }
+  };
+  var PERK_LIST = [PERK.RAPID, PERK.RIFLE, PERK.DEADEYE, PERK.QUICK, PERK.DYN, PERK.LIFE];
+  var RAPID_COOLDOWN = 0.08;         // min seconds between shots while rapid-fire
+
+  // ---------------------------------------------------------------------------
+  // Authoritative simulation state. Kept JSON-able for serializeState().
+  // ---------------------------------------------------------------------------
+  var sim = null;
+  function freshPlayer(slot) {
+    return {
+      slot: slot, active: slot === 1,
+      aim: { x: slot === 1 ? 0.5 : 0.4, y: 0.5 },
+      fire: false, reload: false, special: false,
+      firePrev: false, reloadPrev: false, specialPrev: false,
+      hp: PLAYER_HP_MAX, ammo: CYL_MAX, reloading: 0, recoil: 0,
+      shots: 0, hits: 0, kills: 0,
+      perks: {},                     // perk.key -> seconds remaining (timed perks only)
+      dynamite: 0,                   // dynamite charges (special button)
+      fireCD: 0,                     // rapid-fire cooldown timer
+      muzzle: 0, hurt: 0
+    };
+  }
+  function newSim(mode, seed, players) {
+    srand(seed >>> 0);
+    return {
+      mode: mode || MODE.SOLO,
+      seed: (seed >>> 0) || 1,
+      running: false,                // <- idle-silence master flag
+      phase: PHASE.TITLE,
+      t: 0,                          // sim clock (s)
+      players: { 1: freshPlayer(1), 2: freshPlayer(2) },
+      numPlayers: players || 1,
+      score: 0, combo: 0, bestCombo: 0,
+      wave: 0, waveT: 0, waveBanner: 0, spawnTimer: 0, alive: 0,
+      enemies: [], bullets: [], pickups: [],
+      boss: null, bossWave: 4, bossDefeated: 0,        // every 4th wave = a boss fight
+      slowmo: 0,                                       // dead-eye slow-motion seconds
+      // ---- peer-mode sync state (twin deterministic sims) ----
+      spawnTick: 0, bossTick: 0,     // hash-stream counters (also = enemy id namespaces)
+      pq: 0, peerQ: 0,               // packet seq out / last-applied in (statebag = last-write-wins)
+      evSeq: 0, evApplied: 0, evLog: [],   // rolling event log (kills/grabs/dyn), resent every packet
+      peerScore: 0, myBossDmg: 0, peerBossDmg: 0, peerKo: false, peerOver: false,
+      // fx (render-only but cheap to carry)
+      particles: [], pops: [], shakeT: 0, flashT: 0,
+      overCooldown: 0, sentOver: false
+    };
+  }
+  function pushEv(ev) { ev.n = ++sim.evSeq; sim.evLog.push(ev); if (sim.evLog.length > 8) sim.evLog.shift(); }
+
+  function setActivePlayers(n) {
+    sim.numPlayers = n;
+    sim.players[1].active = true;
+    sim.players[2].active = (n >= 2);
+  }
+
+  // ---------------------------------------------------------------------------
+  // Geometry helpers — aim arrives normalized 0..1; convert to canvas px.
+  // ---------------------------------------------------------------------------
+  function aimPx(p) { return { x: p.aim.x * W, y: p.aim.y * H }; }
+  function isReloadingAim(p) { return p.aim.y > 0.92; }   // aim low = "off-screen" reload gesture
+
+  // ---------------------------------------------------------------------------
+  // Enemies. Spaced into a shallow play-field; bob/peek behaviours.
+  //  kind: 'outlaw' (shoots back), 'runner' (crosses fast), 'innocent' (DON'T shoot)
+  // ---------------------------------------------------------------------------
+  function spawnEnemy(kind) {
+    if (sim.enemies.length >= MAX_ENEMIES) return;
+    var fromLeft = rnd() < 0.5;
+    var depth = rrange(0.25, 1.0);                 // 0 far .. 1 near (scales size)
+    var y = GROUND_Y - 120 * (1 - depth) - rrange(0, 30);
+    var baseScale = 0.6 + depth * 0.7;
+    var e = {
+      id: (sim._eid = (sim._eid || 0) + 1),
+      kind: kind, x: 0, y: y, depth: depth, scale: baseScale,
+      hp: 1, maxhp: 1, dead: false, t: 0,
+      vx: 0, mode: 'popup',
+      popT: 0, popDur: rrange(1.6, 3.2),           // how long it stays up
+      aimT: 0, aimDur: 0, telegraph: 0, hasShot: false,
+      bobP: rnd() * Math.PI * 2,
+      facing: fromLeft ? 1 : -1
+    };
+    if (kind === 'runner') {
+      var spd = 150 + sim.wave * 16 + rrange(0, 60);
+      e.mode = 'run';
+      e.vx = fromLeft ? spd : -spd;
+      e.x = fromLeft ? -40 : W + 40;
+      e.facing = fromLeft ? 1 : -1;
+      e.y = GROUND_Y - 70 - rrange(0, 60);
+      e.aimDur = rrange(0.5, 1.0);
+    } else if (kind === 'innocent') {
+      e.mode = 'popup';
+      e.x = rrange(120, W - 120);
+      e.popDur = rrange(1.4, 2.4);
+      e.scale = baseScale * 0.95;
+    } else { // outlaw
+      e.mode = 'popup';
+      e.x = rrange(110, W - 110);
+      e.aimDur = rrange(0.7, 1.4);                 // delay before it telegraphs a shot
+    }
+    sim.enemies.push(e);
+  }
+
+  // weighted spawn pick scaling with wave
+  function pickSpawnKind() {
+    var roll = rnd();
+    var innoChance = 0.16;
+    var runnerChance = 0.22 + Math.min(0.18, sim.wave * 0.02);
+    if (roll < innoChance) return 'innocent';
+    if (roll < innoChance + runnerChance) return 'runner';
+    return 'outlaw';
+  }
+
+  // ---- PEER-MODE spawn pipeline: identical on both clients by construction. --------------
+  // Every random value is hrnd(id/tick, salt) — a pure hash of the shared seed — so both sims
+  // create the SAME enemy (same id, kind, position, timings) at the same schedule slot.
+  function pickSpawnKindDet(n, salt) {
+    var roll = hrnd(n, salt);
+    var innoChance = 0.16;
+    var runnerChance = 0.22 + Math.min(0.18, sim.wave * 0.02);
+    if (roll < innoChance) return 'innocent';
+    if (roll < innoChance + runnerChance) return 'runner';
+    return 'outlaw';
+  }
+  function spawnEnemyDet(kind, id) {
+    if (sim.enemies.length >= 24) return;           // hard safety cap only (ids are tick-derived,
+                                                    // so a skip on one side can't desync the rest)
+    var fromLeft = hrnd(id, 30) < 0.5;
+    var depth = hrange(id, 31, 0.25, 1.0);
+    var y = GROUND_Y - 120 * (1 - depth) - hrange(id, 32, 0, 30);
+    var baseScale = 0.6 + depth * 0.7;
+    var e = {
+      id: id,
+      kind: kind, x: 0, y: y, depth: depth, scale: baseScale,
+      hp: 1, maxhp: 1, dead: false, t: 0,
+      vx: 0, mode: 'popup',
+      popT: 0, popDur: hrange(id, 33, 1.6, 3.2),
+      aimT: 0, aimDur: 0, telegraph: 0, hasShot: false,
+      bobP: hrnd(id, 34) * Math.PI * 2,
+      facing: fromLeft ? 1 : -1
+    };
+    if (kind === 'runner') {
+      var spd = 150 + sim.wave * 16 + hrange(id, 35, 0, 60);
+      e.mode = 'run';
+      e.vx = fromLeft ? spd : -spd;
+      e.x = fromLeft ? -40 : W + 40;
+      e.facing = fromLeft ? 1 : -1;
+      e.y = GROUND_Y - 70 - hrange(id, 36, 0, 60);
+      e.aimDur = hrange(id, 37, 0.5, 1.0);
+    } else if (kind === 'innocent') {
+      e.mode = 'popup';
+      e.x = hrange(id, 38, 120, W - 120);
+      e.popDur = hrange(id, 39, 1.4, 2.4);
+      e.scale = baseScale * 0.95;
+    } else { // outlaw
+      e.mode = 'popup';
+      e.x = hrange(id, 38, 110, W - 110);
+      e.aimDur = hrange(id, 37, 0.7, 1.4);
+    }
+    sim.enemies.push(e);
+  }
+  // drop decision must not depend on local combo / who killed — pure function of the enemy id,
+  // evaluated identically on both clients when that enemy dies on their screen.
+  function maybeDropPerkDet(e) {
+    if (hrnd(e.id, 21) > 0.11) return;
+    var def = PERK_LIST[Math.floor(hrnd(e.id, 22) * PERK_LIST.length) % PERK_LIST.length];
+    var c = b_center(e);
+    sim.pickups.push({ x: c.x, y: c.y, perk: def, t: 0, life: 7.5, bobP: hrnd(e.id, 23) * Math.PI * 2, pid: e.id });
+  }
+
+  function enemyBodyPx(e) {
+    // returns hit center & radius in canvas px (accounts for popup rise & bob)
+    var rise = 0;
+    if (e.mode === 'popup') {
+      var up = Math.min(1, e.popT / 0.25);          // rise-in
+      var down = e.popT > e.popDur ? Math.min(1, (e.popT - e.popDur) / 0.25) : 0;
+      rise = (1 - up) * 60 + down * 60;             // hidden below when rising/sinking
+    }
+    var bob = Math.sin(e.bobP) * 4 * e.scale;
+    var cx = e.x;
+    var cy = e.y - 46 * e.scale + rise + bob;        // torso/head center
+    var r = 34 * e.scale;
+    return { x: cx, y: cy, r: r, rise: rise };
+  }
+
+  // ---------------------------------------------------------------------------
+  // Enemy bullets (telegraphed shots travel to a player's body line).
+  // ---------------------------------------------------------------------------
+  function fireEnemyBullet(e, targetSlot) {
+    if (sim.bullets.length >= MAX_BULLETS) return;
+    var b = enemyBodyPx(e);
+    var tp = sim.players[targetSlot];
+    var tap = aimPx(tp);
+    // aim toward the player's screen "presence" (we model the shooter shooting the camera/player)
+    var tx = tap.x + rrange(-40, 40), ty = H - 40 + rrange(-20, 20);
+    var dx = tx - b.x, dy = ty - b.y, d = Math.hypot(dx, dy) || 1;
+    var spd = 520;
+    sim.bullets.push({
+      x: b.x, y: b.y, vx: dx / d * spd, vy: dy / d * spd,
+      t: 0, life: 1.4, target: targetSlot, dmg: 12 + sim.wave * 1.5, hit: false
+    });
+  }
+
+  // ---------------------------------------------------------------------------
+  // FX spawners (render-only)
+  // ---------------------------------------------------------------------------
+  function burst(x, y, color, n) {
+    for (var i = 0; i < n && sim.particles.length < MAX_PARTICLES; i++) {
+      var a = rnd() * Math.PI * 2, s = 50 + rnd() * 240;
+      sim.particles.push({ x: x, y: y, vx: Math.cos(a) * s, vy: Math.sin(a) * s - 40,
+        life: 0.4 + rnd() * 0.4, t: 0, color: color, r: 2 + rnd() * 2.5 });
+    }
+  }
+  function popText(x, y, txt, color) {
+    if (sim.pops.length >= MAX_POPS) sim.pops.shift();
+    sim.pops.push({ x: x, y: y, txt: txt, color: color, t: 0, life: 0.9 });
+  }
+
+  // ---------------------------------------------------------------------------
+  // Shooting — resolves a player's shot against enemies.
+  // ---------------------------------------------------------------------------
+  function tryFire(p) {
+    if (sim.phase !== PHASE.PLAY) return;
+    if (p.reloading > 0) return;
+    if (p.fireCD > 0) return;                          // rapid-fire / cadence gate
+    if (isReloadingAim(p)) { startReload(p); return; }
+    if (p.ammo <= 0) { sfxEmpty(); startReload(p); return; }
+
+    var hasRapid = (p.perks[PERK.RAPID.key] || 0) > 0;
+    var hasRifle = (p.perks[PERK.RIFLE.key] || 0) > 0;
+    p.ammo--; p.shots++; p.muzzle = 0.07; p.recoil = 0.12;
+    p.fireCD = hasRapid ? RAPID_COOLDOWN : 0;
+    sim.shakeT = Math.max(sim.shakeT, hasRifle ? 0.10 : 0.06);
+    sfxShot();
+    var ap = aimPx(p);
+
+    // pickups first: aiming over a power-up and firing grabs it
+    for (var pk = sim.pickups.length - 1; pk >= 0; pk--) {
+      var pu = sim.pickups[pk];
+      var pdx = ap.x - pu.x, pdy = ap.y - pu.y;
+      if (pdx * pdx + pdy * pdy <= 30 * 30) {
+        grantPerk(p, pu.perk);
+        if (isPeer() && pu.pid) pushEv({ k: 'grab', id: pu.pid });
+        sim.pickups.splice(pk, 1); /* shot consumed but counts as hit-ish */
+      }
+    }
+
+    // boss takes priority if the reticle is on it
+    if (sim.boss && !sim.boss.dead && bossHitTest(ap.x, ap.y)) {
+      var dmg = hasRifle ? 3 : 1;
+      damageBoss(p, dmg, ap.x, ap.y);
+      return;
+    }
+
+    // RIFLE pierces: hit every enemy under a vertical column at the aim x near aim y
+    if (hasRifle) {
+      var anyHit = false;
+      for (var ri2 = sim.enemies.length - 1; ri2 >= 0; ri2--) {
+        var er = sim.enemies[ri2]; if (er.dead) continue;
+        var br = enemyBodyPx(er); if (br.rise > 50) continue;
+        var ddx = ap.x - br.x, ddy = ap.y - br.y;
+        if (Math.abs(ddx) <= br.r + 6 && Math.abs(ddy) <= br.r + 30) { resolveEnemyShot(p, er); anyHit = true; }
+      }
+      if (!anyHit) { sim.combo = 0; sfxMiss(); burst(ap.x, ap.y, '#caa', 4); }
+      return;
+    }
+
+    // normal single-shot: hit-test nearest-first (near enemies are drawn on top)
+    var hitIdx = -1, bestDepth = -1;
+    for (var i = 0; i < sim.enemies.length; i++) {
+      var e = sim.enemies[i]; if (e.dead) continue;
+      var b = enemyBodyPx(e);
+      if (b.rise > 50) continue;                     // still hidden
+      var dx = ap.x - b.x, dy = ap.y - b.y;
+      if (dx * dx + dy * dy <= b.r * b.r && e.depth > bestDepth) { bestDepth = e.depth; hitIdx = i; }
+    }
+    if (hitIdx < 0) { sim.combo = 0; sfxMiss(); burst(ap.x, ap.y, '#caa', 4); return; }
+    resolveEnemyShot(p, sim.enemies[hitIdx]);
+  }
+
+  // shared kill/penalty resolution for one enemy struck by player p
+  function resolveEnemyShot(p, tg) {
+    if (tg.dead) return;
+    if (tg.kind === 'innocent') {
+      tg.dead = true; tg.deadT = 0;
+      sim.combo = 0; p.hp = Math.max(0, p.hp - 20);
+      sim.score = Math.max(0, sim.score - 250);
+      p.hurt = 0.4; sim.shakeT = 0.22; sim.flashT = 0.18;
+      sfxInnocent(); burst(b_center(tg).x, b_center(tg).y, '#e8d8b0', 18);
+      popText(tg.x, tg.y - 70, '-250  INNOCENT!', '#ff5555');
+      if (isPeer()) pushEv({ k: 'kill', id: tg.id, nd: 1 });   // partner sees it fall; penalty is MINE only
+      checkDeath();
+      return;
+    }
+    tg.dead = true; tg.deadT = 0; p.hits++; p.kills++;
+    sim.combo++; if (sim.combo > sim.bestCombo) sim.bestCombo = sim.combo;
+    var mult = 1 + Math.floor(sim.combo / 5) * 0.5;
+    var base = tg.kind === 'runner' ? 150 : 100;
+    var gained = Math.round(base * mult);
+    sim.score += gained;
+    sfxHit();
+    var c = b_center(tg);
+    burst(c.x, c.y, '#cc5533', 16);
+    popText(tg.x, tg.y - 70, '+' + gained + (mult > 1 ? ' x' + mult.toFixed(1) : ''), PCOL[p.slot]);
+    if (isPeer()) { pushEv({ k: 'kill', id: tg.id }); maybeDropPerkDet(tg); }
+    else maybeDropPerk(tg, p);
+  }
+  function b_center(e) { var b = enemyBodyPx(e); return { x: b.x, y: b.y }; }
+
+  function startReload(p) {
+    if (p.reloading > 0 || p.ammo === CYL_MAX) return;
+    p.reloading = (p.perks[PERK.QUICK.key] || 0) > 0 ? 0.35 : 0.95;
+    sfxReload();
+  }
+
+  // ---------------------------------------------------------------------------
+  // PERKS — grant, drop, dynamite throw.
+  // ---------------------------------------------------------------------------
+  function grantPerk(p, def) {
+    sfxPerk();
+    if (def.key === PERK.LIFE.key) {
+      p.hp = Math.min(PLAYER_HP_MAX, p.hp + 50);
+      popText(p.aim.x * W, p.aim.y * H - 30, '+50 HP', def.col);
+    } else if (def.key === PERK.DYN.key) {
+      p.dynamite = Math.min(3, p.dynamite + 1);
+      popText(p.aim.x * W, p.aim.y * H - 30, 'DYNAMITE  (SPECIAL)', def.col);
+    } else {
+      p.perks[def.key] = def.dur;                       // refresh/extend timed perk
+      popText(p.aim.x * W, p.aim.y * H - 30, def.label + '!', def.col);
+    }
+  }
+  // outlaws/runners occasionally drop a pickup the player can grab by aim+fire
+  function maybeDropPerk(e, p) {
+    var combo = sim.combo;
+    var chance = 0.07 + Math.min(0.08, combo * 0.004);   // higher combo = better drops
+    if (rnd() > chance) return;
+    var c = b_center(e);
+    var def = PERK_LIST[ri(0, PERK_LIST.length - 1)];
+    sim.pickups.push({ x: c.x, y: c.y, perk: def, t: 0, life: 7.5, bobP: rnd() * Math.PI * 2 });
+  }
+
+  function throwDynamite(p) {
+    if (p.dynamite <= 0) return;
+    p.dynamite--;
+    sfxBoom();
+    sim.shakeT = 0.4; sim.flashT = 0.25;
+    var ap = aimPx(p);
+    burst(ap.x, ap.y, '#ffaa33', 50);
+    // clear all on-screen outlaws/runners (NOT innocents), damage boss
+    var cleared = 0;
+    for (var i = 0; i < sim.enemies.length; i++) {
+      var e = sim.enemies[i]; if (e.dead) continue;
+      var b = enemyBodyPx(e); if (b.rise > 55) continue;
+      if (e.kind === 'innocent') continue;              // dynamite spares friends
+      e.dead = true; e.deadT = 0; p.kills++; cleared++;
+      sim.score += 75;
+      burst(b.x, b.y, '#cc5533', 10);
+      if (isPeer()) pushEv({ k: 'kill', id: e.id, nd: 1 });   // nd: blast kills drop no perks
+    }
+    if (isPeer()) pushEv({ k: 'dyn', x: Math.round(ap.x / W * 1000), y: Math.round(ap.y / H * 1000) });
+    if (sim.boss && !sim.boss.dead) { damageBoss(p, 12, sim.boss.x, sim.boss.y - 40); }
+    if (cleared > 0) { sim.combo += cleared; if (sim.combo > sim.bestCombo) sim.bestCombo = sim.combo; }
+    popText(W / 2, H * 0.4, 'BOOM!  +' + cleared, '#ffaa33');
+  }
+
+  // ---------------------------------------------------------------------------
+  // BOSS — bandit chief on a gatling wagon. Rolls in, parks, telegraphs gatling
+  // bursts, has a HP bar. Killing it ends the boss wave with a big bonus.
+  // ---------------------------------------------------------------------------
+  function spawnBoss() {
+    var hp = 60 + sim.bossDefeated * 30;                 // scales each boss
+    sim.myBossDmg = 0; sim.peerBossDmg = 0;              // per-boss cumulative damage (peer mode)
+    sim.boss = {
+      x: -180, y: GROUND_Y - 30, targetX: W * 0.5,
+      hp: hp, maxhp: hp, dead: false, deadT: 0,
+      state: 'enter', t: 0, wheelP: 0,
+      atkT: 0, atkEvery: 3.2, telegraph: 0, burst: 0, burstT: 0, burstTarget: 1,
+      hitFlash: 0
+    };
+    sim.waveBanner = 2.4;
+    popText(W / 2, 150, 'BANDIT CHIEF!', '#ff4444');
+  }
+
+  function bossHitTest(x, y) {
+    var bo = sim.boss; if (!bo) return false;
+    // weak point = the chief's torso atop the wagon
+    var cx = bo.x, cy = bo.y - 96;
+    return Math.abs(x - cx) <= 60 && Math.abs(y - cy) <= 64;
+  }
+
+  function damageBoss(p, dmg, fx, fy) {
+    var bo = sim.boss; if (!bo || bo.dead) return;
+    if (isPeer()) {
+      // shared boss HP without events: each side accumulates its OWN damage total and ships it
+      // in the 10Hz packet; effective hp = max - mine - theirs. Totals are cumulative, so a
+      // lost/reordered packet self-heals on the next one.
+      sim.myBossDmg += dmg;
+    } else {
+      bo.hp = Math.max(0, bo.hp - dmg);
+    }
+    bo.hitFlash = 0.12; p.hits++;
+    sfxBossHit(); burst(fx, fy, '#ffcf5a', 6);
+    sim.score += 25 * dmg;
+    checkBossDead(p);
+  }
+  function bossEffHp() {
+    var bo = sim.boss; if (!bo) return 0;
+    return isPeer() ? Math.max(0, bo.maxhp - sim.myBossDmg - sim.peerBossDmg) : bo.hp;
+  }
+  function checkBossDead(p) {
+    var bo = sim.boss; if (!bo || bo.dead) return;
+    if (bossEffHp() > 0) return;
+    bo.hp = 0;
+    bo.dead = true; bo.deadT = 0; bo.state = 'dying';
+    if (p) p.kills++;
+    sim.bossDefeated++;
+    sim.score += 1500; sim.combo += 10;
+    if (sim.combo > sim.bestCombo) sim.bestCombo = sim.combo;
+    sfxBossDie(); sim.shakeT = 0.5; sim.flashT = 0.3;
+    burst(bo.x, bo.y - 80, '#ffaa33', 60);
+    popText(W / 2, H * 0.4, 'CHIEF DOWN!  +1500', '#ffd23f');
+  }
+
+  function updateBoss(dt) {
+    var bo = sim.boss; if (!bo) return;
+    bo.t += dt; bo.wheelP += dt * 4;
+    if (bo.hitFlash > 0) bo.hitFlash -= dt;
+
+    if (bo.dead) {
+      bo.deadT += dt;
+      if (bo.deadT % 0.15 < dt) burst(bo.x + rrange(-50, 50), bo.y - rrange(0, 90), '#ff7733', 5);
+      if (bo.deadT > 1.6) { sim.boss = null; }            // clear; play resumes next-wave spawning
+      return;
+    }
+
+    if (bo.state === 'enter') {
+      bo.x += (bo.targetX - bo.x) * Math.min(1, dt * 1.6);
+      if (Math.abs(bo.x - bo.targetX) < 6) { bo.x = bo.targetX; bo.state = 'fight'; bo.atkT = 1.0; }
+      return;
+    }
+    // fight: drift side to side + run gatling bursts
+    bo.x = bo.targetX + Math.sin(bo.t * 0.6) * 160;
+    bo.atkT -= dt;
+    if (bo.burst > 0) {
+      bo.burstT -= dt;
+      if (bo.burstT <= 0) {
+        bo.burst--; bo.burstT = 0.16;
+        var cx = bo.x, cy = bo.y - 70;
+        var tp = sim.players[bo.burstTarget];
+        fireBossBullet(cx, cy, bo.burstTarget);
+      }
+    } else if (bo.atkT <= 0) {
+      // telegraph then unleash a burst
+      bo.telegraph += dt;
+      if (bo.telegraph > 0.8) {
+        bo.telegraph = 0; bo.atkT = bo.atkEvery; bo.burst = 5; bo.burstT = 0;
+        bo.burstTarget = pickTargetSlot();
+      }
+    }
+  }
+  function fireBossBullet(cx, cy, targetSlot) {
+    if (sim.bullets.length >= MAX_BULLETS) return;
+    var tp = sim.players[targetSlot]; var tap = aimPx(tp);
+    var tx = tap.x + rrange(-60, 60), ty = H - 40;
+    var dx = tx - cx, dy = ty - cy, d = Math.hypot(dx, dy) || 1;
+    var spd = 560;
+    sim.bullets.push({ x: cx, y: cy, vx: dx / d * spd, vy: dy / d * spd, t: 0, life: 1.6,
+      target: targetSlot, dmg: 9 + sim.wave, hit: false, boss: true });
+  }
+
+  // ---------------------------------------------------------------------------
+  // Damage / death
+  // ---------------------------------------------------------------------------
+  function damagePlayer(p, dmg) {
+    p.hp = Math.max(0, p.hp - dmg);
+    p.hurt = 0.4; sim.shakeT = Math.max(sim.shakeT, 0.18); sim.flashT = 0.16;
+    sfxHurt();
+    checkDeath();
+  }
+  function checkDeath() {
+    // team is down only when ALL active players are at 0 hp
+    var anyAlive = false;
+    if (sim.players[1].active && sim.players[1].hp > 0) anyAlive = true;
+    if (sim.players[2].active && sim.players[2].hp > 0) anyAlive = true;
+    if (!anyAlive) gameOver();
+  }
+
+  // ---------------------------------------------------------------------------
+  // Lifecycle
+  // ---------------------------------------------------------------------------
+  function startGame() {
+    var mode = sim.mode, seed = sim.seed, np = sim.numPlayers;
+    sim = newSim(mode, seed, np);
+    setActivePlayers(np);
+    peerAim = null;
+    sim.running = true;
+    sim.phase = PHASE.PLAY;
+    sim.wave = 1; sim.waveT = 0; sim.waveBanner = 2.2; sim.spawnTimer = 0.6;
+    flog('startGame mode=' + mode + ' seed=' + seed + ' players=' + np);
+    sfxWave();
+  }
+  function resetToTitle() {
+    var mode = sim.mode, seed = sim.seed, np = sim.numPlayers;
+    sim = newSim(mode, seed, np);
+    setActivePlayers(np);
+    sim.running = false;             // idle-silence: no audio, no self-play
+    sim.phase = PHASE.TITLE;
+    peerAim = null;
+    flog('resetToTitle');
+  }
+  function gameOver() {
+    if (sim.phase === PHASE.OVER) return;
+    sim.phase = PHASE.OVER; sim.overCooldown = 1.2;
+    sfxOver();
+    if (!sim.sentOver) {
+      sim.sentOver = true;
+      var total = Math.round(sim.score + (sim.peerScore || 0));   // co-op: both post the TEAM score
+      flog('gameOver score=' + total + ' (mine=' + Math.round(sim.score) + ')');
+      try {
+        fetch('https://' + RES + '/badlandsOver', {
+          method: 'POST', headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ score: total })
+        }).catch(function () {});
+      } catch (e) {}
+    }
+  }
+
+  // ---------------------------------------------------------------------------
+  // INPUT — all via window 'message'. We only store latest input on the sim;
+  // edges (fire/reload/special press) are consumed in update() so the sync
+  // layer just keeps setting booleans.
+  // ---------------------------------------------------------------------------
+  function applyInput(d) {
+    var slot = (d.player === 2) ? 2 : 1;
+    if (isPeer() && slot !== mySlot) return;         // partner's ghost is driven by packets, not input
+    var p = sim.players[slot];
+    if (!p) return;
+    if (slot === 2 && !p.active) return;             // ignore P2 in solo
+    if (d.aim && typeof d.aim.x === 'number') {
+      p.aim.x = Math.max(0, Math.min(1, d.aim.x));
+      p.aim.y = Math.max(0, Math.min(1, d.aim.y));
+    }
+    p.fire = !!d.fire; p.reload = !!d.reload; p.special = !!d.special;
+  }
+
+  // edge-trigger consumption happens here each tick
+  function consumeInputs(dt) {
+    for (var s = 1; s <= 2; s++) {
+      if (isPeer() && s !== mySlot) continue;        // I only ever fire MY revolver locally
+      var p = sim.players[s];
+      if (!p.active) continue;
+      // fire: one shot per press normally; rapid-fire perk lets a HELD fire auto-repeat
+      var rapid = (p.perks[PERK.RAPID.key] || 0) > 0;
+      if (p.fire && (!p.firePrev || (rapid && p.fireCD <= 0))) tryFire(p);
+      // reload edge
+      if (p.reload && !p.reloadPrev) startReload(p);
+      // special edge (perk / dynamite)
+      if (p.special && !p.specialPrev) trySpecial(p);
+      p.firePrev = p.fire; p.reloadPrev = p.reload; p.specialPrev = p.special;
+    }
+  }
+  function trySpecial(p) {
+    if (sim.phase !== PHASE.PLAY) return;
+    if (p.dynamite > 0) { throwDynamite(p); return; }
+    // no dynamite: if dead-eye perk is held, trigger a slow-mo aim window
+    if ((p.perks[PERK.DEADEYE.key] || 0) > 0 && sim.slowmo <= 0) {
+      sim.slowmo = 1.6;
+      popText(p.aim.x * W, p.aim.y * H - 40, 'DEAD-EYE!', PERK.DEADEYE.col);
+    }
+  }
+
+  // ---------------------------------------------------------------------------
+  // UPDATE — advances authoritative state from both players' inputs.
+  // In guest mode we DON'T simulate; we render the last applied snapshot.
+  // ---------------------------------------------------------------------------
+  function update(dt) {
+    if (sim.mode === MODE.GUEST) { tickFxOnly(dt); return; }
+    if (!sim.running) { tickFxOnly(dt); return; }   // idle: title visible, no sim, no audio
+
+    sim.t += dt;
+    if (sim.shakeT > 0) sim.shakeT -= dt;
+    if (sim.flashT > 0) sim.flashT -= dt;
+
+    consumeInputs(dt);
+
+    // dead-eye slow-motion factor (affects enemy/bullet movement, not UI/timers)
+    if (sim.slowmo > 0) sim.slowmo -= dt;
+
+    // per-player timers (real-time, NOT slowed)
+    for (var s = 1; s <= 2; s++) {
+      var p = sim.players[s]; if (!p.active) continue;
+      if (p.muzzle > 0) p.muzzle -= dt;
+      if (p.recoil > 0) p.recoil -= dt;
+      if (p.hurt > 0) p.hurt -= dt;
+      if (p.fireCD > 0) p.fireCD -= dt;
+      if (p.reloading > 0) {
+        p.reloading -= dt;
+        if (p.reloading <= 0) { p.reloading = 0; p.ammo = CYL_MAX; }
+      }
+      // tick down timed perks
+      for (var pk in p.perks) {
+        if (p.perks[pk] > 0) { p.perks[pk] -= dt; if (p.perks[pk] <= 0) delete p.perks[pk]; }
+      }
+    }
+
+    // peer mode: smooth the partner's ghost crosshair toward its last packet target (10Hz -> 60fps)
+    if (isPeer() && peerAim) {
+      var gp = sim.players[ghostSlot()];
+      var k = Math.min(1, dt * 10);
+      gp.aim.x += (peerAim.x - gp.aim.x) * k;
+      gp.aim.y += (peerAim.y - gp.aim.y) * k;
+      if (gp.muzzle > 0) gp.muzzle -= dt;
+    }
+
+    if (sim.phase === PHASE.PLAY) updatePlay(dt);
+    if (sim.phase === PHASE.OVER && sim.overCooldown > 0) sim.overCooldown -= dt;
+
+    tickFxOnly(dt);
+  }
+
+  function updatePlay(dt) {
+    var sdt = sim.slowmo > 0 ? dt * 0.35 : dt;          // dead-eye slows the world
+    var bossActive = !!sim.boss;
+
+    if (!bossActive) {
+      sim.waveT += dt;
+      if (sim.waveBanner > 0) sim.waveBanner -= dt;
+
+      // wave cadence: every ~16s advance the wave
+      var targetWave = 1 + Math.floor(sim.waveT / 16);
+      if (targetWave !== sim.wave) {
+        sim.wave = targetWave;
+        if (sim.wave % sim.bossWave === 0) {
+          spawnBoss(); sfxWave();
+        } else {
+          sim.waveBanner = 2.2; sfxWave();
+          popText(W * 0.5, 140, 'WAVE ' + sim.wave, '#ffd23f');
+        }
+      }
+
+      // spawning (paused during boss fights)
+      sim.spawnTimer -= dt;
+      if (sim.spawnTimer <= 0) {
+        var every = Math.max(0.55, 1.5 - sim.wave * 0.10);
+        if (isPeer()) {
+          // hash-stream schedule: tick n produces the same interval/kind/enemy on both clients
+          var n = ++sim.spawnTick;
+          sim.spawnTimer = every * hrange(n, 1, 0.7, 1.3);
+          spawnEnemyDet(pickSpawnKindDet(n, 2), n * 2);
+          if (sim.wave >= 3 && hrnd(n, 3) < 0.35) spawnEnemyDet(pickSpawnKindDet(n, 4), n * 2 + 1);
+        } else {
+          sim.spawnTimer = every * rrange(0.7, 1.3);
+          spawnEnemy(pickSpawnKind());
+          if (sim.wave >= 3 && rnd() < 0.35) spawnEnemy(pickSpawnKind());
+        }
+      }
+    } else {
+      if (sim.waveBanner > 0) sim.waveBanner -= dt;
+      // occasional adds during the boss fight to keep it lively
+      sim.spawnTimer -= dt;
+      if (sim.spawnTimer <= 0) {
+        if (isPeer()) {
+          var bn = ++sim.bossTick;
+          sim.spawnTimer = hrange(bn, 11, 2.5, 4.5);
+          if (hrnd(bn, 12) < 0.6) spawnEnemyDet(hrnd(bn, 13) < 0.5 ? 'runner' : 'outlaw', 100000 + bn);
+        } else {
+          sim.spawnTimer = rrange(2.5, 4.5);
+          if (rnd() < 0.6) spawnEnemy(rnd() < 0.5 ? 'runner' : 'outlaw');
+        }
+      }
+      updateBoss(isPeer() ? dt : sdt);
+    }
+
+    // peer twin-sims: enemy/boss CLOCKS must stay aligned across clients, so dead-eye slow-mo
+    // (a local perk) slows only the bullets flying at ME — not the shared enemy timeline.
+    updateEnemies(isPeer() ? dt : sdt);
+    updateBullets(sdt);
+    updatePickups(dt);                                   // pickups expire in real time
+  }
+
+  function updatePickups(dt) {
+    for (var i = sim.pickups.length - 1; i >= 0; i--) {
+      var pu = sim.pickups[i]; pu.t += dt; pu.bobP += dt * 4;
+      // auto-collect if any active player's reticle hovers it (gun-game friendly)
+      var grabbed = false;
+      for (var s = 1; s <= 2 && !grabbed; s++) {
+        if (isPeer() && s !== mySlot) continue;        // partner grabs on THEIR sim; we get the event
+        var p = sim.players[s]; if (!p.active || p.hp <= 0) continue;
+        var ap = aimPx(p);
+        if (Math.abs(ap.x - pu.x) <= 26 && Math.abs(ap.y - pu.y) <= 26) {
+          grantPerk(p, pu.perk); grabbed = true;
+          if (isPeer() && pu.pid) pushEv({ k: 'grab', id: pu.pid });
+        }
+      }
+      if (grabbed || pu.t >= pu.life) sim.pickups.splice(i, 1);
+    }
+  }
+
+  function updateEnemies(dt) {
+    sim.alive = 0;
+    for (var i = sim.enemies.length - 1; i >= 0; i--) {
+      var e = sim.enemies[i];
+      e.t += dt; e.bobP += dt * 3;
+
+      if (e.dead) {
+        e.deadT = (e.deadT || 0) + dt;
+        if (e.deadT > 0.4) sim.enemies.splice(i, 1);
+        continue;
+      }
+      sim.alive++;
+
+      if (e.mode === 'run') {
+        e.x += e.vx * dt;
+        // runners take a pot-shot mid-screen
+        if (!e.hasShot && e.x > W * 0.3 && e.x < W * 0.7) {
+          e.telegraph += dt;
+          if (e.telegraph > e.aimDur) { e.hasShot = true; e.telegraph = 0; fireEnemyBullet(e, pickTargetSlot()); }
+        }
+        if ((e.vx > 0 && e.x > W + 50) || (e.vx < 0 && e.x < -50)) {
+          sim.enemies.splice(i, 1);                  // crossed off — no penalty (it's a gallery)
+        }
+        continue;
+      }
+
+      // popup behaviour: rise -> (outlaw telegraphs & fires) -> sink -> remove
+      e.popT += dt;
+      if (e.kind === 'outlaw') {
+        // once fully up, build a telegraph then fire (unless we're sinking)
+        if (e.popT > 0.3 && e.popT < e.popDur && !e.hasShot) {
+          e.aimT += dt;
+          if (e.aimT > e.aimDur) {
+            e.telegraph += dt;
+            if (e.telegraph > 0.55) { e.hasShot = true; fireEnemyBullet(e, pickTargetSlot()); }
+          }
+        }
+      }
+      if (e.popT > e.popDur + 0.3) {
+        sim.enemies.splice(i, 1);                    // sank back down (missed your shot, no penalty)
+      }
+    }
+  }
+
+  // choose which player an enemy shoots at (prefer a random active one)
+  function pickTargetSlot() {
+    var actives = [];
+    if (sim.players[1].active && sim.players[1].hp > 0) actives.push(1);
+    if (sim.players[2].active && sim.players[2].hp > 0) actives.push(2);
+    if (!actives.length) return 1;
+    return actives[ri(0, actives.length - 1)];
+  }
+
+  function updateBullets(dt) {
+    for (var i = sim.bullets.length - 1; i >= 0; i--) {
+      var b = sim.bullets[i];
+      b.t += dt;
+      b.x += b.vx * dt; b.y += b.vy * dt;
+      // bullet "lands" when it reaches the player line near bottom of screen
+      if (!b.hit && b.y >= H - 46) {
+        b.hit = true;
+        var tp = sim.players[b.target];
+        // peer mode: each sim only damages ITS OWN player — the partner's hp is authoritative
+        // on their machine and arrives via packets. Shots at their ghost are visual only.
+        if (tp && tp.active && tp.hp > 0 && (!isPeer() || b.target === mySlot)) damagePlayer(tp, b.dmg);
+        sim.bullets.splice(i, 1);
+        continue;
+      }
+      if (b.t > b.life || b.x < -40 || b.x > W + 40 || b.y > H + 40) sim.bullets.splice(i, 1);
+    }
+  }
+
+  // FX always tick (cheap, render-only, safe in any mode/phase)
+  function tickFxOnly(dt) {
+    for (var p = sim.particles.length - 1; p >= 0; p--) {
+      var pa = sim.particles[p]; pa.t += dt;
+      if (pa.t >= pa.life) { sim.particles.splice(p, 1); continue; }
+      pa.x += pa.vx * dt; pa.y += pa.vy * dt; pa.vy += 380 * dt;
+    }
+    for (var f = sim.pops.length - 1; f >= 0; f--) {
+      var fl = sim.pops[f]; fl.t += dt; fl.y -= 26 * dt;
+      if (fl.t >= fl.life) sim.pops.splice(f, 1);
+    }
+  }
+
+  // ===========================================================================
+  // RENDERING
+  // ===========================================================================
+  function drawBackground() {
+    // sky gradient (dawn western)
+    var g = ctx.createLinearGradient(0, 0, 0, GROUND_Y);
+    g.addColorStop(0, '#6fb7d6'); g.addColorStop(0.6, '#cfe3df'); g.addColorStop(1, '#f2d9a0');
+    ctx.fillStyle = g; ctx.fillRect(0, 0, W, GROUND_Y);
+
+    // sun
+    ctx.save(); ctx.globalAlpha = 0.8;
+    ctx.fillStyle = '#fff2c8'; ctx.beginPath(); ctx.arc(W * 0.78, 120, 56, 0, Math.PI * 2); ctx.fill();
+    ctx.restore();
+
+    // far mesas (red rock) — deterministic shapes
+    drawMesa(120, GROUND_Y, 260, 170, '#a44a2e');
+    drawMesa(430, GROUND_Y, 200, 130, '#b85636');
+    drawMesa(720, GROUND_Y, 300, 200, '#9e4329');
+    drawMesa(940, GROUND_Y, 180, 120, '#b85636');
+
+    // ground (sand)
+    var gg = ctx.createLinearGradient(0, GROUND_Y, 0, H);
+    gg.addColorStop(0, '#e0c074'); gg.addColorStop(1, '#caa257');
+    ctx.fillStyle = gg; ctx.fillRect(0, GROUND_Y, W, H - GROUND_Y);
+
+    // footprint trails (little dotted arcs)
+    ctx.save(); ctx.globalAlpha = 0.25; ctx.fillStyle = '#8a6a3a';
+    for (var i = 0; i < 26; i++) {
+      var fx = (i * 73) % W, fy = GROUND_Y + 20 + (i * 37) % (H - GROUND_Y - 20);
+      ctx.beginPath(); ctx.ellipse(fx, fy, 5, 3, (i % 2 ? 0.4 : -0.4), 0, Math.PI * 2); ctx.fill();
+    }
+    ctx.restore();
+
+    // scattered cacti & a barrel as cover/props (static, decorative)
+    drawCactus(90, GROUND_Y + 8, 1.1);
+    drawCactus(W - 130, GROUND_Y + 18, 1.3);
+    drawCactus(W * 0.5 - 40, GROUND_Y - 6, 0.8);
+    drawBarrel(W * 0.33, GROUND_Y + 70, 1.0);
+    drawBarrel(W * 0.66, GROUND_Y + 96, 1.15);
+  }
+
+  function drawMesa(cx, baseY, w, h, col) {
+    ctx.fillStyle = col;
+    var x0 = cx - w / 2, x1 = cx + w / 2, top = baseY - h;
+    ctx.beginPath();
+    ctx.moveTo(x0, baseY);
+    ctx.lineTo(x0 + w * 0.10, top + h * 0.12);
+    ctx.lineTo(x0 + w * 0.18, top);
+    ctx.lineTo(x1 - w * 0.18, top);
+    ctx.lineTo(x1 - w * 0.10, top + h * 0.12);
+    ctx.lineTo(x1, baseY);
+    ctx.closePath(); ctx.fill();
+    // shadow band
+    ctx.fillStyle = 'rgba(0,0,0,0.12)';
+    ctx.fillRect(x0, baseY - h * 0.22, w, h * 0.22);
+  }
+
+  function drawCactus(x, y, s) {
+    ctx.save(); ctx.translate(x, y); ctx.scale(s, s);
+    ctx.fillStyle = '#3f7d3a';
+    ctx.fillRect(-8, -70, 16, 70);                   // trunk
+    ctx.fillRect(-26, -50, 10, 30); ctx.fillRect(-26, -50, 18, 10);   // left arm
+    ctx.fillRect(16, -58, 10, 34); ctx.fillRect(8, -58, 18, 10);      // right arm
+    ctx.fillStyle = 'rgba(0,0,0,0.15)'; ctx.fillRect(-8, -70, 5, 70);
+    ctx.restore();
+  }
+  function drawBarrel(x, y, s) {
+    ctx.save(); ctx.translate(x, y); ctx.scale(s, s);
+    ctx.fillStyle = '#7a4a23'; ctx.fillRect(-18, -42, 36, 42);
+    ctx.fillStyle = '#5e3717'; ctx.fillRect(-18, -34, 36, 5); ctx.fillRect(-18, -12, 36, 5);
+    ctx.fillStyle = 'rgba(255,255,255,0.08)'; ctx.fillRect(-16, -42, 6, 42);
+    ctx.restore();
+  }
+
+  // procedural cowboy / townsfolk sprite (pixel-blocky)
+  function drawPerson(cx, cy, scale, type, facing, telegraph) {
+    ctx.save();
+    ctx.translate(cx, cy);
+    ctx.scale(facing * scale, scale);
+    // colors per type
+    var shirt = type === 'innocent' ? '#d8c089' : (type === 'runner' ? '#7a3b3b' : (type === 'boss' ? '#6a1a1a' : '#5a4a6a'));
+    var hat   = type === 'innocent' ? '#caa45a' : (type === 'boss' ? '#1a1010' : '#2a2018');
+    var skin  = '#caa07a';
+    // body (torso) — origin at feet (0,0), build upward
+    ctx.fillStyle = '#3a2a1a'; ctx.fillRect(-12, -22, 24, 22);   // legs/pants
+    ctx.fillStyle = shirt;     ctx.fillRect(-14, -44, 28, 24);   // torso
+    ctx.fillStyle = skin;      ctx.fillRect(-9, -60, 18, 16);    // head
+    // hat
+    ctx.fillStyle = hat; ctx.fillRect(-15, -62, 30, 6); ctx.fillRect(-9, -70, 18, 9);
+    if (type === 'innocent') {
+      // hands UP (surrender) — arms raised
+      ctx.fillStyle = skin;
+      ctx.fillRect(-20, -64, 6, 22); ctx.fillRect(14, -64, 6, 22);
+    } else {
+      // gun arm extended forward (right side after facing scale)
+      ctx.fillStyle = skin; ctx.fillRect(10, -42, 16, 6);
+      ctx.fillStyle = '#222'; ctx.fillRect(24, -43, 10, 5);      // pistol
+      if (telegraph && telegraph > 0) {
+        // muzzle telegraph glow
+        ctx.save(); ctx.globalAlpha = Math.min(1, telegraph) * 0.9;
+        ctx.fillStyle = '#ffd25a';
+        ctx.beginPath(); ctx.arc(34, -41, 5 + telegraph * 4, 0, Math.PI * 2); ctx.fill();
+        ctx.restore();
+      }
+    }
+    ctx.restore();
+  }
+
+  function drawEnemy(e) {
+    var b = enemyBodyPx(e);
+    if (b.rise > 56) return;                          // fully hidden
+    var feetY = e.y + b.rise * 0; // body center already accounts; compute feet
+    // We drew person from feet up, so feet ≈ center + 46*scale
+    var fy = b.y + 46 * e.scale;
+    // clip popup so they appear to rise from behind cover
+    ctx.save();
+    if (e.mode === 'popup' && b.rise > 0) {
+      ctx.beginPath(); ctx.rect(e.x - 60, 0, 120, fy - b.rise + 8); ctx.clip();
+    }
+    var tele = (e.kind === 'outlaw' && e.hasShot === false && e.telegraph > 0) ? e.telegraph / 0.55 : 0;
+    if (e.dead) {
+      ctx.globalAlpha = Math.max(0, 1 - (e.deadT || 0) / 0.4);
+    }
+    drawPerson(e.x, fy, e.scale, e.kind, e.facing, tele);
+    ctx.restore();
+    // innocent marker (so players can tell): small "!" surrender flag
+    if (e.kind === 'innocent' && !e.dead) {
+      ctx.save();
+      ctx.fillStyle = '#2b7d2b'; ctx.font = 'bold 16px monospace'; ctx.textAlign = 'center';
+      ctx.fillText('FRIEND', e.x, b.y - 36 * e.scale);
+      ctx.restore();
+    }
+  }
+
+  function drawBullet(b) {
+    ctx.save();
+    var col = b.boss ? '#ff5a3a' : '#ffcf5a';
+    ctx.fillStyle = col; ctx.shadowColor = '#ff8a3a'; ctx.shadowBlur = 8;
+    ctx.beginPath(); ctx.arc(b.x, b.y, b.boss ? 5 : 4, 0, Math.PI * 2); ctx.fill();
+    // little tracer
+    ctx.globalAlpha = 0.5; ctx.strokeStyle = '#ffb24a'; ctx.lineWidth = 2;
+    ctx.beginPath(); ctx.moveTo(b.x, b.y); ctx.lineTo(b.x - b.vx * 0.02, b.y - b.vy * 0.02); ctx.stroke();
+    ctx.restore();
+  }
+
+  function drawPickup(pu) {
+    var by = pu.y + Math.sin(pu.bobP) * 5;
+    var def = pu.perk;
+    var fade = pu.t > pu.life - 1.5 ? (0.4 + 0.6 * Math.abs(Math.sin(pu.t * 8))) : 1;
+    ctx.save(); ctx.globalAlpha = fade;
+    ctx.translate(pu.x, by);
+    // glowing token
+    ctx.shadowColor = def.col; ctx.shadowBlur = 14;
+    ctx.fillStyle = '#2a1a10'; ctx.beginPath(); ctx.arc(0, 0, 16, 0, Math.PI * 2); ctx.fill();
+    ctx.shadowBlur = 0;
+    ctx.strokeStyle = def.col; ctx.lineWidth = 3; ctx.beginPath(); ctx.arc(0, 0, 16, 0, Math.PI * 2); ctx.stroke();
+    ctx.fillStyle = def.col; ctx.font = 'bold 18px monospace'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+    ctx.fillText(def.glyph, 0, 1);
+    ctx.restore();
+  }
+
+  function drawBoss() {
+    var bo = sim.boss; if (!bo) return;
+    var x = bo.x, y = bo.y;
+    ctx.save();
+    if (bo.dead) ctx.globalAlpha = Math.max(0, 1 - bo.deadT / 1.6);
+    // wagon body
+    ctx.fillStyle = '#5a3a1e'; ctx.fillRect(x - 80, y - 60, 160, 50);
+    ctx.fillStyle = '#3e2814'; ctx.fillRect(x - 80, y - 24, 160, 14);
+    // wheels (spin)
+    drawWheel(x - 56, y - 6, bo.wheelP);
+    drawWheel(x + 56, y - 6, bo.wheelP);
+    // gatling barrel on top, pointing toward the players
+    ctx.fillStyle = '#777'; ctx.fillRect(x - 6, y - 78, 60, 12);
+    ctx.fillStyle = '#999'; ctx.fillRect(x + 40, y - 80, 18, 16);
+    // bandit chief torso = WEAK POINT
+    var flash = bo.hitFlash > 0;
+    drawPerson(x, y - 60, 1.4, 'boss', -1, 0);
+    if (flash) { ctx.save(); ctx.globalAlpha = 0.6; ctx.fillStyle = '#fff'; ctx.fillRect(x - 60, y - 160, 120, 80); ctx.restore(); }
+    // telegraph glow when winding up a burst
+    if (!bo.dead && bo.telegraph > 0) {
+      ctx.save(); ctx.globalAlpha = Math.min(1, bo.telegraph / 0.8) * 0.9;
+      ctx.fillStyle = '#ff3a2a'; ctx.beginPath(); ctx.arc(x + 56, y - 72, 8 + bo.telegraph * 10, 0, Math.PI * 2); ctx.fill();
+      ctx.restore();
+    }
+    ctx.restore();
+
+    // boss HP bar (top center)
+    var bw = 520, bx = W / 2 - bw / 2, byb = 60;
+    ctx.save();
+    ctx.fillStyle = 'rgba(0,0,0,0.5)'; ctx.fillRect(bx - 4, byb - 4, bw + 8, 22);
+    ctx.fillStyle = '#3a1414'; ctx.fillRect(bx, byb, bw, 14);
+    ctx.fillStyle = '#ff3a2a'; ctx.fillRect(bx, byb, bw * Math.max(0, bossEffHp() / bo.maxhp), 14);
+    ctx.restore();
+    pixText('BANDIT CHIEF', W / 2, byb - 14, 18, '#ff6a4a', 'center', true);
+  }
+  function drawWheel(x, y, p) {
+    ctx.save(); ctx.translate(x, y);
+    ctx.fillStyle = '#2a1a0e'; ctx.beginPath(); ctx.arc(0, 0, 22, 0, Math.PI * 2); ctx.fill();
+    ctx.strokeStyle = '#6a4a28'; ctx.lineWidth = 3;
+    for (var i = 0; i < 6; i++) {
+      var a = p + i * Math.PI / 3;
+      ctx.beginPath(); ctx.moveTo(0, 0); ctx.lineTo(Math.cos(a) * 20, Math.sin(a) * 20); ctx.stroke();
+    }
+    ctx.restore();
+  }
+
+  function drawCrosshair(p) {
+    var ap = aimPx(p);
+    var x = ap.x, y = ap.y, r = 22;
+    var col = PCOL[p.slot];
+    var reloadingNow = p.reloading > 0;
+    ctx.save();
+    ctx.translate(x, y);
+    ctx.strokeStyle = reloadingNow ? '#888' : col;
+    ctx.shadowColor = ctx.strokeStyle; ctx.shadowBlur = 10; ctx.lineWidth = 3;
+    ctx.beginPath(); ctx.arc(0, 0, r, 0, Math.PI * 2); ctx.stroke();
+    ctx.beginPath();
+    ctx.moveTo(-r - 8, 0); ctx.lineTo(-6, 0); ctx.moveTo(r + 8, 0); ctx.lineTo(6, 0);
+    ctx.moveTo(0, -r - 8); ctx.lineTo(0, -6); ctx.moveTo(0, r + 8); ctx.lineTo(0, 6);
+    ctx.stroke();
+    ctx.fillStyle = ctx.strokeStyle; ctx.beginPath(); ctx.arc(0, 0, 2.5, 0, Math.PI * 2); ctx.fill();
+    // reload ring
+    if (reloadingNow) {
+      var frac = 1 - p.reloading / 0.95;
+      ctx.strokeStyle = col; ctx.lineWidth = 3; ctx.shadowBlur = 0;
+      ctx.beginPath(); ctx.arc(0, 0, r + 8, -Math.PI / 2, -Math.PI / 2 + frac * Math.PI * 2); ctx.stroke();
+    }
+    // tiny slot tag
+    ctx.fillStyle = col; ctx.font = 'bold 12px monospace'; ctx.textAlign = 'center'; ctx.shadowBlur = 0;
+    ctx.fillText('P' + p.slot, 0, r + 22);
+    ctx.restore();
+    // muzzle flash
+    if (p.muzzle > 0) {
+      var a = p.muzzle / 0.07;
+      ctx.save(); ctx.globalAlpha = a * 0.5;
+      var rg = ctx.createRadialGradient(x, y, 0, x, y, 100);
+      rg.addColorStop(0, 'rgba(255,240,180,0.8)'); rg.addColorStop(1, 'rgba(255,120,0,0)');
+      ctx.fillStyle = rg; ctx.beginPath(); ctx.arc(x, y, 100, 0, Math.PI * 2); ctx.fill();
+      ctx.restore();
+    }
+  }
+
+  function pixText(txt, x, y, size, color, align, glow) {
+    ctx.save();
+    ctx.font = 'bold ' + size + 'px "Courier New", monospace';
+    ctx.textAlign = align || 'center'; ctx.textBaseline = 'middle';
+    if (glow) { ctx.shadowColor = color; ctx.shadowBlur = 14; }
+    // drop shadow for readability
+    ctx.fillStyle = 'rgba(0,0,0,0.6)'; ctx.fillText(txt, x + 2, y + 2);
+    ctx.fillStyle = color; ctx.fillText(txt, x, y);
+    ctx.restore();
+  }
+
+  function drawHUD() {
+    // top banner strip
+    ctx.save(); ctx.fillStyle = 'rgba(40,24,12,0.55)'; ctx.fillRect(0, 0, W, 54); ctx.restore();
+    pixText('SCORE ' + String(sim.score + (sim.peerScore || 0)).padStart(6, '0'), 16, 27, 26, '#ffe08a', 'left', true);
+
+    // wave + combo center
+    var mult = 1 + Math.floor(sim.combo / 5) * 0.5;
+    var mid = sim.combo > 1 ? ('COMBO x' + sim.combo + (mult > 1 ? '  ' + mult.toFixed(1) + 'x' : '')) : ('WAVE ' + sim.wave);
+    pixText(mid, W / 2, 27, 24, sim.combo > 1 ? '#ffd23f' : '#ffe0b0', 'center', true);
+
+    // per-player panels (bottom)
+    drawPlayerPanel(sim.players[1], 16, H - 86, 'left');
+    if (sim.players[2].active) drawPlayerPanel(sim.players[2], W - 16, H - 86, 'right');
+  }
+
+  function drawPlayerPanel(p, x, y, side) {
+    var col = PCOL[p.slot];
+    var w = 250, px = side === 'right' ? x - w : x;
+    ctx.save();
+    ctx.fillStyle = 'rgba(20,12,6,0.55)'; ctx.fillRect(px, y, w, 72);
+    ctx.strokeStyle = col; ctx.lineWidth = 2; ctx.strokeRect(px, y, w, 72);
+    // label
+    pixText('P' + p.slot, px + 10, y + 16, 18, col, 'left', false);
+    // hp bar
+    var hbx = px + 50, hbw = w - 60;
+    ctx.fillStyle = 'rgba(255,255,255,0.12)'; ctx.fillRect(hbx, y + 8, hbw, 12);
+    ctx.fillStyle = p.hp > 30 ? '#5fd06a' : '#ff5555'; ctx.fillRect(hbx, y + 8, hbw * (p.hp / PLAYER_HP_MAX), 12);
+    // ammo cylinder (6 dots)
+    for (var i = 0; i < CYL_MAX; i++) {
+      ctx.beginPath(); ctx.arc(px + 14 + i * 18, y + 40, 6, 0, Math.PI * 2);
+      ctx.fillStyle = i < p.ammo ? col : 'rgba(255,255,255,0.18)'; ctx.fill();
+    }
+    if (p.reloading > 0) pixText('RELOADING', px + 130, y + 41, 14, '#fff', 'left', false);
+    // active perks row + dynamite
+    var bx2 = px + 10, by2 = y + 58;
+    for (var k = 0; k < PERK_LIST.length; k++) {
+      var def = PERK_LIST[k];
+      var secs = p.perks[def.key] || 0;
+      if (secs <= 0) continue;
+      ctx.fillStyle = def.col; ctx.fillRect(bx2, by2, 36, 11);
+      ctx.fillStyle = '#1a1008'; ctx.font = 'bold 9px monospace'; ctx.textAlign = 'left';
+      ctx.fillText(def.label + ' ' + Math.ceil(secs), bx2 + 2, by2 + 9);
+      bx2 += 40;
+    }
+    if (p.dynamite > 0) {
+      ctx.fillStyle = PERK.DYN.col; ctx.fillRect(bx2, by2, 50, 11);
+      ctx.fillStyle = '#1a1008'; ctx.font = 'bold 9px monospace'; ctx.textAlign = 'left';
+      ctx.fillText('DYN x' + p.dynamite, bx2 + 2, by2 + 9);
+    }
+    ctx.restore();
+  }
+
+  function drawTitle(ts) {
+    var pulse = 0.5 + 0.5 * Math.sin(ts / 350);
+    pixText('BADLANDS', W / 2, H * 0.26, 96, '#b8341f', 'center', true);
+    pixText('REVENGE', W / 2, H * 0.38, 96, '#e8a33a', 'center', true);
+    pixText('co-op western gun gallery', W / 2, H * 0.50, 26, '#5a3a22', 'center', false);
+    ctx.save(); ctx.globalAlpha = 0.4 + 0.6 * pulse;
+    pixText('FIRE  TO  START', W / 2, H * 0.66, 40, '#ffd23f', 'center', true);
+    ctx.restore();
+    pixText('shoot outlaws - spare the FRIENDS - reload when dry - grab power-ups', W / 2, H * 0.77, 19, '#5a3a22', 'center', false);
+    pixText('SPECIAL = dynamite / dead-eye   -   survive the BANDIT CHIEF', W / 2, H * 0.83, 18, '#7a5a32', 'center', false);
+    pixText('P1 amber crosshair' + (sim.numPlayers >= 2 ? '   +   P2 teal crosshair  (team)' : ''), W / 2, H * 0.89, 17, '#7a5a32', 'center', false);
+  }
+
+  function drawOver(ts) {
+    ctx.save(); ctx.fillStyle = 'rgba(30,16,8,0.62)'; ctx.fillRect(0, 0, W, H); ctx.restore();
+    pixText('GAME OVER', W / 2, H * 0.28, 84, '#b8341f', 'center', true);
+    pixText('SCORE  ' + String(sim.score + (sim.peerScore || 0)).padStart(6, '0'), W / 2, H * 0.45, 52, '#ffd23f', 'center', true);
+    var p1 = sim.players[1];
+    var acc = p1.shots ? Math.round((p1.hits / p1.shots) * 100) : 0;
+    pixText('KILLS ' + p1.kills + '   ACC ' + acc + '%   BEST COMBO x' + sim.bestCombo, W / 2, H * 0.57, 24, '#e8c08a', 'center', false);
+    if (sim.overCooldown <= 0) {
+      var pulse = 0.5 + 0.5 * Math.sin(ts / 300);
+      ctx.save(); ctx.globalAlpha = 0.4 + 0.6 * pulse;
+      pixText('FIRE  TO  PLAY  AGAIN', W / 2, H * 0.74, 34, '#ffd23f', 'center', true);
+      ctx.restore();
+    }
+  }
+
+  function render(ts) {
+    var sx = 0, sy = 0;
+    if (sim.shakeT > 0) { var s = sim.shakeT * 50; sx = (Math.random() - 0.5) * s; sy = (Math.random() - 0.5) * s; }
+    ctx.save();
+    ctx.clearRect(0, 0, W, H);
+    ctx.translate(sx, sy);
+
+    drawBackground();
+
+    // boss draws behind the popup enemies (it's parked at the back)
+    if (sim.boss) drawBoss();
+
+    // enemies sorted by depth (far first)
+    var ordered = sim.enemies.slice().sort(function (a, b) { return a.depth - b.depth; });
+    for (var i = 0; i < ordered.length; i++) drawEnemy(ordered[i]);
+
+    // pickups float above the field
+    for (var pk = 0; pk < sim.pickups.length; pk++) drawPickup(sim.pickups[pk]);
+
+    // enemy bullets
+    for (var bi = 0; bi < sim.bullets.length; bi++) drawBullet(sim.bullets[bi]);
+
+    // particles
+    for (var p = 0; p < sim.particles.length; p++) {
+      var pa = sim.particles[p];
+      ctx.globalAlpha = Math.max(0, 1 - pa.t / pa.life);
+      ctx.fillStyle = pa.color;
+      ctx.fillRect(pa.x - pa.r, pa.y - pa.r, pa.r * 2, pa.r * 2);
+    }
+    ctx.globalAlpha = 1;
+
+    // floating texts
+    for (var f = 0; f < sim.pops.length; f++) {
+      var fl = sim.pops[f];
+      ctx.globalAlpha = Math.max(0, 1 - fl.t / fl.life);
+      pixText(fl.txt, fl.x, fl.y, 26, fl.color, 'center', true);
+    }
+    ctx.globalAlpha = 1;
+
+    // hurt flash
+    if (sim.flashT > 0) {
+      ctx.save(); ctx.globalAlpha = Math.min(0.5, sim.flashT * 2);
+      ctx.fillStyle = '#ff2a2a'; ctx.fillRect(-40, -40, W + 80, H + 80); ctx.restore();
+    }
+    // dead-eye slow-motion tint (gold wash + soft edges)
+    if (sim.slowmo > 0) {
+      ctx.save(); ctx.globalAlpha = 0.18 * Math.min(1, sim.slowmo);
+      ctx.fillStyle = '#ffe24a'; ctx.fillRect(-40, -40, W + 80, H + 80); ctx.restore();
+    }
+
+    if (sim.phase === PHASE.PLAY) {
+      drawHUD();
+      // shared scene: P1 amber crosshair always; P2 teal crosshair only in 2-player
+      drawCrosshair(sim.players[1]);
+      if (sim.numPlayers === 2) drawCrosshair(sim.players[2]);
+    } else if (sim.phase === PHASE.TITLE) {
+      drawTitle(ts);
+      drawCrosshair(sim.players[1]);
+    } else if (sim.phase === PHASE.OVER) {
+      drawOver(ts);
+      drawCrosshair(sim.players[1]);
+    }
+
+    // CRT scanlines
+    ctx.save(); ctx.globalAlpha = 0.10; ctx.fillStyle = '#000';
+    for (var sl = 0; sl < H; sl += 3) ctx.fillRect(0, sl, W, 1);
+    ctx.restore();
+
+    // vignette
+    var vg = ctx.createRadialGradient(W / 2, H / 2, H * 0.38, W / 2, H / 2, H * 0.85);
+    vg.addColorStop(0, 'rgba(0,0,0,0)'); vg.addColorStop(1, 'rgba(40,20,5,0.5)');
+    ctx.fillStyle = vg; ctx.fillRect(-40, -40, W + 80, H + 80);
+
+    ctx.restore();
+  }
+
+  // After render() the full scene is on `cv`. For a half/half-UV cabinet screen, mirror that whole
+  // scene into BOTH canvas halves so each physical screen shows the entire game (Badlands is one
+  // shared co-op scene). SPLIT === false keeps the single full-canvas image (dbg / single-UV prop).
+  function composite() {
+    if (SPLIT === false) return;
+    _offctx.clearRect(0, 0, W, H);
+    _offctx.drawImage(cv, 0, 0);                          // snapshot the rendered scene
+    ctx.clearRect(0, 0, W, H);
+    ctx.drawImage(_off, 0, 0, W, H, 0,     0, W / 2, H);  // left  half = full scene
+    ctx.drawImage(_off, 0, 0, W, H, W / 2, 0, W / 2, H);  // right half = full scene
+  }
+
+  // ===========================================================================
+  // SERIALIZE / APPLY — compact snapshot for host->guest relay (Lua-driven).
+  // ===========================================================================
+  function serializeState() {
+    var s = sim;
+    function packP(p) {
+      return { s: p.slot, a: p.active ? 1 : 0, ax: +p.aim.x.toFixed(3), ay: +p.aim.y.toFixed(3),
+        hp: Math.round(p.hp), am: p.ammo, rl: +p.reloading.toFixed(2),
+        sh: p.shots, hi: p.hits, ki: p.kills, mz: +p.muzzle.toFixed(2), hu: +p.hurt.toFixed(2),
+        dy: p.dynamite, pk: p.perks };
+    }
+    var bo = s.boss;
+    return {
+      mode: s.mode, seed: s.seed, run: s.running ? 1 : 0, phase: s.phase, t: +s.t.toFixed(2),
+      np: s.numPlayers, sc: s.score, cb: s.combo, bc: s.bestCombo,
+      wv: s.wave, wt: +s.waveT.toFixed(2), wb: +s.waveBanner.toFixed(2), sm: +s.slowmo.toFixed(2), bd: s.bossDefeated,
+      p1: packP(s.players[1]), p2: packP(s.players[2]),
+      en: s.enemies.map(function (e) {
+        return { id: e.id, k: e.kind, x: Math.round(e.x), y: Math.round(e.y),
+          d: +e.depth.toFixed(2), sc: +e.scale.toFixed(2), md: e.mode, f: e.facing,
+          pt: +e.popT.toFixed(2), pd: +e.popDur.toFixed(2), tg: +e.telegraph.toFixed(2),
+          hs: e.hasShot ? 1 : 0, dd: e.dead ? 1 : 0, dt: +(e.deadT || 0).toFixed(2), bp: +e.bobP.toFixed(2) };
+      }),
+      bu: s.bullets.map(function (b) {
+        return { x: Math.round(b.x), y: Math.round(b.y), vx: Math.round(b.vx), vy: Math.round(b.vy),
+          tg: b.target, dm: Math.round(b.dmg), bs: b.boss ? 1 : 0 };
+      }),
+      pu: s.pickups.map(function (q) { return { x: Math.round(q.x), y: Math.round(q.y), k: q.perk.key,
+        t: +q.t.toFixed(2), li: +q.life.toFixed(2), bp: +q.bobP.toFixed(2) }; }),
+      bo: bo ? { x: Math.round(bo.x), y: Math.round(bo.y), tx: Math.round(bo.targetX),
+        hp: Math.round(bo.hp), mh: bo.maxhp, dd: bo.dead ? 1 : 0, dt: +bo.deadT.toFixed(2),
+        st: bo.state, t: +bo.t.toFixed(2), wp: +bo.wheelP.toFixed(2), tg: +bo.telegraph.toFixed(2),
+        hf: +bo.hitFlash.toFixed(2) } : null
+    };
+  }
+  function perkDefByKey(k) { for (var i = 0; i < PERK_LIST.length; i++) if (PERK_LIST[i].key === k) return PERK_LIST[i]; return PERK.RAPID; }
+
+  function applyState(snap) {
+    if (!snap) return;
+    var s = sim;
+    // NOTE: do NOT adopt snap.mode — local mode is owned by the 'config' message.
+    // A guest must stay 'guest' even though the host's snapshot says 'host'.
+    s.seed = snap.seed >>> 0 || s.seed;
+    s.running = !!snap.run; s.phase = snap.phase || s.phase; s.t = snap.t || 0;
+    s.numPlayers = snap.np || 1; s.score = snap.sc || 0; s.combo = snap.cb || 0; s.bestCombo = snap.bc || 0;
+    s.wave = snap.wv || 0; s.waveT = snap.wt || 0; s.waveBanner = snap.wb || 0;
+    s.slowmo = snap.sm || 0; s.bossDefeated = snap.bd || 0;
+    function unpackP(dst, src) {
+      if (!src) return;
+      dst.slot = src.s; dst.active = !!src.a; dst.aim.x = src.ax; dst.aim.y = src.ay;
+      dst.hp = src.hp; dst.ammo = src.am; dst.reloading = src.rl;
+      dst.shots = src.sh; dst.hits = src.hi; dst.kills = src.ki; dst.muzzle = src.mz; dst.hurt = src.hu;
+      dst.dynamite = src.dy || 0; dst.perks = src.pk || {};
+    }
+    unpackP(s.players[1], snap.p1); unpackP(s.players[2], snap.p2);
+    s.enemies = (snap.en || []).map(function (e) {
+      return { id: e.id, kind: e.k, x: e.x, y: e.y, depth: e.d, scale: e.sc, mode: e.md,
+        facing: e.f, popT: e.pt, popDur: e.pd, telegraph: e.tg, hasShot: !!e.hs,
+        dead: !!e.dd, deadT: e.dt, bobP: e.bp, t: 0, aimT: 0, aimDur: 0, vx: 0 };
+    });
+    s.bullets = (snap.bu || []).map(function (b) {
+      return { x: b.x, y: b.y, vx: b.vx, vy: b.vy, t: 0, life: 1.4, target: b.tg, dmg: b.dm, hit: false, boss: !!b.bs };
+    });
+    s.pickups = (snap.pu || []).map(function (q) {
+      return { x: q.x, y: q.y, perk: perkDefByKey(q.k), t: q.t, life: q.li, bobP: q.bp };
+    });
+    if (snap.bo) {
+      var b2 = snap.bo;
+      s.boss = { x: b2.x, y: b2.y, targetX: b2.tx, hp: b2.hp, maxhp: b2.mh, dead: !!b2.dd, deadT: b2.dt,
+        state: b2.st, t: b2.t, wheelP: b2.wp, telegraph: b2.tg, hitFlash: b2.hf,
+        atkT: 0, atkEvery: 3.2, burst: 0, burstT: 0, burstTarget: 1 };
+    } else { s.boss = null; }
+  }
+  window.serializeState = serializeState;
+  window.applyState = applyState;
+
+  // ===========================================================================
+  // PEER SYNC (the shipping 2P path) — ~10Hz tiny packet via Lua statebags.
+  // serializeState/applyState above are the RETIRED host-auth snapshots (kept for
+  // reference; nothing sends them anymore — they overflowed the reliable channel).
+  // ===========================================================================
+  function buildPeerPacket() {
+    var me = sim.players[mySlot] || sim.players[1];
+    return {
+      q: ++sim.pq,
+      ax: Math.round(me.aim.x * 1000), ay: Math.round(me.aim.y * 1000),
+      mz: me.muzzle > 0 ? 1 : 0,
+      hp: Math.round(me.hp),
+      sc: Math.round(sim.score),            // MY points — team display = mine + theirs
+      bd: Math.round(sim.myBossDmg),        // cumulative per-boss damage (self-healing)
+      ko: me.hp <= 0 ? 1 : 0,
+      ov: sim.phase === PHASE.OVER ? 1 : 0,
+      ev: sim.evLog.slice()                 // rolling log: resent every packet, applied once by seq
+    };
+  }
+  function applyPeerEvent(ev) {
+    if (!ev) return;
+    if (ev.k === 'kill') {
+      for (var i = 0; i < sim.enemies.length; i++) {
+        var e = sim.enemies[i];
+        if (e.id === ev.id) {
+          if (!e.dead) {
+            e.dead = true; e.deadT = 0;
+            var c = b_center(e); burst(c.x, c.y, '#cc5533', 12);
+            if (!ev.nd) maybeDropPerkDet(e);       // same pure-hash drop the killer's sim rolled
+          }
+          break;
+        }
+      }
+    } else if (ev.k === 'grab') {
+      for (var j = sim.pickups.length - 1; j >= 0; j--) {
+        if (sim.pickups[j].pid === ev.id) { sim.pickups.splice(j, 1); break; }
+      }
+    } else if (ev.k === 'dyn') {
+      burst((ev.x || 500) / 1000 * W, (ev.y || 500) / 1000 * H, '#ffaa33', 40);
+      sim.shakeT = Math.max(sim.shakeT, 0.3);
+    }
+  }
+  function applyPeer(d) {
+    if (!isPeer() || !d) return;
+    if (typeof d.q === 'number' && d.q <= sim.peerQ) return;   // stale (statebag last-write-wins)
+    sim.peerQ = d.q || 0;
+    var g = sim.players[ghostSlot()];
+    g.active = true;
+    peerAim = { x: (typeof d.ax === 'number' ? d.ax : 500) / 1000, y: (typeof d.ay === 'number' ? d.ay : 500) / 1000 };
+    if (d.mz) g.muzzle = 0.07;
+    if (typeof d.hp === 'number') g.hp = d.hp;
+    sim.peerScore = d.sc || 0;
+    sim.peerBossDmg = d.bd || 0;
+    sim.peerKo = !!d.ko; sim.peerOver = !!d.ov;
+    var evs = d.ev || [];
+    for (var i = 0; i < evs.length; i++) {
+      var ev = evs[i];
+      if (ev && typeof ev.n === 'number' && ev.n > sim.evApplied) { sim.evApplied = ev.n; applyPeerEvent(ev); }
+    }
+    if (sim.boss) checkBossDead(null);     // partner damage may have finished the boss
+    checkDeath();                          // partner hp 0 + me 0 -> game over (team rule unchanged)
+  }
+
+  // ===========================================================================
+  // MAIN LOOP (delta-timed, 60fps target)
+  // ===========================================================================
+  // DUI SLEEP CONTRACT: after the player leaves, Lua sends {action:'sleep'} and this page STOPS
+  // rendering (the rAF loop parks). A cached CEF page drawing its attract screen at 60fps was
+  // silently costing client FPS everywhere (invisible to resmon). config/reset/start wake it.
+  var RAF_LIVE = true;
+  function duiSleep() { RAF_LIVE = false; }
+  function duiWake() { if (!RAF_LIVE) { RAF_LIVE = true; last = 0; requestAnimationFrame(frame); } }
+  var last = 0;
+  function frame(ts) {
+    if (!RAF_LIVE) return;
+    if (!last) last = ts;
+    var dt = (ts - last) / 1000; last = ts;
+    if (dt > 0.1) dt = 0.1;                          // clamp after stalls
+    update(dt);
+    render(ts);
+    composite();
+    requestAnimationFrame(frame);
+  }
+
+  // ===========================================================================
+  // MESSAGE CONTRACT — all input/config/lifecycle arrive here.
+  // ===========================================================================
+  var msgCount = 0;
+  window.addEventListener('message', function (e) {
+    var d;
+    try { d = (typeof e.data === 'string') ? JSON.parse(e.data) : (e.data || {}); }
+    catch (err) { flog('message parse error: ' + err); return; }
+    msgCount++;
+    if (msgCount <= 6) flog('msg#' + msgCount + ' ' + JSON.stringify(d).slice(0, 160));
+    var action = d.action || d.type;
+    if (action === 'sleep') { duiSleep(); return; }
+    if (action === 'config' || action === 'reset' || action === 'start') duiWake();
+    if (action === 'input') { applyInput(d); }
+    else if (action === 'config') {
+      if (d.mode) sim.mode = d.mode;
+      if (typeof d.slot === 'number') mySlot = (d.slot === 2) ? 2 : 1;
+      if (typeof d.seed === 'number') { sim.seed = d.seed >>> 0; srand(sim.seed); }
+      if (typeof d.players === 'number') { setActivePlayers(d.players >= 2 ? 2 : 1); }
+      if (typeof d.split !== 'undefined') SPLIT = d.split;
+      flog('config mode=' + sim.mode + ' slot=' + mySlot + ' seed=' + sim.seed + ' players=' + sim.numPlayers + ' split=' + SPLIT);
+    }
+    else if (action === 'volume') {
+      if (typeof d.level === 'number') {
+        masterVol = Math.max(0, Math.min(1, d.level));
+        if (MASTER) MASTER.gain.value = masterVol;
+      }
+    }
+    else if (action === 'start') { startGame(); }
+    else if (action === 'stop')  { resetToTitle(); }
+    else if (action === 'reset') { resetToTitle(); }
+    else if (action === 'peer') {
+      // partner's ~10Hz packet (via statebag): crosshair/hp/score + kill/grab/dyn events
+      applyPeer(d.data);
+    }
+    else if (action === 'requestPeer') {
+      // Lua polls ~10Hz: ship MY compact packet for the partner
+      try {
+        fetch('https://' + RES + '/badlandsPeer', {
+          method: 'POST', headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(buildPeerPacket())
+        }).catch(function () {});
+      } catch (e2) {}
+    }
+    else if (action === 'state') {
+      // RETIRED host-auth path (nothing sends this anymore) — kept for back-compat.
+      if (d.state) applyState(d.state);
+    }
+    else if (action === 'requestState') {
+      // host-only: Lua polls this ~20x/sec; ship the authoritative snapshot to the guest
+      try {
+        fetch('https://' + RES + '/badlandsState', {
+          method: 'POST', headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(serializeState())
+        }).catch(function () {});
+      } catch (e) {}
+    }
+  });
+
+  // ===========================================================================
+  // BOOT — idle & silent. running=false; render() draws the title only.
+  // ===========================================================================
+  sim = newSim(MODE.SOLO, (Date.now() & 0x7fffffff) >>> 0, 1);   // seed reset by config later
+  sim.running = false;
+  setActivePlayers(1);
+  requestAnimationFrame(frame);
+
+  window.addEventListener('load', function () {
+    flog('window load - sending badlandsReady');
+    fetch('https://' + RES + '/badlandsReady', { method: 'POST', body: '{}' })
+      .then(function () { flog('badlandsReady POST ok'); })
+      .catch(function (e) { flog('badlandsReady POST failed: ' + e); });
+  });
+  flog('script end - readyState=' + document.readyState);
+  </script>
+<!-- ARCADE HIGH-SCORES overlay (attract screen). Fed by {action:'leaderboard',entries:[{name,score}]}
+     from the cabinet before play. Self-contained + own message listener; shown on 'leaderboard',
+     hidden on 'start'/'reset'. Additive — does not touch the game's own message handler. -->
+<style>
+  #arc-hs{position:fixed;top:50%;right:3.5%;transform:translateY(-50%);width:33%;max-width:440px;
+    display:none;font-family:'Consolas','Menlo','Courier New',monospace;color:#eaf6ff;z-index:99999;
+    background:rgba(6,10,20,.74);border:2px solid rgba(90,200,255,.55);border-radius:10px;
+    box-shadow:0 0 22px rgba(60,180,255,.35),inset 0 0 18px rgba(20,60,120,.4);padding:14px 16px 12px}
+  #arc-hs h3{margin:0 0 9px;text-align:center;font-size:21px;letter-spacing:3px;color:#5fd0ff;
+    text-shadow:0 0 8px rgba(80,200,255,.9);text-transform:uppercase}
+  #arc-hs ol{list-style:none;margin:0;padding:0}
+  #arc-hs li{display:flex;align-items:baseline;gap:9px;padding:3px 4px;font-size:16px;
+    border-bottom:1px solid rgba(90,160,220,.14)}
+  #arc-hs li:nth-child(1){color:#ffd86b;text-shadow:0 0 8px rgba(255,200,70,.7)}
+  #arc-hs li:nth-child(3){color:#e6b98a}
+  #arc-hs .r{width:24px;text-align:right;opacity:.75}
+  #arc-hs .n{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;text-transform:uppercase}
+  #arc-hs .s{font-variant-numeric:tabular-nums;font-weight:bold}
+  #arc-hs .e{opacity:.6;text-align:center;padding:12px 0;font-size:14px;letter-spacing:1px}
+</style>
+<div id="arc-hs"><h3>High Scores</h3><ol id="arc-hs-list"></ol></div>
+<script>
+(function(){
+  var box=document.getElementById('arc-hs'),list=document.getElementById('arc-hs-list'),have=[];
+  function esc(s){return String(s==null?'':s).replace(/[<&>]/g,function(c){return{'<':'&lt;','&':'&amp;','>':'&gt;'}[c];});}
+  function render(){
+    list.innerHTML='';
+    if(!have.length){list.innerHTML='<li class="e">NO SCORES YET — BE THE FIRST</li>';return;}
+    for(var i=0;i<have.length&&i<10;i++){
+      var e=have[i]||{},li=document.createElement('li');
+      li.innerHTML='<span class="r">'+(i+1)+'</span><span class="n">'+esc(e.name||'?')+'</span><span class="s">'+((parseInt(e.score,10)||0).toLocaleString())+'</span>';
+      list.appendChild(li);
+    }
+  }
+  window.addEventListener('message',function(ev){
+    var d;try{d=(typeof ev.data==='string')?JSON.parse(ev.data):(ev.data||{});}catch(x){return;}
+    var a=d.action||d.type;
+    if(a==='leaderboard'){have=Array.isArray(d.entries)?d.entries:[];render();box.style.display='block';}
+    else if(a==='start'||a==='reset'){box.style.display='none';}
+  });
+})();
+</script>
+</body>
+</html>

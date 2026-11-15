@@ -1,0 +1,99 @@
+{
+    "placement": {
+        "title": "Umístění",
+        "mode_surface": "Povrch",
+        "mode_move": "Přesunout",
+        "mode_rotate": "Otočit",
+        "space_world": "Svět",
+        "space_local": "Lokální",
+        "snap": "Krok",
+        "nudge": "Jemné doladění",
+        "yaw": "Otočit",
+        "ground": "Položit na zem",
+        "reset": "Obnovit",
+        "accept": "Umístit",
+        "cancel": "Zrušit",
+        "hint_surface": "Kliknutím položíte TV",
+        "hint_move": "Táhněte šipky",
+        "hint_rotate": "Táhněte kruh",
+        "hint_wheel": "Kolečko: otáčení",
+        "hint_camera": "Pravé tlačítko: kamera zap / vyp",
+        "camera_active": "Režim kamery - pravým tlačítkem se vrátíte",
+        "hint_snap": "Tlačítka podlaha / zeď: ukotvit",
+        "hint_toggle": "R: přesun / otočení",
+        "hint_accept": "Enter: umístit",
+        "hint_cancel": "X / Backspace / Esc: zrušit",
+        "tip_floor": "Položit na podlahu",
+        "tip_wall": "Připevnit na zeď",
+        "tip_move": "Přepnout na přesun",
+        "tip_rotate": "Přepnout na otáčení"
+    },
+    "header": {
+        "title": "Televize & SmartTV",
+        "admin": "Správa TV",
+        "subtitle": "Vítej!"
+    },
+    "search": {
+        "placeholder": "Zadejte URL..."
+    },
+    "admin": {
+        "categories": {
+            "player": "TV hráčů",
+            "default": "Výchozí TV",
+            "general": "Obecné",
+            "jobs": "Práce / Skupiny"
+        },
+        "no_video": "Nepřehrává se žádné video",
+        "create": "Vytvořit TV",
+        "update": "Aktualizovat TV",
+        "cancel": "Zrušit",
+        "no_result": "Nebyly nalezeny žádné výsledky.",
+        "search": "Hledat TV podle názvu nebo ID",
+        "input": {
+            "model": {
+                "label": "Model",
+                "placeholder": "Vyberte model TV"
+            },
+            "name": {
+                "label": "Název",
+                "placeholder": "Pojmenujte svou TV"
+            },
+            "platform": {
+                "label": "Platforma",
+                "placeholder": "YouTube, Kick, atd."
+            },
+            "loop": {
+                "label": "Smyčka",
+                "placeholder": "Má se video přehrávat ve smyčce?",
+                "true": "Ano",
+                "false": "Ne"
+            },
+            "volume": {
+                "label": "Hlasitost",
+                "placeholder": "Nastavte výchozí hlasitost (0-100)"
+            },
+            "videourl": {
+                "label": "URL videa / streamu",
+                "placeholder": "Zadejte URL videa / streamu"
+            },
+            "controlable": {
+                "label": "Ovladatelné",
+                "tooltip": "Umožnit uživatelům ovládat TV (přehrát, pozastavit, atd.)"
+            },
+            "defaultvideo": {
+                "label": "Výchozí video",
+                "tooltip": "Zda se přehrává výchozí video, či nikoli"
+            },
+            "jobs": {
+                "label": "Práce / Skupiny",
+                "placeholder": "Práce/skupiny, které mohou používat tuto TV (ponechte prázdné pro všechny)"
+            }
+        }
+    },
+    "stream": "Živě",
+    "recently": "Nedávno",
+    "favorites": "Oblíbené",
+    "no_favorites": "Žádná oblíbená videa.",
+    "no_recently": "Žádná nedávno přehraná videa.",
+    "televisions": "Televize"
+}

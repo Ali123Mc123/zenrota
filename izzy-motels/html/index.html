@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>izzy-motels</title>
+    <link rel="stylesheet" href="css/motel.css">
+    <script src="js/jquery.js"></script>
+    <script src="js/custom.js"></script>
+    <script defer src="js/script.js"></script>
+</head>
+<body>
+    <!-- Darkens the game behind the motel screens, over the whole window (the stage may be letterboxed) -->
+    <div class="shade"></div>
+
+    <!-- The 1920x1080 stage, scaled to the window in one piece (custom.js fitStage). data-screen picks what shows. -->
+    <div id="stage" class="stage" data-screen="none">
+
+        <!-- Top bar: the motel mark on the left, the player on the right -->
+        <div class="topbar">
+            <div class="brand">
+                <img src="img/logo.png" alt="">
+                <span class="ui-caps" id="brandName">Motel</span>
+                <i class="sep"></i>
+                <span class="ui-label" id="crumb">Resepsiyon</span>
+            </div>
+            <div class="player">
+                <div class="who">
+                    <div class="name ui-caps" id="name" lang="en"></div>
+                    <div class="money"><span class="ui-label">Banka</span><b id="money">$0</b></div>
+                </div>
+                <div class="avatar"><img id="mugshot" src="" alt=""><span id="initials"></span></div>
+            </div>
+        </div>
+
+        <!-- Left column: the motel header and the screen's summary -->
+        <div class="left">
+            <div class="mark">
+                <div class="logo-plate"><img src="img/logo.png" alt=""></div>
+                <div class="titles">
+                    <div class="kicker ui-label" id="motelKicker">Konaklama</div>
+                    <div class="ui-display title" id="motelName">Motel</div>
+                    <div class="place ui-caps">
+                        <svg class="p-ico" viewBox="0 0 24 24"><path d="M12 21s-6-5.4-6-11a6 6 0 0 1 12 0c0 5.6-6 11-6 11z"/><circle cx="12" cy="10" r="2.2"/></svg>
+                        <span id="motelPlace" lang="en">Del Perro Pier</span>
+                    </div>
+                </div>
+            </div>
+            <p class="lead" id="lead"></p>
+            <div class="strip" id="strip"></div>
+        </div>
+
+        <!-- Right column -->
+        <div class="main">
+            <!-- Welcome: one big plate that opens the room list -->
+            <button class="screen welcome" data-for="welcome" id="welcome">
+                <div class="door">
+                    <svg class="p-ico" viewBox="0 0 24 24"><path d="M5 21V4.5L14 3v18"/><path d="M14 5h5v16"/><path d="M3 21h18"/><path class="d" d="M10.5 12v1"/></svg>
+                </div>
+                <div class="ui-display big">Oda Kirala</div>
+                <div class="sub">Oda kiralamak için buraya tıklayın.</div>
+                <div class="chev"><i></i><i></i><i></i></div>
+            </button>
+
+            <!-- Rent: the room grid, then the chosen room's settings -->
+            <div class="screen rent" data-for="newRoom">
+                <section class="plate cut">
+                    <header class="plate-head">
+                        <svg class="p-ico" viewBox="0 0 24 24"><path d="M5 21V4.5L14 3v18"/><path d="M14 5h5v16"/><path d="M3 21h18"/></svg>
+                        <div>
+                            <div class="ui-caps h">Oda Listesi</div>
+                            <div class="desc">Kiralanmış veya boşta olan tüm odalar burada listelenir.</div>
+                        </div>
+                        <div class="legend">
+                            <span><i class="sw free"></i>Boş</span>
+                            <span><i class="sw rented"></i>Dolu</span>
+                            <span><i class="sw own"></i>Senin</span>
+                            <span><i class="sw on"></i>Seçili</span>
+                        </div>
+                        <div class="tag">Toplam Oda Limiti <b id="maxRooms">300</b></div>
+                    </header>
+                    <div class="rooms" id="rooms"></div>
+                </section>
+
+                <section class="plate settings" id="roomSettings">
+                    <div class="col pick">
+                        <div class="ui-label">Seçili Oda</div>
+                        <div class="ui-display room-no">Oda <span id="motelRoomId">—</span></div>
+                        <div class="desc">Seçili odanın ayarlarını buradan yapabilirsiniz.</div>
+                        <div class="price-row">
+                            <div>
+                                <div class="ui-label">Oda Fiyatı (USD) · Gecelik</div>
+                                <div class="amount" id="roomPerNight">$0</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col styles">
+                        <div class="ui-label sec">Oda Stili</div>
+                        <div class="colors" id="colors">
+                            <button class="colorItem" data-color="white" data-on="true"><img src="img/white.png" alt=""><span>Beyaz</span></button>
+                            <button class="colorItem" data-color="black"><img src="img/black.png" alt=""><span>Siyah</span></button>
+                            <button class="colorItem" data-color="gray"><img src="img/gray.png" alt=""><span>Gri</span></button>
+                            <button class="colorItem" data-color="green"><img src="img/green.png" alt=""><span>Yeşil</span></button>
+                            <button class="colorItem" data-color="yellow"><img src="img/yellow.png" alt=""><span>Sarı</span></button>
+                            <button class="colorItem" data-color="blue"><img src="img/blue.png" alt=""><span>Mavi</span></button>
+                            <button class="colorItem" data-color="purple"><img src="img/purple.png" alt=""><span>Mor</span></button>
+                            <button class="colorItem" data-color="red"><img src="img/red.png" alt=""><span>Kırmızı</span></button>
+                        </div>
+                    </div>
+                    <div class="col days">
+                        <div class="ui-label sec">Oda Kiralama Süresi</div>
+                        <div class="chips">
+                            <button class="ui-chip dayItem" id="5days" data-time="5">5 Gün</button>
+                            <button class="ui-chip dayItem" id="20days" data-time="20">20 Gün</button>
+                            <button class="ui-chip dayItem" id="30days" data-time="30">30 Gün</button>
+                            <button class="ui-chip dayItem" id="60days" data-time="60">60 Gün</button>
+                            <button class="ui-chip dayItem life" id="lifetime" data-time="Lifetime">Süresiz</button>
+                        </div>
+                        <div class="stepper">
+                            <button id="removeDayBtn" aria-label="-"><svg class="p-ico" viewBox="0 0 24 24"><path d="M5 12h14"/></svg></button>
+                            <div class="val"><b id="daysText">1</b><span id="daysUnit">Gün</span></div>
+                            <button id="addDayBtn" aria-label="+"><svg class="p-ico" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></button>
+                        </div>
+                    </div>
+                    <div class="empty" id="settingsEmpty">
+                        <svg class="p-ico" viewBox="0 0 24 24"><path d="M9 11V5.5a1.5 1.5 0 0 1 3 0V10"/><path d="M12 9.5a1.5 1.5 0 0 1 3 0V11"/><path d="M15 10.5a1.5 1.5 0 0 1 3 0V15a6 6 0 0 1-6 6h-1a6 6 0 0 1-5-2.7L3.6 14.6a1.5 1.5 0 0 1 2.4-1.8L9 15"/></svg>
+                        <span>Kiralamak için listeden boş bir oda seç.</span>
+                    </div>
+                </section>
+            </div>
+
+            <!-- My rooms: one card per rented room -->
+            <div class="screen mine" data-for="myRooms">
+                <header class="plate-head bare">
+                    <svg class="p-ico" viewBox="0 0 24 24"><path d="M15.5 7.5a3.5 3.5 0 1 1-3.4 4.3L4 20H2.5v-2.5h2v-2h2l3.4-3.4"/></svg>
+                    <div>
+                        <div class="ui-caps h">Oda Listesi</div>
+                        <div class="desc">Odalarınız burada listelenir.</div>
+                    </div>
+                </header>
+                <div class="cards" id="myRoomsList"></div>
+            </div>
+        </div>
+
+        <!-- Bottom right: key hints over the main button -->
+        <div class="action" id="action">
+            <div class="hints">
+                <span class="ui-hint" id="escHint"><span class="ui-key">ESC</span>Kapat</span>
+                <span class="ui-hint total" id="totalHint"><span class="ui-label">Toplam</span><b id="roomRentPriceWrap">$<span id="roomRentPrice">0</span></b></span>
+            </div>
+            <button class="ui-btn" id="rentRoomBtnDiv" data-dim="true">
+                <b>Odayı Kirala</b>
+                <span class="chev"><i></i><i></i><i></i></span>
+            </button>
+        </div>
+
+        <!-- Inside the room: the action and invite dialogs -->
+        <div class="dialog-wrap" id="actionDiv">
+            <div class="dim"></div>
+            <div class="dialog" id="selectActionMenu">
+                <div class="ui-label room-label">Motel Odası</div>
+                <div class="ui-display dlg-title">İşlem Seç</div>
+                <div class="desc">Odadan çıkabilir ya da yakındaki arkadaşlarını odana davet edebilirsin.</div>
+                <div class="dlg-actions">
+                    <button class="ui-row-btn" id="exitRoomBtn">
+                        <span class="ui-block" style="--c:#e9e9ee"><svg class="p-ico" viewBox="0 0 24 24"><path d="M14 8V5H5v14h9v-3"/><path d="M10 12h11M18 9l3 3-3 3"/></svg></span>
+                        <span class="ui-caps">Odadan Çık</span>
+                        <span class="go"><svg class="p-ico" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg></span>
+                    </button>
+                    <button class="ui-row-btn" id="inviteMenuBtn">
+                        <span class="ui-block" style="--c:#3bd67f"><svg class="p-ico" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20a6.5 6.5 0 0 1 13 0"/><path d="M19 8v6M16 11h6"/></svg></span>
+                        <span class="ui-caps">Arkadaşlarını Davet Et</span>
+                        <span class="go"><svg class="p-ico" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg></span>
+                    </button>
+                </div>
+                <div class="dlg-foot"><span class="ui-hint"><span class="ui-key">ESC</span>Kapat</span></div>
+            </div>
+            <div class="dialog" id="inviteFriends">
+                <div class="ui-label room-label">Motel Odası</div>
+                <div class="ui-display dlg-title">Oda Daveti</div>
+                <div class="desc">Yakınındaki oyuncular. Davet ettiğin kişi odana girebilir.</div>
+                <div class="players" id="playerList"></div>
+                <div class="dlg-foot">
+                    <button class="ghost" id="inviteBackBtn"><svg class="p-ico" viewBox="0 0 24 24"><path d="M15 6l-6 6 6 6"/></svg>Geri</button>
+                    <span class="ui-hint"><span class="ui-key">ESC</span>Kapat</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

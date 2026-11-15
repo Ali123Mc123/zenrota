@@ -1,0 +1,152 @@
+{
+    "login":  {
+                  "system_access":  "SİSTEM ERİŞİMİ",
+                  "identity_label":  "KİMLİK",
+                  "officer_name_placeholder":  "Memur Adı",
+                  "callsign_label":  "ÇAĞRI KODU",
+                  "callsign_placeholder":  "örn. 401",
+                  "department_label":  "DEPARTMAN",
+                  "initialize_system":  "SİSTEMİ BAŞLAT",
+                  "title":  "KIMLIK DOGRULAMA",
+                  "tap_to_connect":  "BAGLANMAK ICIN DOKUN",
+                  "connecting":  "DOGRULANIYORBR...",
+                  "subtitle":  "SISTEME ERISMEK ICIN BILGILERINIZI GIRIN"
+              },
+    "dashboard":  {
+                      "tactical_view":  "TAKTİKSEL GÖRÜNÜM",
+                      "tactical_view_desc":  "Taktik haritada müttefik birimler için görsel koni projeksiyonunu etkinleştirir.",
+                      "active_units":  "AKTİF BİRİMLER",
+                      "no_active_units":  "Bu kanalda aktif birim yok",
+                      "mark_location":  "Konumu İşaretle",
+                      "follow_unit":  "Birimi Takip Et",
+                      "you":  "SEN",
+                      "secure_networks":  "GÜVENLİ AĞLAR",
+                      "unit_settings":  "BİRİM AYARLARI",
+                      "identity_settings":  "KİMLİK",
+                      "officer_name_label":  "MEMUR ADI",
+                      "officer_name_placeholder":  "Memur Adı",
+                      "callsign_label":  "ÇAĞRI KODU",
+                      "update":  "GÜNCELLE",
+                      "ui_scale":  "ARAYÜZ ÖLÇEĞİ",
+                      "reset":  "SIFIRLA",
+                      "move_ui":  "ARAYÜZÜ TAŞI",
+                      "dragging":  "TAŞINIYOR...",
+                      "enable_drag":  "TAŞIMAYI ETKİNLEŞTİR",
+                      "self_blip":  "KENDİ BLİP\u0027İN",
+                      "self_blip_desc":  "Kendi birim blip\u0027ini haritada göster",
+                      "system_theme":  "SİSTEM TEMASI",
+                      "tabs":  {
+                                   "home":  "Ana Sayfa",
+                                   "channels":  "Kanallar",
+                                   "profile":  "Profil",
+                                   "settings":  "Ayarlar"
+                               },
+                      "position":  "CIHAZ KONUMU",
+                      "finish_move":  "TASIMAYI BITIR",
+                      "system_control":  "SISTEM KONTROLU",
+                      "display_scale":  "EKRAN OLCEGI",
+                      "search_unit":  "Birim adi / cagri kodu ara...",
+                      "theme_color":  "TEMA RENGI",
+                      "disconnect":  "BAGLANTIYI KES",
+                      "move_desc":  "GPS cihazini ekranda serbestce surukleyebilirsiniz.",
+                      "identity":  "KIMLIK",
+                      "reset_default":  "VARSAYILANA SIFIRLA",
+                      "reset_position":  "KONUMU SIFIRLA"
+                  },
+    "broken":  {
+                   "system_failure":  "SİSTEM HATASI",
+                   "repairing":  "ONARILIYOR...",
+                   "critical_error":  "KRİTİK HATA",
+                   "water_intrusion":  "SU GİRİŞİ TESPİT EDİLDİ",
+                   "err_code_h2o":  "HATA_KODU: H2O_FATAL",
+                   "system_restore":  "SİSTEM GERİ YÜKLEME",
+                   "verifying_integrity":  "BÜTÜNLÜK DOĞRULANIYOR...",
+                   "restoring_kernel":  "ÇEKİRDEK GERİ YÜKLENİYOR...",
+                   "rebooting_modules":  "MODÜLLER YENİDEN BAŞLATILIYOR...",
+                   "system_online":  "SİSTEM ÇEVRİMİÇİ",
+                   "system_halted":  "SİSTEM DURDURULDU",
+                   "hardware_integrity":  "DONANIM BÜTÜNLÜĞÜ BOZULDU",
+                   "initiate_manual_repair":  "MANUEL ONARIMI BAŞLAT",
+                   "repair":  "ONAR",
+                   "close":  "KAPAT",
+                   "footer_text":  "DADDY_GPS_OS v2.4.1 // ÇEKİRDEK_DÖKÜMÜ_TESPİT_EDİLDİ"
+               },
+    "controls":  {
+                     "connect":  "Bağlan",
+                     "leave":  "Ayrıl"
+                 },
+    "department_select":  {
+                              "label":  "Departman",
+                              "select_placeholder":  "Seçiniz..."
+                          },
+    "gps_frame":  {
+                      "officer_name_label":  "Memur Adı",
+                      "officer_name_placeholder":  "örn. Ahmet Yılmaz",
+                      "callsign_label":  "Çağrı Kodu",
+                      "callsign_placeholder":  "örn. 401-SOYGUN"
+                  },
+    "app":  {
+                "drag_to_move":  "TAŞIMAK İÇİN SÜRÜKLE",
+                "save_position":  "KONUMU KAYDET",
+                "drag_hint":  "SÜRÜKLEMEK İÇİN BASILI TUT",
+                "press_esc":  "KAPATMAK İÇİN ESC"
+            },
+    "notify":  {
+                   "no_gps_item":  "GPS cihazına sahip değilsin.",
+                   "no_permission":  "Bu sistemi kullanma yetkin yok.",
+                   "select_department":  "Bir departman seçmelisiniz.",
+                   "name_empty":  "Memur adı boş olamaz.",
+                   "callsign_range":  "Çağrı kodu %s ile %s arasında bir sayı olmalıdır.",
+                   "gps_connecting":  "GPS bağlanıyor...",
+                   "gps_disconnecting":  "GPS bağlantısı kesiliyor...",
+                   "gps_connected":  "GPS bağlandı.",
+                   "gps_disconnected":  "GPS bağlantısı kesildi.",
+                   "waypoint_set":  "Konum işaretlendi.",
+                   "follow_cancelled":  "Takip iptal edildi.",
+                   "tracking_activated":  "GPS takibi aktif edildi.",
+                   "tracking_disabled":  "GPS takibi devre dışı bırakıldı.",
+                   "gps_repaired":  "GPS cihazı başarıyla onarıldı!",
+                   "gps_reconnected":  "GPS onarım sonrası yeniden bağlandı.",
+                   "invalid_department":  "Geçersiz departman.",
+                   "invalid_name":  "Geçersiz isim."
+               },
+    "units":  {
+                  "you":  "SEN",
+                  "set_waypoint":  "Konumu İşaretle",
+                  "stop_tracking":  "Takibi Durdur",
+                  "start_tracking":  "Takip Et",
+                  "filter_all":  "TÜMÜ",
+                  "filter_department":  "DEPARTMAN FİLTRE"
+              },
+    "channels":  {
+                     "global_network":  "GLOBAL AĞI",
+                     "global_channel":  "GLOBAL KANAL",
+                     "global_desc":  "Bütün departmanlar aynı kanalda iletişimde",
+                     "active_unit":  "AKTİF BİRİM"
+                 },
+    "profile":  {
+                    "radar_sizes":  "RADAR BOYUTLARI",
+                    "reset":  "SIFIRLA",
+                    "on_foot":  "YAYA",
+                    "vehicle":  "ARAÇ",
+                    "motorcycle":  "MOTOR",
+                    "helicopter":  "HELİ",
+                    "plane":  "UÇAK",
+                    "boat":  "TEKNE",
+                    "blip_category":  "BLİP KATEGORİSİ",
+                    "blip_category_desc":  "GPS birimlerinin harita lejantında nasıl gruplandığını seçin.",
+                    "blip_cat_single":  "TEK GRUP",
+                    "blip_cat_department":  "DEPARTMANA GÖRE",
+                    "blip_cat_none":  "GRUPLAMA YOK"
+                },
+    "settings":  {
+                     "language":  "DİL",
+                     "language_desc":  "GPS arayüzü için görüntüleme dilini seçin.",
+                     "language_changed":  "Dil değiştirildi. Uygulamak için GPS\u0027i yeniden açın.",
+                     "hard_reset":  "TAM SIFIRLAMA",
+                     "reset_clearing":  "VERİ TEMİZLENİYOR...",
+                     "reset_resetting":  "SİSTEM SIFIRLANIYOR...",
+                     "reset_rebooting":  "YENİDEN BAŞLATILIYOR...",
+                     "reset_complete":  "SIFIRLAMA TAMAMLANDI"
+                 }
+}

@@ -1,0 +1,348 @@
+local config = require 'config.client'
+local sharedConfig = require 'config.shared'
+local bedObject
+local bedOccupyingData
+local cam
+local hospitalOccupying
+local bedIndexOccupying
+local checkInPeds = {}
+local startBedLoop
+
+---Teleports the player to lie down in bed and sets the player's camera.
+local function setBedCam()
+    DoScreenFadeOut(1000)
+
+    while not IsScreenFadedOut() do
+        Wait(100)
+    end
+
+    if IsPedDeadOrDying(cache.ped, true) then
+        local pos = GetEntityCoords(cache.ped, true)
+        pcall(function() exports['FeloxAC']:playerRevived() end) --[[FeloxAC:auto]]
+        NetworkResurrectLocalPlayer(pos.x, pos.y, pos.z, GetEntityHeading(cache.ped), true, false)
+    end
+
+    bedObject = GetClosestObjectOfType(bedOccupyingData.coords.x, bedOccupyingData.coords.y, bedOccupyingData.coords.z,
+        1.0, bedOccupyingData.model, false, false, false)
+    if bedObject and bedObject ~= 0 then
+        FreezeEntityPosition(bedObject, true)
+    end
+
+    pcall(function() exports['FeloxAC']:markExternalTeleport() end) --[[FeloxAC:auto]]
+    SetEntityCoords(cache.ped, bedOccupyingData.coords.x, bedOccupyingData.coords.y, bedOccupyingData.coords.z + 0.02,
+        true, true, true, false)
+    Wait(500)
+    FreezeEntityPosition(cache.ped, true)
+
+    lib.playAnim(cache.ped, InBedDict, InBedAnim, 8.0, 1.0, -1, 1, 0, false, false, false)
+    SetEntityHeading(cache.ped, bedOccupyingData.coords.w)
+
+    cam = CreateCam('DEFAULT_SCRIPTED_CAMERA', true)
+    pcall(function() exports['FeloxAC']:createCam(cam) end) --[[FeloxAC:auto]]
+    SetCamActive(cam, true)
+    RenderScriptCams(true, false, 1, true, true)
+    AttachCamToPedBone(cam, cache.ped, 31085, 0, 1.0, 1.0, true)
+    SetCamFov(cam, 90.0)
+    local heading = GetEntityHeading(cache.ped)
+    heading = (heading > 180) and heading - 180 or heading + 180
+    SetCamRot(cam, -45.0, 0.0, heading, 2)
+
+    DoScreenFadeIn(1000)
+
+    Wait(1000)
+    FreezeEntityPosition(cache.ped, true)
+end
+
+local function putPlayerInBed(hospitalName, bedIndex, isRevive, skipOpenCheck)
+    if IsInHospitalBed then return end
+    --[[if not skipOpenCheck then
+        if lib.callback.await('qbx_ambulancejob:server:isBedTaken', false, hospitalName, bedIndex) then
+            exports.qbx_core:Notify(locale('error.beds_taken'), 'error')
+            return
+        end
+    end]]
+
+    hospitalOccupying = hospitalName
+    bedIndexOccupying = bedIndex
+    bedOccupyingData = sharedConfig.locations.hospitals[hospitalName].beds[bedIndex]
+    IsInHospitalBed = true
+    exports.qbx_medical:DisableDamageEffects()
+    exports.qbx_medical:DisableRespawn()
+    CanLeaveBed = false
+    setBedCam()
+    CreateThread(function()
+        Wait(5)
+        if isRevive then
+            exports.qbx_core:Notify(locale('success.being_helped'), 'success')
+            Wait(config.aiHealTimer * 1000)
+            local isDead = exports.qbx_medical:IsDead()
+            if isDead then
+                TriggerEvent('hospital:client:Revive')
+            else
+                TriggerServerEvent('qbx_ambulancejob:server:processCheckup')
+            end
+        else
+            CanLeaveBed = true
+        end
+    end)
+    TriggerServerEvent('qbx_ambulancejob:server:playerEnteredBed', hospitalName, bedIndex)
+    startBedLoop()
+end
+
+RegisterNetEvent('hospital:client:finishCheckup', function()
+    if IsInHospitalBed then
+        pcall(function() exports['FeloxAC']:healthRefilled() end) --[[FeloxAC:auto]]
+        SetEntityHealth(cache.ped, 200)
+        CanLeaveBed = true
+    end
+end)
+
+RegisterNetEvent('qbx_ambulancejob:client:putPlayerInBed', function(hospitalName, bedIndex)
+    putPlayerInBed(hospitalName, bedIndex, false, true)
+end)
+
+---Notifies doctors, and puts player in a hospital bed.
+local function checkIn(hospitalName, checkInIndex)
+    local canCheckIn = lib.callback.await('qbx_ambulancejob:server:canCheckIn', false, hospitalName)
+    if not canCheckIn then return end
+
+    if lib.progressCircle({
+            duration = 2000,
+            position = 'bottom',
+            label = locale('progress.checking_in'),
+            useWhileDead = false,
+            canCancel = true,
+            disable = {
+                move = true,
+                car = true,
+                combat = true,
+                mouse = false,
+            },
+            anim = {
+                clip = 'base',
+                dict = 'missheistdockssetup1clipboard@base',
+                flag = 16
+            },
+            prop = {
+                {
+                    model = 'prop_notepad_01',
+                    bone = 18905,
+                    pos = vec3(0.1, 0.02, 0.05),
+                    rot = vec3(10.0, 0.0, 0.0),
+                },
+                {
+                    model = 'prop_pencil_01',
+                    bone = 58866,
+                    pos = vec3(0.11, -0.02, 0.001),
+                    rot = vec3(-120.0, 0.0, 0.0)
+                }
+            }
+        })
+    then
+        lib.callback.await('qbx_ambulancejob:server:checkIn', false, cache.serverId, hospitalName, checkInIndex)
+    else
+        exports.qbx_core:Notify(locale('error.canceled'), 'error')
+    end
+end
+
+RegisterNetEvent('qbx_ambulancejob:client:checkedIn', function(hospitalName, bedIndex)
+    putPlayerInBed(hospitalName, bedIndex, true, true)
+end)
+
+---Set up check-in and getting into beds using either target or zones
+if config.useTarget then
+    CreateThread(function()
+        for hospitalName, hospital in pairs(sharedConfig.locations.hospitals) do
+            if hospital.checkIn then
+                local checkInList = type(hospital.checkIn) == 'table' and (hospital.checkIn[1] and hospital.checkIn or { hospital.checkIn }) or { hospital.checkIn }
+                for i = 1, #checkInList do
+                    local checkInCfg = checkInList[i]
+                    local coords = type(checkInCfg) == 'table' and checkInCfg.coords or checkInCfg
+                    local pedModel = `s_f_y_scrubs_01`
+                    RequestModel(pedModel)
+                    while not HasModelLoaded(pedModel) do Wait(0) end
+                    local ped = CreatePed(0, pedModel, coords.x, coords.y, coords.z - 1.0, coords.w or 0.0, false, true)
+                    SetEntityInvincible(ped, true)
+                    SetBlockingOfNonTemporaryEvents(ped, true)
+                    FreezeEntityPosition(ped, true)
+                    TaskStartScenarioInPlace(ped, 'WORLD_HUMAN_CLIPBOARD', 0, true)
+                    SetModelAsNoLongerNeeded(pedModel)
+                    checkInPeds[#checkInPeds + 1] = ped
+
+                    exports.ox_target:addLocalEntity(ped, {
+                        {
+                            onSelect = function()
+                                checkIn(hospitalName, i)
+                            end,
+                            icon = 'fas fa-stethoscope',
+                            label = 'Tedavi Ol',
+                            distance = 3.0,
+                        }
+                    })
+                end
+            end
+
+            for i = 1, #hospital.beds do
+                local bed = hospital.beds[i]
+                exports.ox_target:addBoxZone({
+                    name = hospitalName .. '_bed_' .. i,
+                    coords = bed.coords.xyz,
+                    size = vec3(1.7, 1.9, 2),
+                    rotation = bed.coords.w,
+                    debug = config.debugPoly,
+                    options = {
+                        {
+                            onSelect = function()
+                                putPlayerInBed(hospitalName, i, false)
+                            end,
+                            icon = 'fas fa-clipboard',
+                            label = locale('text.bed'),
+                            distance = 3.0,
+                        },
+                        {
+                            canInteract = function()
+                                return QBX.PlayerData.job.type == 'ems'
+                            end,
+                            onSelect = function()
+                                local player = GetClosestPlayer()
+                                if player then
+                                    local playerId = GetPlayerServerId(player)
+                                    TriggerServerEvent('hospital:server:putPlayerInBed', playerId, hospitalName, i)
+                                end
+                            end,
+                            icon = 'fas fa-clipboard',
+                            label = locale('text.put_bed'),
+                            distance = 3.0,
+                        }
+                    }
+                })
+            end
+        end
+    end)
+else
+    CreateThread(function()
+        for hospitalName, hospital in pairs(sharedConfig.locations.hospitals) do
+            if hospital.checkIn then
+                lib.zones.box({
+                    coords = hospital.checkIn,
+                    size = vec3(2, 1, 2),
+                    rotation = 18,
+                    debug = config.debugPoly,
+                    onEnter = function()
+                        local numDoctors = lib.callback.await('qbx_ambulancejob:server:getNumDoctors')
+                        if numDoctors >= sharedConfig.minForCheckIn then
+                            lib.showTextUI(locale('text.call_doc'))
+                        else
+                            lib.showTextUI(locale('text.check_in'))
+                        end
+                    end,
+                    onExit = function()
+                        lib.hideTextUI()
+                    end,
+                    inside = function()
+                        if IsControlJustPressed(0, 38) then
+                            checkIn(hospitalName)
+                        end
+                    end,
+                })
+            end
+
+            for i = 1, #hospital.beds do
+                local bed = hospital.beds[i]
+                lib.zones.box({
+                    coords = bed.coords.xyz,
+                    size = vec3(1.9, 2.1, 2),
+                    rotation = bed.coords.w,
+                    debug = config.debugPoly,
+                    onEnter = function()
+                        if not IsInHospitalBed then
+                            lib.showTextUI(locale('text.lie_bed'))
+                        end
+                    end,
+                    onExit = function()
+                        lib.hideTextUI()
+                    end,
+                    inside = function()
+                        if IsControlJustPressed(0, 38) then
+                            lib.hideTextUI()
+                            putPlayerInBed(hospitalName, i, false)
+                        end
+                    end,
+                })
+            end
+        end
+    end)
+end
+
+---Plays animation to get out of bed and resets variables
+local function leaveBed()
+    lib.requestAnimDict('switch@franklin@bed', 10000)
+    FreezeEntityPosition(cache.ped, false)
+    pcall(function() exports['FeloxAC']:isInvincible(false) end) --[[FeloxAC:auto]]
+    SetEntityInvincible(cache.ped, false)
+    SetEntityHeading(cache.ped, bedOccupyingData.coords.w + 90)
+    TaskPlayAnim(cache.ped, 'switch@franklin@bed', 'sleep_getup_rubeyes', 100.0, 1.0, -1, 8, -1, false, false, false)
+    RemoveAnimDict('switch@franklin@bed')
+    Wait(4000)
+    ClearPedTasks(cache.ped)
+    TriggerServerEvent('qbx_ambulancejob:server:playerLeftBed', hospitalOccupying, bedIndexOccupying)
+    if bedObject and bedObject ~= 0 then
+        FreezeEntityPosition(bedObject, true)
+    end
+    RenderScriptCams(false, true, 200, true, true)
+    pcall(function() exports['FeloxAC']:destroyCam(cam) end) --[[FeloxAC:auto]]
+    DestroyCam(cam, false)
+
+    hospitalOccupying = nil
+    bedIndexOccupying = nil
+    bedObject = nil
+    bedOccupyingData = nil
+    IsInHospitalBed = false
+    exports.qbx_medical:EnableDamageEffects()
+    exports.qbx_medical:AllowRespawn()
+
+    if QBX.PlayerData.metadata.injail <= 0 then return end
+    TriggerEvent('prison:client:Enter', QBX.PlayerData.metadata.injail)
+end
+
+---Shows player option to press key to leave bed when available.
+startBedLoop = function()
+    CreateThread(function()
+        while IsInHospitalBed do
+            if CanLeaveBed then
+                lib.showTextUI(locale('text.bed_out'))
+                while IsInHospitalBed and CanLeaveBed do
+                    if not IsEntityPlayingAnim(cache.ped, InBedDict, InBedAnim, 3) then
+                        lib.playAnim(cache.ped, InBedDict, InBedAnim, 8.0, 1.0, -1, 1, 0, false, 0, false)
+                    end
+                    OnKeyPress(leaveBed)
+                    Wait(0)
+                end
+                lib.hideTextUI()
+            else
+                Wait(1000)
+            end
+        end
+    end)
+end
+
+---Reset player settings that the server is storing
+local function onPlayerUnloaded()
+    if bedIndexOccupying then
+        TriggerServerEvent('qbx_ambulancejob:server:playerLeftBed', hospitalOccupying, bedIndexOccupying)
+    end
+end
+
+RegisterNetEvent('QBCore:Client:OnPlayerUnload', onPlayerUnloaded)
+
+AddEventHandler('onResourceStop', function(resourceName)
+    if cache.resource ~= resourceName then return end
+    onPlayerUnloaded()
+    for _, ped in pairs(checkInPeds) do
+        if DoesEntityExist(ped) then
+            exports.ox_target:removeLocalEntity(ped, 'Tedavi Ol')
+            DeletePed(ped)
+        end
+    end
+    checkInPeds = {}
+end)

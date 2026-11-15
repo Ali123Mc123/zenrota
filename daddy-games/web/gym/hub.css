@@ -1,0 +1,703 @@
+/* =========================================================================
+   daddy-games :: gym :: hub.css
+   Koc Merkezi — "Athletic Department" dosyasi.
+
+   Sidebar + kart izgarasi yok. Ustte kimlik seridi, altinda ince sekme
+   cubugu; her sekme kendi duzenini kurar. Ayirma isi hairline cizgilerle
+   yapilir, her sey kutu icine alinmaz.
+   ========================================================================= */
+
+#gym-hub {
+  position: fixed;
+  inset: 0;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-body);
+  color: var(--n8);
+  background: rgba(4, 6, 9, 0.82);
+  z-index: 1000;
+}
+
+#gym-hub.is-open { display: flex; }
+
+.hb {
+  width: min(1140px, 94vw);
+  height: min(724px, 92vh);
+  display: grid;
+  grid-template-rows: auto auto minmax(0, 1fr);
+  border-radius: var(--r3);
+  overflow: hidden;
+  background: var(--n0);
+  box-shadow: 0 40px 120px rgba(0, 0, 0, 0.8), inset 0 0 0 1px var(--rule-strong);
+  opacity: 0;
+  transform: translateY(12px) scale(0.99);
+  transition: opacity 240ms var(--ease), transform 240ms var(--ease);
+}
+
+#gym-hub.is-open .hb { opacity: 1; transform: none; }
+
+/* =========================================================================
+   KIMLIK SERIDI
+   ========================================================================= */
+.hb-top {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: var(--s4);
+  padding: 20px var(--s5) 18px;
+  background: var(--n1);
+}
+
+/* Letterman cift cizgi — ust kenarda, tek dekoratif oge */
+.hb-top::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: linear-gradient(90deg,
+    var(--acc) 0%, var(--acc) 47%,
+    var(--brass) 47%, var(--brass) 53%,
+    var(--acc) 53%, var(--acc) 100%);
+}
+
+.hb-coach { min-width: 0; }
+
+.hb-coach__name {
+  font-family: var(--font-display);
+  font-size: 22px;
+  font-weight: 800;
+  letter-spacing: -0.008em;
+  text-transform: uppercase;
+  line-height: 1.05;
+}
+
+.hb-coach__title { font-size: 11.5px; color: var(--n6); margin-top: 3px; }
+
+.hb-top__spacer { flex: 1; }
+
+/* Oyuncu kimligi — sagda, skorbord gibi */
+.hb-me {
+  display: flex;
+  align-items: center;
+  gap: var(--s4);
+}
+
+.hb-me__block { text-align: right; }
+
+.hb-me__name {
+  font-family: var(--font-display);
+  font-size: 17px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: -0.004em;
+}
+
+.hb-me__line {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 4px;
+  font-family: var(--font-data);
+  font-size: 12px;
+  color: var(--n6);
+}
+
+.hb-me__line b { color: var(--n7); font-weight: 700; }
+.hb-me__sep { width: 1px; height: 11px; background: var(--rule-strong); }
+
+.hb-close {
+  width: 32px; height: 32px;
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 0;
+  border-radius: var(--r2);
+  background: var(--n3);
+  color: var(--n7);
+  cursor: pointer;
+  transition: background-color 150ms linear, color 150ms linear;
+}
+
+.hb-close:hover { background: var(--acc); color: #fff; }
+
+/* =========================================================================
+   SEKME CUBUGU — ince, alti cizgili; dikey sidebar degil
+   ========================================================================= */
+.hb-tabs {
+  display: flex;
+  align-items: stretch;
+  gap: 2px;
+  padding: 0 var(--s5);
+  background: var(--n1);
+  border-bottom: 1px solid var(--rule-strong);
+}
+
+.hb-tab {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 11px 15px 12px;
+  border: 0;
+  background: transparent;
+  color: var(--n6);
+  font-family: inherit;
+  font-size: 12.5px;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  cursor: pointer;
+  transition: color 150ms linear;
+}
+
+.hb-tab:hover { color: var(--n7); }
+
+.hb-tab.is-active { color: var(--n8); }
+
+.hb-tab.is-active::after {
+  content: '';
+  position: absolute;
+  left: 10px; right: 10px; bottom: -1px;
+  height: 2px;
+  background: var(--acc);
+}
+
+.hb-tab__n {
+  font-family: var(--font-data);
+  font-size: 10.5px;
+  color: var(--n6);
+  padding: 1px 5px;
+  border-radius: 3px;
+  background: var(--n3);
+}
+
+.hb-tab.is-active .hb-tab__n { color: var(--n7); }
+
+/* =========================================================================
+   ICERIK
+   ========================================================================= */
+.hb-body { padding: var(--s5); }
+
+.hb-cols {
+  display: grid;
+  gap: var(--s5);
+  align-items: start;
+}
+
+.hb-cols--main  { grid-template-columns: 1fr 296px; }
+.hb-cols--split { grid-template-columns: 268px 1fr; }
+
+.hb-stack { display: flex; flex-direction: column; gap: var(--s5); }
+
+/* =========================================================================
+   BUGUN — antrenman karti
+   ========================================================================= */
+.hb-prog { display: flex; flex-direction: column; }
+
+.hb-prog__row {
+  display: flex;
+  align-items: center;
+  gap: var(--s3);
+  padding: 13px 2px;
+  border-bottom: 1px solid var(--rule);
+}
+
+.hb-prog__row:last-child { border-bottom: 0; }
+
+.hb-prog__mark {
+  width: 26px; height: 26px;
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  color: var(--n5);
+  box-shadow: inset 0 0 0 1.5px var(--rule-strong);
+}
+
+.hb-prog__row.is-done .hb-prog__mark {
+  color: var(--ok);
+  box-shadow: inset 0 0 0 1.5px rgba(63, 164, 94, 0.55);
+  background: var(--ok-wash);
+}
+
+.hb-prog__icon { color: var(--n6); flex: none; }
+
+.hb-prog__name { flex: 1; font-size: 14px; font-weight: 500; min-width: 0; }
+.hb-prog__row.is-done .hb-prog__name { color: var(--n7); }
+
+/* Set sayaci: buyuk mono, skorbord gibi */
+.hb-prog__count {
+  font-family: var(--font-data);
+  font-size: 19px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  color: var(--n8);
+  flex: none;
+}
+
+.hb-prog__count s {
+  text-decoration: none;
+  color: var(--n6);
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.hb-prog__row.is-done .hb-prog__count { color: var(--ok); }
+
+/* Sag sutun olcumleri */
+.hb-gauge__top {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 7px;
+}
+
+.hb-gauge__k {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  color: var(--n6);
+}
+
+.hb-gauge__v {
+  font-family: var(--font-data);
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--n8);
+}
+
+.hb-gauge__note { margin-top: 6px; font-size: 11px; color: var(--n6); }
+
+/* Kas yuku: anatomik siluet + toparlanma listesi */
+.hb-load { display: grid; grid-template-columns: 122px 1fr; gap: var(--s5); align-items: center; }
+
+.hb-figure { width: 100%; height: auto; }
+.hb-figure .z { fill: var(--load-0); transition: fill 320ms linear; }
+.hb-figure .z.l1 { fill: var(--load-1); }
+.hb-figure .z.l2 { fill: var(--load-2); }
+.hb-figure .z.l3 { fill: var(--load-3); }
+.hb-figure .z.sore { fill: var(--load-sore); }
+.hb-figure .ol { fill: none; stroke: var(--n5); stroke-width: 1.5; }
+
+.hb-loadrow {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 6px 0;
+  border-bottom: 1px solid var(--rule);
+  font-size: 12px;
+}
+
+.hb-loadrow:last-child { border-bottom: 0; }
+.hb-loadrow__n { flex: 1; color: var(--n7); }
+
+.hb-loadrow__s {
+  font-family: var(--font-data);
+  font-size: 10.5px;
+  color: var(--n6);
+}
+
+.hb-loadrow.is-sore .hb-loadrow__s { color: var(--warn); }
+.hb-loadrow__dot { width: 7px; height: 7px; border-radius: 2px; background: var(--load-0); flex: none; }
+.hb-loadrow__dot.l1 { background: var(--load-1); }
+.hb-loadrow__dot.l2 { background: var(--load-2); }
+.hb-loadrow__dot.l3 { background: var(--load-3); }
+.hb-loadrow__dot.sore { background: var(--load-sore); }
+
+/* =========================================================================
+   KARNE — kondisyon sutunu + curume projeksiyonu
+   ========================================================================= */
+.hb-cond { display: flex; gap: var(--s4); align-items: stretch; }
+
+/* Dikey sutun: donut yerine gercek bir olcek */
+.hb-cond__col {
+  position: relative;
+  width: 62px;
+  min-height: 208px;
+  flex: none;
+  border-radius: var(--r2);
+  background: var(--n1);
+  box-shadow: inset 0 0 0 1px var(--rule);
+  overflow: hidden;
+}
+
+.hb-cond__fill {
+  position: absolute;
+  left: 0; right: 0; bottom: 0;
+  background: linear-gradient(180deg, var(--acc-hi), var(--acc-lo));
+  transition: height 620ms var(--ease);
+}
+
+/* Curume projeksiyonu: 24 ve 48 saat sonrasi */
+/* Curume projeksiyonu: dolgunun uzerinde kesik cizgi.
+   24s ve 48s degerleri birbirine cok yakin olabilir; etiketler bu yuzden
+   ters yonlere yaslanir ve ust uste binmez. */
+.hb-cond__ghost {
+  position: absolute;
+  left: 0; right: 0;
+  height: 0;
+  border-top: 1px dashed rgba(255, 255, 255, 0.75);
+}
+
+.hb-cond__ghost::after {
+  content: attr(data-t);
+  position: absolute;
+  font-family: var(--font-data);
+  font-size: 9px;
+  font-weight: 700;
+  color: #fff;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.9);
+}
+
+.hb-cond__ghost--a::after { left: 4px;  top: -12px; }
+.hb-cond__ghost--b::after { right: 4px; top: 2px; }
+
+.hb-cond__scale {
+  position: absolute;
+  inset: 0;
+  background-image: repeating-linear-gradient(
+    to top, transparent 0, transparent 19.6%,
+    rgba(255,255,255,.09) 19.6%, rgba(255,255,255,.09) 20%);
+}
+
+.hb-cond__side { flex: 1; min-width: 0; display: flex; flex-direction: column; justify-content: center; gap: var(--s3); }
+
+.hb-cond__now { display: flex; align-items: baseline; gap: 8px; }
+
+.hb-cond__v {
+  font-family: var(--font-data);
+  font-size: 44px;
+  font-weight: 700;
+  line-height: 0.9;
+  letter-spacing: -0.02em;
+}
+
+.hb-cond__u { font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--n6); }
+
+.hb-decay { display: flex; flex-direction: column; gap: 5px; }
+
+.hb-decay__r {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11.5px;
+  color: var(--n6);
+}
+
+.hb-decay__r b {
+  font-family: var(--font-data);
+  font-weight: 700;
+  color: var(--warn);
+}
+
+/* Rutbe merdiveni */
+.hb-ladder { display: flex; gap: 4px; }
+
+.hb-ladder__s {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 11px 6px 10px;
+  border-radius: var(--r2);
+  background: var(--n1);
+  font-size: 11px;
+  letter-spacing: 0.01em;
+  color: var(--n6);
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.hb-ladder__s .medal { width: 30px; height: 30px; }
+.hb-ladder__s.is-past { background: var(--n2); color: var(--n7); }
+
+.hb-ladder__s.is-now {
+  background: var(--acc-wash);
+  box-shadow: inset 0 0 0 1px var(--acc-line);
+  color: var(--n8);
+  font-weight: 700;
+}
+
+/* Perk satirlari */
+.hb-perk__top {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 7px;
+  font-size: 12.5px;
+  color: var(--n7);
+}
+
+.hb-perk__v { font-family: var(--font-data); font-weight: 700; color: var(--brass); }
+
+/* =========================================================================
+   SIRALAMA — gercek tablo
+   ========================================================================= */
+.hb-seg { display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: var(--s4); }
+
+.hb-seg__b {
+  padding: 6px 12px;
+  border: 0;
+  border-radius: var(--r1);
+  background: var(--n2);
+  color: var(--n6);
+  font-family: inherit;
+  font-size: 11.5px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 150ms linear, color 150ms linear;
+}
+
+.hb-seg__b:hover { background: var(--n3); color: var(--n7); }
+.hb-seg__b.is-active { background: var(--acc); color: #fff; }
+
+.hb-lb { width: 100%; border-collapse: collapse; }
+
+.hb-lb th {
+  padding: 0 10px 8px;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  color: var(--n6);
+  text-align: left;
+  border-bottom: 1px solid var(--rule-strong);
+}
+
+.hb-lb th.num, .hb-lb td.num { text-align: right; }
+
+.hb-lb td {
+  padding: 9px 10px;
+  border-bottom: 1px solid var(--rule);
+  font-size: 13px;
+  color: var(--n7);
+}
+
+.hb-lb tr.is-me td { background: var(--acc-wash); color: var(--n8); }
+.hb-lb tr.is-me td:first-child { box-shadow: inset 2px 0 0 var(--acc); }
+
+.hb-lb__rank {
+  font-family: var(--font-data);
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--n6);
+  width: 46px;
+}
+
+.hb-lb__rank.r1 { color: var(--brass); }
+.hb-lb__rank.r2 { color: #B8C2CF; }
+.hb-lb__rank.r3 { color: #C9814E; }
+
+.hb-lb__name { color: var(--n8); font-weight: 500; }
+
+.hb-lb__score {
+  font-family: var(--font-data);
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--n8);
+  font-variant-numeric: tabular-nums;
+}
+
+.hb-lb__tier { font-size: 11px; color: var(--n6); }
+
+/* =========================================================================
+   BUFE — liste, kart izgarasi degil
+   ========================================================================= */
+.hb-shop { display: grid; grid-template-columns: 1fr 1fr; gap: 0 var(--s5); }
+
+.hb-item {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--s3);
+  padding: 14px 0;
+  border-bottom: 1px solid var(--rule);
+}
+
+.hb-item__icon {
+  width: 34px; height: 34px;
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--r2);
+  background: var(--n2);
+  color: var(--n7);
+}
+
+.hb-item__main { flex: 1; min-width: 0; }
+
+.hb-item__top {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.hb-item__name { font-size: 13.5px; font-weight: 600; }
+
+.hb-item__price {
+  font-family: var(--font-data);
+  font-size: 12.5px;
+  font-weight: 700;
+  color: var(--brass);
+  flex: none;
+}
+
+.hb-item__desc { font-size: 12px; line-height: 1.5; color: var(--n6); margin: 5px 0 9px; }
+
+.hb-item__foot { display: flex; align-items: center; gap: 7px; }
+
+.hb-item__meta {
+  margin-left: auto;
+  font-family: var(--font-data);
+  font-size: 10.5px;
+  color: var(--n6);
+  text-align: right;
+}
+
+/* =========================================================================
+   ROZETLER — madalya plakalari
+   ========================================================================= */
+.hb-badges {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(196px, 1fr));
+  gap: var(--s3);
+}
+
+.hb-badge {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--s3);
+  padding: 13px;
+  border-radius: var(--r2);
+  background: var(--n1);
+}
+
+.hb-badge.is-locked { background: transparent; box-shadow: inset 0 0 0 1px var(--rule); }
+.hb-badge.is-locked .hb-badge__n { color: var(--n6); }
+.hb-badge.is-locked .hb-badge__d { color: var(--n6); opacity: 0.7; }
+
+.hb-badge__main { min-width: 0; }
+.hb-badge__n { font-size: 12.5px; font-weight: 600; margin-bottom: 3px; }
+.hb-badge__d { font-size: 11px; line-height: 1.45; color: var(--n6); }
+
+.hb-badge__p {
+  margin-top: 6px;
+  font-family: var(--font-data);
+  font-size: 10.5px;
+  color: var(--brass);
+}
+
+.hb-badge.is-locked .hb-badge__p { color: var(--n6); }
+
+/* =========================================================================
+   KOC TAVSIYESI & BILDIRIM
+   ========================================================================= */
+.hb-advice {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--s2);
+  padding: 12px 14px;
+  border-radius: var(--r2);
+  background: var(--n1);
+  border-left: 2px solid var(--brass);
+  font-size: 12.5px;
+  line-height: 1.55;
+  color: var(--n7);
+  cursor: pointer;
+  transition: background-color 150ms linear;
+}
+
+.hb-advice:hover { background: var(--n2); }
+.hb-advice .gi { color: var(--brass); margin-top: 1px; flex: none; }
+
+.hb-toast {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translate(-50%, 10px);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  border-radius: var(--r2);
+  background: var(--n3);
+  box-shadow: inset 0 0 0 1px var(--rule-strong);
+  font-size: 12.5px;
+  font-weight: 500;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 200ms var(--ease), transform 200ms var(--ease);
+  z-index: 10;
+}
+
+.hb-toast.is-show { opacity: 1; transform: translate(-50%, 0); }
+.hb-toast.is-ok  { color: var(--ok); }
+.hb-toast.is-bad { color: var(--bad); }
+
+.hb-empty { padding: 34px; text-align: center; color: var(--n6); font-size: 13px; }
+
+/* Yuksek yorgunlukta olcum kirmiziya doner */
+.meter--bad .meter__fill { background: var(--bad); }
+
+/* Bugunun ozeti — kucuk skorbord seridi */
+.hb-sum {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--s4);
+  padding: 14px 0 2px;
+  border-top: 1px solid var(--rule);
+}
+
+.hb-sum__k {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  color: var(--n6);
+  margin-bottom: 6px;
+}
+
+.hb-sum__v {
+  font-family: var(--font-data);
+  font-size: 22px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.hb-sum__v small { font-size: 12px; font-weight: 500; color: var(--n6); margin-left: 3px; }
+
+/* Aktif takviyeler: dugme gibi degil, sessiz satirlar */
+.hb-buff {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 0;
+  border-bottom: 1px solid var(--rule);
+  font-size: 12px;
+  color: var(--n7);
+}
+
+.hb-buff:last-child { border-bottom: 0; }
+.hb-buff .gi { color: var(--brass); flex: none; }
+.hb-buff__t { flex: 1; min-width: 0; }
+
+.hb-buff__n {
+  font-family: var(--font-data);
+  font-size: 10.5px;
+  color: var(--n6);
+}

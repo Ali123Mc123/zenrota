@@ -1,0 +1,688 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>savana-fuel</title>
+	<link rel="stylesheet" href="css/daddy.css" />
+	<script src="js/jquery.js"></script>
+	<script src="js/tailwind.js"></script>
+	<script src="js/custom.js"></script>
+
+	<style>
+		input::-webkit-outer-spin-button,
+		input::-webkit-inner-spin-button {
+			-webkit-appearance: none;
+			margin: 0;
+		}
+
+		/* if screen width 1920 or higher set zoom: 1.25; for body */
+		@media screen and (min-width: 1920px) {
+			body {
+				zoom: 1.25;
+			}
+		}
+
+		.activeJobsScroll {
+			direction: rtl;
+		}
+
+		.activeJobsScroll>div {
+			direction: ltr;
+		}
+
+		.activeJobsScroll::-webkit-scrollbar {
+			width: 3px;
+		}
+
+		.activeJobsScroll::-webkit-scrollbar-thumb {
+			background: rgba(255, 255, 255, 0.3);
+		}
+
+		.activeJobsScroll::-webkit-scrollbar-track {
+			background: rgba(255, 255, 255, 0.04);
+		}
+	</style>
+</head>
+
+<body class="h-full w-full">
+	<div id="notifys"
+		class="transition-all max-h-[70vh] overflow-y-hidden clashDisplay w-80 flex flex-*col gap-4 absolute top-5 right-5">
+	</div>
+	<div id="buyStationMenu" class="page select-none absolute w-full h-full flex items-center justify-center hidden">
+		<div class="p-3 flex flex-col gap-2 d-plate">
+			<div class="select-none flex items-center justify-center flex-col my-3">
+				<div class="gilroy font-black leading-[68px] gasText">GAS</div>
+				<div class="gilroy stationText font-medium text-white leading-6">STATION</div>
+			</div>
+			<div class="bg-white bg-opacity-[3%] p-3 px-4 flex flex-col gap-2 rounded-[3px]">
+				<div class="clashDisplay font-normal tracking-wider text-white">FİYAT</div>
+				<div id="gasStationBuyPrice"
+					class="clashDisplay bg-white bg-opacity-[3%] p-3 w-full px-32 outline-none border-none rounded-[3px] text-2xl font-medium text-center text-white">
+					$ 2.000.000
+				</div>
+			</div>
+			<div class="grid grid-cols-7 gap-2">
+				<div id="buyGasStationBtn"
+					class="rounded-[3px] cursor-pointer tracking-wider clashDisplay col-span-5 bg-[#3BD67F] text-center p-6 bg-opacity-10 transition-all hover:bg-opacity-20 text-[#3BD67F] w-full">
+					BENZİN İSTASYONU SATIN AL
+				</div>
+				<div id="closeBuyStation"
+					class="rounded-[3px] cursor-pointer tracking-wider clashDisplay col-span-2 d-ghost bg-white text-center p-6 bg-opacity-10 transition-all hover:bg-opacity-20 text-white w-full">
+					KAPAT
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div id="buyFuelMenu" class="page select-none gap-2 absolute w-full h-full flex items-center justify-center hidden">
+		<div class="p-3 flex flex-col gap-2 d-plate">
+			<div class="select-none w-52 h-32 flex items-center justify-center flex-col mb-1 -mx-2" style="zoom: 0.6">
+				<div class="gilroy font-black leading-[68px] gasText">GAS</div>
+				<div class="gilroy stationText text-xl font-medium text-white leading-6">STATION</div>
+			</div>
+
+			<div class="grid grid-cols-1 gap-2 mb-6">
+				<div id="startFilling"
+					class="rounded-[3px] cursor-pointer tracking-wider clashDisplay bg-white text-center p-2 bg-opacity-10 transition-all hover:bg-opacity-20 text-white w-full">
+					BAŞLAT
+				</div>
+				<div id="stopFilling"
+					class="rounded-[3px] cursor-pointer tracking-wider clashDisplay bg-[#E23A50] text-center p-2 bg-opacity-10 transition-all hover:bg-opacity-20 text-[#E23A50] w-full">
+					DURDUR
+				</div>
+			</div>
+
+			<div class="grid grid-cols-1 gap-2">
+				<div id="payFuelBtn"
+					class="rounded-[3px] cursor-pointer tracking-wider clashDisplay bg-[#3BD67F] text-center p-6 bg-opacity-10 transition-all hover:bg-opacity-20 text-[#3BD67F]">
+					ÖDE
+				</div>
+				<div id="closeBuyFuelMenu"
+					class="rounded-[3px] cursor-pointer tracking-wider clashDisplay d-ghost bg-white text-center p-6 bg-opacity-10 transition-all hover:bg-opacity-20 text-white">
+					KAPAT
+				</div>
+			</div>
+		</div>
+		<div class="p-3 h- flex flex-col gap-2 d-plate">
+			<div class="bg-white bg-opacity-[3%] p-3 px-4 flex flex-col gap-2 rounded-[3px]">
+				<div class="clashDisplay font-normal tracking-wider text-white">ÖDENECEK TUTAR</div>
+				<input id="priceToPay" type="number" placeholder="50$"
+					class="mb-1 placeholder-white placeholder-opacity-50 clashDisplay bg-white bg-opacity-[3%] p-3 w-full outline-none border-none rounded-[3px] text-2xl font-medium text-center text-white" />
+			</div>
+			<div class="grid grid-cols-2 gap-2">
+				<div class="max-w-48 w-48 bg-white bg-opacity-[3%] p-3 px-4 flex flex-col gap-2 rounded-[3px]">
+					<div class="clashDisplay font-normal tracking-wider text-white">ARAÇTAKİ YAKIT</div>
+					<div
+						class="clashDisplay mb-1 bg-white bg-opacity-[3%] p-3 w-full outline-none border-none rounded-[3px] text-xl font-medium text-center text-white">
+						<span id="fuelInVehicle"></span> LİTRE
+					</div>
+				</div>
+				<div class="max-w-48 w-48 bg-white bg-opacity-[3%] p-3 px-4 flex flex-col gap-2 rounded-[3px]">
+					<div class="clashDisplay font-normal tracking-wider text-white">DOLDURULAN YAKIT</div>
+					<div
+						class="clashDisplay mb-1 bg-white bg-opacity-[3%] p-3 w-full outline-none border-none rounded-[3px] text-xl font-medium text-center text-white">
+						<span id="filledFuel"></span> LİTRE
+					</div>
+				</div>
+			</div>
+
+			<div class="grid grid-cols-2 gap-2">
+				<div class="w-full bg-white bg-opacity-[3%] p-3 px-4 flex flex-col gap-2 rounded-[3px]">
+					<div class="clashDisplay font-normal tracking-wider text-[#3BD67F]">ÖDENECEK</div>
+					<div
+						class="clashDisplay mb-1 bg-[#3BD67F] bg-opacity-10 p-3 w-full outline-none border-none rounded-[3px] text-2xl font-semibold text-center text-[#3BD67F]">
+						$ <span id="needToPay"></span>
+					</div>
+				</div>
+				<div class="flex flex-col gap-2 h-full">
+					<div class="flex-1 h-full">
+						<div class="w-full h-full bg-white bg-opacity-[3%] p-2 px-4 flex flex-col gap-2 rounded-[3px]">
+							<div
+								class="clashDisplay bg-[#3BD67F] bg-opacity-10 p-1.5 w-full outline-none border-none rounded-[3px] font-medium text-center text-[#3BD67F]">
+								<span id="stationStock"></span> STOK (L)
+							</div>
+						</div>
+					</div>
+					<div class="flex-1 h-full">
+						<div class="w-full h-full bg-white bg-opacity-[3%] p-2 px-4 flex flex-col gap-2 rounded-[3px]">
+							<div
+								class="clashDisplay bg-[#3BD67F] bg-opacity-10 p-1.5 w-full outline-none border-none rounded-[3px] font-medium text-center text-[#3BD67F]">
+								$<span id="stationFuelPrice"></span> / LİTRE
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div id="adminMenu"
+		class="page p-5 w-[50%] d-side select-none gap-4 absolute h-full flex items-center justify-start hidden">
+		<div class="p-5 px-7 flex flex-col gap-2 bg-white h-full bg-opacity-[2%] rounded-[6px]">
+			<div class="mb-5 select-none w-52 flex items-center justify-center flex-col mb-1 -mx-2" style="zoom: 0.6">
+				<div class="gilroy font-black leading-[68px] gasText">GAS</div>
+				<div class="gilroy stationText text-xl font-medium text-white leading-6">STATION</div>
+			</div>
+
+			<div class="grid grid-cols-1 gap-2 mb-6">
+				<div data-tab="statistic"
+					class="transition-all navItem rounded-[3px] cursor-pointer tracking-wider clashDisplay bg-[#E23A50] text-[#E23A50] text-center py-7 bg-opacity-10 transition-all hover:bg-opacity-20 w-full">
+					İSTATİSTİK
+				</div>
+				<div data-tab="fuel"
+					class="transition-all navItem rounded-[3px] cursor-pointer tracking-wider clashDisplay bg-white text-center py-7 bg-opacity-[4%] transition-all hover:bg-opacity-20 text-white w-full">
+					YAKIT
+				</div>
+				<div data-tab="refuel"
+					class="transition-all navItem rounded-[3px] cursor-pointer tracking-wider clashDisplay bg-white text-center py-7 bg-opacity-[4%] transition-all hover:bg-opacity-20 text-white w-full">
+					YAKIT İKMALİ
+				</div>
+				<div data-tab="hiredrive"
+					class="transition-all navItem rounded-[3px] cursor-pointer tracking-wider clashDisplay bg-white text-center py-7 bg-opacity-[4%] transition-all hover:bg-opacity-20 text-white w-full">
+					ŞOFÖR KİRALAMA
+				</div>
+				<div data-tab="upgrades"
+					class="transition-all navItem rounded-[3px] cursor-pointer tracking-wider clashDisplay bg-white text-center py-7 bg-opacity-[4%] transition-all hover:bg-opacity-20 text-white w-full">
+					YÜKSELTME
+				</div>
+				<div data-tab="cashier"
+					class="transition-all navItem rounded-[3px] cursor-pointer tracking-wider clashDisplay bg-white text-center py-7 bg-opacity-[4%] transition-all hover:bg-opacity-20 text-white w-full">
+					KASİYER
+				</div>
+			</div>
+			<div class="grid grid-cols-1 gap-2 mt-auto">
+				<div id="adminMenuExit"
+					class="rounded-[3px] cursor-pointer tracking-wider clashDisplay d-ghost bg-white text-center py-7 bg-opacity-10 transition-all hover:bg-opacity-20 text-white">
+					KAPAT
+				</div>
+			</div>
+		</div>
+		<div class="w-[100%] h-full">
+			<div id="statisticTab" data-tab="statistic"
+				class="tab clashDisplay p-5 flex flex-col gap-5 bg-white h-full bg-opacity-[2%] rounded-[6px]">
+				<div class="grid gap-3 grid-cols-1 text-center text-white">
+					<div class="w-full py-8 bg-[#3BD67F] bg-opacity-10 rounded-[3px]">
+						<div class="text-xl">TOPLAM KAZANÇ</div>
+						<div class="text-[#3BD67F] font-semibold text-4xl" id="totalMoneyWonStat">$ 1.000.000</div>
+					</div>
+					<div class="w-full py-8 bg-[#FF5A4F] bg-opacity-10 rounded-[3px]">
+						<div class="text-xl">TOPLAM HARCAMA</div>
+						<div class="text-[#FF5A4F] font-semibold text-4xl" id="totalMoneySpentStat">$ 1.000.000</div>
+					</div>
+				</div>
+
+				<div class="w-full grid grid-cols-2 gap-3">
+					<div class="w-full py-10 bg-white bg-opacity-5 w-full text-center text-white rounded-[3px]">
+						<div class="text-white text-opacity-50 text-xl">İTHAL EDİLEN LİTRE</div>
+						<div class="text-4xl font-semibold" id="totalImport">1000 L</div>
+					</div>
+					<div class="w-full py-10 bg-white bg-opacity-5 w-full text-center text-white rounded-[3px]">
+						<div class="text-white text-opacity-50 text-xl">KATEDİLEN MESAFE</div>
+						<div class="text-4xl font-semibold" id="totalDistance">1000 KM</div>
+					</div>
+					<div class="w-full py-10 bg-white bg-opacity-5 w-full text-center text-white rounded-[3px]">
+						<div class="text-white text-opacity-50 text-xl">TOPLAM ZİYARET</div>
+						<div class="text-4xl font-semibold" id="visits">135</div>
+					</div>
+					<div class="w-full py-10 bg-white bg-opacity-5 w-full text-center text-white rounded-[3px]">
+						<div class="text-white text-opacity-50 text-xl">MÜŞTERİLER</div>
+						<div class="text-4xl font-semibold" id="customers">120</div>
+					</div>
+				</div>
+				<div class="text-white w-full bg-white bg-opacity-5 p-5 rounded-[3px]">
+					<div class="flex justify-between items-end w-full mt-5">
+						<div class="text-white text-opacity-50">Envanter Kapasitesi (Maks: <span
+								id="maxInventoryCapacity"></span>)</div>
+						<div class="text-4xl font-semibold" id="fuelStockPercentStat">94.5%</div>
+					</div>
+					<div class="w-full bg-white bg-opacity-5 h-6 relative mt-2 rounded-[3px]">
+						<div id="fuelBarStat" class="w-[50%] bg-white h-full absolute left-0 rounded-[3px]"></div>
+					</div>
+				</div>
+			</div>
+
+			<div id="fuelTab" data-tab="fuel"
+				class="text-white hidden tab clashDisplay p-5 flex flex-col gap-5 bg-white h-full bg-opacity-[2%] rounded-[6px]">
+				<div class="text-white w-full h-[40rem] bg-white bg-opacity-5 p-5 rounded-[3px]">
+					<div class="h-full w-full bg-white bg-opacity-5 rounded-[3px] relative">
+						<div class="fuelText absolute w-64 text-center h-24 m-auto top-0 bottom-0 left-0 right-0 font-semibold text-8xl"
+							id="fuelPercentFuel">76%</div>
+						<div id="fuelBarWave"
+							class="overflow-hidden rounded-[3px] absolute bottom-0 h-[76%] w-full flex flex-col">
+							<img src="img/wave.png" alt="" />
+							<div class="bg-[#E23A50] bg-opacity-[52%] h-full w-full"></div>
+						</div>
+					</div>
+				</div>
+				<div class="text-white w-full bg-white bg-opacity-5 p-5 rounded-[3px]">
+					<div class="flex justify-between mb-5">
+						<div class="text-white text-opacity-50 uppercase tracking-wide">Litre başına yakıt fiyatı</div>
+					</div>
+					<div class="w-full flex justify-between items-center gap-5">
+						<div class="flex items-center">
+							<div class="text-white text-4xl font-semibold">$</div>
+							<input id="setFuelPriceInput"
+								class="text-4xl w-full bg-transparent border-none outline-none placeholder-white placeholder-opacity-50 font-semibold"
+								placeholder="0.00" type="number" />
+						</div>
+						<div id="setFuelPriceBtn"
+							class="rounded-[3px] ml-10 cursor-pointer tracking-wider clashDisplay col-span-5 bg-[#3BD67F] text-center p-4 bg-opacity-10 transition-all hover:bg-opacity-20 text-[#3BD67F] w-full">
+							Fiyatı Uygula
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div id="refuelTab" data-tab="refuel"
+				class="hidden text-white tab clashDisplay p-5 flex flex-col gap-2 bg-white h-full bg-opacity-[2%] rounded-[6px]">
+				<div class="text-white w-full bg-white bg-opacity-5 px-5 py-4 rounded-[3px]">
+					<div class="flex flex-col mb-3">
+						<div class="text-white text-opacity-50 text-xl uppercase tracking-wide">KÜÇÜK KARGO</div>
+						<div class="text-4xl font-semibold"><span id="smallCargoAmount">10</span> LİTRE</div>
+					</div>
+					<div class="w-full flex justify-between items-center gap-5">
+						<div data-package="small"
+							class="importFuelBtn rounded-[3px] cursor-pointer tracking-wider clashDisplay col-span-5 bg-[#3BD67F] text-center p-4 bg-opacity-10 transition-all hover:bg-opacity-20 text-[#3BD67F] w-full">
+							İTHAL ET $<span id="smallCargoImport">1.750</span>
+						</div>
+						<div data-package="small"
+							class="exportFuelBtn rounded-[3px] cursor-pointer tracking-wider clashDisplay col-span-5 bg-[#E23A50] text-center p-4 bg-opacity-10 transition-all hover:bg-opacity-20 text-[#E23A50] w-full">
+							İHRAÇ ET $<span id="smallCargoExport">1.750</span>
+						</div>
+					</div>
+				</div>
+				<div class="text-white w-full bg-white bg-opacity-5 px-5 py-4 rounded-[3px]">
+					<div class="flex flex-col mb-3">
+						<div class="text-white text-opacity-50 text-xl uppercase tracking-wide">ORTA KARGO</div>
+						<div class="text-4xl font-semibold"><span id="mediumCargoAmount">50</span> LİTRE</div>
+					</div>
+					<div class="w-full flex justify-between items-center gap-5">
+						<div data-package="medium"
+							class="importFuelBtn rounded-[3px] cursor-pointer tracking-wider clashDisplay col-span-5 bg-[#3BD67F] text-center p-4 bg-opacity-10 transition-all hover:bg-opacity-20 text-[#3BD67F] w-full">
+							İTHAL ET $<span id="mediumCargoImport">1.750</span>
+						</div>
+						<div data-package="medium"
+							class="exportFuelBtn rounded-[3px] cursor-pointer tracking-wider clashDisplay col-span-5 bg-[#E23A50] text-center p-4 bg-opacity-10 transition-all hover:bg-opacity-20 text-[#E23A50] w-full">
+							İHRAÇ ET $<span id="mediumCargoExport">1.750</span>
+						</div>
+					</div>
+				</div>
+				<div class="text-white w-full bg-white bg-opacity-5 px-5 py-4 rounded-[3px]">
+					<div class="flex flex-col mb-3">
+						<div class="text-white text-opacity-50 text-xl uppercase tracking-wide">BÜYÜK KARGO</div>
+						<div class="text-4xl font-semibold"><span id="largeCargoAmount">100</span> LİTRE</div>
+					</div>
+					<div class="w-full flex justify-between items-center gap-5">
+						<div data-package="large"
+							class="importFuelBtn rounded-[3px] cursor-pointer tracking-wider clashDisplay col-span-5 bg-[#3BD67F] text-center p-4 bg-opacity-10 transition-all hover:bg-opacity-20 text-[#3BD67F] w-full">
+							İTHAL ET $<span id="largeCargoImport">1.750</span>
+						</div>
+						<div data-package="large"
+							class="exportFuelBtn rounded-[3px] cursor-pointer tracking-wider clashDisplay col-span-5 bg-[#E23A50] text-center p-4 bg-opacity-10 transition-all hover:bg-opacity-20 text-[#E23A50] w-full">
+							İHRAÇ ET $<span id="largeCargoExport">1.750</span>
+						</div>
+					</div>
+				</div>
+				<div class="text-white w-full bg-white bg-opacity-5 px-5 py-4 rounded-[3px]">
+					<div class="flex flex-col mb-3">
+						<div class="text-2xl uppercase tracking-wide font-medium">İSTASYON DEVRET</div>
+						<div class="text-white text-opacity-50 font-normal pr-10">
+							Benzin istasyonunu devretmek istediğiniz kişinin ID'sini girin. Bu işlem geri alınamaz!
+						</div>
+					</div>
+					<div
+						class="rounded-[3px] w-full flex justify-between items-center gap-5 p-3 bg-white bg-opacity-[4%]">
+						<input id="transferStationId"
+							class="placeholder-white pl-4 placeholder-opacity-50 bg-transparent outline-none border-none"
+							type="number" placeholder="OYUNCU ID..." />
+						<div id="transferStationBtn"
+							class="rounded-[3px] cursor-pointer tracking-wider clashDisplay col-span-5 bg-[#3BD67F] text-center p-4 py-3 bg-opacity-10 transition-all hover:bg-opacity-20 text-[#3BD67F] w-full">
+							Devret
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div id="hiredriveTab" data-tab="hiredrive"
+				class="hidden text-white tab clashDisplay p-5 flex flex-col gap-2 bg-white h-full bg-opacity-[2%] rounded-[6px]">
+				<div class="text-white w-full bg-white bg-opacity-5 px-5 py-4 rounded-[3px]">
+					<div class="flex flex-col mb-1">
+						<div class="text-2xl uppercase tracking-wide font-medium">ŞOFÖR KİRALAMA</div>
+						<div class="text-white text-opacity-50 font-normal tracking-wider mt-4">Yakıtı sizin için ithal
+							etmeleri için kişileri işe alın, onlara ücret ödeyin.</div>
+					</div>
+				</div>
+				<form id="createJobForm" class="text-white w-full bg-white bg-opacity-5 px-5 py-4 rounded-[3px]">
+					<div
+						class="rounded-[3px] mb-2 w-full flex justify-between items-center gap-5 p-3 bg-white bg-opacity-[4%]">
+						<input id="jobTitle" required type="text" placeholder="İŞ BAŞLIĞI..."
+							class="w-full placeholder-white px-4 py-2 placeholder-opacity-50 bg-transparent outline-none border-none" />
+					</div>
+					<div
+						class="rounded-[3px] mb-2 w-full flex justify-between items-center gap-5 p-3 bg-white bg-opacity-[4%]">
+						<input id="jobReward" required type="number" placeholder="ÖDÜL..."
+							class="w-full placeholder-white px-4 py-2 placeholder-opacity-50 bg-transparent outline-none border-none" />
+					</div>
+					<div
+						class="rounded-[3px] mb-2 w-full flex justify-between items-center gap-5 p-3 bg-white bg-opacity-[4%]">
+						<select id="jobPackage" required
+							class="w-full placeholder-white px-4 py-2 placeholder-opacity-50 bg-transparent outline-none border-none">
+							<option id="optionSmall" class="bg-[#0A0B10] bg-opacity-90 tracking-wider" value="small">
+								KÜÇÜK 400L $1,000</option>
+							<option id="optionMedium" class="bg-[#0A0B10] bg-opacity-90 tracking-wider" value="medium">
+								ORTA 400L $1,000</option>
+							<option id="optionLarge" class="bg-[#0A0B10] bg-opacity-90 tracking-wider" value="large">
+								BÜYÜK 400L $1,000</option>
+						</select>
+					</div>
+
+					<div class="w-full flex items-center gap-4 mt-5">
+						<div class="flex-1">İşi oluşturunca şoförler iş listesinden görebilir.</div>
+						<input type="submit" value="İş Oluştur"
+							class="rounded-[3px] cursor-pointer tracking-wider clashDisplay col-span-5 bg-[#3BD67F] text-center p-4 px-16 bg-opacity-10 transition-all hover:bg-opacity-20 text-[#3BD67F]" />
+					</div>
+				</form>
+				<div id="activeJobList" class="activeJobsScroll flex flex-col overflow-y-auto pl-2 gap-2 mt-1">
+					<div class="rounded-[3px] bg-white bg-opacity-[4%] py-2 px-4 flex justify-between items-center">
+						<div class="text-lg pl-3">İŞ ADI</div>
+						<div class="flex items-center gap-4">
+							<div class="flex flex-col justify-end gap-0.5">
+								<div class="text-right text-white text-xs font-light text-opacity-50">Ödül: $1.000</div>
+								<div class="text-right text-white text-xs font-light text-opacity-50">Miktar: 100 L
+								</div>
+							</div>
+							<div data-jobid=""
+								class="cancelJob bg-[#FF5A4F] bg-opacity-10 hover:bg-opacity-20 transition-all px-6 py-2 text-[#FF5A4F] rounded-[3px] cursor-pointer">
+								İptal Et</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div id="upgradesTab" data-tab="upgrades"
+				class="hidden text-white tab clashDisplay p-5 flex flex-col gap-2 bg-white h-full bg-opacity-[2%] rounded-[6px]">
+				<div class="overflow-y-auto activeJobsScroll pl-2 flex flex-col gap-3">
+					<div class="text-white w-full bg-white bg-opacity-5 px-5 py-4 rounded-[3px]">
+						<div class="flex flex-col mb-3">
+							<div class="text-xl uppercase tracking-wide">Envanter kapasitesi</div>
+							<div class="text-white text-opacity-50 tracking-wider">
+								Depolama kapasitenizi yükselterek istasyonunuzda daha fazla yakıt tutabilirsiniz,
+								böylece sürekli ikmal yapmak zorunda kalmazsınız.
+							</div>
+						</div>
+						<div class="flex flex-col gap-2 my-4" id="inventoryCapacityInfos">
+							<div class="flex flex-1 gap-2">
+								<div class="flex-1 bg-white bg-opacity-[4%] text-center py-2">Seviye 1: + 250 birim</div>
+								<div class="flex-1 bg-white bg-opacity-[4%] text-center py-2">Seviye 2: + 500 birim</div>
+							</div>
+
+							<div class="flex flex-1 gap-2">
+								<div class="flex-1 bg-white bg-opacity-[4%] text-center py-2">Seviye 1: + 1000 birim
+								</div>
+								<div class="flex-1 bg-white bg-opacity-[4%] text-center py-2">Seviye 2: + 1500 birim
+								</div>
+							</div>
+
+							<div class="flex flex-1 gap-2">
+								<div class="flex-1 bg-white bg-opacity-[4%] text-center py-2">Seviye 1: + 2000 birim
+								</div>
+								<div class="flex-1"></div>
+							</div>
+						</div>
+						<div class="w-full grid grid-cols-2 items-center gap-2">
+							<div id="inventoryStars"
+								class="rounded-[3px] flex bg-white bg-opacity-[4%] w-full h-full items-center justify-center gap-2">
+								<svg class="w-7 h-7" viewBox="0 0 40 38" fill="none" xmlns="http://www.w3.org/2000/svg">
+									<path
+										d="M19.0489 0.927052C19.3483 0.00574112 20.6517 0.00573993 20.9511 0.927051L24.9393 13.2016C25.0732 13.6136 25.4571 13.8926 25.8904 13.8926H38.7966C39.7653 13.8926 40.1681 15.1322 39.3844 15.7016L28.943 23.2877C28.5925 23.5424 28.4459 23.9937 28.5798 24.4058L32.568 36.6803C32.8674 37.6017 31.8129 38.3678 31.0292 37.7984L20.5878 30.2123C20.2373 29.9576 19.7627 29.9576 19.4122 30.2123L8.97084 37.7984C8.18713 38.3678 7.13264 37.6017 7.432 36.6803L11.4202 24.4058C11.5541 23.9937 11.4075 23.5424 11.057 23.2877L0.6156 15.7016C-0.168114 15.1322 0.23466 13.8926 1.20338 13.8926H14.1096C14.5429 13.8926 14.9268 13.6136 15.0607 13.2016L19.0489 0.927052Z"
+										fill="#E23A50" />
+								</svg>
+								<svg class="w-7 h-7" viewBox="0 0 40 38" fill="none" xmlns="http://www.w3.org/2000/svg">
+									<path
+										d="M19.0489 0.927052C19.3483 0.00574112 20.6517 0.00573993 20.9511 0.927051L24.9393 13.2016C25.0732 13.6136 25.4571 13.8926 25.8904 13.8926H38.7966C39.7653 13.8926 40.1681 15.1322 39.3844 15.7016L28.943 23.2877C28.5925 23.5424 28.4459 23.9937 28.5798 24.4058L32.568 36.6803C32.8674 37.6017 31.8129 38.3678 31.0292 37.7984L20.5878 30.2123C20.2373 29.9576 19.7627 29.9576 19.4122 30.2123L8.97084 37.7984C8.18713 38.3678 7.13264 37.6017 7.432 36.6803L11.4202 24.4058C11.5541 23.9937 11.4075 23.5424 11.057 23.2877L0.6156 15.7016C-0.168114 15.1322 0.23466 13.8926 1.20338 13.8926H14.1096C14.5429 13.8926 14.9268 13.6136 15.0607 13.2016L19.0489 0.927052Z"
+										fill="#E23A50" />
+								</svg>
+								<svg class="w-7 h-7" viewBox="0 0 40 38" fill="none" xmlns="http://www.w3.org/2000/svg">
+									<path
+										d="M19.0489 0.927052C19.3483 0.00574112 20.6517 0.00573993 20.9511 0.927051L24.9393 13.2016C25.0732 13.6136 25.4571 13.8926 25.8904 13.8926H38.7966C39.7653 13.8926 40.1681 15.1322 39.3844 15.7016L28.943 23.2877C28.5925 23.5424 28.4459 23.9937 28.5798 24.4058L32.568 36.6803C32.8674 37.6017 31.8129 38.3678 31.0292 37.7984L20.5878 30.2123C20.2373 29.9576 19.7627 29.9576 19.4122 30.2123L8.97084 37.7984C8.18713 38.3678 7.13264 37.6017 7.432 36.6803L11.4202 24.4058C11.5541 23.9937 11.4075 23.5424 11.057 23.2877L0.6156 15.7016C-0.168114 15.1322 0.23466 13.8926 1.20338 13.8926H14.1096C14.5429 13.8926 14.9268 13.6136 15.0607 13.2016L19.0489 0.927052Z"
+										fill="#E23A50" fill-opacity="0.5" />
+								</svg>
+								<svg class="w-7 h-7" viewBox="0 0 40 38" fill="none" xmlns="http://www.w3.org/2000/svg">
+									<path
+										d="M19.0489 0.927052C19.3483 0.00574112 20.6517 0.00573993 20.9511 0.927051L24.9393 13.2016C25.0732 13.6136 25.4571 13.8926 25.8904 13.8926H38.7966C39.7653 13.8926 40.1681 15.1322 39.3844 15.7016L28.943 23.2877C28.5925 23.5424 28.4459 23.9937 28.5798 24.4058L32.568 36.6803C32.8674 37.6017 31.8129 38.3678 31.0292 37.7984L20.5878 30.2123C20.2373 29.9576 19.7627 29.9576 19.4122 30.2123L8.97084 37.7984C8.18713 38.3678 7.13264 37.6017 7.432 36.6803L11.4202 24.4058C11.5541 23.9937 11.4075 23.5424 11.057 23.2877L0.6156 15.7016C-0.168114 15.1322 0.23466 13.8926 1.20338 13.8926H14.1096C14.5429 13.8926 14.9268 13.6136 15.0607 13.2016L19.0489 0.927052Z"
+										fill="#E23A50" fill-opacity="0.5" />
+								</svg>
+								<svg class="w-7 h-7" viewBox="0 0 40 38" fill="none" xmlns="http://www.w3.org/2000/svg">
+									<path
+										d="M19.0489 0.927052C19.3483 0.00574112 20.6517 0.00573993 20.9511 0.927051L24.9393 13.2016C25.0732 13.6136 25.4571 13.8926 25.8904 13.8926H38.7966C39.7653 13.8926 40.1681 15.1322 39.3844 15.7016L28.943 23.2877C28.5925 23.5424 28.4459 23.9937 28.5798 24.4058L32.568 36.6803C32.8674 37.6017 31.8129 38.3678 31.0292 37.7984L20.5878 30.2123C20.2373 29.9576 19.7627 29.9576 19.4122 30.2123L8.97084 37.7984C8.18713 38.3678 7.13264 37.6017 7.432 36.6803L11.4202 24.4058C11.5541 23.9937 11.4075 23.5424 11.057 23.2877L0.6156 15.7016C-0.168114 15.1322 0.23466 13.8926 1.20338 13.8926H14.1096C14.5429 13.8926 14.9268 13.6136 15.0607 13.2016L19.0489 0.927052Z"
+										fill="#E23A50" fill-opacity="0.5" />
+								</svg>
+							</div>
+							<div id="upgradeInventoryBtn"
+								class="rounded-[3px] w-full cursor-pointer tracking-wider clashDisplay bg-[#3BD67F] text-center p-4 bg-opacity-10 transition-all hover:bg-opacity-20 text-[#3BD67F]">
+								<span id="upgradeInventoryPrice">Yükseltme için $10.000</span>
+							</div>
+						</div>
+					</div>
+
+					<div class="text-white w-full bg-white bg-opacity-5 px-5 py-4 rounded-[3px]">
+						<div class="flex flex-col mb-3">
+							<div class="text-xl uppercase tracking-wide">Kamyon kapasitesi</div>
+							<div class="text-white text-opacity-50 tracking-wider">Aynı anda daha fazla yakıt taşıyın,
+								işletmenizin verimini artırın.</div>
+						</div>
+						<div class="flex flex-col gap-2 my-4" id="truckCapacityInfos">
+							<div class="flex flex-1 gap-2">
+								<div class="flex-1 bg-white bg-opacity-[4%] text-center py-2">Seviye 1: + 250 birim</div>
+								<div class="flex-1 bg-white bg-opacity-[4%] text-center py-2">Seviye 2: + 250 birim</div>
+							</div>
+
+							<div class="flex flex-1 gap-2">
+								<div class="flex-1 bg-white bg-opacity-[4%] text-center py-2">Seviye 1: + 250 birim</div>
+								<div class="flex-1 bg-white bg-opacity-[4%] text-center py-2">Seviye 2: + 250 birim</div>
+							</div>
+
+							<div class="flex flex-1 gap-2">
+								<div class="flex-1 bg-white bg-opacity-[4%] text-center py-2">Seviye 1: + 250 birim</div>
+								<div class="flex-1"></div>
+							</div>
+						</div>
+						<div class="w-full grid grid-cols-2 items-center gap-2">
+							<div id="truckStars"
+								class="rounded-[3px] flex bg-white bg-opacity-[4%] w-full h-full items-center justify-center gap-2">
+								<svg class="w-7 h-7" viewBox="0 0 40 38" fill="none" xmlns="http://www.w3.org/2000/svg">
+									<path
+										d="M19.0489 0.927052C19.3483 0.00574112 20.6517 0.00573993 20.9511 0.927051L24.9393 13.2016C25.0732 13.6136 25.4571 13.8926 25.8904 13.8926H38.7966C39.7653 13.8926 40.1681 15.1322 39.3844 15.7016L28.943 23.2877C28.5925 23.5424 28.4459 23.9937 28.5798 24.4058L32.568 36.6803C32.8674 37.6017 31.8129 38.3678 31.0292 37.7984L20.5878 30.2123C20.2373 29.9576 19.7627 29.9576 19.4122 30.2123L8.97084 37.7984C8.18713 38.3678 7.13264 37.6017 7.432 36.6803L11.4202 24.4058C11.5541 23.9937 11.4075 23.5424 11.057 23.2877L0.6156 15.7016C-0.168114 15.1322 0.23466 13.8926 1.20338 13.8926H14.1096C14.5429 13.8926 14.9268 13.6136 15.0607 13.2016L19.0489 0.927052Z"
+										fill="#E23A50" />
+								</svg>
+								<svg class="w-7 h-7" viewBox="0 0 40 38" fill="none" xmlns="http://www.w3.org/2000/svg">
+									<path
+										d="M19.0489 0.927052C19.3483 0.00574112 20.6517 0.00573993 20.9511 0.927051L24.9393 13.2016C25.0732 13.6136 25.4571 13.8926 25.8904 13.8926H38.7966C39.7653 13.8926 40.1681 15.1322 39.3844 15.7016L28.943 23.2877C28.5925 23.5424 28.4459 23.9937 28.5798 24.4058L32.568 36.6803C32.8674 37.6017 31.8129 38.3678 31.0292 37.7984L20.5878 30.2123C20.2373 29.9576 19.7627 29.9576 19.4122 30.2123L8.97084 37.7984C8.18713 38.3678 7.13264 37.6017 7.432 36.6803L11.4202 24.4058C11.5541 23.9937 11.4075 23.5424 11.057 23.2877L0.6156 15.7016C-0.168114 15.1322 0.23466 13.8926 1.20338 13.8926H14.1096C14.5429 13.8926 14.9268 13.6136 15.0607 13.2016L19.0489 0.927052Z"
+										fill="#E23A50" />
+								</svg>
+								<svg class="w-7 h-7" viewBox="0 0 40 38" fill="none" xmlns="http://www.w3.org/2000/svg">
+									<path
+										d="M19.0489 0.927052C19.3483 0.00574112 20.6517 0.00573993 20.9511 0.927051L24.9393 13.2016C25.0732 13.6136 25.4571 13.8926 25.8904 13.8926H38.7966C39.7653 13.8926 40.1681 15.1322 39.3844 15.7016L28.943 23.2877C28.5925 23.5424 28.4459 23.9937 28.5798 24.4058L32.568 36.6803C32.8674 37.6017 31.8129 38.3678 31.0292 37.7984L20.5878 30.2123C20.2373 29.9576 19.7627 29.9576 19.4122 30.2123L8.97084 37.7984C8.18713 38.3678 7.13264 37.6017 7.432 36.6803L11.4202 24.4058C11.5541 23.9937 11.4075 23.5424 11.057 23.2877L0.6156 15.7016C-0.168114 15.1322 0.23466 13.8926 1.20338 13.8926H14.1096C14.5429 13.8926 14.9268 13.6136 15.0607 13.2016L19.0489 0.927052Z"
+										fill="#E23A50" fill-opacity="0.5" />
+								</svg>
+								<svg class="w-7 h-7" viewBox="0 0 40 38" fill="none" xmlns="http://www.w3.org/2000/svg">
+									<path
+										d="M19.0489 0.927052C19.3483 0.00574112 20.6517 0.00573993 20.9511 0.927051L24.9393 13.2016C25.0732 13.6136 25.4571 13.8926 25.8904 13.8926H38.7966C39.7653 13.8926 40.1681 15.1322 39.3844 15.7016L28.943 23.2877C28.5925 23.5424 28.4459 23.9937 28.5798 24.4058L32.568 36.6803C32.8674 37.6017 31.8129 38.3678 31.0292 37.7984L20.5878 30.2123C20.2373 29.9576 19.7627 29.9576 19.4122 30.2123L8.97084 37.7984C8.18713 38.3678 7.13264 37.6017 7.432 36.6803L11.4202 24.4058C11.5541 23.9937 11.4075 23.5424 11.057 23.2877L0.6156 15.7016C-0.168114 15.1322 0.23466 13.8926 1.20338 13.8926H14.1096C14.5429 13.8926 14.9268 13.6136 15.0607 13.2016L19.0489 0.927052Z"
+										fill="#E23A50" fill-opacity="0.5" />
+								</svg>
+								<svg class="w-7 h-7" viewBox="0 0 40 38" fill="none" xmlns="http://www.w3.org/2000/svg">
+									<path
+										d="M19.0489 0.927052C19.3483 0.00574112 20.6517 0.00573993 20.9511 0.927051L24.9393 13.2016C25.0732 13.6136 25.4571 13.8926 25.8904 13.8926H38.7966C39.7653 13.8926 40.1681 15.1322 39.3844 15.7016L28.943 23.2877C28.5925 23.5424 28.4459 23.9937 28.5798 24.4058L32.568 36.6803C32.8674 37.6017 31.8129 38.3678 31.0292 37.7984L20.5878 30.2123C20.2373 29.9576 19.7627 29.9576 19.4122 30.2123L8.97084 37.7984C8.18713 38.3678 7.13264 37.6017 7.432 36.6803L11.4202 24.4058C11.5541 23.9937 11.4075 23.5424 11.057 23.2877L0.6156 15.7016C-0.168114 15.1322 0.23466 13.8926 1.20338 13.8926H14.1096C14.5429 13.8926 14.9268 13.6136 15.0607 13.2016L19.0489 0.927052Z"
+										fill="#E23A50" fill-opacity="0.5" />
+								</svg>
+							</div>
+							<div id="upgradeTruckBtn"
+								class="rounded-[3px] w-full cursor-pointer tracking-wider clashDisplay bg-[#3BD67F] text-center p-4 bg-opacity-10 transition-all hover:bg-opacity-20 text-[#3BD67F]">
+								<span id="upgradeTruckPrice">Yükseltme için $10.000</span>
+							</div>
+						</div>
+					</div>
+
+					<div class="text-white w-full bg-white bg-opacity-5 px-5 py-4 rounded-[3px]">
+						<div class="flex flex-col mb-3">
+							<div class="text-xl uppercase tracking-wide">İlişki</div>
+							<div class="text-white text-opacity-50 tracking-wider">İstasyonunuza daha ucuz yakıt
+								ekleyin. Paket için yüzde indirim sağlar.</div>
+						</div>
+						<div class="flex flex-col gap-2 my-4" id="relationShipInfo">
+							<div class="flex flex-1 gap-2">
+								<div class="flex-1 bg-white bg-opacity-[4%] text-center py-2">Seviye 1: + 250 birim</div>
+								<div class="flex-1 bg-white bg-opacity-[4%] text-center py-2">Seviye 2: + 250 birim</div>
+							</div>
+
+							<div class="flex flex-1 gap-2">
+								<div class="flex-1 bg-white bg-opacity-[4%] text-center py-2">Seviye 1: + 250 birim</div>
+								<div class="flex-1 bg-white bg-opacity-[4%] text-center py-2">Seviye 2: + 250 birim</div>
+							</div>
+
+							<div class="flex flex-1 gap-2">
+								<div class="flex-1 bg-white bg-opacity-[4%] text-center py-2">Seviye 1: + 250 birim</div>
+								<div class="flex-1"></div>
+							</div>
+						</div>
+						<div class="w-full grid grid-cols-2 items-center gap-2">
+							<div id="RelationshipStars"
+								class="rounded-[3px] flex bg-white bg-opacity-[4%] w-full h-full items-center justify-center gap-2">
+								<svg class="w-7 h-7" viewBox="0 0 40 38" fill="none" xmlns="http://www.w3.org/2000/svg">
+									<path
+										d="M19.0489 0.927052C19.3483 0.00574112 20.6517 0.00573993 20.9511 0.927051L24.9393 13.2016C25.0732 13.6136 25.4571 13.8926 25.8904 13.8926H38.7966C39.7653 13.8926 40.1681 15.1322 39.3844 15.7016L28.943 23.2877C28.5925 23.5424 28.4459 23.9937 28.5798 24.4058L32.568 36.6803C32.8674 37.6017 31.8129 38.3678 31.0292 37.7984L20.5878 30.2123C20.2373 29.9576 19.7627 29.9576 19.4122 30.2123L8.97084 37.7984C8.18713 38.3678 7.13264 37.6017 7.432 36.6803L11.4202 24.4058C11.5541 23.9937 11.4075 23.5424 11.057 23.2877L0.6156 15.7016C-0.168114 15.1322 0.23466 13.8926 1.20338 13.8926H14.1096C14.5429 13.8926 14.9268 13.6136 15.0607 13.2016L19.0489 0.927052Z"
+										fill="#E23A50" />
+								</svg>
+								<svg class="w-7 h-7" viewBox="0 0 40 38" fill="none" xmlns="http://www.w3.org/2000/svg">
+									<path
+										d="M19.0489 0.927052C19.3483 0.00574112 20.6517 0.00573993 20.9511 0.927051L24.9393 13.2016C25.0732 13.6136 25.4571 13.8926 25.8904 13.8926H38.7966C39.7653 13.8926 40.1681 15.1322 39.3844 15.7016L28.943 23.2877C28.5925 23.5424 28.4459 23.9937 28.5798 24.4058L32.568 36.6803C32.8674 37.6017 31.8129 38.3678 31.0292 37.7984L20.5878 30.2123C20.2373 29.9576 19.7627 29.9576 19.4122 30.2123L8.97084 37.7984C8.18713 38.3678 7.13264 37.6017 7.432 36.6803L11.4202 24.4058C11.5541 23.9937 11.4075 23.5424 11.057 23.2877L0.6156 15.7016C-0.168114 15.1322 0.23466 13.8926 1.20338 13.8926H14.1096C14.5429 13.8926 14.9268 13.6136 15.0607 13.2016L19.0489 0.927052Z"
+										fill="#E23A50" />
+								</svg>
+								<svg class="w-7 h-7" viewBox="0 0 40 38" fill="none" xmlns="http://www.w3.org/2000/svg">
+									<path
+										d="M19.0489 0.927052C19.3483 0.00574112 20.6517 0.00573993 20.9511 0.927051L24.9393 13.2016C25.0732 13.6136 25.4571 13.8926 25.8904 13.8926H38.7966C39.7653 13.8926 40.1681 15.1322 39.3844 15.7016L28.943 23.2877C28.5925 23.5424 28.4459 23.9937 28.5798 24.4058L32.568 36.6803C32.8674 37.6017 31.8129 38.3678 31.0292 37.7984L20.5878 30.2123C20.2373 29.9576 19.7627 29.9576 19.4122 30.2123L8.97084 37.7984C8.18713 38.3678 7.13264 37.6017 7.432 36.6803L11.4202 24.4058C11.5541 23.9937 11.4075 23.5424 11.057 23.2877L0.6156 15.7016C-0.168114 15.1322 0.23466 13.8926 1.20338 13.8926H14.1096C14.5429 13.8926 14.9268 13.6136 15.0607 13.2016L19.0489 0.927052Z"
+										fill="#E23A50" fill-opacity="0.5" />
+								</svg>
+								<svg class="w-7 h-7" viewBox="0 0 40 38" fill="none" xmlns="http://www.w3.org/2000/svg">
+									<path
+										d="M19.0489 0.927052C19.3483 0.00574112 20.6517 0.00573993 20.9511 0.927051L24.9393 13.2016C25.0732 13.6136 25.4571 13.8926 25.8904 13.8926H38.7966C39.7653 13.8926 40.1681 15.1322 39.3844 15.7016L28.943 23.2877C28.5925 23.5424 28.4459 23.9937 28.5798 24.4058L32.568 36.6803C32.8674 37.6017 31.8129 38.3678 31.0292 37.7984L20.5878 30.2123C20.2373 29.9576 19.7627 29.9576 19.4122 30.2123L8.97084 37.7984C8.18713 38.3678 7.13264 37.6017 7.432 36.6803L11.4202 24.4058C11.5541 23.9937 11.4075 23.5424 11.057 23.2877L0.6156 15.7016C-0.168114 15.1322 0.23466 13.8926 1.20338 13.8926H14.1096C14.5429 13.8926 14.9268 13.6136 15.0607 13.2016L19.0489 0.927052Z"
+										fill="#E23A50" fill-opacity="0.5" />
+								</svg>
+								<svg class="w-7 h-7" viewBox="0 0 40 38" fill="none" xmlns="http://www.w3.org/2000/svg">
+									<path
+										d="M19.0489 0.927052C19.3483 0.00574112 20.6517 0.00573993 20.9511 0.927051L24.9393 13.2016C25.0732 13.6136 25.4571 13.8926 25.8904 13.8926H38.7966C39.7653 13.8926 40.1681 15.1322 39.3844 15.7016L28.943 23.2877C28.5925 23.5424 28.4459 23.9937 28.5798 24.4058L32.568 36.6803C32.8674 37.6017 31.8129 38.3678 31.0292 37.7984L20.5878 30.2123C20.2373 29.9576 19.7627 29.9576 19.4122 30.2123L8.97084 37.7984C8.18713 38.3678 7.13264 37.6017 7.432 36.6803L11.4202 24.4058C11.5541 23.9937 11.4075 23.5424 11.057 23.2877L0.6156 15.7016C-0.168114 15.1322 0.23466 13.8926 1.20338 13.8926H14.1096C14.5429 13.8926 14.9268 13.6136 15.0607 13.2016L19.0489 0.927052Z"
+										fill="#E23A50" fill-opacity="0.5" />
+								</svg>
+							</div>
+							<div id="upgradeRelationBtn"
+								class="rounded-[3px] w-full cursor-pointer tracking-wider clashDisplay bg-[#3BD67F] text-center p-4 bg-opacity-10 transition-all hover:bg-opacity-20 text-[#3BD67F]">
+								<span id="upgradeRelationPrice">Yükseltme için $10.000</span>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div id="cashierTab" data-tab="cashier"
+				class="hidden text-white tab clashDisplay p-5 flex flex-col gap-2 bg-white h-full bg-opacity-[2%] rounded-[6px]">
+				<div class="text-white w-full bg-white bg-opacity-5 px-5 py-4 rounded-[3px]">
+					<div class="flex flex-col mb-1">
+						<div class="text-2xl uppercase tracking-wide font-medium">Kasa</div>
+						<div class="text-white text-opacity-50 font-normal tracking-wider">
+							Şirket cüzdanınıza para yatırabilir ve çekebilirsiniz. Yakıt ithalat ve ihracat işlemleri
+							burada bulunan parayı kullanır.
+						</div>
+					</div>
+				</div>
+				<div class="text-white w-full bg-white bg-opacity-5 px-5 py-4 rounded-[3px]">
+					<div class="grid gap-3 grid-cols-1 text-center text-white mb-3">
+						<div class="w-full py-8 bg-[#E23A50] bg-opacity-10 rounded-[3px]">
+							<div class="text-xl">TOPLAM BAKİYE</div>
+							<div class="text-[#E23A50] font-semibold text-4xl" id="totalBalance">$ 1.000.000</div>
+						</div>
+					</div>
+
+					<div
+						class="rounded-[3px] mb-4 w-full flex justify-between items-center gap-5 p-3 bg-white bg-opacity-[4%]">
+						<input id="walletAmountInput" required type="number" placeholder="TUTAR..."
+							class="w-full placeholder-white px-4 placeholder-opacity-50 bg-transparent outline-none border-none"
+							min="0" oninput="validateWalletAmount(this)" />
+					</div>
+
+					<div class="w-full flex items-center gap-4 mt-5">
+						<div id="depositBtn"
+							class="rounded-[3px] cursor-pointer w-full tracking-wider clashDisplay bg-[#3BD67F] text-center p-4 px-16 bg-opacity-10 transition-all hover:bg-opacity-20 text-[#3BD67F]">
+							Yatır
+						</div>
+						<div id="withdrawBtn"
+							class="rounded-[3px] cursor-pointer w-full tracking-wider clashDisplay bg-[#E23A50] text-center p-4 px-16 bg-opacity-10 transition-all hover:bg-opacity-20 text-[#E23A50]">
+							Çek
+						</div>
+					</div>
+				</div>
+				<div id="moneyHistory" class="activeJobsScroll flex flex-col overflow-y-auto pl-2 gap-2 mt-1">
+					<!-- <div class="rounded-[3px] bg-white bg-opacity-[4%] py-3 px-4 flex justify-between items-center">
+                        <div class=" pl-3">PARA YATIR</div>
+                        <div class="flex flex-col justify-end gap-0.5">
+                            <div class="text-right tracking-wider text-white text-xs font-light text-opacity-50">
+                                Tutar: $1.000
+                            </div>
+                            <div class="text-right tracking-wider text-white text-xs font-light text-opacity-50">
+                                05.10.2024 01:24
+                            </div>
+                        </div>
+                    </div> -->
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div id="joblistMenu"
+		class="hidden page p-5 w-[50%] d-side select-none gap-4 absolute h-full flex items-center justify-start">
+		<div class="p-5 px-7 flex flex-col gap-2 bg-white h-full bg-opacity-[2%] rounded-[6px]">
+			<div class="mb-5 select-none w-52 flex items-center justify-center flex-col mb-1 -mx-2" style="zoom: 0.6">
+				<div class="gilroy font-black leading-[68px] gasText">GAS</div>
+				<div class="gilroy stationText text-xl font-medium text-white leading-6">STATION</div>
+			</div>
+
+			<div class="grid grid-cols-1 gap-2 mt-auto">
+				<div id="jobListExit"
+					class="rounded-[3px] cursor-pointer tracking-wider clashDisplay d-ghost bg-white text-center py-7 bg-opacity-10 transition-all hover:bg-opacity-20 text-white">
+					KAPAT
+				</div>
+			</div>
+		</div>
+		<div class="w-[100%] h-full">
+			<div class="text-white clashDisplay p-5 flex flex-col gap-2 bg-white h-full bg-opacity-[2%] rounded-[6px]">
+				<div class="text-white w-full bg-white bg-opacity-5 px-5 py-4 rounded-[3px]">
+					<div class="flex flex-col mb-1">
+						<div class="text-2xl uppercase tracking-wide font-medium">ŞOFÖR KİRALAMA</div>
+						<div class="text-white text-opacity-50 font-normal tracking-wider mt-4">Benzin istasyonu için
+							çalışın. Benzini istasyona taşıyın ve ödeme alın.</div>
+					</div>
+				</div>
+				<div id="joblists" class="activeJobsScroll flex flex-col overflow-y-auto pl-2 gap-2 mt-1">
+					<div class="rounded-[3px] bg-white bg-opacity-[4%] py-2 px-4 flex justify-between items-center">
+						<div class="pl-3 line-clamp-1">İŞ ADI İŞ ADI İŞ ADI İŞ ADI İŞ ADI İŞ ADI İŞ ADI İŞ ADI İŞ ADI İŞ
+							ADI</div>
+						<div class="flex items-center gap-4">
+							<div class="flex flex-col w-24 justify-end gap-0.5">
+								<div class="text-right text-white text-xs font-light text-opacity-50">Ödül: $1.000</div>
+								<div class="text-right text-white text-xs font-light text-opacity-50">Miktar: 100 L
+								</div>
+							</div>
+							<div data-jobid="1"
+								class="getJob w-32 flex items-center justify-center bg-[#3BD67F] bg-opacity-10 hover:bg-opacity-20 transition-all px-6 py-2 text-[#3BD67F] rounded-[3px] cursor-pointer">
+								İşi Al
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+
+</html>

@@ -1,0 +1,610 @@
+{
+    "rightCorner": {
+        "job": "Meslek",
+        "gang": "Çete",
+        "bank": "Banka",
+        "cash": "Nakit",
+        "weapon": "Silah",
+        "blackMoney": "Kara para"
+    },
+    "weaponHud": {
+        "melee": "Yakın dövüş"
+    },
+    "carhud": {
+        "kmh": "km/s",
+        "mph": "mil/s",
+        "bpm": "BPM",
+        "rpmUnit": "RPM ×1000",
+        "meter": "m",
+        "feet": "ft"
+    },
+    "quickMenu": {
+        "markText": "İşaretlemek için tıkla",
+        "categories": {
+            "nearby": "Yakınlar",
+            "music": "Müzik",
+            "car": "Araç"
+        },
+        "nearby": {
+            "bank": "Banka",
+            "shop": "Dükkan",
+            "clothing": "Kıyafet Mağazası",
+            "garage": "Garaj",
+            "mechanic": "Tamirci",
+            "gunshop": "Silahçı"
+        },
+        "music": {
+            "placeholder": "Bir şarkı URL'si girin",
+            "play": "Oynat",
+            "errorTitle": "Müzik Hatası",
+            "errorMessages": {
+                "invalidUrl": "Geçersiz URL. Lütfen geçerli bir şarkı URL'si girin.",
+                "invalidVideoData": "Geçersiz video verisi. Lütfen URL'yi kontrol edin ve tekrar deneyin.",
+                "apiError": "API Hatası. Lütfen daha sonra tekrar deneyin."
+            }
+        },
+        "car": {
+            "allDoors": "Tüm kapıları aç ya da kapat",
+            "bonnet": "Kaput",
+            "boot": "Bagaj",
+            "engine": "Motor",
+            "doorHint": "Sol tık: Kapı · Sağ tık: Cam",
+            "seat": "Koltuk",
+            "seatTaken": "Koltuk dolu",
+            "seatCurrent": "Koltuğun",
+            "scroll": "Kaydır"
+        }
+    },
+    "location": {
+        "nearPostal": "Posta Yakını"
+    },
+    "settingsMenu": {
+        "title": "Hud",
+        "subtitle": "Ayarlar",
+        "reset": "Ayarları Sıfırla",
+        "confirm": "Onayla",
+        "cancel": "İptal",
+        "categories": {
+            "general": "Genel",
+            "carhud": "Araç Hud",
+            "status": "Durum Hud",
+            "corner": "Sağ Köşe"
+        },
+        "fuel": {
+            "title": "Yakıt Türü",
+            "description": "Araçta kullanılan yakıt türünü seçin. Litre veya Galon. * Değişiklikler kaydedilecektir.",
+            "litres": "Litre 100L",
+            "gallons": "Galon 100G"
+        },
+        "map": {
+            "title": "Harita",
+            "description": "Haritayı görmek istediğiniz formatı seçin.",
+            "square": "Kare",
+            "circle": "Daire"
+        },
+        "cinematic": {
+            "title": "Sinema Modu",
+            "description": "Sinema modunu etkinleştir veya devre dışı bırak..",
+            "enabled": "Etkin",
+            "disabled": "Devre Dışı"
+        },
+        "carhuds": {
+            "horizon": "Horizon",
+            "apex": "Apex",
+            "velocity": "Velocity",
+            "minimal": "Minimal",
+            "pulse": "Pulse",
+            "orbit": "Orbit",
+            "heritage": "Heritage",
+            "gauge": "Gösterge",
+            "halo": "Halo",
+            "duo": "Duo",
+            "changes": "*Değişiklikleriniz kaydedilecektir",
+            "description": "Sağ tarafta araç hud renk paletlerini düzenleyebilir ve kendi renginizi bulabilirsiniz."
+        },
+        "status": {
+            "circle": "Daire",
+            "circlev2": "Daire V2",
+            "circlev3": "Daire V3",
+            "circlev4": "Daire V4",
+            "square": "Kare",
+            "squarev2": "Kare V2",
+            "hexagon": "Altıgen",
+            "wave": "Dalga",
+            "simple": "Basit",
+            "simplev2": "Basit V2",
+            "regular": "Standart",
+            "changes": "*Değişiklikleriniz kaydedilecektir",
+            "description": "Sağ tarafta hud renk paletlerini düzenleyebilir ve kendi renginizi bulabilirsiniz."
+        },
+        "rightCorner": {
+            "color": {
+                "title": "Renkleri Seç",
+                "description": "Sağ köşe elemanları için renkleri seçin. Her ikon ve yazı için farklı bir renk seçebilirsiniz."
+            },
+            "classic": {
+                "title": "Klasik",
+                "description": "Satır içinde eski görünümlü bilgileri içerir."
+            },
+            "boxed": {
+                "title": "Kutulu",
+                "description": "Kutu şekli dinamik bir görünüme sahiptir. Renkler sabah veya akşam döngüsüne göre değişebilir."
+            },
+            "sleek": {
+                "title": "Şık",
+                "description": "Kutulu ve en yeni görünüme sahiptir. Kesinlikle tavsiye edilir."
+            },
+            "simple": {
+                "title": "Basit",
+                "description": "Herhangi bir kutu içermeyen basit bir tasarımdır. Sadelikten hoşlananlar için çok kullanışlıdır."
+            },
+            "slim": {
+                "title": "İnce",
+                "description": "Kimlik bloğu, durum satırı ve gradyan para satırlarından oluşan kompakt bir tasarım. Para artış ve azalışı miktarın yerinde gösterilir."
+            },
+            "pill": {
+                "title": "Hap",
+                "description": "İkon karolu yuvarlak etiketler, sağa hizalı üç satırda. Para artış ve azalışları tutarın yerinde görünür."
+            }
+        },
+        "mapRadius": {
+            "title": "Harita Kenar Yumuşaklığı",
+            "description": "Kare haritanın kenar yumuşaklığını buradan seçebilirsiniz.",
+            "enabled": "Etkin",
+            "disabled": "Devre Dışı"
+        },
+        "performance": {
+            "title": "Performans Modu",
+            "description": "Buradan performans modunu seçebilirsiniz. Bu, HUD'un performansını değiştirir. Düşük donanımlı bir bilgisayarınız varsa bu modu kullanmanız önerilir.",
+            "balanced": "Dengeli",
+            "performance": "Performans"
+        },
+        "speed": {
+            "title": "Hız türü",
+            "description": "Carhud'da görmek istediğiniz hız türünü seçin.",
+            "kmh": "KM/S",
+            "mph": "MIL/S"
+        },
+        "theme_data": {
+            "title": "Tema Dışa Aktar",
+            "export": "Dışa Aktar",
+            "description": "Mevcut temanızı dışa aktarabilirsiniz. Kopyalanan veriyi Config.json'daki veriyle değiştirin"
+        },
+        "editor": {
+            "title": "Özelleştirme Modu",
+            "description": "HUD öğelerinin pozisyonlarını düzenleyin. İstenilen görünümü elde edin.",
+            "button": "Özelleştirme"
+        },
+        "minimap": {
+            "title": "Mini Harita",
+            "description": "Minimapı burada gizleyebilir veya gösterebilirsiniz.",
+            "show": "Göster",
+            "hide": "Gizle"
+        },
+        "scale": {
+            "title": "Ölçek",
+            "description": "HUD ölçeğini buradan değiştirebilirsiniz. Bu, HUD öğelerinin boyutunu değiştirir."
+        }
+    },
+    "settings": {
+        "brand": {
+            "title": "HUD Ayarları"
+        },
+        "nav": {
+            "main": "Ana",
+            "status": "Durum",
+            "carhud": "Araç HUD",
+            "map": "Harita",
+            "corner": "Sağ Köşe",
+            "location": "Konum",
+            "voice": "Ses",
+            "weapon": "Silah",
+            "customization": "Özelleştirme",
+            "damage": "Hasar",
+            "waypoint": "Hedef Noktası"
+        },
+        "pages": {
+            "main": {
+                "title": "Ana",
+                "subtitle": "Birimler, gündüz ve gece renkleri, HUD ne zaman görünür"
+            },
+            "status": {
+                "title": "Durum",
+                "subtitle": "Stili seç, hangi durumlar görünsün ve ne zaman gizlensin"
+            },
+            "carhud": {
+                "title": "Araç HUD",
+                "subtitle": "Her araç HUD’u için stil, renk ve birimler"
+            },
+            "map": {
+                "title": "Harita",
+                "subtitle": "Şekil ve mini haritanın ne zaman görüneceği"
+            },
+            "corner": {
+                "title": "Sağ Köşe",
+                "subtitle": "Bir stil seç ve sağ üstte neler görünsün belirle"
+            },
+            "location": {
+                "title": "Konum",
+                "subtitle": "Sokak bilgisi ve pusula bileşenleri"
+            },
+            "voice": {
+                "title": "Ses",
+                "subtitle": "Mikrofon göstergesinin stili ve renkleri"
+            },
+            "weapon": {
+                "title": "Silah",
+                "subtitle": "Silah kutusunun stili ve renkleri"
+            },
+            "customization": {
+                "title": "Özelleştirme",
+                "subtitle": "HUD ayarını paylaş ya da başkasınınkini yükle"
+            },
+            "damage": {
+                "title": "Hasar",
+                "subtitle": "Vuruş yönü göstergesi ve kan efekti"
+            },
+            "waypoint": {
+                "title": "Hedef Noktası",
+                "subtitle": "Harita waypoint işareti: stil, mesafe, yükseklik ve ekran kenarları"
+            }
+        },
+        "actions": {
+            "editLayout": "Düzeni düzenle",
+            "close": "ESC",
+            "copyCode": "Kodu kopyala",
+            "import": "İçe aktar",
+            "resetDefault": "Varsayılana sıfırla",
+            "resetNight": "Gece renklerini sıfırla",
+            "resetPosition": "Harita konumunu sıfırla",
+            "startPreview": "Bu HUD’u önizle",
+            "stopPreview": "Önizlemeyi durdur",
+            "applyAll": "Herkese uygula",
+            "applyAllConfirm": "Onaylamak için tekrar bas",
+            "previewHit": "Vuruşu önizle"
+        },
+        "editing": {
+            "label": "Renk düzenleme modu",
+            "day": "Gündüz",
+            "night": "Gece"
+        },
+        "cards": {
+            "general": "Genel",
+            "dayNight": "Gündüz ve gece renkleri",
+            "behaviour": "Davranış",
+            "performance": "Performans",
+            "style": "Stil",
+            "showStatuses": "Görünecek durumlar",
+            "colours": "Renkler",
+            "nightHint": "Gece renkleri sen değiştirene kadar gündüz rengini kullanır",
+            "options": "Seçenekler",
+            "hideWhenFull": "Doluyken gizle",
+            "position": "Konum",
+            "units": "Birimler",
+            "display": "Görünüm",
+            "shape": "Şekil",
+            "showOnScreen": "Ekranda göster",
+            "moneyChanges": "Para değişimleri",
+            "locationWidget": "Konum bileşeni",
+            "compassWidget": "Pusula",
+            "visibility": "Görünürlük",
+            "look": "Görünüm",
+            "mapView": "Harita görünümü",
+            "waypoint": "Waypoint işareti",
+            "hudParts": "HUD parçaları",
+            "damage": "Hasar efektleri",
+            "waypointStyle": "İşaret stili"
+        },
+        "hints": {
+            "dayNight": "Gece renkleri sunucu saatiyle 20:00’da açılır, 06:00’da kapanır",
+            "performance": "Dengeli mod HUD’u daha seyrek günceller ve daha az CPU kullanır",
+            "statusStyle": "Değişiklikler anında uygulanır",
+            "hideWhenFull": "Durum bu değerin üstünde kaybolur, düşünce geri gelir",
+            "oxygen": "Sadece su altında",
+            "previewLive": "Araçtasın, gerçek HUD zaten görünüyor",
+            "carStyle": "Araba ve diğer kara araçlarında kullanılan stil",
+            "mapPosition": "Haritayı taşımak için Düzeni düzenle’de sürükle",
+            "cornerStyle": "Sağ üstteki bilgi bloğu",
+            "moneyChanges": "Nakit, banka ve kara paranın yanındaki +/- miktar",
+            "hiddenWidget": "Bu bileşen gizli. Tekrar göstermek için yukarıdan bir stil seç.",
+            "location": "Sokak, bölge ve yakın posta kodu",
+            "compass": "Ekranın üstündeki yön şeridi, kamerayı takip eder",
+            "voice": "Ses mesafesi ve konuşma göstergesi",
+            "weapon": "Mevcut silah ve mermi",
+            "code": "HUD’unu paylaşmak için kopyala ya da buraya bir kod yapıştırıp İçe aktar’a bas",
+            "applyAll": "Bu işlem ayarlarını herkes için sunucu varsayılanı olarak kaydeder. Oyuncular script yeniden başlayınca alır ve kendi ayarları sıfırlanır. Onaylamak için düğmeye tekrar bas.",
+            "mapView": "Hangi harita dokusunun gösterileceği. Otomatik gündüz ve gece arasında geçiş yapar.",
+            "waypoint": "Haritada işaretlediğin noktayı dünyada mesafesi ve üstte mi altta mı olduğuyla gösterir",
+            "gangEmpty": "Çete yokken gizli kalır",
+            "hudParts": "İhtiyacın olmayan parçaları gizle. Gizli parçalar yerleşim düzenlenirken yine görünür.",
+            "damage": "Hasar aldığında vuruşun geldiği yönü ve kan efektini gösterir"
+        },
+        "fields": {
+            "language": "Dil",
+            "speedUnit": "Hız birimi",
+            "fuelUnit": "Yakıt birimi",
+            "clock": "Saat",
+            "hideAbove": "Şu değerin üstünde gizle",
+            "fadeAfter": "Şu süre sonra kaybol",
+            "anchor": "Konum noktası",
+            "layout": "Düzen",
+            "showFor": "Gösterim süresi",
+            "animation": "Animasyon",
+            "depthUnit": "Derinlik birimi",
+            "altitudeUnit": "Yükseklik birimi"
+        },
+        "units": {
+            "litres": "Litre",
+            "gallons": "Galon",
+            "metres": "Metre",
+            "feet": "Fit",
+            "clock24": "24 saat",
+            "clock12": "12 saat",
+            "km": "Kilometre",
+            "mi": "Mil"
+        },
+        "dayNight": {
+            "auto": "Otomatik",
+            "day": "Hep gündüz",
+            "night": "Hep gece"
+        },
+        "behaviour": {
+            "hideInPause": "Duraklatma menüsünde HUD’u gizle",
+            "hideAiming": "Nişan alırken HUD’u gizle",
+            "firstPerson": "Birinci kişide HUD’u göster",
+            "cinematic": "Sinematik siyah bantlar",
+            "hideAll": "Tüm HUD öğelerini gizle",
+            "beltSound": "Emniyet kemeri sesleri"
+        },
+        "performance": {
+            "balanced": "Dengeli",
+            "performance": "Performans"
+        },
+        "serverDefault": "Sunucu varsayılanı",
+        "auto": "Otomatik",
+        "seconds": "{n} saniye",
+        "styles": {
+            "none": "Gizli"
+        },
+        "status": {
+            "health": "Sağlık",
+            "armour": "Zırh",
+            "hunger": "Açlık",
+            "thirst": "Susuzluk",
+            "stamina": "Dayanıklılık",
+            "stress": "Stres",
+            "oxygen": "Oksijen",
+            "autoHide": "Dolu durumları gizle",
+            "alwaysInVehicle": "Araçtayken her zaman göster"
+        },
+        "layout": {
+            "row": "Satır",
+            "column": "Sütun"
+        },
+        "anchors": {
+            "map": "Sol alt, haritanın yanı",
+            "bottomCenter": "Alt orta",
+            "bottomRight": "Sağ alt",
+            "topLeft": "Sol üst"
+        },
+        "vehicles": {
+            "car": "Araba",
+            "boat": "Tekne",
+            "aircraft": "Hava aracı",
+            "bike": "Bisiklet",
+            "motorcycle": "Motosiklet"
+        },
+        "map": {
+            "square": "Kare",
+            "circle": "Daire",
+            "vehicleOnly": "Yalnız araçlarda göster",
+            "rotate": "Kamerayla döndür",
+            "border": "Kenarlığı göster",
+            "softCorners": "Yumuşak köşeler",
+            "hexagon": "Altıgen",
+            "pentagon": "Beşgen",
+            "pill": "Hap"
+        },
+        "corner": {
+            "playerId": "Oyuncu ID",
+            "playerCount": "Çevrimiçi oyuncu",
+            "clock": "Saat",
+            "date": "Tarih",
+            "logo": "Sunucu logosu",
+            "job": "Meslek",
+            "gang": "Çete",
+            "money": "Nakit",
+            "bank": "Banka",
+            "blackMoney": "Kara para",
+            "name": "Oyuncu adı"
+        },
+        "animations": {
+            "slide": "Kayarak gir",
+            "fade": "Solarak",
+            "none": "Yok"
+        },
+        "weapon": {
+            "show": "Silah kutusunu göster"
+        },
+        "share": {
+            "copied": "Kod panoya kopyalandı",
+            "invalid": "Bu kod okunamadı",
+            "imported": "Ayarlar içe aktarıldı",
+            "reset": "Ayarlar varsayılana döndü",
+            "applied": "Ayarların sunucuya gönderildi"
+        },
+        "colors": {
+            "text": "Yazı",
+            "icons": "İkonlar",
+            "icon": "İkon",
+            "speed": "Hız",
+            "fuel": "Yakıt",
+            "rpm": "Devir",
+            "warning": "Uyarı",
+            "orange": "Dikkat",
+            "indicator": "Gösterge",
+            "arrow": "Yön oku",
+            "symbol": "Sembol",
+            "sky": "Gökyüzü",
+            "ground": "Zemin",
+            "gear": "Vites",
+            "red": "Kırmızı bölge",
+            "heart": "Kalp",
+            "stamina": "Dayanıklılık",
+            "engine": "Motor",
+            "trail": "Çubuk",
+            "live": "Konuşuyor",
+            "muted": "Sessiz",
+            "background": "Arka plan",
+            "tick": "Küçük çizgiler",
+            "tickMajor": "Uzun çizgiler",
+            "active": "Aktif yön",
+            "pointer": "İşaretçi",
+            "north": "Kuzey",
+            "street": "Sokak adı",
+            "subStreet": "İkinci sokak",
+            "postal": "Posta kodu",
+            "pill": "Yön hapı",
+            "pillBorder": "Hap kenarlığı",
+            "dim": "Yan yönler",
+            "reserve": "Yedek mermi",
+            "electric": "Elektrikli yakıt",
+            "accent": "Vurgu",
+            "line": "Çerçeve",
+            "above": "Hedef yukarıda",
+            "below": "Hedef aşağıda",
+            "arrived": "Varıldı"
+        },
+        "options": {
+            "showDepth": "Derinliği göster",
+            "showLetters": "Pusula harflerini göster",
+            "showAltitude": "Yüksekliği göster",
+            "showLanding": "İniş takımını göster",
+            "showHeart": "Kalp atışını göster",
+            "showStamina": "Dayanıklılığı göster",
+            "showFuel": "Yakıtı göster",
+            "showSub": "İkinci sokağı göster",
+            "showPostal": "Posta kodunu göster",
+            "showDegrees": "Dereceleri göster",
+            "width": "Genişlik",
+            "ppd": "Aralık",
+            "radius": "Eğri yarıçapı",
+            "tickShort": "Kısa çizgi boyu",
+            "tickLong": "Uzun çizgi boyu",
+            "textSize": "Yazı boyutu",
+            "gap": "Boşluk",
+            "bgOpacity": "Arka plan opaklığı",
+            "minorOpacity": "Küçük çizgi opaklığı",
+            "degreeOpacity": "Derece yazısı opaklığı",
+            "lift": "Yukarı çek",
+            "lineMax": "En uzun sokak adı",
+            "indicator": "Vuruş yönü",
+            "blood": "Kan efekti",
+            "critical": "Düşük can kanı",
+            "indicatorOpacity": "Gösterge şeffaflığı",
+            "bloodOpacity": "Kan şeffaflığı",
+            "size": "Gösterge boyutu",
+            "showDistance": "Mesafeyi göster",
+            "showHeight": "Yükseklik ipucunu göster",
+            "showPole": "Direği göster",
+            "shrink": "Uzakta küçül",
+            "fadeFar": "Uzakta sön",
+            "hideOffscreen": "Ekran dışındayken gizle",
+            "arriveRadius": "Varış mesafesi",
+            "edgeMargin": "Kenar boşluğu",
+            "markerSize": "İşaret boyutu"
+        },
+        "mapStyles": {
+            "default": "Varsayılan",
+            "postal": "Postal",
+            "auto": "Gündüz ve gece",
+            "gta6": "GTA 6"
+        },
+        "waypoint": {
+            "show": "Waypoint işaretini göster"
+        },
+        "parts": {
+            "status": "Durum çubukları",
+            "carhud": "Araç HUD’u",
+            "rightCorner": "Sağ üst köşe",
+            "weapon": "Silah",
+            "location": "Konum",
+            "compass": "Pusula",
+            "microphone": "Mikrofon",
+            "map": "Mini harita"
+        },
+        "presets": {
+            "title": "Kayıtlı düzenler",
+            "hint": "Mevcut düzenine isim ver ve istediğin zaman geri yükle",
+            "placeholder": "Düzen adı",
+            "save": "Kaydet",
+            "apply": "Uygula",
+            "delete": "Sil",
+            "empty": "Henüz kayıtlı düzen yok",
+            "saved": "Düzen kaydedildi",
+            "applied": "Düzen uygulandı",
+            "deleted": "Düzen silindi",
+            "full": "En fazla {max} düzen saklayabilirsin",
+            "needName": "Önce bir isim yaz",
+            "savedOn": "{date} tarihinde kaydedildi"
+        },
+        "damage": {
+            "show": "Hasar efektlerini göster"
+        }
+    },
+    "editor": {
+        "mode": "Düzenleme modu",
+        "hint": {
+            "idle": "Taşımak için sürükle · boyutlandırmak için köşeden sürükle · döndürmek için köşenin dışından sürükle · sıfırlamak için çift tıkla",
+            "moving": "Taşınıyor: {name}",
+            "overlaps": "{name} ile çakışıyor",
+            "snapped": "{edge} hizasına yapıştı"
+        },
+        "edges": {
+            "left": "sol kenar",
+            "right": "sağ kenar",
+            "top": "üst kenar",
+            "bottom": "alt kenar",
+            "centerX": "yatay orta",
+            "centerY": "dikey orta"
+        },
+        "toolbar": {
+            "snap": "Yapış",
+            "grid": "Izgara",
+            "guides": "Kılavuz",
+            "showHidden": "Gizlileri göster",
+            "undo": "Geri al",
+            "redo": "İleri al",
+            "reset": "Sıfırla",
+            "cancel": "İptal",
+            "save": "Kaydet"
+        },
+        "grids": {
+            "small": "Küçük",
+            "medium": "Orta",
+            "large": "Büyük"
+        },
+        "names": {
+            "server_infos": "Sunucu bilgisi",
+            "time_date": "Saat ve tarih",
+            "boat": "Tekne HUD",
+            "air": "Hava aracı HUD",
+            "bike": "Bisiklet HUD",
+            "moto": "Motosiklet HUD",
+            "waypoint": "Hedef Noktası",
+            "health_armour": "Can ve zırh",
+            "hunger_thirst": "Açlık ve susuzluk",
+            "quickMenu": "Hızlı menü"
+        },
+        "dock": {
+            "rotateLeft": "Sola yatır",
+            "rotateRight": "Sağa yatır",
+            "rotation": "Döndürme (derece)",
+            "scale": "Ölçek (yüzde)",
+            "reset": "Boyutu ve açıyı sıfırla"
+        }
+    },
+    "waypoint": {
+        "arrived": "VARDIN"
+    }
+}

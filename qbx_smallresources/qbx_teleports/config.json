@@ -1,0 +1,52 @@
+{
+    "teleports": [
+        [
+            {
+                "_name": "Asansör 1",
+                "coords": [
+                    -1343.1532,
+                    -1091.2814,
+                    6.9363,
+                    121.2055
+                ],
+                "allowVehicle": false,
+                "drawText": "[E] Aşağı İn",
+                "ignoreGround": true
+            },
+            {
+                "coords": [
+                    -1357.9777,
+                    -1066.0444,
+                    11.4666,
+                    211.0161
+                ],
+                "allowVehicle": false,
+                "drawText": "[E] Yukarı Çık"
+            }
+        ],
+        [
+            {
+                "_name": "Asansör 2",
+                "coords": [
+                    -818.2152,
+                    -709.5474,
+                    32.3428,
+                    88.1567
+                ],
+                "allowVehicle": false,
+                "drawText": "[E] Aşağı İn",
+                "ignoreGround": true
+            },
+            {
+                "coords": [
+                    -1021.7368,
+                    -92.5185,
+                    -99.4031,
+                    7.6903
+                ],
+                "allowVehicle": false,
+                "drawText": "[E] Yukarı Çık"
+            }
+        ]
+    ]
+}

@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Retro Paddock Customizer</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Main Style -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="app" class="hidden">
+        <div class="window-container">
+            <!-- HEADER -->
+            <header class="window-header">
+                <div class="header-left">
+                    <div class="logo-container">
+                        <img src="img/logo-alt.webp" alt="Logo" class="logo-img">
+                    </div>
+                    <div class="brand-details">
+                        <h1 class="brand-title" id="loc-title">Retro Store - Paddock</h1>
+                        <p class="brand-subtitle" id="loc-subtitle">All theme textures and 3D objects are fully customizable</p>
+                    </div>
+                </div>
+
+                <div class="header-right">
+                    <button class="header-action-btn" id="save-db-btn" title="Save to Database">
+                        <i class="fas fa-cloud-upload-alt"></i> SAVE
+                    </button>
+                    <button class="close-btn" id="close-window-btn" title="Close (ESC)">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            </header>
+
+            <!-- WINDOW BODY -->
+            <div class="window-body">
+                <!-- LEFT SIDEBAR: AVAILABLE STYLES -->
+                <aside class="sidebar">
+                    <div class="sidebar-header">
+                        <span class="sidebar-title" id="loc-sidebar-title">AVAILABLE THEMES</span>
+                        <span class="sidebar-count" id="total-sets-count">0</span>
+                    </div>
+                    
+
+
+                    <!-- Styles List -->
+                    <div class="styles-list-wrapper">
+                        <div class="styles-list" id="styles-list-container">
+                            <!-- Populated dynamically -->
+                        </div>
+                    </div>
+                </aside>
+
+                <!-- CENTER AREA: ACTIVE SELECTION PREVIEW -->
+                <main class="preview-area">
+                    <div class="selection-header">
+                        <span class="selection-badge" id="loc-selection-badge">SELECTED THEME</span>
+                        <h2 class="selection-title" id="active-style-title">No Style Selected</h2>
+                        <span class="selection-subtitle" id="active-style-subtitle">Select a theme from the left</span>
+                    </div>
+
+                    <!-- Dynamic Preview Box (Premium glowing gradient or Image) -->
+                    <div class="preview-box-container">
+                        <div class="preview-box" id="active-preview-box">
+                            <img id="active-preview-img" src="" alt="Theme Preview" class="preview-image">
+                            <div class="preview-glow"></div>
+                            <div class="preview-pattern"></div>
+                            <div class="preview-inner-content">
+                                <i class="fas fa-warehouse preview-icon"></i>
+                                <span class="preview-watermark" id="preview-watermark-text">PADDOCK</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Bottom Info Row -->
+                    <div class="selection-footer">
+                        <div class="footer-info-block">
+                            <span class="footer-info-label" id="loc-interior-type-label">INTERIOR TYPE</span>
+                            <span class="footer-info-value" id="active-interior-type">MLO Interior</span>
+                        </div>
+                        <div class="footer-info-block">
+                            <span class="footer-info-label" id="loc-status-label">STATUS</span>
+                            <span class="footer-info-value accent-value" id="active-status-text">INACTIVE</span>
+                        </div>
+                    </div>
+                </main>
+
+                <!-- RIGHT SIDEBAR: DETAILS & ACTION -->
+                <aside class="details-sidebar">
+                    <div class="details-section">
+                        <span class="section-label" id="loc-details-title">INTERIOR DETAILS</span>
+                        
+                        <div class="detail-card">
+                            <div class="detail-row">
+                                <span class="detail-label" id="loc-interior-id-label">INTERIOR ID</span>
+                                <span class="detail-value code-font" id="interior-id-val">0</span>
+                            </div>
+                            <div class="detail-row">
+                                <span class="detail-label" id="loc-coords-label">COORDINATES</span>
+                                <span class="detail-value code-font" id="coords-val">0.0, 0.0, 0.0</span>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+                    <div class="details-section">
+                        <span class="section-label" id="loc-locations-title">AVAILABLE LOCATIONS</span>
+                        <div class="locations-table-container">
+                            <div class="locations-table-header">
+                                <span class="col-address" id="loc-col-address">ADDRESS</span>
+                                <span class="col-theme" id="loc-col-theme">ACTIVE THEME</span>
+                                <span class="col-tp" id="loc-col-tp">TP</span>
+                            </div>
+                            <div class="locations-table" id="locations-table-body">
+                                <!-- Populated dynamically -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- CTA APPLY BUTTON -->
+                    <div class="cta-container">
+                        <button class="apply-btn" id="apply-style-btn">
+                            APPLY THEME
+                        </button>
+                    </div>
+                </aside>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notification Toast Container -->
+    <div id="toast-container"></div>
+</body>
+<script src="script.js"></script>
+</html>

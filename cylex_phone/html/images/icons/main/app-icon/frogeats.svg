@@ -1,0 +1,56 @@
+<svg width="100" height="100" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" class="app-icon">
+
+    <!-- ===== DEFINITIONS ===== -->
+    <defs>
+        <linearGradient id="frogeats-bgGradient" x1="50" y1="0" x2="50" y2="100" gradientUnits="userSpaceOnUse">
+            <stop stop-color="#FF9F1C"/>
+            <stop offset="1" stop-color="#E01E2B"/>
+        </linearGradient>
+        <linearGradient id="frogeats-bgGradientDark" x1="50" y1="0" x2="50" y2="100" gradientUnits="userSpaceOnUse">
+            <stop stop-color="#3A231A"/>
+            <stop offset="0.52" stop-color="#241611"/>
+            <stop offset="1" stop-color="#160C09"/>
+        </linearGradient>
+        <linearGradient id="frogeats-iconGradient" x1="50" y1="28" x2="50" y2="74" gradientUnits="userSpaceOnUse">
+            <stop stop-color="#FFB24C"/>
+            <stop offset="1" stop-color="#E01E2B"/>
+        </linearGradient>
+    </defs>
+
+    <!-- ================= DARK ================= -->
+    <g class="icon-dark" style="display: none;">
+        <rect width="100" height="100" fill="url(#frogeats-bgGradientDark)"/>
+        <g fill="url(#frogeats-iconGradient)">
+            <path d="M26 48 C26 33 34 28 50 28 C66 28 74 33 74 48 L26 48 Z"/>
+            <circle cx="42" cy="38" r="1.7"/><circle cx="52" cy="35" r="1.7"/><circle cx="60" cy="39" r="1.7"/>
+            <rect x="24" y="49" width="52" height="6" rx="3"/>
+            <rect x="27" y="56" width="46" height="6" rx="3"/>
+            <path d="M27 62 L73 62 C73 69 65 72 50 72 C35 72 27 69 27 62 Z"/>
+        </g>
+    </g>
+
+    <!-- ================= TINTED ================= -->
+    <g class="icon-tinted" style="display: none;">
+        <rect width="100" height="100" fill="var(--icon-bg, #D9D9D9)"/>
+        <g fill="currentColor">
+            <path d="M26 48 C26 33 34 28 50 28 C66 28 74 33 74 48 L26 48 Z"/>
+            <circle cx="42" cy="38" r="1.7"/><circle cx="52" cy="35" r="1.7"/><circle cx="60" cy="39" r="1.7"/>
+            <rect x="24" y="49" width="52" height="6" rx="3"/>
+            <rect x="27" y="56" width="46" height="6" rx="3"/>
+            <path d="M27 62 L73 62 C73 69 65 72 50 72 C35 72 27 69 27 62 Z"/>
+        </g>
+    </g>
+
+    <!-- ================= DEFAULT ================= -->
+    <g class="icon-default" style="display: block;">
+        <rect width="100" height="100" fill="url(#frogeats-bgGradient)"/>
+        <g fill="white">
+            <path d="M26 48 C26 33 34 28 50 28 C66 28 74 33 74 48 L26 48 Z"/>
+            <circle cx="42" cy="38" r="1.7" fill="#FFE0A3"/><circle cx="52" cy="35" r="1.7" fill="#FFE0A3"/><circle cx="60" cy="39" r="1.7" fill="#FFE0A3"/>
+            <rect x="24" y="49" width="52" height="6" rx="3" fill="#7ED957"/>
+            <rect x="27" y="56" width="46" height="6" rx="3" fill="#8A4B2B"/>
+            <path d="M27 62 L73 62 C73 69 65 72 50 72 C35 72 27 69 27 62 Z"/>
+        </g>
+    </g>
+
+</svg>

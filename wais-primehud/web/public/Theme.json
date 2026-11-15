@@ -1,0 +1,2816 @@
+{
+    "version": 6.5,
+    "migration": "reset",
+    "resolution": {
+        "width": 1920,
+        "height": 1080
+    },
+    "tokens": {
+        "--server-colour": "#FFFFFF",
+        "--engineOrange": "#FE9A00",
+        "--engineRed": "#FF6467",
+        "--mic": "#A4FC28",
+        "--mic-day": "rgba(0, 0, 0, 0.5)",
+        "--mic-night": "rgba(255, 255, 255, 0.35)",
+        "--mic-muted": "#FF3E3E",
+        "--mic-ink": "#233300",
+        "--circlev3-bg": "rgb(18, 18, 18)",
+        "--squarev2-status-bg": "rgba(0, 0, 0, 0.25)",
+        "--st-text": "#D9D9D9",
+        "--vs-bg-night": "linear-gradient(90deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.12) 100%)",
+        "--vs-bg-day": "linear-gradient(90deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.35) 100%)",
+        "--vs-bar-on": "#FFFFFF",
+        "--vs-dot-off": "rgba(255, 255, 255, 0.2)",
+        "--vs-well": "rgba(0, 0, 0, 0.3)",
+        "--location-bg-day": "rgba(0, 0, 0, 0.35)",
+        "--location-bg-night": "rgba(255, 255, 255, 0.15)",
+        "--location-chip-day": "rgba(255, 255, 255, 0.1)",
+        "--location-chip-night": "rgba(255, 255, 255, 0.12)",
+        "--money-increase": "#A4FC28",
+        "--money-decrease": "#FF3E3E",
+        "--rc-tint-cash": "rgba(148, 227, 37, 0.14)",
+        "--rc-tint-bank": "rgba(255, 255, 255, 0.14)",
+        "--rc-tint-black": "rgba(255, 62, 62, 0.14)",
+        "--rc-gradient-dark": "linear-gradient(90deg, rgba(0, 0, 0, 0.05) 0%, rgba(0, 0, 0, 0.35) 100%)",
+        "--rc-gradient-light": "linear-gradient(90deg, rgba(153, 153, 153, 0) 0%, rgba(255, 255, 255, 0.15) 100%)",
+        "--rc-solid-dark": "rgba(0, 0, 0, 0.35)",
+        "--rc-solid-light": "rgba(255, 255, 255, 0.15)",
+        "--rc-modern-dark": "rgba(0, 0, 0, 0.25)",
+        "--rc-modern-light": "rgba(255, 255, 255, 0.15)",
+        "--rc-rank-color": "#BBBBBB",
+        "--rc-logo-bg": "transparent",
+        "--rc-tint-bank-day": "rgba(0, 0, 0, 0.35)",
+        "--ammo-full": "#FFFFFF",
+        "--ammo-warn": "#FFC98A",
+        "--ammo-low": "#FF9A9A",
+        "--ammo-reserve": "rgba(255, 255, 255, 0.5)",
+        "--ammo-segment-off": "rgba(255, 255, 255, 0.12)",
+        "--wh-divider": "rgba(255, 255, 255, 0.12)",
+        "--duo-bg-day": "rgba(0, 0, 0, 0.35)",
+        "--duo-bg-night": "rgba(255, 255, 255, 0.15)",
+        "--duo-border-day": "rgba(255, 255, 255, 0.08)",
+        "--duo-border-night": "rgba(255, 255, 255, 0.18)",
+        "--nekst-track-day": "rgba(0, 0, 0, 0.42)",
+        "--nekst-track-night": "rgba(255, 255, 255, 0.16)",
+        "--nekst-tick-day": "rgba(0, 0, 0, 0.35)",
+        "--nekst-tick-night": "rgba(255, 255, 255, 0.15)",
+        "--cmp-fade": "linear-gradient(90deg, transparent 0%, #000 20%, #000 80%, transparent 100%)",
+        "--location-pill-day": "rgba(0, 0, 0, 0.4)",
+        "--location-pill-night": "rgba(255, 255, 255, 0.14)",
+        "--location-pill-border-day": "rgba(255, 255, 255, 0.12)",
+        "--location-pill-border-night": "rgba(255, 255, 255, 0.2)"
+    },
+    "fonts": [
+        {
+            "family": "Victory_Striker",
+            "src": "fonts/Victory_Striker.otf"
+        },
+        {
+            "family": "Pro_Racing_Slant",
+            "src": "fonts/Pro_Racing_Slant.otf"
+        }
+    ],
+    "map": {
+        "square": {
+            "leftVh": 2.5,
+            "bottomVh": 5.5,
+            "heightVh": 16.6,
+            "widthVh": 24.44
+        },
+        "circle": {
+            "leftVh": 2.5,
+            "bottomVh": 5.5,
+            "heightVh": 16.6,
+            "widthVh": 16.6
+        },
+        "hexagon": {
+            "leftVh": 2.5,
+            "bottomVh": 5.5,
+            "heightVh": 16.6,
+            "widthVh": 22.13
+        },
+        "pentagon": {
+            "leftVh": 2.5,
+            "bottomVh": 5.5,
+            "heightVh": 16.6,
+            "widthVh": 22.13
+        },
+        "pill": {
+            "leftVh": 2.5,
+            "bottomVh": 5.5,
+            "heightVh": 16.6,
+            "widthVh": 22.13
+        }
+    },
+    "editor": {
+        "grids": {
+            "small": 10,
+            "medium": 20,
+            "large": 40
+        },
+        "defaults": {
+            "snap": true,
+            "grid": "medium",
+            "guides": true,
+            "showHidden": true
+        },
+        "scale": {
+            "min": 0.5,
+            "max": 2
+        },
+        "compactTag": 90,
+        "tagHeight": 16,
+        "dockHeight": 22,
+        "dockGap": 8,
+        "dockBottomReserve": 70,
+        "dockMargin": 8,
+        "settleInterval": 250,
+        "settleTries": 16,
+        "rotateStep": 15,
+        "rotateSnapZero": 3,
+        "snapThreshold": 6,
+        "neighbourRange": 240,
+        "edgeRange": 80,
+        "historyLimit": 50,
+        "safe": {
+            "left": 32.5,
+            "top": 20.5,
+            "right": 32.5,
+            "bottom": 20.5
+        },
+        "presets": {
+            "max": 12,
+            "nameMax": 24
+        }
+    },
+    "scales": {
+        "location": {
+            "classic": {
+                "min": 0.75,
+                "max": 2,
+                "step": 0.05,
+                "current": 1
+            },
+            "split": {
+                "min": 0.75,
+                "max": 2,
+                "step": 0.05,
+                "current": 1
+            },
+            "chips": {
+                "min": 0.75,
+                "max": 2,
+                "step": 0.05,
+                "current": 1
+            }
+        },
+        "microphone": {
+            "stack": {
+                "min": 0.75,
+                "max": 2,
+                "step": 0.05,
+                "current": 1
+            },
+            "ripple": {
+                "min": 0.6,
+                "max": 1.8,
+                "step": 0.05,
+                "current": 1
+            },
+            "disc": {
+                "min": 0.7,
+                "max": 1.9,
+                "step": 0.05,
+                "current": 1
+            }
+        },
+        "status": {
+            "hexagon": {
+                "min": 3.5,
+                "max": 5.5,
+                "step": 0.25,
+                "current": 3.5
+            },
+            "circlev3": {
+                "min": 3.25,
+                "max": 5.5,
+                "step": 0.25,
+                "current": 3.25
+            },
+            "circlev4": {
+                "min": 3.25,
+                "max": 5.5,
+                "step": 0.25,
+                "current": 3.25
+            },
+            "square": {
+                "min": 3,
+                "max": 5,
+                "step": 0.25,
+                "current": 3
+            },
+            "squarev2": {
+                "min": 2.5,
+                "max": 5,
+                "step": 0.25,
+                "current": 2.5
+            },
+            "wave": {
+                "min": 3.25,
+                "max": 5,
+                "step": 0.25,
+                "current": 3.25
+            },
+            "simplev2": {
+                "min": 2,
+                "max": 5,
+                "step": 0.25,
+                "current": 2
+            },
+            "chip": {
+                "min": 3.5,
+                "max": 5.5,
+                "step": 0.25,
+                "current": 3.5
+            },
+            "lanes": {
+                "min": 1.2,
+                "max": 2.4,
+                "step": 0.1,
+                "current": 1.2
+            },
+            "tile": {
+                "min": 3.25,
+                "max": 5.25,
+                "step": 0.25,
+                "current": 3.25
+            }
+        },
+        "carhud": {
+            "horizon": {
+                "min": 0.75,
+                "max": 4,
+                "step": 0.25,
+                "current": 1
+            },
+            "apex": {
+                "min": 0.75,
+                "max": 4,
+                "step": 0.25,
+                "current": 1
+            },
+            "velocity": {
+                "min": 0.75,
+                "max": 4,
+                "step": 0.25,
+                "current": 1
+            },
+            "minimal": {
+                "min": 1,
+                "max": 4,
+                "step": 0.25,
+                "current": 1
+            },
+            "pulse": {
+                "min": 0.5,
+                "max": 4,
+                "step": 0.25,
+                "current": 1
+            },
+            "orbit": {
+                "min": 0.5,
+                "max": 4,
+                "step": 0.25,
+                "current": 1
+            },
+            "heritage": {
+                "min": 0.75,
+                "max": 3,
+                "step": 0.25,
+                "current": 1
+            },
+            "gauge": {
+                "min": 0.75,
+                "max": 3,
+                "step": 0.25,
+                "current": 1
+            },
+            "halo": {
+                "min": 0.75,
+                "max": 3,
+                "step": 0.25,
+                "current": 1
+            },
+            "boat": {
+                "min": 0.75,
+                "max": 3,
+                "step": 0.25,
+                "current": 1
+            },
+            "air": {
+                "min": 0.75,
+                "max": 3,
+                "step": 0.25,
+                "current": 1
+            },
+            "bike": {
+                "min": 0.75,
+                "max": 3,
+                "step": 0.25,
+                "current": 1
+            },
+            "moto": {
+                "min": 0.75,
+                "max": 3,
+                "step": 0.25,
+                "current": 1
+            },
+            "duo": {
+                "min": 0.75,
+                "max": 3,
+                "step": 0.25,
+                "current": 1
+            }
+        },
+        "compass": {
+            "tape": {
+                "min": 0.75,
+                "max": 2,
+                "step": 0.05,
+                "current": 1
+            },
+            "ruler": {
+                "min": 0.75,
+                "max": 2,
+                "step": 0.05,
+                "current": 1
+            },
+            "letters": {
+                "min": 0.75,
+                "max": 2,
+                "step": 0.05,
+                "current": 1
+            },
+            "arc": {
+                "min": 0.75,
+                "max": 2,
+                "step": 0.05,
+                "current": 1
+            }
+        }
+    },
+    "slots": {
+        "rightCorner": {
+            "path": "rightCorner",
+            "styles": [
+                "sleek",
+                "slim",
+                "classic",
+                "boxed",
+                "pill"
+            ],
+            "hideWhenFlag": "disableRightCorner"
+        },
+        "weapon": {
+            "path": "weapon",
+            "styles": [
+                "modern",
+                "simple",
+                "new"
+            ],
+            "hideWhenFlag": "disableRightCorner",
+            "anchor": {
+                "top": 38,
+                "right": 2
+            }
+        },
+        "carhud": {
+            "path": "carhud",
+            "styles": [
+                "halo",
+                "heritage",
+                "horizon",
+                "gauge",
+                "apex",
+                "orbit",
+                "velocity",
+                "minimal",
+                "pulse",
+                "duo"
+            ],
+            "when": "land",
+            "extras": [],
+            "anchorByStyle": {
+                "horizon": {
+                    "right": 2,
+                    "bottom": 0
+                },
+                "apex": {
+                    "right": 0,
+                    "bottom": 0
+                },
+                "velocity": {
+                    "right": 2,
+                    "bottom": 2
+                },
+                "minimal": {
+                    "right": 2,
+                    "bottom": 2
+                },
+                "pulse": {
+                    "right": 2,
+                    "bottom": 2
+                },
+                "orbit": {
+                    "right": 2,
+                    "bottom": 1
+                },
+                "heritage": {
+                    "right": 1,
+                    "bottom": 1
+                },
+                "gauge": {
+                    "right": 2,
+                    "bottom": -2
+                },
+                "halo": {
+                    "right": 0,
+                    "bottom": 1
+                },
+                "boat": {
+                    "right": 2,
+                    "bottom": -1
+                },
+                "air": {
+                    "centerX": true,
+                    "bottom": -1
+                },
+                "bike": {
+                    "right": 2,
+                    "bottom": 2
+                },
+                "moto": {
+                    "right": 2,
+                    "bottom": 2
+                },
+                "duo": {
+                    "right": 2,
+                    "bottom": 2
+                }
+            }
+        },
+        "boathud": {
+            "when": "boat",
+            "visibility": "carhud"
+        },
+        "aircrafthud": {
+            "when": "air",
+            "visibility": "carhud"
+        },
+        "bikehud": {
+            "when": "bicycle",
+            "visibility": "carhud"
+        },
+        "motohud": {
+            "when": "motorcycle",
+            "visibility": "carhud"
+        },
+        "status": {
+            "path": "status",
+            "styles": [
+                "circlev3",
+                "chip",
+                "lanes",
+                "simplev2",
+                "simple",
+                "square",
+                "squarev2",
+                "tile",
+                "circlev4",
+                "hexagon",
+                "wave",
+                "regular"
+            ],
+            "avoidMap": [
+                "regular",
+                "tile"
+            ]
+        },
+        "location": {
+            "path": "location",
+            "hideWhenFlag": "hideRadar",
+            "styles": [
+                "none",
+                "classic",
+                "split",
+                "chips"
+            ],
+            "anchor": {
+                "leftVh": 2,
+                "idleBottomVh": 9,
+                "mapGapVh": 0.9,
+                "entryVh": 10,
+                "topVh": 2
+            },
+            "baseScale": {
+                "split": 1.12
+            }
+        },
+        "compass": {
+            "path": "compass",
+            "hideWhenFlag": "hideRadar",
+            "styles": [
+                "none",
+                "tape",
+                "ruler",
+                "letters",
+                "arc"
+            ],
+            "anchor": {
+                "topVh": 2,
+                "entryVh": 10
+            }
+        },
+        "waypoint": {
+            "path": "waypoint",
+            "requireFlag": "waypoint",
+            "styles": [
+                "none",
+                "diamond",
+                "pennant"
+            ],
+            "sample": {
+                "distance": 380,
+                "height": 18,
+                "x": 500,
+                "y": 520
+            },
+            "edgeClamp": {
+                "min": 120,
+                "max": 880
+            }
+        },
+        "microphone": {
+            "path": "microphone",
+            "styles": [
+                "stack",
+                "ripple",
+                "disc"
+            ]
+        },
+        "damage": {
+            "path": "damage",
+            "requireFlag": "damage",
+            "styles": [
+                "none",
+                "default"
+            ]
+        },
+        "map": {
+            "path": null
+        },
+        "quickMenu": {
+            "path": null
+        },
+        "settings": {
+            "path": null
+        },
+        "cinematic": {
+            "path": null
+        }
+    },
+    "defaults": {
+        "rightCorner": {
+            "style": "slim",
+            "colors": {
+                "text": "#FFFFFF",
+                "icons": "#FFFFFF"
+            },
+            "elements_behaviors": {
+                "server_infos": {
+                    "hide": false,
+                    "disable": false,
+                    "positions": {
+                        "classic": {
+                            "x": 0,
+                            "y": 0
+                        },
+                        "boxed": {
+                            "x": 0,
+                            "y": 0
+                        },
+                        "sleek": {
+                            "x": 0,
+                            "y": 0
+                        },
+                        "slim": {
+                            "x": 0,
+                            "y": 0
+                        },
+                        "pill": {
+                            "x": 0,
+                            "y": 0
+                        }
+                    }
+                },
+                "time_date": {
+                    "hide": false,
+                    "disable": false,
+                    "positions": {
+                        "classic": {
+                            "x": 0,
+                            "y": 0
+                        },
+                        "boxed": {
+                            "x": 0,
+                            "y": 0
+                        },
+                        "sleek": {
+                            "x": 0,
+                            "y": 0
+                        },
+                        "slim": {
+                            "x": 0,
+                            "y": 0
+                        },
+                        "pill": {
+                            "x": 0,
+                            "y": 0
+                        }
+                    }
+                },
+                "playerId": {
+                    "hide": false,
+                    "disable": false,
+                    "positions": {
+                        "classic": {
+                            "x": 0,
+                            "y": 0
+                        },
+                        "boxed": {
+                            "x": 0,
+                            "y": 0
+                        },
+                        "sleek": {
+                            "x": 0,
+                            "y": 0
+                        },
+                        "slim": {
+                            "x": 0,
+                            "y": 0
+                        },
+                        "pill": {
+                            "x": 0,
+                            "y": 0
+                        }
+                    }
+                },
+                "playerCount": {
+                    "hide": false,
+                    "disable": false,
+                    "positions": {
+                        "classic": {
+                            "x": 0,
+                            "y": 0
+                        },
+                        "boxed": {
+                            "x": 0,
+                            "y": 0
+                        },
+                        "sleek": {
+                            "x": 0,
+                            "y": 0
+                        },
+                        "slim": {
+                            "x": 0,
+                            "y": 0
+                        },
+                        "pill": {
+                            "x": 0,
+                            "y": 0
+                        }
+                    }
+                },
+                "job": {
+                    "hide": false,
+                    "disable": false,
+                    "positions": {
+                        "classic": {
+                            "x": 0,
+                            "y": 0
+                        },
+                        "boxed": {
+                            "x": 0,
+                            "y": 0
+                        },
+                        "sleek": {
+                            "x": 0,
+                            "y": 0
+                        },
+                        "slim": {
+                            "x": 0,
+                            "y": 0
+                        },
+                        "pill": {
+                            "x": 0,
+                            "y": 0
+                        }
+                    }
+                },
+                "gang": {
+                    "hide": false,
+                    "disable": false,
+                    "positions": {
+                        "classic": {
+                            "x": 0,
+                            "y": 0
+                        },
+                        "boxed": {
+                            "x": 0,
+                            "y": 0
+                        },
+                        "sleek": {
+                            "x": 0,
+                            "y": 0
+                        },
+                        "slim": {
+                            "x": 0,
+                            "y": 0
+                        },
+                        "pill": {
+                            "x": 0,
+                            "y": 0
+                        }
+                    }
+                },
+                "money": {
+                    "hide": false,
+                    "disable": false,
+                    "positions": {
+                        "classic": {
+                            "x": 0,
+                            "y": 0
+                        },
+                        "boxed": {
+                            "x": 0,
+                            "y": 0
+                        },
+                        "sleek": {
+                            "x": 0,
+                            "y": 0
+                        },
+                        "slim": {
+                            "x": 0,
+                            "y": 0
+                        },
+                        "pill": {
+                            "x": 0,
+                            "y": 0
+                        }
+                    }
+                },
+                "bank": {
+                    "hide": false,
+                    "disable": false,
+                    "positions": {
+                        "classic": {
+                            "x": 0,
+                            "y": 0
+                        },
+                        "boxed": {
+                            "x": 0,
+                            "y": 0
+                        },
+                        "sleek": {
+                            "x": 0,
+                            "y": 0
+                        },
+                        "slim": {
+                            "x": 0,
+                            "y": 0
+                        },
+                        "pill": {
+                            "x": 0,
+                            "y": 0
+                        }
+                    }
+                },
+                "blackMoney": {
+                    "hide": false,
+                    "disable": false,
+                    "positions": {
+                        "classic": {
+                            "x": 0,
+                            "y": 0
+                        },
+                        "boxed": {
+                            "x": 0,
+                            "y": 0
+                        },
+                        "sleek": {
+                            "x": 0,
+                            "y": 0
+                        },
+                        "slim": {
+                            "x": 0,
+                            "y": 0
+                        },
+                        "pill": {
+                            "x": 0,
+                            "y": 0
+                        }
+                    }
+                }
+            },
+            "show": {
+                "clock": true,
+                "date": true,
+                "logo": true,
+                "name": true
+            },
+            "moneyChange": {
+                "seconds": 3,
+                "animation": "slide"
+            }
+        },
+        "carhud": {
+            "style": "halo",
+            "speedType": "kmh",
+            "behaviors": {
+                "horizon": {
+                    "position": {
+                        "x": 0,
+                        "y": 0
+                    },
+                    "colors": {
+                        "fuel": "#97FF71",
+                        "rpm": "#FFFFFF",
+                        "text": "#FFFFFF",
+                        "indicator": "#FF5558",
+                        "electric": "#4DA3FF"
+                    }
+                },
+                "apex": {
+                    "position": {
+                        "x": 0,
+                        "y": 0
+                    },
+                    "colors": {
+                        "rpm": "#FFFFFF",
+                        "red": "#FF6467",
+                        "fuel": "#97FF71",
+                        "text": "#FFFFFF",
+                        "electric": "#4DA3FF"
+                    }
+                },
+                "velocity": {
+                    "position": {
+                        "x": 0,
+                        "y": 0
+                    },
+                    "colors": {
+                        "rpm": "#FF6467",
+                        "speed": "#FF6467",
+                        "fuel": "#97FF71",
+                        "text": "#FFFFFF",
+                        "electric": "#4DA3FF"
+                    }
+                },
+                "minimal": {
+                    "position": {
+                        "x": 0,
+                        "y": 0
+                    },
+                    "colors": {
+                        "text": "#FFFFFF",
+                        "speed": "#FFFFFF",
+                        "icons": "#FFFFFF",
+                        "fuel": "#FFFFFF",
+                        "warning": "#FF6467",
+                        "electric": "#4DA3FF"
+                    }
+                },
+                "pulse": {
+                    "position": {
+                        "x": 0,
+                        "y": 0
+                    },
+                    "colors": {
+                        "rpm": "#FFFFFF",
+                        "text": "#FFFFFF",
+                        "fuel": "#FFFFFF",
+                        "speed": "#FFFFFF",
+                        "icons": "#FFFFFF",
+                        "warning": "#FF6467",
+                        "electric": "#4DA3FF"
+                    }
+                },
+                "orbit": {
+                    "position": {
+                        "x": 0,
+                        "y": 0
+                    },
+                    "colors": {
+                        "rpm": "#FFFFFF",
+                        "text": "#FFFFFF",
+                        "fuel": "#97FF71",
+                        "speed": "#FFFFFF",
+                        "icons": "#FFFFFF",
+                        "orange": "#FE9A00",
+                        "warning": "#FF6467",
+                        "electric": "#4DA3FF"
+                    }
+                },
+                "heritage": {
+                    "position": {
+                        "x": 0,
+                        "y": 0
+                    },
+                    "colors": {
+                        "text": "#FFFFFF",
+                        "speed": "#FFFFFF",
+                        "icons": "#FFFFFF",
+                        "fuel": "#FFFFFF",
+                        "warning": "#FF6467",
+                        "electric": "#4DA3FF"
+                    }
+                },
+                "gauge": {
+                    "position": {
+                        "x": 6.47,
+                        "y": 23.4,
+                        "s": 0.867
+                    },
+                    "colors": {
+                        "text": "#FFFFFF",
+                        "speed": "#FFFFFF",
+                        "icons": "#FFFFFF",
+                        "fuel": "#FFFFFF",
+                        "warning": "#FF6467",
+                        "electric": "#4DA3FF"
+                    }
+                },
+                "halo": {
+                    "position": {
+                        "x": 8.42,
+                        "y": 12.5,
+                        "s": 0.895
+                    },
+                    "colors": {
+                        "text": "#FFFFFF",
+                        "speed": "#FFFFFF",
+                        "icons": "#FFFFFF",
+                        "fuel": "#FFFFFF",
+                        "warning": "#FF6467",
+                        "electric": "#4DA3FF"
+                    }
+                },
+                "boat": {
+                    "position": {
+                        "x": 0,
+                        "y": 0
+                    },
+                    "colors": {
+                        "text": "#FFFFFF",
+                        "rpm": "#FFFFFF",
+                        "fuel": "#97FF71",
+                        "arrow": "#97FF71",
+                        "orange": "#FE9A00",
+                        "warning": "#FF6467",
+                        "indicator": "#FF5558",
+                        "electric": "#4DA3FF"
+                    },
+                    "options": {
+                        "showDepth": true,
+                        "showLetters": true
+                    }
+                },
+                "air": {
+                    "position": {
+                        "x": 0,
+                        "y": 0
+                    },
+                    "colors": {
+                        "text": "#FFFFFF",
+                        "speed": "#CAFF89",
+                        "fuel": "#97FF71",
+                        "arrow": "#97FF71",
+                        "indicator": "#FF5558",
+                        "warning": "#FF6467",
+                        "symbol": "#FFD23F",
+                        "sky": "#3A74C9",
+                        "ground": "#6E4524",
+                        "gear": "#97FF71",
+                        "electric": "#4DA3FF"
+                    },
+                    "options": {
+                        "showAltitude": true,
+                        "showLanding": true
+                    }
+                },
+                "bike": {
+                    "position": {
+                        "x": 0,
+                        "y": 0
+                    },
+                    "colors": {
+                        "text": "#FFFFFF",
+                        "stamina": "#50FF84",
+                        "heart": "#FF3B4E"
+                    },
+                    "options": {
+                        "showHeart": true,
+                        "showStamina": true
+                    }
+                },
+                "moto": {
+                    "position": {
+                        "x": 0,
+                        "y": 0
+                    },
+                    "colors": {
+                        "text": "#FFFFFF",
+                        "rpm": "#FFFFFF",
+                        "warning": "#FF6467",
+                        "fuel": "#FFC861",
+                        "electric": "#4DA3FF"
+                    },
+                    "options": {
+                        "showFuel": true
+                    }
+                },
+                "duo": {
+                    "position": {
+                        "x": 0,
+                        "y": 0
+                    },
+                    "colors": {
+                        "text": "#FFFFFF",
+                        "speed": "#FFFFFF",
+                        "icons": "#FFFFFF",
+                        "fuel": "#FFFFFF",
+                        "engine": "#FFFFFF",
+                        "gear": "#FFFFFF",
+                        "warning": "#FF6467",
+                        "electric": "#4DA3FF"
+                    }
+                }
+            },
+            "depthUnit": "metres",
+            "altitudeUnit": "feet"
+        },
+        "status": {
+            "style": "chip",
+            "behaviors": {
+                "circlev3": {
+                    "health": {
+                        "position": {
+                            "x": 0,
+                            "y": 0
+                        },
+                        "colors": {
+                            "trail": "#F89889"
+                        }
+                    },
+                    "armour": {
+                        "position": {
+                            "x": 0,
+                            "y": 0
+                        },
+                        "colors": {
+                            "trail": "#A4CCFF"
+                        }
+                    },
+                    "hunger": {
+                        "position": {
+                            "x": 0,
+                            "y": 0
+                        },
+                        "colors": {
+                            "trail": "#FDBE81"
+                        }
+                    },
+                    "thirst": {
+                        "position": {
+                            "x": 0,
+                            "y": 0
+                        },
+                        "colors": {
+                            "trail": "#97F3A6"
+                        }
+                    },
+                    "stress": {
+                        "position": {
+                            "x": 0,
+                            "y": 0
+                        },
+                        "colors": {
+                            "trail": "#E29CB9"
+                        }
+                    },
+                    "stamina": {
+                        "position": {
+                            "x": 0,
+                            "y": 0
+                        },
+                        "colors": {
+                            "trail": "#FCF7D9"
+                        }
+                    }
+                },
+                "circlev4": {
+                    "health": {
+                        "position": {
+                            "x": 0,
+                            "y": 0
+                        },
+                        "colors": {
+                            "trail": "#F89889"
+                        }
+                    },
+                    "armour": {
+                        "position": {
+                            "x": 0,
+                            "y": 0
+                        },
+                        "colors": {
+                            "trail": "#A4CCFF"
+                        }
+                    },
+                    "hunger": {
+                        "position": {
+                            "x": 0,
+                            "y": 0
+                        },
+                        "colors": {
+                            "trail": "#FDBE81"
+                        }
+                    },
+                    "thirst": {
+                        "position": {
+                            "x": 0,
+                            "y": 0
+                        },
+                        "colors": {
+                            "trail": "#97F3A6"
+                        }
+                    },
+                    "stress": {
+                        "position": {
+                            "x": 0,
+                            "y": 0
+                        },
+                        "colors": {
+                            "trail": "#E29CB9"
+                        }
+                    },
+                    "stamina": {
+                        "position": {
+                            "x": 0,
+                            "y": 0
+                        },
+                        "colors": {
+                            "trail": "#FCF7D9"
+                        }
+                    }
+                },
+                "square": {
+                    "health": {
+                        "position": {
+                            "x": 0,
+                            "y": 0
+                        },
+                        "colors": {
+                            "trail": "#D35959"
+                        }
+                    },
+                    "armour": {
+                        "position": {
+                            "x": 0,
+                            "y": 0
+                        },
+                        "colors": {
+                            "trail": "#5991D3"
+                        }
+                    },
+                    "hunger": {
+                        "position": {
+                            "x": 0,
+                            "y": 0
+                        },
+                        "colors": {
+                            "trail": "#f4c574"
+                        }
+                    },
+                    "thirst": {
+                        "position": {
+                            "x": 0,
+                            "y": 0
+                        },
+                        "colors": {
+                            "trail": "#6fd485"
+                        }
+                    },
+                    "stress": {
+                        "position": {
+                            "x": 0,
+                            "y": 0
+                        },
+                        "colors": {
+                            "trail": "#FF61C9"
+                        }
+                    },
+                    "stamina": {
+                        "position": {
+                            "x": 0,
+                            "y": 0
+                        },
+                        "colors": {
+                            "trail": "#FFFFFF"
+                        }
+                    }
+                },
+                "squarev2": {
+                    "health": {
+                        "position": {
+                            "x": 0,
+                            "y": 0
+                        },
+                        "colors": {
+                            "icon": "#FFFFFF",
+                            "trail": "#D35959"
+                        }
+                    },
+                    "armour": {
+                        "position": {
+                            "x": 0,
+                            "y": 0
+                        },
+                        "colors": {
+                            "icon": "#FFFFFF",
+                            "trail": "#5991D3"
+                        }
+                    },
+                    "hunger": {
+                        "position": {
+                            "x": 0,
+                            "y": 0
+                        },
+                        "colors": {
+                            "icon": "#FFFFFF",
+                            "trail": "#f4c574"
+                        }
+                    },
+                    "thirst": {
+                        "position": {
+                            "x": 0,
+                            "y": 0
+                        },
+                        "colors": {
+                            "icon": "#FFFFFF",
+                            "trail": "#6fd485"
+                        }
+                    },
+                    "stress": {
+                        "position": {
+                            "x": 0,
+                            "y": 0
+                        },
+                        "colors": {
+                            "icon": "#FFFFFF",
+                            "trail": "#FF61C9"
+                        }
+                    },
+                    "stamina": {
+                        "position": {
+                            "x": 0,
+                            "y": 0
+                        },
+                        "colors": {
+                            "icon": "#FFFFFF",
+                            "trail": "#d9d9d9"
+                        }
+                    }
+                },
+                "hexagon": {
+                    "health": {
+                        "position": {
+                            "x": 0,
+                            "y": 0
+                        },
+                        "colors": {
+                            "icon": "#FFFFFF",
+                            "trail": "#D35959"
+                        }
+                    },
+                    "armour": {
+                        "position": {
+                            "x": 0,
+                            "y": 0
+                        },
+                        "colors": {
+                            "icon": "#FFFFFF",
+                            "trail": "#5991D3"
+                        }
+                    },
+                    "hunger": {
+                        "position": {
+                            "x": 0,
+                            "y": 0
+                        },
+                        "colors": {
+                            "icon": "#FFFFFF",
+                            "trail": "#f4c574"
+                        }
+                    },
+                    "thirst": {
+                        "position": {
+                            "x": 0,
+                            "y": 0
+                        },
+                        "colors": {
+                            "icon": "#FFFFFF",
+                            "trail": "#6fd485"
+                        }
+                    },
+                    "stress": {
+                        "position": {
+                            "x": 0,
+                            "y": 0
+                        },
+                        "colors": {
+                            "icon": "#FFFFFF",
+                            "trail": "#FF61C9"
+                        }
+                    },
+                    "stamina": {
+                        "position": {
+                            "x": 0,
+                            "y": 0
+                        },
+                        "colors": {
+                            "icon": "#FFFFFF",
+                            "trail": "#d9d9d9"
+                        }
+                    }
+                },
+                "wave": {
+                    "health": {
+                        "position": {
+                            "x": 0,
+                            "y": 0
+                        },
+                        "colors": {
+                            "icon": "#FFFFFF",
+                            "trail": "#D35959"
+                        }
+                    },
+                    "armour": {
+                        "position": {
+                            "x": 0,
+                            "y": 0
+                        },
+                        "colors": {
+                            "icon": "#FFFFFF",
+                            "trail": "#5991D3"
+                        }
+                    },
+                    "hunger": {
+                        "position": {
+                            "x": 0,
+                            "y": 0
+                        },
+                        "colors": {
+                            "icon": "#FFFFFF",
+                            "trail": "#f4c574"
+                        }
+                    },
+                    "thirst": {
+                        "position": {
+                            "x": 0,
+                            "y": 0
+                        },
+                        "colors": {
+                            "icon": "#FFFFFF",
+                            "trail": "#6fd485"
+                        }
+                    },
+                    "stress": {
+                        "position": {
+                            "x": 0,
+                            "y": 0
+                        },
+                        "colors": {
+                            "icon": "#FFFFFF",
+                            "trail": "#FF61C9"
+                        }
+                    },
+                    "stamina": {
+                        "position": {
+                            "x": 0,
+                            "y": 0
+                        },
+                        "colors": {
+                            "icon": "#FFFFFF",
+                            "trail": "#d9d9d9"
+                        }
+                    }
+                },
+                "simple": {
+                    "health": {
+                        "position": {
+                            "x": 0,
+                            "y": 0
+                        },
+                        "colors": {
+                            "icon": "#FFFFFF",
+                            "trail": "#D35959"
+                        }
+                    },
+                    "armour": {
+                        "position": {
+                            "x": 0,
+                            "y": 0
+                        },
+                        "colors": {
+                            "icon": "#FFFFFF",
+                            "trail": "#5991D3"
+                        }
+                    },
+                    "hunger": {
+                        "position": {
+                            "x": 0,
+                            "y": 0
+                        },
+                        "colors": {
+                            "icon": "#FFFFFF",
+                            "trail": "#f4c574"
+                        }
+                    },
+                    "thirst": {
+                        "position": {
+                            "x": 0,
+                            "y": 0
+                        },
+                        "colors": {
+                            "icon": "#FFFFFF",
+                            "trail": "#6fd485"
+                        }
+                    },
+                    "stress": {
+                        "position": {
+                            "x": 0,
+                            "y": 0
+                        },
+                        "colors": {
+                            "icon": "#FFFFFF",
+                            "trail": "#FF61C9"
+                        }
+                    },
+                    "stamina": {
+                        "position": {
+                            "x": 0,
+                            "y": 0
+                        },
+                        "colors": {
+                            "icon": "#FFFFFF",
+                            "trail": "#d9d9d9"
+                        }
+                    }
+                },
+                "simplev2": {
+                    "health": {
+                        "position": {
+                            "x": 0,
+                            "y": 0
+                        },
+                        "colors": {
+                            "text": "#D9D9D9",
+                            "icon": "#D35959"
+                        }
+                    },
+                    "armour": {
+                        "position": {
+                            "x": 0,
+                            "y": 0
+                        },
+                        "colors": {
+                            "text": "#D9D9D9",
+                            "icon": "#5991D3"
+                        }
+                    },
+                    "hunger": {
+                        "position": {
+                            "x": 0,
+                            "y": 0
+                        },
+                        "colors": {
+                            "text": "#D9D9D9",
+                            "icon": "#f4c574"
+                        }
+                    },
+                    "thirst": {
+                        "position": {
+                            "x": 0,
+                            "y": 0
+                        },
+                        "colors": {
+                            "text": "#D9D9D9",
+                            "icon": "#6fd485"
+                        }
+                    },
+                    "stress": {
+                        "position": {
+                            "x": 0,
+                            "y": 0
+                        },
+                        "colors": {
+                            "text": "#D9D9D9",
+                            "icon": "#FF61C9"
+                        }
+                    },
+                    "stamina": {
+                        "position": {
+                            "x": 0,
+                            "y": 0
+                        },
+                        "colors": {
+                            "text": "#D9D9D9",
+                            "icon": "#d9d9d9"
+                        }
+                    }
+                },
+                "regular": {
+                    "health": {
+                        "position": {
+                            "x": 0,
+                            "y": 0
+                        },
+                        "colors": {
+                            "icon": "#FFFFFF",
+                            "trail": "#FFFFFF"
+                        }
+                    },
+                    "armour": {
+                        "position": {
+                            "x": 0,
+                            "y": 0
+                        },
+                        "colors": {
+                            "icon": "#FFFFFF",
+                            "trail": "#5991D3"
+                        }
+                    },
+                    "hunger": {
+                        "position": {
+                            "x": 0,
+                            "y": 0
+                        },
+                        "colors": {
+                            "icon": "#FFFFFF",
+                            "trail": "#f4c574"
+                        }
+                    },
+                    "thirst": {
+                        "position": {
+                            "x": 0,
+                            "y": 0
+                        },
+                        "colors": {
+                            "icon": "#FFFFFF",
+                            "trail": "#6fd485"
+                        }
+                    },
+                    "stress": {
+                        "position": {
+                            "x": 0,
+                            "y": 0
+                        },
+                        "colors": {
+                            "icon": "#FFFFFF",
+                            "trail": "#FF61C9"
+                        }
+                    },
+                    "stamina": {
+                        "position": {
+                            "x": 0,
+                            "y": 0
+                        },
+                        "colors": {
+                            "icon": "#FFFFFF",
+                            "trail": "#d9d9d9"
+                        }
+                    }
+                },
+                "chip": {
+                    "health": {
+                        "position": {
+                            "x": 0,
+                            "y": 0
+                        },
+                        "colors": {
+                            "trail": "#FF5A5F"
+                        }
+                    },
+                    "armour": {
+                        "position": {
+                            "x": 0,
+                            "y": 0
+                        },
+                        "colors": {
+                            "trail": "#2DD4BF"
+                        }
+                    },
+                    "hunger": {
+                        "position": {
+                            "x": 0,
+                            "y": 0
+                        },
+                        "colors": {
+                            "trail": "#FFA31A"
+                        }
+                    },
+                    "thirst": {
+                        "position": {
+                            "x": 0,
+                            "y": 0
+                        },
+                        "colors": {
+                            "trail": "#4F8DFF"
+                        },
+                        "icon": "bottle"
+                    },
+                    "stamina": {
+                        "position": {
+                            "x": 0,
+                            "y": 0
+                        },
+                        "colors": {
+                            "trail": "#D9D9D9"
+                        }
+                    },
+                    "stress": {
+                        "position": {
+                            "x": 0,
+                            "y": 0
+                        },
+                        "colors": {
+                            "trail": "#B45CFF"
+                        }
+                    }
+                },
+                "lanes": {
+                    "health": {
+                        "position": {
+                            "x": 0,
+                            "y": 0
+                        },
+                        "colors": {
+                            "trail": "#FF6B6B"
+                        }
+                    },
+                    "armour": {
+                        "position": {
+                            "x": 0,
+                            "y": 0
+                        },
+                        "colors": {
+                            "trail": "#25D0B8"
+                        }
+                    },
+                    "hunger": {
+                        "position": {
+                            "x": 0,
+                            "y": 0
+                        },
+                        "colors": {
+                            "trail": "#FFA31A"
+                        }
+                    },
+                    "thirst": {
+                        "position": {
+                            "x": 0,
+                            "y": 0
+                        },
+                        "colors": {
+                            "trail": "#3F7FFF"
+                        },
+                        "icon": "bottle"
+                    },
+                    "stamina": {
+                        "position": {
+                            "x": 0,
+                            "y": 0
+                        },
+                        "colors": {
+                            "trail": "#D9D9D9"
+                        }
+                    },
+                    "stress": {
+                        "position": {
+                            "x": 0,
+                            "y": 0
+                        },
+                        "colors": {
+                            "trail": "#B45CFF"
+                        }
+                    }
+                },
+                "tile": {
+                    "health": {
+                        "position": {
+                            "x": 0,
+                            "y": 0
+                        },
+                        "colors": {
+                            "trail": "#FF4D4D",
+                            "icon": "#FFFFFF"
+                        }
+                    },
+                    "armour": {
+                        "position": {
+                            "x": 0,
+                            "y": 0
+                        },
+                        "colors": {
+                            "trail": "#5CC8FF",
+                            "icon": "#FFFFFF"
+                        }
+                    },
+                    "hunger": {
+                        "position": {
+                            "x": 0,
+                            "y": 0
+                        },
+                        "colors": {
+                            "trail": "#FFB020",
+                            "icon": "#FFFFFF"
+                        },
+                        "icon": "burger"
+                    },
+                    "thirst": {
+                        "position": {
+                            "x": 0,
+                            "y": 0
+                        },
+                        "colors": {
+                            "trail": "#4D9DFF",
+                            "icon": "#FFFFFF"
+                        }
+                    },
+                    "stamina": {
+                        "position": {
+                            "x": 0,
+                            "y": 0
+                        },
+                        "colors": {
+                            "trail": "#D9D9D9",
+                            "icon": "#FFFFFF"
+                        }
+                    },
+                    "stress": {
+                        "position": {
+                            "x": 0,
+                            "y": 0
+                        },
+                        "colors": {
+                            "trail": "#B45CFF",
+                            "icon": "#FFFFFF"
+                        }
+                    }
+                }
+            },
+            "show": {
+                "health": true,
+                "armour": true,
+                "hunger": true,
+                "thirst": true,
+                "stamina": true,
+                "stress": true,
+                "oxygen": true
+            },
+            "autoHide": {
+                "enabled": false,
+                "above": 90,
+                "delay": 3,
+                "always": false
+            },
+            "anchor": "map",
+            "layout": "row"
+        },
+        "quickMenu": {
+            "x": 0,
+            "y": 0
+        },
+        "location": {
+            "style": "classic",
+            "behaviors": {
+                "classic": {
+                    "position": {
+                        "x": -26.83,
+                        "y": -13.8,
+                        "s": 0.818
+                    },
+                    "scale": 1,
+                    "colors": {
+                        "text": "#FFFFFF"
+                    },
+                    "options": {
+                        "lineMax": 150,
+                        "showPostal": true
+                    }
+                },
+                "split": {
+                    "position": {
+                        "x": -9.87,
+                        "y": -29.59,
+                        "s": 0.918
+                    },
+                    "scale": 1,
+                    "colors": {
+                        "background": "",
+                        "pill": "",
+                        "pillBorder": "",
+                        "text": "#FFFFFF",
+                        "active": "#FFFFFF",
+                        "dim": "#C4CAD1",
+                        "postal": "#E6E9ED"
+                    },
+                    "options": {
+                        "gap": 8,
+                        "textSize": 9,
+                        "lineMax": 90,
+                        "bgOpacity": 0.3,
+                        "showPostal": false
+                    }
+                },
+                "chips": {
+                    "position": {
+                        "x": -13.54,
+                        "y": -29.44,
+                        "s": 0.9
+                    },
+                    "scale": 1,
+                    "colors": {
+                        "background": "",
+                        "text": "#FFFFFF",
+                        "icon": "#FFFFFF"
+                    },
+                    "options": {
+                        "gap": 4,
+                        "textSize": 9.5,
+                        "lineMax": 90,
+                        "bgOpacity": 0.35,
+                        "showSub": true,
+                        "showPostal": true
+                    }
+                }
+            },
+            "previous": "classic"
+        },
+        "mapType": "square",
+        "fuelType": "litres",
+        "mapRadius": true,
+        "minimapShow": false,
+        "performance": "balanced",
+        "microphone": {
+            "style": "disc",
+            "behaviors": {
+                "stack": {
+                    "position": {
+                        "x": 0,
+                        "y": 0
+                    },
+                    "scale": 1,
+                    "colors": {
+                        "live": "#A4FC28",
+                        "muted": "#FF3E3E"
+                    }
+                },
+                "ripple": {
+                    "position": {
+                        "x": 0,
+                        "y": 0
+                    },
+                    "scale": 1,
+                    "colors": {
+                        "live": "#97FF71",
+                        "muted": "#FF6467"
+                    }
+                },
+                "disc": {
+                    "position": {
+                        "x": 0.01,
+                        "y": 4.77,
+                        "s": 0.852
+                    },
+                    "scale": 1,
+                    "colors": {
+                        "live": "#A4FC28",
+                        "muted": "#FF3E3E"
+                    }
+                }
+            }
+        },
+        "weapon": {
+            "style": "simple",
+            "hide": false,
+            "disable": false,
+            "behaviors": {
+                "modern": {
+                    "position": {
+                        "x": 0,
+                        "y": 0
+                    },
+                    "colors": {
+                        "text": "#FFFFFF",
+                        "icons": "#FFFFFF"
+                    }
+                },
+                "simple": {
+                    "position": {
+                        "x": -10.9,
+                        "y": 0
+                    },
+                    "colors": {
+                        "text": "#FFFFFF",
+                        "reserve": "#BBBBBB"
+                    }
+                },
+                "new": {
+                    "position": {
+                        "x": 0,
+                        "y": 0
+                    },
+                    "colors": {
+                        "text": "#FFFFFF",
+                        "reserve": "#E7EAF0"
+                    }
+                }
+            }
+        },
+        "compass": {
+            "style": "tape",
+            "behaviors": {
+                "tape": {
+                    "position": {
+                        "x": 0,
+                        "y": 0
+                    },
+                    "scale": 1,
+                    "colors": {
+                        "background": "",
+                        "tick": "#FFFFFF",
+                        "tickMajor": "#FFFFFF",
+                        "text": "#D9D9D9",
+                        "active": "#FFFFFF",
+                        "pointer": "#FFFFFF",
+                        "north": "#FF6467",
+                        "street": "#FFFFFF",
+                        "subStreet": "#F2F2F2",
+                        "postal": "#D9D9D9"
+                    },
+                    "options": {
+                        "width": 300,
+                        "ppd": 2.4,
+                        "tickShort": 4,
+                        "tickLong": 8,
+                        "textSize": 9,
+                        "gap": 3,
+                        "bgOpacity": 0,
+                        "showSub": true,
+                        "showPostal": true,
+                        "showDegrees": true,
+                        "minorOpacity": 0.4,
+                        "degreeOpacity": 0.55
+                    }
+                },
+                "ruler": {
+                    "position": {
+                        "x": 0,
+                        "y": 0
+                    },
+                    "scale": 1,
+                    "colors": {
+                        "background": "",
+                        "tick": "#FFFFFF",
+                        "tickMajor": "#FFFFFF",
+                        "text": "#D9D9D9",
+                        "active": "#FFFFFF",
+                        "pointer": "#FFFFFF",
+                        "north": "#FF6467",
+                        "street": "#FFFFFF",
+                        "subStreet": "#F2F2F2",
+                        "postal": "#D9D9D9"
+                    },
+                    "options": {
+                        "width": 300,
+                        "ppd": 2.4,
+                        "tickShort": 4,
+                        "tickLong": 10,
+                        "textSize": 9,
+                        "gap": 4,
+                        "bgOpacity": 0,
+                        "showSub": true,
+                        "showPostal": true,
+                        "showDegrees": true,
+                        "minorOpacity": 0.4,
+                        "degreeOpacity": 0.55
+                    }
+                },
+                "letters": {
+                    "position": {
+                        "x": 0,
+                        "y": 0
+                    },
+                    "scale": 1,
+                    "colors": {
+                        "background": "",
+                        "tick": "#FFFFFF",
+                        "tickMajor": "#FFFFFF",
+                        "text": "#D9D9D9",
+                        "active": "#FFFFFF",
+                        "pointer": "#FFFFFF",
+                        "north": "#FF6467",
+                        "street": "#FFFFFF",
+                        "subStreet": "#F2F2F2",
+                        "postal": "#D9D9D9"
+                    },
+                    "options": {
+                        "width": 220,
+                        "ppd": 2,
+                        "textSize": 9,
+                        "gap": 4,
+                        "bgOpacity": 0.35,
+                        "showSub": false,
+                        "showPostal": true
+                    }
+                },
+                "arc": {
+                    "position": {
+                        "x": 0,
+                        "y": 0
+                    },
+                    "scale": 1,
+                    "colors": {
+                        "background": "",
+                        "tick": "#FFFFFF",
+                        "tickMajor": "#FFFFFF",
+                        "text": "#D9D9D9",
+                        "active": "#FFFFFF",
+                        "pointer": "#FFFFFF",
+                        "north": "#FF6467",
+                        "street": "#FFFFFF",
+                        "subStreet": "#F2F2F2",
+                        "postal": "#D9D9D9"
+                    },
+                    "options": {
+                        "width": 300,
+                        "ppd": 2.4,
+                        "tickShort": 4,
+                        "tickLong": 8,
+                        "textSize": 9,
+                        "gap": 3,
+                        "bgOpacity": 0,
+                        "showSub": true,
+                        "showPostal": true,
+                        "showDegrees": true,
+                        "radius": 360,
+                        "minorOpacity": 0.4,
+                        "degreeOpacity": 0.55,
+                        "lift": 0
+                    }
+                }
+            }
+        },
+        "general": {
+            "language": "",
+            "clock": "",
+            "dayNight": "auto"
+        },
+        "behaviour": {
+            "hideInPause": true,
+            "hideAiming": false,
+            "firstPerson": true,
+            "beltSound": true
+        },
+        "mapScale": 0.837,
+        "mapRotate": true,
+        "mapBorder": false,
+        "waypoint": {
+            "style": "diamond",
+            "unit": "km",
+            "behaviors": {
+                "diamond": {
+                    "colors": {
+                        "background": "",
+                        "accent": "#3DE0C0",
+                        "text": "#FFFFFF",
+                        "line": "#FFFFFF",
+                        "above": "#6DB7FF",
+                        "below": "#FFB454",
+                        "arrived": "#7BE38B"
+                    },
+                    "options": {
+                        "bgOpacity": 0.55,
+                        "markerSize": 0.5,
+                        "arriveRadius": 20,
+                        "edgeMargin": 32,
+                        "showDistance": true,
+                        "showHeight": true,
+                        "showPole": true,
+                        "shrink": true,
+                        "fadeFar": true,
+                        "hideOffscreen": false
+                    }
+                },
+                "pennant": {
+                    "colors": {
+                        "background": "",
+                        "accent": "#3DE0C0",
+                        "text": "#FFFFFF",
+                        "line": "#FFFFFF",
+                        "above": "#6DB7FF",
+                        "below": "#FFB454",
+                        "arrived": "#7BE38B"
+                    },
+                    "options": {
+                        "bgOpacity": 0.7,
+                        "markerSize": 0.5,
+                        "arriveRadius": 20,
+                        "edgeMargin": 32,
+                        "showDistance": true,
+                        "showHeight": true,
+                        "showPole": true,
+                        "shrink": true,
+                        "fadeFar": true,
+                        "hideOffscreen": false
+                    }
+                }
+            }
+        },
+        "damage": {
+            "style": "none",
+            "behaviors": {
+                "default": {
+                    "colors": {
+                        "indicator": "#FF0000"
+                    },
+                    "options": {
+                        "indicator": true,
+                        "blood": true,
+                        "critical": true,
+                        "indicatorOpacity": 0.9,
+                        "bloodOpacity": 0.3,
+                        "size": 1
+                    }
+                }
+            }
+        },
+        "mapStyle": "colored",
+        "visibility": {
+            "status": true,
+            "carhud": true,
+            "rightCorner": true,
+            "weapon": true,
+            "location": true,
+            "compass": true,
+            "microphone": true,
+            "map": true
+        },
+        "mapPosition": {
+            "offset": {
+                "x": -0.71,
+                "y": -1.18
+            },
+            "anchor": "left"
+        }
+    },
+    "styleRenames": {
+        "carhud": {
+            "modern": "horizon",
+            "agressive": "apex",
+            "sport": "velocity",
+            "simple": "minimal",
+            "simplev2": "pulse",
+            "circle": "orbit",
+            "classic": "heritage",
+            "cluster": "gauge",
+            "ring": "halo"
+        },
+        "rightCorner": {
+            "old": "classic",
+            "boxed_dynamic": "boxed",
+            "modern": "sleek",
+            "new_simple": "slim"
+        }
+    },
+    "resetColors": {
+        "version": 5,
+        "carhud": [
+            "horizon",
+            "apex",
+            "velocity",
+            "minimal",
+            "pulse",
+            "orbit",
+            "heritage",
+            "duo"
+        ]
+    },
+    "resetStyles": {
+        "version": 5.2,
+        "groups": [
+            "waypoint"
+        ]
+    },
+    "statusIcons": {
+        "health": [
+            "health",
+            "health_alt",
+            "heartbeat"
+        ],
+        "armour": [
+            "armour",
+            "shield_check"
+        ],
+        "hunger": [
+            "hunger",
+            "meal",
+            "burger"
+        ],
+        "thirst": [
+            "thirst",
+            "bottle",
+            "glass"
+        ],
+        "stamina": [
+            "stamina",
+            "bolt"
+        ],
+        "stress": [
+            "stress",
+            "stress_alt"
+        ]
+    },
+    "optionRanges": {
+        "compass": {
+            "width": {
+                "min": 160,
+                "max": 480,
+                "step": 10
+            },
+            "ppd": {
+                "min": 1.2,
+                "max": 4,
+                "step": 0.1
+            },
+            "radius": {
+                "min": 120,
+                "max": 700,
+                "step": 10
+            },
+            "tickShort": {
+                "min": 1,
+                "max": 12,
+                "step": 0.5
+            },
+            "tickLong": {
+                "min": 2,
+                "max": 20,
+                "step": 0.5
+            },
+            "textSize": {
+                "min": 6,
+                "max": 18,
+                "step": 0.5
+            },
+            "gap": {
+                "min": 0,
+                "max": 14,
+                "step": 0.5
+            },
+            "bgOpacity": {
+                "min": 0,
+                "max": 1,
+                "step": 0.05
+            },
+            "minorOpacity": {
+                "min": 0,
+                "max": 1,
+                "step": 0.05
+            },
+            "degreeOpacity": {
+                "min": 0,
+                "max": 1,
+                "step": 0.05
+            },
+            "lift": {
+                "min": 0,
+                "max": 60,
+                "step": 1
+            }
+        },
+        "location": {
+            "gap": {
+                "min": 0,
+                "max": 20,
+                "step": 0.5
+            },
+            "textSize": {
+                "min": 6,
+                "max": 18,
+                "step": 0.5
+            },
+            "lineMax": {
+                "min": 50,
+                "max": 260,
+                "step": 5
+            },
+            "bgOpacity": {
+                "min": 0,
+                "max": 1,
+                "step": 0.05
+            }
+        },
+        "waypoint": {
+            "bgOpacity": {
+                "min": 0,
+                "max": 1,
+                "step": 0.05
+            },
+            "markerSize": {
+                "min": 0.25,
+                "max": 2,
+                "step": 0.05
+            },
+            "arriveRadius": {
+                "min": 10,
+                "max": 60,
+                "step": 5
+            },
+            "edgeMargin": {
+                "min": 8,
+                "max": 120,
+                "step": 2
+            }
+        },
+        "damage": {
+            "indicatorOpacity": {
+                "min": 0.2,
+                "max": 1,
+                "step": 0.05
+            },
+            "bloodOpacity": {
+                "min": 0.1,
+                "max": 1,
+                "step": 0.05
+            },
+            "size": {
+                "min": 0.6,
+                "max": 1.6,
+                "step": 0.05
+            }
+        }
+    },
+    "settings": {
+        "tabs": [
+            "main",
+            "status",
+            "carhud",
+            "map",
+            "waypoint",
+            "corner",
+            "location",
+            "voice",
+            "weapon",
+            "damage",
+            "customization"
+        ],
+        "tabFlags": {
+            "damage": "damage",
+            "waypoint": "waypoint"
+        },
+        "vehicleTabs": {
+            "car": null,
+            "boat": "boat",
+            "aircraft": "air",
+            "bike": "bike",
+            "motorcycle": "moto"
+        },
+        "swatches": [
+            "#FFFFFF",
+            "#308FFF",
+            "#50FF84",
+            "#A4FC28",
+            "#FFB151",
+            "#FF3E3E",
+            "#8A93A0"
+        ],
+        "languages": [
+            {
+                "code": "en",
+                "label": "English"
+            },
+            {
+                "code": "tr",
+                "label": "Türkçe"
+            },
+            {
+                "code": "de",
+                "label": "Deutsch"
+            },
+            {
+                "code": "fr",
+                "label": "Français"
+            },
+            {
+                "code": "it",
+                "label": "Italiano"
+            },
+            {
+                "code": "cz",
+                "label": "Čeština"
+            },
+            {
+                "code": "ro",
+                "label": "Română"
+            },
+            {
+                "code": "ar",
+                "label": "العربية"
+            }
+        ],
+        "statusAnchors": [
+            "map",
+            "bottomCenter",
+            "bottomRight",
+            "topLeft"
+        ],
+        "hideAbove": [
+            50,
+            60,
+            70,
+            80,
+            90,
+            95,
+            100
+        ],
+        "hideDelay": [
+            1,
+            2,
+            3,
+            5,
+            8
+        ],
+        "moneySeconds": [
+            1,
+            2,
+            3,
+            5,
+            8
+        ],
+        "moneyAnimations": [
+            "slide",
+            "fade",
+            "none"
+        ],
+        "rules": [
+            {
+                "path": "general.dayNight",
+                "enum": [
+                    "auto",
+                    "day",
+                    "night"
+                ]
+            },
+            {
+                "path": "general.clock",
+                "enum": [
+                    "",
+                    "12",
+                    "24"
+                ]
+            },
+            {
+                "path": "general.language",
+                "enum": [
+                    "",
+                    "en",
+                    "tr",
+                    "de",
+                    "fr",
+                    "it",
+                    "cz",
+                    "ro",
+                    "ar"
+                ]
+            },
+            {
+                "path": "fuelType",
+                "enum": [
+                    "litres",
+                    "gallons"
+                ]
+            },
+            {
+                "path": "carhud.speedType",
+                "enum": [
+                    "kmh",
+                    "mph"
+                ]
+            },
+            {
+                "path": "carhud.depthUnit",
+                "enum": [
+                    "metres",
+                    "feet"
+                ]
+            },
+            {
+                "path": "carhud.altitudeUnit",
+                "enum": [
+                    "feet",
+                    "metres"
+                ]
+            },
+            {
+                "path": "performance",
+                "enum": [
+                    "balanced",
+                    "performance"
+                ]
+            },
+            {
+                "path": "mapType",
+                "enum": [
+                    "square",
+                    "circle",
+                    "hexagon",
+                    "pentagon",
+                    "pill"
+                ]
+            },
+            {
+                "path": "mapScale",
+                "min": 0.8,
+                "max": 1.2
+            },
+            {
+                "path": "status.anchor",
+                "enum": [
+                    "map",
+                    "bottomCenter",
+                    "bottomRight",
+                    "topLeft"
+                ]
+            },
+            {
+                "path": "status.layout",
+                "enum": [
+                    "row",
+                    "column"
+                ]
+            },
+            {
+                "path": "status.autoHide.above",
+                "min": 50,
+                "max": 100
+            },
+            {
+                "path": "status.autoHide.delay",
+                "min": 0,
+                "max": 30
+            },
+            {
+                "path": "rightCorner.moneyChange.seconds",
+                "min": 1,
+                "max": 10
+            },
+            {
+                "path": "rightCorner.moneyChange.animation",
+                "enum": [
+                    "slide",
+                    "fade",
+                    "none"
+                ]
+            },
+            {
+                "path": "waypoint.unit",
+                "enum": [
+                    "km",
+                    "mi"
+                ]
+            },
+            {
+                "path": "damage.behaviors.default.options.indicatorOpacity",
+                "min": 0.2,
+                "max": 1
+            },
+            {
+                "path": "damage.behaviors.default.options.bloodOpacity",
+                "min": 0.1,
+                "max": 1
+            },
+            {
+                "path": "damage.behaviors.default.options.size",
+                "min": 0.6,
+                "max": 1.6
+            }
+        ],
+        "styleNames": {
+            "status": {
+                "circlev3": "Circle 3",
+                "circlev4": "Circle 4",
+                "squarev2": "Square 2",
+                "simplev2": "Simple 2"
+            },
+            "rightCorner": {},
+            "carhud": {}
+        },
+        "preview": {
+            "default": {
+                "columns": 3,
+                "height": 64
+            },
+            "rightCorner": {
+                "columns": 3,
+                "height": 84
+            },
+            "carhud": {
+                "columns": 3,
+                "height": 84
+            },
+            "weapon": {
+                "columns": 3,
+                "height": 60
+            },
+            "status": {
+                "columns": 2,
+                "height": 44
+            },
+            "location": {
+                "columns": 2,
+                "height": 40
+            },
+            "compass": {
+                "columns": 2,
+                "height": 56
+            },
+            "waypoint": {
+                "columns": 2,
+                "height": 84
+            },
+            "microphone": {
+                "columns": 3,
+                "height": 48
+            }
+        },
+        "vehiclePreview": {
+            "boat": "boathud",
+            "aircraft": "aircrafthud",
+            "bike": "bikehud",
+            "motorcycle": "motohud"
+        },
+        "mapScale": {
+            "min": 0.8,
+            "max": 1.2,
+            "step": 0.05
+        },
+        "cornerElements": {
+            "classic": [
+                "playerId",
+                "playerCount",
+                "clock",
+                "date",
+                "logo",
+                "job",
+                "gang",
+                "money",
+                "bank",
+                "blackMoney"
+            ],
+            "boxed": [
+                "playerId",
+                "playerCount",
+                "clock",
+                "date",
+                "logo",
+                "job",
+                "gang",
+                "money",
+                "bank",
+                "blackMoney"
+            ],
+            "sleek": [
+                "playerId",
+                "playerCount",
+                "clock",
+                "date",
+                "logo",
+                "job",
+                "gang",
+                "money",
+                "bank",
+                "blackMoney"
+            ],
+            "slim": [
+                "playerId",
+                "playerCount",
+                "clock",
+                "date",
+                "logo",
+                "job",
+                "gang",
+                "money",
+                "bank",
+                "blackMoney",
+                "name"
+            ],
+            "pill": [
+                "playerId",
+                "clock",
+                "date",
+                "job",
+                "gang",
+                "money",
+                "bank",
+                "blackMoney"
+            ]
+        },
+        "statusColors": {
+            "default": [
+                "trail"
+            ],
+            "simplev2": [
+                "icon"
+            ],
+            "regular": {
+                "health": [
+                    "trail",
+                    "icon"
+                ],
+                "armour": [
+                    "trail",
+                    "icon"
+                ],
+                "hunger": [
+                    "icon"
+                ],
+                "thirst": [
+                    "icon"
+                ],
+                "stress": [
+                    "icon"
+                ],
+                "stamina": [
+                    "icon"
+                ]
+            }
+        }
+    },
+    "serverTheme": {
+  "version": 6.4,
+  "resolution": {
+    "width": 2560,
+    "height": 1440
+  },
+  "changes": {
+    "rightCorner": {
+      "elements_behaviors": {
+        "gang": {
+          "hide": true
+        }
+      },
+      "show": {
+        "logo": false
+      }
+    },
+    "location": {
+      "style": "split"
+    },
+    "mapType": "circle",
+    "microphone": {
+      "style": "stack"
+    },
+    "weapon": {
+      "behaviors": {
+        "simple": {
+          "position": {
+            "x": 29.97646484375,
+            "y": -309.4381408691407,
+            "s": 0.737
+          }
+        }
+      }
+    },
+    "general": {
+      "language": "tr"
+    },
+    "mapScale": 0.8,
+    "damage": {
+      "style": "default"
+    }
+  }
+}
+}

@@ -1,0 +1,536 @@
+{
+  "dont_have_enough_money": "Yeterli paran yok. (%s)",
+  "only_leader_can_do": "Bunu sadece ekip lideri yapabilir",
+  "job_start_blocked": "Şu anda bu işe başlayamazsın!",
+  "job_start_blocked_by_player": "Bu işe başlayamazsın; ID: %s olan başka bir oyuncu şu an engel oluyor.",
+  "you_do_not_have_required_items": "Gerekli eşyalara sahip değilsin: %s",
+  "leader_leave_game": "Ekip lideri oyundan ayrıldı",
+  "progress": "İşlem yapılıyor...",
+  "deliver": "Teslim Et",
+  "get_inside": "İçeri Gir",
+  "get_outside": "Dışarı Çık",
+  "no_available_location": "Geç kaldın, işi başkası aldı. Bu işte pek iyi sayılmazsın.",
+  "put_box": "Kutuyu Yerleştir",
+  "you_do_not_have_permission": "Bu menüye erişim iznin yok.",
+  "lobby": {
+    "invited_player": "Oyuncu davet edildi",
+    "player_not_available": "Oyuncu müsait değil",
+    "lobby_not_found": "Lobi bulunamadı",
+    "lobby_is_full": "Lobi dolu",
+    "already_in_lobby": "Zaten bir lobidesin",
+    "joined_lobby": "Lobiye katıldın",
+    "on_mission": "Bu lobi şu an görevde",
+    "player_already_in_lobby": "Oyuncu zaten bir lobide"
+  },
+  "market": {
+    "order_delivered": "Sipariş verildi, ürünlerin en kısa sürede teslim edilecek",
+    "already_have_order": "Zaten aktif bir siparişin var",
+    "collect": "Teslim Al",
+    "invalid_item": "Geçersiz eşya: %s",
+    "disabled": "İllegal Market şu an devre dışı"
+  },
+  "jobs": {
+    "have_already_job": "Zaten aktif bir işin var",
+    "job_started": "İş başladı, talimatları takip et",
+    "already_on_task": "Zaten bir görev üzerindesin",
+    "member_required_level": "Ekip üyesinin seviyesi yetersiz, gereken: %s",
+    "job_aborted": "İş iptal edildi!",
+    "step_timeout": "Aşamayı zamanında tamamlayamadın. İş iptal edildi.",
+    "step_done": "Aşama tamamlandı, talimatları takip et",
+    "job_stopped": "İş Durduruldu",
+    "job_done": "İş tamamlandı, ödeme yapıldı!",
+    "member_is_cooldown": "%s bekleme süresinde. Kalan: %s",
+    "member_doesnot_have_required_job": "Üye gerekli mesleğe sahip değil, %s",
+    "member_doesnot_have_required_gang": "Üye gerekli oluşumda değil, %s",
+    "teamsize_min": "Ekibin bu işe başlamak için çok küçük. En az [%d] kişi gerekli.",
+    "teamsize_max": "Ekibin bu iş için çok kalabalık. En fazla [%d] kişi olabilir.",
+    "not_enough_police": "Şehirde yeterli polis yok!"
+  },
+  "bag_snatch": {
+    "label": "Araç Yağmalama",
+    "description": "Park halindeki araçlardan çanta çal.",
+    "information": "Otoparklarda hızlı soygunlar. Çabuk gir, çabuk çık.",
+    "steps": {
+      "1": "GPS'te işaretlenen otoparka git. Gözün park halindeki araçlarda olsun, hedef bölgen orası.",
+      "2": "Araca yaklaş ve camın yanındaki hedef butonunu kullanarak camı patlat. Tüm araçlar için bunu uyarla.",
+      "3": "Envanterini aç, çalınan çantaları bul ve içindekileri çıkar. Ardından GPS ile alıcıya git ve eşyaları teslim et."
+    },
+    "blips": {
+      "parking_lot": "Otopark"
+    },
+    "smash_window": "Camı Patlat",
+    "window_already_smashed": "Bu cam zaten patlatılmış",
+    "leader_can_deliver": "Toplanan eşyaları sadece ekip lideri teslim edebilir",
+    "items_delivered": "Eşyalar teslim edildi"
+  },
+  "car_theft": {
+    "label": "Araç Hırsızlığı",
+    "description": "Lüks araçları çal",
+    "information": "Soru sormayan bir müşteri için üst segment bir araç çal.",
+    "steps": {
+      "1": "Haritadaki GPS işaretini takip et ve bölgeye git. Dikkatli ol, bölge korunuyor olabilir.",
+      "2": "Bölgedeki düşmanlarla çatışmaya gir. Siper al, tüm tehditleri temizle ve ilerlemeden önce güvenliği sağla.",
+      "3": "Bölge temizlendiğinde hedef aracı bul ve kapıyı aç. Seni durduracak kimse kalmadığından emin ol.",
+      "4": "Çalınan aracı GPS'teki teslimat noktasına sür. Polislere yakalanmadan aracı sağ salim teslim et."
+    },
+    "blips": {
+      "area": "Araç Hırsızlığı"
+    },
+    "deliver_vehicle": "Aracı Teslim Et",
+    "lockpick_door": "Kapıyı Maymuncukla Aç",
+    "enemies_disarmed": "Düşmanlar etkisiz hale getirildi, araçları çalındı"
+  },
+  "chop_shop": {
+    "label": "Araç Parçalama Operasyonu",
+    "description": "Çalıntı araçları parçalarına ayır.",
+    "information": "Çalıntı araçları soy ve parçalarını karaborsada sat.",
+    "steps": {
+      "1": "Hedef aracı bulmak için GPS'teki işaretli bölgeye git.",
+      "2": "Digiscanner cihazını kullanarak çevreyi tara ve anahtar sinyalini bul. Sinyali kopyalayıp aracın kilidini aç.",
+      "3": "Çalıntı aracı dikkatlice haritadaki parçalama atölyesine (Chop Shop) sür. Dikkat çekmemeye çalış.",
+      "4": "Aracı atölyedeki işaretli noktaya park et. [E] tuşuna basarak parçala ve parçaları ilgili kişiye teslim et."
+    },
+    "blips": {
+      "vehicle_location": "Araç Konumu",
+      "drop_off_location": "Parçalama Atölyesi"
+    },
+    "digiscanner_comleted": "Kopyalama tamamlandı, araca dön",
+    "digiscanner_failed": "Başarısız oldun, tekrar dene!",
+    "park_vehicle": "Aracı Park Et",
+    "chop_part": "Parçayı Sök",
+    "destroy_part": "Parçayı İmha Et",
+    "police_alerted": "Şüpheli faaliyet fark edildi, polis bölgeye sevk edildi!"
+  },
+  "cocaine_job": {
+    "label": "Kokain Sevkiyatı",
+    "description": "Laboratuvarda kokain paketleri üret",
+    "information": "Toplama aşamasından paketlemeye kadar kokain operasyonunu yönet.",
+    "steps": {
+      "1": "Haritanda işaretli olan herhangi bir laboratuvara git. Bu lablar şehrin çeşitli yerlerinde bulunur.",
+      "2": "İçeri girdiğinde istasyona yaklaş ve [E] ile üretime başla. Üretimden sonra paketleme istasyonunda ürünü hazırla."
+    },
+    "blips": {
+      "lab_location": "Kokain Laboratuvarı"
+    },
+    "unpack_coke": "Malı Aç",
+    "cut_coke": "Malı İşle",
+    "package_coke": "Malı Paketle"
+  },
+  "corner_deal": {
+    "label": "Köşe Tutma",
+    "description": "Sokakta uyuşturucu sat.",
+    "information": "Bir köşe tut ve yoldan geçen müşterilere satış yap.",
+    "steps": {
+      "1": "/drugsell komutuyla menüyü aç ve satışa başlamak için bir bölge seç.",
+      "2": "GPS'teki işaretli bölgeye git. Yaya trafiğinin yoğun olduğu bir yer olduğundan emin ol.",
+      "3": "Bölgede kal ve müşterilerin sana yaklaşmasını bekle. Satışı tamamlamak için onlarla etkileşime gir."
+    },
+    "blips": {
+      "area": "Satış Bölgesi",
+      "customer": "Müşteri"
+    },
+    "commands": {
+      "desc_set_corner_area": "illegal paket, köşe tutma, bölge ayarla."
+    },
+    "inputs": {
+      "heading": "Seçenekleri Düzenle",
+      "select_corner_area_label": "Köşe Bölgesi",
+      "select_corner_area_description": "Tutulacak köşeyi seçin",
+      "select_on_working": "Çalışıyor mu?",
+      "select_on_working_description": "Çalışma durumunu değiştir",
+      "options_on_working_on_label": "Aktif",
+      "options_on_working_off_label": "Pasif",
+      "select_drug_type_label": "Mal Tipi",
+      "select_drug_type_description": "Satılacak malın türü"
+    },
+    "cant_corner_while_dead": "Ölüyken köşe tutamazsın!",
+    "cant_corner_here": "Burada köşe tutamazsın!",
+    "not_enough_police": "Yeterli polis yok!",
+    "on_started": "Köşeyi tuttun, müşteri bekle",
+    "customer_given_up": "Müşteri vazgeçti, yenisi bekleniyor",
+    "offer_refused": "Teklif reddedildi!",
+    "offer_accepted": "Teklif kabul edildi!"
+  },
+  "counterfeit_money": {
+    "label": "Sahte Para Operasyonu",
+    "description": "Adım adım sahte para üret.",
+    "information": "Sahte para basımı ve hazırlığının tüm süreçlerini yönet.",
+    "steps": {
+      "1": "Operasyona başlamak için haritadaki sahte para tesisine git.",
+      "2": "İçerideki ekipmanları kullanarak banknotları bas, işle ve satışa hazır hale getirip paketle."
+    },
+    "blips": {
+      "lab_location": "Sahte Para Tesisi"
+    },
+    "place_paper": "Kağıtları Yerleştir",
+    "cut_paper": "Kağıtları Kes",
+    "package_money": "Paraları Paketle"
+  },
+  "diving": {
+    "label": "Sualtı Yağmalaması",
+    "description": "Batıklarda ganimet ara.",
+    "information": "Derine dal ve batıkları çıkar.",
+    "steps": {
+      "1": "Haritadaki ilgili kişiyle (NPC) konuş ve dalış görevini başlat.",
+      "2": "Bot noktasını kullanarak bir bot al ve GPS'teki dalış bölgesine açıl.",
+      "3": "Dalış kıyafetini giy, su altına dal ve batıkları tara. Ganimetleri topla.",
+      "4": "Topladığın ganimetleri kıyıdaki kişiye geri götür ve görevi tamamla."
+    },
+    "blips": {
+      "diving_npc": "Dalış Teması",
+      "item": "Ganimet",
+      "boat": "Bot"
+    },
+    "put_on_diving_suit": "Kıyafeti Giy",
+    "finish_job": "İşi Bitir",
+    "spawn_boat": "Bot Çıkar",
+    "anchored": "Çapa Atıldı",
+    "unanchored": "Çapa Çekildi",
+    "collect": "Topla"
+  },
+  "fraud": {
+    "label": "Dolandırıcılık Şebekesi",
+    "description": "Sahte kimlik ve çalıntı kredi kartları.",
+    "information": "Müşteri bilgilerini ele geçir ve kopyala.",
+    "steps": {
+      "1": "Haritadaki ATM'ye git ve hack cihazını yerleştir.",
+      "2": "Fark edilmemek için bölgeden uzaklaş ve cihaza uzaktan bağlan.",
+      "3": "Müşteriler ATM'yi kullanırken verilerini kopyala. Sabırla bekle.",
+      "4": "GPS'teki gizli ofise git ve çalınan verileri yeni kartlara aktar.",
+      "5": "Kopyalanan verilerle bankadan fark edilmeden para çek."
+    },
+    "blips": {
+      "atm": "ATM",
+      "customer": "Müşteri",
+      "office": "Dolandırıcılık Ofisi",
+      "banker": "Banka Görevlisi"
+    },
+    "insert_device": "Cihazı Yerleştir",
+    "capture_failed": "Veri alınamadı, diğer müşteri bekleniyor",
+    "capture_success": "Başarılı, diğer müşteriyi bekle",
+    "open_laptop": "Laptopu Aç",
+    "place_card": "Kartı Yerleştir",
+    "card_placed": "Kart yerleştirildi!",
+    "withdraw_money": "Para Çek",
+    "money_successfully_withdrawn": "Para başarıyla çekildi",
+    "too_far_from_atm": "ATM'den çok uzaktasın"
+  },
+  "gun_smuggling": {
+    "label": "Silah Kaçakçılığı",
+    "description": "İllegal silahları alıcıya ulaştır.",
+    "information": "Sıkı güvenlik önlemleri arasından silah kaçır.",
+    "steps": {
+      "1": "İşaretli konuma git ve kontak kişiyle konuş.",
+      "2": "Kamyonun park edildiği konteyner alanına git.",
+      "3": "Konteyner kapaklarını zorlayarak aç.",
+      "4": "Forklift kullanarak silah kasalarını kamyona yükle.",
+      "5": "Yüklü kamyonu dikkatlice GPS'teki adrese götür.",
+      "6": "Teslimattan sonra forklifti yerine bırak."
+    },
+    "blips": {
+      "contact_npc": "Kontak Kişi",
+      "truck": "Kamyon",
+      "container": "Konteyner",
+      "delivery": "Teslimat"
+    },
+    "spawn_truck": "Kamyon Çıkar",
+    "force_open": "Zorlayarak Aç",
+    "attached_forklift": "Kasa alındı, kamyona yükle",
+    "being_delivered": "Teslim ediliyor..."
+  },
+  "illegal_delivery": {
+    "label": "İllegal Sevkiyat",
+    "description": "Yasaklı paketleri adrese teslim et",
+    "information": "Yüksek riskli, yüksek kazançlı bir sevkiyat",
+    "steps": {
+      "1": "İşaretli bölgeye git.",
+      "2": "Kutuları topla ve [E] tuşuyla araca yükle.",
+      "3": "GPS'teki her bir noktaya dikkatlice sür ve kutuları indir.",
+      "4": "Tüm teslimatlar bitince aracı belirlenen yere park et."
+    },
+    "blips": {
+      "location": "Sevkiyat Bölgesi",
+      "vehicle": "Araç",
+      "delivery": "Teslim Noktası"
+    },
+    "donot_have_box": "Kutu sende değil",
+    "already_delivered_location": "Bu konuma zaten teslimat yapıldı",
+    "wait": "Bekle...",
+    "pick_box": "Kutuyu Al",
+    "box_delivered": "Kutu teslim edildi",
+    "park_vehicle": "Aracı Park Et"
+  },
+  "meth_job": {
+    "label": "Metamfetamin Operasyonu",
+    "description": "Met paketleri üret",
+    "information": "Pişirme aşamasından paketlemeye kadar met operasyonunu yönet.",
+    "steps": {
+      "1": "Operasyonu başlatmak için haritadaki Met Lab'a git.",
+      "2": "İçerideki pişirme istasyonunda ürünü hazırla, sonra paketleme kısmına geç."
+    },
+    "blips": {
+      "lab_location": "Met Laboratuvarı"
+    },
+    "cook": "Pişir",
+    "hammer": "Parçala (Çekiç)",
+    "package_meth": "Met'i Paketle"
+  },
+  "money_laundering": {
+    "label": "Para Aklama",
+    "description": "Paravan bir şirket üzerinden kara parayı temizle.",
+    "information": "İllegal nakit parayı temiz kazanca dönüştürmek için paravan iş yerini kullan.",
+    "steps": {
+      "1": "Haritadaki para aklama noktasına git ve [E] ile işlemi başlat."
+    },
+    "blips": {
+      "lab_location": "Para Aklama Merkezi"
+    },
+    "wash": "Parayı Akla",
+    "daily_limit_reached": "Günlük para aklama limitine ulaştın."
+  },
+  "moonshine": {
+    "label": "Kaçak Alkol (Moonshine)",
+    "description": "İllegal alkol üret ve karaborsada sat.",
+    "information": "Ormanın derinliklerinde terk edilmiş bir kulübede damıtma sistemi kur. Malzemeleri topla, alkolü üret, şişele ve dağıt. Polisten ve rakip çetelerden uzak dur.",
+    "steps": {
+      "1": "İşaretli konuma git ve kontak kişiyle konuş.",
+      "2": "İllegal marketten 'Damıtma Düzeneği' satın al.",
+      "3": "Aracınla haritadaki damıtma bölgesine git.",
+      "4": "Düzenekleri işaretli noktalara yerleştir.",
+      "5": "Meyveleri ez, malzemeleri karıştır ve alkolü pişir. Hazır olduğunda paketle, aracına yükle ve alıcıya götür."
+    },
+    "blips": {
+      "contact_npc": "Kontak Kişi",
+      "vehicle": "Araç",
+      "delivery": "Teslimat",
+      "distillation": "Damıtma Bölgesi"
+    },
+    "spawn_vehicle": "Araç Çıkar",
+    "can_not_place_here": "Buraya yerleştiremezsin, çok uzak",
+    "moonshine_pack_opened": "Alkol paketi açıldı",
+    "add_items_to_pot": "Malzemeleri kazana ekle",
+    "prepare_recipe": "Tarifi Hazırla",
+    "start_cooking": "Pişirmeye Başla",
+    "collect_product": "Ürünü Topla",
+    "still_updated": "Düzenek Güncellendi",
+    "package": "Paketle",
+    "cooking_started": "Pişirme işlemi başladı",
+    "product_collected": "Ürün toplandı",
+    "production_not_started": "Üretim henüz başlamadı!",
+    "not_cooked_yet": "Henüz pişmedi, %d saniye daha beklemen gerekiyor",
+    "moonshine_packed": "Alkol paketlendi ve araca yüklendi",
+    "you_donot_have_moonshine": "Yeterli alkolün yok. %d adet gerekiyor!",
+    "fruit_crushing": "Meyve Ezme",
+    "fruit_blending": "Meyve Karıştırma"
+  },
+  "weed_job": {
+    "label": "Ot Dağıtımı",
+    "description": "Hasattan paketlemeye kadar ot operasyonunu yönet.",
+    "information": "Ot toplama, paketleme ve sarma işlemlerini gerçekleştir.",
+    "steps": {
+      "1": "Toplama işlemine başlamak için haritadaki Ot Lab'a git.",
+      "2": "Bitkileri topla, paketleme istasyonunda hazırla ve ardından satış için sar."
+    },
+    "blips": {
+      "lab_location": "Ot Laboratuvarı"
+    },
+    "gather_weed": "Ot Topla",
+    "package_weed": "Ot Paketle",
+    "roll_weed": "Ot Sar"
+  },
+  "container_heli": {
+    "label": "Konteyner Taşımacılığı",
+    "description": "Skylift helikopterleri ile konteyner taşı.",
+    "information": "Skylift kullanarak konteynerleri topla ve belirlenen bölgeye ulaştır.",
+    "steps": {
+      "1": "İşaretli alandaki helipade git. Yaklaştığında helikopterler hazır olacak.",
+      "2": "6 konteynerin hepsini topla ve GPS'teki teslimat bölgesine taşı.",
+      "3": "Teslimat bitince helikopteri geri getir."
+    },
+    "blips": {
+      "area": "Konteyner Alanı",
+      "container": "Konteyner",
+      "delivery": "Teslimat Bölgesi",
+      "heli": "Helipad"
+    },
+    "attach_container": "Konteyneri Bağlamak için [E]",
+    "detach_container": "Konteyneri Bırakmak için [E]",
+    "container_attached": "Konteyner helikoptere bağlandı!",
+    "container_detached": "Konteyner helikopterden ayrıldı.",
+    "container_delivered": "Konteyner başarıyla teslim edildi!",
+    "all_containers_delivered": "Tüm konteynerler teslim edildi! Helikopteri geri götür.",
+    "return_heli": "[E] Helikopteri Geri Ver",
+    "not_in_skylift": "Bir Skylift helikopterinde olmalısın!",
+    "heli_already_has_container": "Bu helikopterde zaten bir konteyner bağlı!",
+    "no_container_attached": "Helikoptere bağlı bir konteyner yok!",
+    "in_delivery_zone": "Teslimat bölgesindesin. Bırakmak için G tuşuna bas."
+  },
+  "plane_drug_delivery": {
+    "label": "Hava Sevkiyatı",
+    "description": "Uçakla uyuşturucu paketlerini teslim et.",
+    "information": "Paketleri uçağa yükle ve haritadaki bırakma noktalarına havadan atış yap. Dikkat çekmemeye çalış!",
+    "steps": {
+      "1": "Havaalanına git ve uçağı al",
+      "2": "Paketleri uçağa yükle",
+      "3": "Paketleri belirlenen noktalara havadan bırak",
+      "4": "Uçağı havaalanına geri getir"
+    },
+    "blips": {
+      "airfield": "Havaalanı",
+      "plane": "Uçak",
+      "loading_zone": "Yükleme Alanı",
+      "drop_point": "Bırakma Noktası"
+    },
+    "pick_up_package": "[E] Paketi Al",
+    "load_package": "[E] Paketi Uçağa Yükle",
+    "return_plane": "[E] Uçağı Geri Ver ve İşi Bitir",
+    "package_dropped": "Paket başarıyla bırakıldı!",
+    "loading_cancelled": "Yükleme iptal edildi",
+    "loading_failed": "Kutuyu yüklerken düşürdünüz! Yükleme alanından yeni bir kutu alın."
+  },
+  "chicken_kidnapping": {
+    "label": "Hayvan Kaçakçılığı",
+    "description": "Korunan bir çiftlikten tavuk kafeslerini çal.",
+    "information": "Çiftliğe sız, korumaları temizle ve 10 kafes çal. Minibüsüne yükle ve alıcıya götür.",
+    "steps": {
+      "1": "Araç noktasına git ve sevkiyat minibüsünü al",
+      "2": "Çiftliğe git ve tüm korumaları etkisiz hale getir",
+      "3": "10 kafesi topla ve minibüse yükle",
+      "4": "Minibüsü teslimat noktasına geri götür"
+    },
+    "blips": {
+      "vehicle_spawn": "Minibüs Çıkarma",
+      "farm": "Tavuk Çiftliği",
+      "delivery": "Teslim Noktası"
+    },
+    "take_cage": "Kafesi Al",
+    "too_far": "Kafesten çok uzaktasın",
+    "taking_cage": "Kafes alınıyor...",
+    "cage_taken": "Kafes alındı! Minibüse götür.",
+    "put_cage": "Kafesi Araca Koy",
+    "putting_cage": "Kafes yükleniyor...",
+    "cage_stored": "Kafes yüklendi!",
+    "enemies_cleared": "Korumalar temizlendi! Şimdi kafesleri topla.",
+    "deliver_vehicle": "Aracı Teslim Et ve İşi Bitir"
+  },
+  "npc_boxing": {
+    "steps": {
+      "1": "İşaretli konuma git ve Boks Koçu ile [E] tuşuna basarak konuş.",
+      "2": "Dövüşleri kabul et, maçlarda yarış ve performansına göre para kazan."
+    },
+    "blips": {
+      "contact_npc": "Boks Koçu"
+    },
+    "start_match": "Maçı Başlat",
+    "match_is_about_start": "Maç %d saniye içinde başlayacak.",
+    "left_ring": "Ringden ayrıldığın için maçı kaybettin.",
+    "lost_match": "Maçı kaybettin!"
+  },
+  "police_alerts": {
+    "smashed_window": "Bir araçta cam kırılma ve hırsızlık şüphesi bildirildi.",
+    "car_theft": "Bir araç çalma girişimi olduğuna dair ihbar alındı.",
+    "corner_deal": "Köşede şüpheli uyuşturucu alışverişi ihbar edildi.",
+    "chop_shop": "Şüpheli bölgede araç parçalama faaliyeti bildirildi.",
+    "chop_shop_vehicle": "Bir araç yasa dışı işlem için hackleniyor.",
+    "cocaine_job": "Şüpheli üretim noktasında olağandışı aktivite var.",
+    "counterfeit_money": "Kalpazanlıkla ilgili şüpheli hareketlilik var.",
+    "diving": "Yetkisiz dalış faaliyetinde şüpheli durum tespit edildi.",
+    "fraud": "Dolandırıcılıkla ilgili şüpheli işlem tespit edildi.",
+    "gun_smuggling": "Silah kaçakçılığına dair şüpheli hareketlilik var.",
+    "illegal_delivery": "Yasa dışı teslimat yapıldığı ihbar edildi.",
+    "meth_job": "Met üretim alanında şüpheli aktivite gözlemlendi.",
+    "money_laundering": "Kara para aklama şüphesiyle hareketlilik var.",
+    "moonshine": "Kaçak içki üretiminde olağandışı faaliyet var.",
+    "weed_job": "Esrar üretim tesisinde şüpheli hareketlilik var.",
+    "container_heli": "Şüpheli helikopter faaliyeti tespit edildi.",
+    "plane_drug_delivery": "Şüpheli hava aracı faaliyeti tespit edildi.",
+    "chicken_kidnapping": "Korunan çiftlikte şüpheli durum bildirildi."
+  },
+  "ui": {
+    "no_license": "Bu scripti kullanmak için lisansın yok!",
+    "no_license_desc": "0r_lib scriptini güncellediysen ve hala sorun olduğunu düşünüyorsan bizimle iletişime geç.",
+    "illegal": "İllegal",
+    "job": "Meslek",
+    "desc_menu": "Kendini kolayca geliştirebileceğin bir menü, iyi eğlenceler!",
+    "exit": "Çıkış",
+    "lvl": "SEVİYE",
+    "marketplace": "Pazar Alanı",
+    "illegal_nickname": "İllegal Kod Adı",
+    "desc_illegal_nickname": "Özel bir kod adı belirlemeden önce lütfen kuralları oku",
+    "new_nickname": "Yeni kod adı",
+    "save": "Kaydet",
+    "team_list": "Ekip Listesi",
+    "invite_player": "Oyuncu Davet Et",
+    "desc_invite_player": "Birlikte oynamaya başlayın",
+    "player_source_id": "Oyuncu ID...",
+    "global_chat": "Global Sohbet",
+    "type_something": "Bir şeyler yaz...",
+    "cart": "Sepet",
+    "money_type": "$",
+    "total": "Toplam",
+    "pay_with_cash": "Nakit Öde",
+    "pay_with_card": "Kartla Öde",
+    "add_to_cart": "Sepete Ekle",
+    "desc_invite_receive": "Bir oyuncu seni illegal lobiye davet etti, birlikte iş yapıp para kazanabilirsiniz.",
+    "reject_invite": "Reddet",
+    "accept_invite": "Kabul Et",
+    "list_of_jobs": "İş Listesi",
+    "search_job": "İsimle ara...",
+    "exp_progress": "Tecrübe Durumu",
+    "information": "Bilgilendirme",
+    "desc_information": "Bu bölümde işleyiş hakkında detaylı bilgilere ulaşabilir, operasyon süreçlerini öğrenebilirsin.",
+    "start": "Başla",
+    "required_job": "Gerekli Meslek",
+    "filter": "Filtrele",
+    "order_delivery": "Sipariş Teslimatı",
+    "remaining_time": "Kalan Süre",
+    "desc_delivery": "Sevkiyatın varış noktasına ulaşması için tahmini süre.",
+    "required_lvl": "Gereken Seviye",
+    "progress": "İlerleme",
+    "press": "Bas:",
+    "to_expand_panel": "paneli genişletmek için.",
+    "expand_panel_key": "B",
+    "stop_job": "Mevcut İşi Durdur",
+    "close": "Kapat",
+    "server_name": "0Resmon",
+    "fraud": {
+      "fraud_exe": "dolandiricilik.exe",
+      "tutorial_txt": "egitim.txt",
+      "tutorial": "Dolandırıcılık Eğitimi",
+      "tutorial_description": "Dolandırıcılık rehberine hoş geldin. Bu rehber, laptop uygulamasını kullanarak nasıl sahte kimlik kopyalayacağını ve illegal gelir elde edeceğini anlatır.",
+      "step1_title": "Adım #1 - Uygulamayı Başlat",
+      "step1_description": "Laptop üzerinden 'dolandiricilik.exe' uygulamasını aç. Ek kurulum gerekmez; kart kopyalama sürecini doğrudan başlatır.",
+      "materials_title": "Gerekli Materyaller",
+      "materials": {
+        "card_cloning": "Kart Kopyalama Cihazı (MSR)",
+        "fake_id_card": "Boş Sahte Kimlik Kartı"
+      },
+      "card_cloner_title": "Kopyalayıcı Kullanımı",
+      "card_cloner_description": "MSR cihazının bağlı olduğundan emin ol. Boş kartı tak ve 'Kopyala'ya tıkla. Sahte kimliğin hazır olacak.",
+      "lester_sevices": "Lester Servisleri",
+      "starting_service": "Servis Başlatılıyor",
+      "us_server": "@US Sunucusu",
+      "requesting_access": "Erişim İsteniyor",
+      "access_granted": "Erişim Sağlandı.",
+      "installing_dependencies": "Bağımlılıklar Yükleniyor",
+      "enter_correct_order": "Doğru sırada girin.",
+      "card_cloner": {
+        "title": "Kart Kopyalayıcı",
+        "empty": "Boş, kart algılanmadı. Yerleştir!",
+        "selected_data": "Seçilen veri: ",
+        "clone_card": "Kartı Kopyala",
+        "game": {
+          "target": "Hedef Numara: "
+        }
+      },
+      "code_json": "JSON"
+    },
+    "corner_deal": {
+      "sell": "Sat",
+      "cancel": "İptal"
+    },
+    "moonshine": {
+      "mark_formula_order": "Formülü doğru sırada işaretle"
+    }
+  }
+}

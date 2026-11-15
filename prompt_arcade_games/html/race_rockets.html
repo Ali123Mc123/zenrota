@@ -1,0 +1,1526 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <style>
+    html, body { margin: 0; width: 100%; height: 100%; overflow: hidden; background: #000; }
+    /* canvas scales to fill whatever surface it lands on (DUI render target OR fullscreen debug) */
+    #c { position: absolute; inset: 0; width: 100%; height: 100%; display: block;
+         image-rendering: auto; background: #05060d; }
+  </style>
+</head>
+<body>
+  <canvas id="c" width="1280" height="720"></canvas>
+  <script>
+  'use strict';
+  // ===========================================================================
+  // RACE AND CHASE — CROTCH ROCKETS
+  // A self-contained pseudo-3D superbike arcade racer for a FiveM DUI screen.
+  // Procedural art + WebAudio only. No frameworks, no CDNs, no external assets.
+  //
+  // SHARED RACER CORE (identical contract across all three Race & Chase games):
+  //   - drive-FORWARD pseudo-3D racer (accel/brake/steer within the road)
+  //   - renderView(playerIndex, x, y, w, h) draws ONE player's view into a rect
+  //   - Lua drives via window 'message': input / config / start / stop / reset
+  //   - seeded PRNG from config.seed (NOT Math.random) so host+guest agree
+  //   - serializeState()/applyState() for the later 2-player sync layer (Lua)
+  //   - mode 'solo' | 'host' | 'guest'; SOLO is fully playable standalone.
+  //   - idle-silence: running=false at boot/reset, zero audio until 'start'.
+  //   - POSTs: rocketsReady{} on load, rocketsOver{score,position,timeMs} once,
+  //            rocketsLog via flog().
+  // ===========================================================================
+  const RES = (location.host || '').replace(/^cfx-nui-/, '') || 'prompt_arcade_games';
+
+  // ---- lifecycle / error pipe back to the Lua console -----------------------
+  function flog(msg) {
+    try {
+      fetch(`https://${RES}/rocketsLog`, {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ msg: String(msg) })
+      }).catch(() => {});
+    } catch (e) {}
+  }
+  window.onerror = (m, src, ln, col) => { flog('JS ERROR: ' + m + ' @' + ln + ':' + col); };
+  flog('rockets script start · host=' + location.host + ' · res=' + RES);
+
+  const W = 1280, H = 720;
+  const canvas = document.getElementById('c');
+  const ctx = canvas.getContext('2d', { alpha: false });
+
+  // ===========================================================================
+  // SEEDED PRNG  — all gameplay RNG flows through here so host & guest match.
+  // mulberry32: tiny, fast, deterministic 32-bit generator.
+  // ===========================================================================
+  function makeRNG(seed) {
+    let a = (seed >>> 0) || 0x9e3779b9;
+    return function () {
+      a |= 0; a = (a + 0x6D2B79F5) | 0;
+      let t = Math.imul(a ^ (a >>> 15), 1 | a);
+      t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+      return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+    };
+  }
+  let rng = makeRNG(1);                    // replaced on config; default deterministic
+  const rand  = () => rng();               // 0..1
+  const randR = () => rng() * 2 - 1;       // -1..1
+  const randI = (n) => Math.floor(rng() * n);
+
+  // ===========================================================================
+  // CONFIG  (set by Lua via {action:'config', mode, seed, players})
+  // ===========================================================================
+  const config = { mode: 'solo', seed: 1, players: 1 };
+
+  // ===========================================================================
+  // INPUT  — keys per player: accel / brake / left / right / special
+  // Player 1 is the local human in solo. Player 2 is driven by the sync layer.
+  // ===========================================================================
+  function blankKeys() { return { accel: false, brake: false, left: false, right: false, special: false }; }
+  const input = { 1: blankKeys(), 2: blankKeys() };
+
+  // ===========================================================================
+  // ROAD MODEL  — classic pseudo-3D projected-segment road (curves + hills).
+  // Shared by every rendered view; the camera differs per player.
+  // ===========================================================================
+  const ROAD = {
+    segLen: 200,            // world length of one segment
+    rumbleLen: 3,           // segments per rumble-stripe colour cycle
+    roadW: 2000,            // half road width in world units
+    drawDist: 160,          // segments projected ahead
+    fov: 100,
+    cameraHeight: 1050,
+    laneCount: 3,
+    trackSegs: 0            // filled by buildTrack
+  };
+  const cameraDepth = 1 / Math.tan((ROAD.fov / 2) * Math.PI / 180);
+
+  let segments = [];
+  function lastY() { return segments.length === 0 ? 0 : segments[segments.length - 1].p2.world.y; }
+  function addSegment(curve, y) {
+    const n = segments.length;
+    const prevY = lastY();
+    segments.push({
+      index: n,
+      curve: curve,
+      p1: { world: { x: 0, y: prevY, z: n * ROAD.segLen },       screen: {}, scale: 0, camera: {} },
+      p2: { world: { x: 0, y: y,     z: (n + 1) * ROAD.segLen },  screen: {}, scale: 0, camera: {} },
+      color: Math.floor(n / ROAD.rumbleLen) % 2,
+      props: []           // roadside scenery markers (deterministic)
+    });
+  }
+  function addRoad(enter, hold, leave, curve, y) {
+    const startY = lastY();
+    const endY = startY + (y || 0) * ROAD.segLen;
+    const total = enter + hold + leave;
+    const ease = (a, b, p) => a + (b - a) * (-Math.cos(p * Math.PI) / 2 + 0.5); // smoothstep
+    for (let n = 0; n < enter; n++) addSegment(ease(0, curve, n / enter), ease(startY, endY, n / total));
+    for (let n = 0; n < hold;  n++) addSegment(curve,                     ease(startY, endY, (enter + n) / total));
+    for (let n = 0; n < leave; n++) addSegment(ease(curve, 0, n / leave), ease(startY, endY, (enter + hold + n) / total));
+  }
+  // FINISH-LINE based race: a fixed-length point-to-point street circuit.
+  let FINISH_Z = 0;
+  function buildTrack() {
+    segments = [];
+    addRoad(40, 40, 40, 0, 0);                                   // intro straight (start line area)
+    for (let i = 0; i < 48; i++) {                               // ~85s arcade-length course
+      const curve = (rand() < 0.45 ? 0 : randR() * 4.6);
+      const hill  = (rand() < 0.5 ? 0 : randR() * 60);
+      const len   = 28 + randI(64);
+      addRoad(len * 0.4 | 0, len, len * 0.4 | 0, curve, hill);
+    }
+    addRoad(40, 60, 40, 0, 0);                                   // finish straight
+    ROAD.trackSegs = segments.length;
+    // start line + finish line colouring
+    if (segments[20]) segments[20].color = 2;
+    if (segments[21]) segments[21].color = 2;
+    const fseg = segments.length - 60;
+    FINISH_Z = fseg * ROAD.segLen;
+    if (segments[fseg])     segments[fseg].color = 3;
+    if (segments[fseg + 1]) segments[fseg + 1].color = 3;
+    // deterministic roadside scenery (streetlights / signs) along the track
+    for (let i = 30; i < segments.length - 4; i += 6) {
+      const s = segments[i];
+      s.props.push({ side: (i % 12 === 0) ? -1 : 1, kind: (rand() < 0.7 ? 'light' : 'sign'), seed: rand() });
+      if (rand() < 0.5) s.props.push({ side: (i % 12 === 0) ? 1 : -1, kind: 'light', seed: rand() });
+    }
+  }
+  function findSeg(z) {
+    const t = ((z % (ROAD.trackSegs * ROAD.segLen)) + ROAD.trackSegs * ROAD.segLen) % (ROAD.trackSegs * ROAD.segLen);
+    return segments[Math.floor(t / ROAD.segLen) % segments.length];
+  }
+
+  // ===========================================================================
+  // RACERS  — one player object per bike. P1 = local human (solo).
+  // The whole point of 2-player: each racer carries a track distance (z) + lane
+  // so every view can draw the OTHER racers at their true position up the road.
+  // ===========================================================================
+  const MAXSPD = ROAD.segLen * 64;       // base top speed (world units/sec)
+
+  function makeRacer(i, isHuman) {
+    return {
+      idx: i,
+      human: isHuman,
+      ai: false,
+      z: 0,                 // distance along the track (world units) — THE shared position
+      lane: 0,              // -1..1 across the road
+      speed: 0,
+      // signature mechanics
+      wheelie: 0,           // 0..1 how far the front wheel is up
+      lean: 0,              // -1..1 visual body lean
+      rush: 0,              // 0..1 near-miss RUSH meter
+      wipe: 0,              // wipeout timer (sec) — >0 means crashed/recovering
+      // perks
+      perk: null,           // currently held one-shot perk awaiting trigger (SAVE auto)
+      nitro: 0,             // active nitro timer
+      tuck: 0,              // aero-tuck active (held special on straight)
+      slip: 0,              // slipstream timer
+      save: false,          // holds a one-shot auto-recover
+      // race bookkeeping
+      finished: false,
+      finishTime: 0,
+      place: 0,
+      lap: 1,
+      color: '#19e6ff',
+      name: 'P1'
+    };
+  }
+
+  // ===========================================================================
+  // GAME STATE
+  // ===========================================================================
+  const RIVAL_COLORS = ['#ff4d6d', '#ffd23f', '#9b8cff', '#7CFC00', '#ff7a1a', '#48d1ff'];
+  const G = {
+    phase: 'attract',     // 'attract' | 'countdown' | 'race' | 'finish' | 'results'
+    racers: [],           // [p1, p2?, ...rivals]
+    rivals: [],           // subset that are AI
+    p1: null, p2: null,
+    timer: 0,             // race elapsed seconds
+    countdown: 0,         // countdown seconds remaining
+    raceTime: 0,
+    flash: 0,
+    running: false,       // <- idle-silence master switch; only 'start' sets true
+    sentOver: false,
+    best: 0
+  };
+
+  function totalRacers() { return 6; }   // 1 human + AI rivals in solo (2-player swaps one AI for P2)
+
+  // ---- PEER 2P (the shipping model) --------------------------------------------------------
+  // Both clients run the FULL race locally (my bike reacts instantly; track + rivals are
+  // deterministic from the shared seed). The partner's bike is a GHOST dead-reckoned from a
+  // ~10Hz statebag packet — no gameplay traffic through server events (the old host-auth
+  // snapshot relay overflowed the reliable channel and crashed clients).
+  let mySlot = 1;
+  const peer = { have: false, at: 0, z: 0, ln: 0, sp: 0, fin: 0, tm: 0, pl: 1 };
+  function isPeerMode() { return config.mode === 'peer'; }
+  function myCar() { return (mySlot === 2 ? G.p2 : G.p1) || G.p1; }
+  function ghostCar() { return (mySlot === 2 ? G.p1 : G.p2); }
+  function ghostStep(r, dt) {
+    if (!peer.have) { r.speed = 0; return; }
+    const age = Math.min((performance.now() - peer.at) / 1000, 0.5);
+    const tz = peer.z + peer.sp * age;                      // extrapolate between packets
+    r.speed += (peer.sp - r.speed) * Math.min(1, dt * 6);
+    r.z += r.speed * dt;
+    r.z += (tz - r.z) * Math.min(1, dt * 4);                // gentle correction toward truth
+    r.lane += (peer.ln - r.lane) * Math.min(1, dt * 8);
+    if (peer.fin && !r.finished) { r.finished = true; r.finishTime = peer.tm || G.raceTime; }
+  }
+  function buildPeerPacket() {
+    const m = myCar(); if (!m) return { q: 0 };
+    return { q: (buildPeerPacket._q = (buildPeerPacket._q || 0) + 1),
+      z: Math.round(m.z), ln: +m.lane.toFixed(3), sp: Math.round(m.speed),
+      fin: m.finished ? 1 : 0, tm: m.finishTime || 0, pl: m.place || 1 };
+  }
+  function applyPeerPacket(d) {
+    if (!d || !isPeerMode()) return;
+    if (typeof d.q === 'number' && d.q <= (applyPeerPacket._q || 0)) return;   // stale
+    applyPeerPacket._q = d.q || 0;
+    peer.have = true; peer.at = performance.now();
+    peer.z = d.z || 0; peer.ln = d.ln || 0; peer.sp = d.sp || 0;
+    peer.fin = d.fin || 0; peer.tm = d.tm || 0; peer.pl = d.pl || 1;
+  }
+
+  function buildField() {
+    rng = makeRNG(config.seed >>> 0);
+    buildTrack();
+    G.racers = [];
+    G.rivals = [];
+    const p1 = makeRacer(1, true);
+    p1.color = '#19e6ff'; p1.name = (mySlot === 1) ? 'YOU' : 'P1';
+    G.p1 = p1; G.racers.push(p1);
+
+    // player 2 slot exists only when players===2; in peer mode it's the partner's ghost.
+    if (config.players === 2) {
+      const p2 = makeRacer(2, true);
+      p2.color = '#ff2e74'; p2.name = (mySlot === 2) ? 'YOU' : 'P2';
+      G.p2 = p2; G.racers.push(p2);
+    } else {
+      G.p2 = null;
+    }
+
+    const aiCount = totalRacers() - G.racers.length;
+    for (let i = 0; i < aiCount; i++) {
+      const r = makeRacer(100 + i, false);
+      r.ai = true;
+      r.color = RIVAL_COLORS[i % RIVAL_COLORS.length];
+      r.name = 'CPU' + (i + 1);
+      r.lane = randR() * 0.6;
+      r.aiSkill = 0.82 + rand() * 0.16;       // top-speed fraction this rival pushes for
+      r.aiLaneT = rand() * Math.PI * 2;        // weave phase
+      G.racers.push(r);
+      G.rivals.push(r);
+    }
+    // grid: stagger the start positions slightly behind the line
+    G.racers.forEach((r, k) => {
+      r.z = 10 * ROAD.segLen - k * 60;
+      if (r.z < 0) r.z = 0;
+      r.lane = (k % 2 === 0 ? -0.4 : 0.4) + (k * 0.05);
+      r.lane = Math.max(-0.8, Math.min(0.8, r.lane));
+    });
+  }
+
+  function resetGame() {
+    buildField();
+    G.phase = 'attract';
+    G.timer = 0; G.countdown = 0; G.raceTime = 0; G.flash = 0;
+    G.running = false;          // idle-silence
+    G.sentOver = false;
+    audio.stop();
+  }
+
+  function startGame() {
+    buildField();
+    G.phase = 'countdown';
+    G.countdown = 3.2;
+    G.timer = 0; G.raceTime = 0; G.flash = 0;
+    G.running = true;
+    G.sentOver = false;
+    audio.start();
+    flog('rockets START · seed=' + config.seed + ' · mode=' + config.mode + ' · players=' + config.players);
+  }
+
+  function finishRace(p1place, p1time) {
+    if (G.phase === 'results') return;
+    G.phase = 'results';
+    const pos = p1place || (G.p1 ? G.p1.place : 1) || 1;
+    const tMs = Math.round((p1time || (G.p1 ? G.p1.finishTime : G.raceTime)) * 1000);
+    const score = computeScore(pos, tMs);
+    G.best = Math.max(G.best, score);
+    audio.stop();
+    audio.jingle(pos === 1);
+    if (!G.sentOver) {
+      G.sentOver = true;
+      flog('rockets OVER pos=' + pos + ' time=' + tMs + ' score=' + score);
+      try {
+        fetch(`https://${RES}/rocketsOver`, {
+          method: 'POST', headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ score: score, position: pos, timeMs: tMs })
+        }).catch(() => {});
+      } catch (e) {}
+    }
+  }
+
+  function computeScore(pos, timeMs) {
+    const field = G.racers.length;
+    const placeBonus = (field - (pos - 1)) * 1000;
+    const timeBonus = Math.max(0, 120000 - timeMs) / 100 | 0;
+    const rushBonus = Math.floor((G.p1 ? G.p1.rushPeak || 0 : 0) * 600);
+    return Math.max(0, placeBonus + timeBonus + rushBonus);
+  }
+
+  // ===========================================================================
+  // WEBAUDIO  — procedural engine drone + SFX. Silent until start() (idle-silence).
+  // ===========================================================================
+  let masterVol = 0.5;                                       // master output volume 0..1 (default 50%)
+  const audio = {
+    ctx: null, on: false, engine: null, eng2: null, lp: null, engGain: null, master: null, volGain: null,
+    init() {
+      if (this.ctx) return;
+      try {
+        const AC = window.AudioContext || window.webkitAudioContext;
+        this.ctx = new AC();
+        // FINAL master-volume stage: every sound feeds master -> volGain -> destination.
+        // (master keeps doing the idle-silence fade 0->0.4->0; volGain just scales it.)
+        this.volGain = this.ctx.createGain();
+        this.volGain.gain.value = masterVol;
+        this.volGain.connect(this.ctx.destination);
+        this.master = this.ctx.createGain();
+        this.master.gain.value = 0.0;                       // start silent; faded up in start()
+        this.master.connect(this.volGain);
+        this.engine = this.ctx.createOscillator(); this.engine.type = 'sawtooth';
+        this.eng2 = this.ctx.createOscillator(); this.eng2.type = 'sawtooth'; this.eng2.detune.value = 22;
+        this.lp = this.ctx.createBiquadFilter(); this.lp.type = 'lowpass'; this.lp.frequency.value = 820;
+        this.engGain = this.ctx.createGain(); this.engGain.gain.value = 0.0;
+        this.engine.connect(this.lp); this.eng2.connect(this.lp);
+        this.lp.connect(this.engGain); this.engGain.connect(this.master);
+        this.engine.start(); this.eng2.start();
+      } catch (e) { flog('audio init fail: ' + e); }
+    },
+    resume() { if (this.ctx && this.ctx.state === 'suspended') this.ctx.resume().catch(() => {}); },
+    setVolume(level) {
+      masterVol = Math.max(0, Math.min(1, level));
+      if (this.volGain) this.volGain.gain.setTargetAtTime(masterVol, this.ctx.currentTime, 0.03);
+    },
+    start() {
+      this.on = true; this.init(); this.resume();
+      if (this.master) this.master.gain.setTargetAtTime(0.4, this.ctx.currentTime, 0.05);
+    },
+    stop() {
+      this.on = false;
+      if (this.engGain) this.engGain.gain.setTargetAtTime(0.0, this.ctx.currentTime, 0.05);
+      if (this.master)  this.master.gain.setTargetAtTime(0.0, this.ctx.currentTime, 0.08);
+    },
+    update(speed01, wheelie) {
+      if (!this.ctx || !this.on) return;
+      const t = this.ctx.currentTime;
+      const base = 52 + speed01 * 168 + wheelie * 30;
+      this.engine.frequency.setTargetAtTime(base, t, 0.04);
+      this.eng2.frequency.setTargetAtTime(base * 1.49, t, 0.04);
+      this.lp.frequency.setTargetAtTime(560 + speed01 * 3000, t, 0.06);
+      this.engGain.gain.setTargetAtTime(0.10 + speed01 * 0.18, t, 0.08);
+    },
+    crash() {
+      if (!this.ctx || !this.on) return;
+      try {
+        const len = Math.floor(this.ctx.sampleRate * 0.4);
+        const buf = this.ctx.createBuffer(1, len, this.ctx.sampleRate);
+        const d = buf.getChannelData(0);
+        for (let i = 0; i < len; i++) d[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / len, 2.0);
+        const src = this.ctx.createBufferSource(); src.buffer = buf;
+        const bp = this.ctx.createBiquadFilter(); bp.type = 'bandpass'; bp.frequency.value = 180; bp.Q.value = 0.6;
+        const g = this.ctx.createGain(); g.gain.value = 0.9;
+        src.connect(bp); bp.connect(g); g.connect(this.master); src.start();
+      } catch (e) {}
+    },
+    blip(freq, dur, type) {
+      if (!this.ctx || !this.on) return;
+      try {
+        const t = this.ctx.currentTime;
+        const o = this.ctx.createOscillator(); o.type = type || 'square'; o.frequency.value = freq;
+        const g = this.ctx.createGain(); g.gain.value = 0.0;
+        g.gain.setValueAtTime(0.0, t); g.gain.linearRampToValueAtTime(0.22, t + 0.01);
+        g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+        o.connect(g); g.connect(this.master); o.start(); o.stop(t + dur + 0.02);
+      } catch (e) {}
+    },
+    jingle(win) {
+      if (!this.ctx) return;
+      const seq = win ? [523, 659, 784, 1047] : [440, 392, 330];
+      seq.forEach((f, i) => setTimeout(() => this.blip(f, 0.18, 'triangle'), i * 130));
+    }
+  };
+
+  // ===========================================================================
+  // PERKS  — drops along the track. Picking one up grants/activates an effect.
+  //   NITRO     : instant speed burst (timer)
+  //   SLIPSTREAM: draft kick — stronger while tucked behind a rival
+  //   TUCK      : aero tuck (also triggerable by holding special on a straight)
+  //   SAVE      : one-shot stored auto-recover from the next wipeout
+  // ===========================================================================
+  const PERK_KINDS = ['NITRO', 'SLIP', 'TUCK', 'SAVE'];
+  let pickups = [];     // {z, lane, kind, taken}
+  function spawnPickups() {
+    pickups = [];
+    const len = ROAD.trackSegs * ROAD.segLen;
+    for (let i = 0; i < 22; i++) {
+      pickups.push({
+        z: 4000 + rand() * (len - 8000),
+        lane: randR() * 0.7,
+        kind: PERK_KINDS[randI(PERK_KINDS.length)],
+        taken: false
+      });
+    }
+    pickups.sort((a, b) => a.z - b.z);
+  }
+
+  function grantPerk(r, kind) {
+    if (kind === 'NITRO') { r.nitro = Math.max(r.nitro, 1.6); if (r.human) audio.blip(880, 0.12, 'square'); }
+    else if (kind === 'SLIP') { r.slip = Math.max(r.slip, 1.4); if (r.human) audio.blip(740, 0.12, 'sawtooth'); }
+    else if (kind === 'TUCK') { r.tuck = Math.max(r.tuck, 2.2); if (r.human) audio.blip(620, 0.12, 'triangle'); }
+    else if (kind === 'SAVE') { r.save = true; if (r.human) audio.blip(990, 0.14, 'square'); }
+  }
+
+  // is racer `r` closely drafting any other racer just ahead? (for slipstream)
+  function draftingAhead(r) {
+    for (const o of G.racers) {
+      if (o === r) continue;
+      let rel = o.z - r.z;
+      if (rel > 60 && rel < ROAD.segLen * 4 && Math.abs(o.lane - r.lane) < 0.4) return true;
+    }
+    return false;
+  }
+
+  // ===========================================================================
+  // SIMULATION
+  // ===========================================================================
+  function wipeout(r, hard) {
+    if (r.wipe > 0) return;
+    if (r.save) {                    // one-shot SAVE auto-recovers (no time loss)
+      r.save = false;
+      r.speed *= 0.7;
+      r.wheelie = 0;
+      if (r.human) { G.flash = 0.25; audio.blip(990, 0.18, 'square'); }
+      return;
+    }
+    r.wipe = hard ? 1.7 : 1.2;
+    r.speed *= 0.12;
+    r.wheelie = 0; r.lean = 0; r.rush = 0;
+    if (r.human) { G.flash = 0.5; audio.crash(); }
+  }
+
+  function stepHuman(r, k, dt) {
+    const spd01 = r.speed / MAXSPD;
+
+    if (r.wipe > 0) {                // crashed: coast + recover, no control
+      r.wipe -= dt;
+      r.speed = Math.max(0, r.speed - MAXSPD * 0.25 * dt);
+      r.speed += MAXSPD * 0.18 * dt; // pick back up gradually
+      return;
+    }
+
+    // --- throttle / brake ---
+    const tuckActive = r.tuck > 0 || (k.special && spd01 > 0.45 && !k.left && !k.right);
+    let topMul = 1.0;
+    if (tuckActive) topMul += 0.16;          // TUCK: higher top speed on straights
+    if (r.nitro > 0) topMul += 0.42;         // NITRO burst
+    if (r.slip > 0 && draftingAhead(r)) topMul += 0.30; // SLIPSTREAM draft kick
+    const top = MAXSPD * topMul;
+
+    if (k.accel)      r.speed += MAXSPD * 0.62 * dt * (r.nitro > 0 ? 1.8 : 1);
+    else if (k.brake) r.speed -= MAXSPD * 1.05 * dt;
+    else              r.speed -= MAXSPD * 0.16 * dt;   // engine braking
+    r.speed = Math.max(0, Math.min(top, r.speed));
+
+    // --- WHEELIE / LEAN BALANCE (signature mechanic) ---
+    // holding accel at speed pops the front wheel up -> more top-end, less grip.
+    const wantWheelie = k.accel && spd01 > 0.5 && !k.brake;
+    if (wantWheelie) r.wheelie = Math.min(1, r.wheelie + dt * 1.1);
+    else             r.wheelie = Math.max(0, r.wheelie - dt * 1.8);
+    if (k.brake)     r.wheelie = Math.max(0, r.wheelie - dt * 3.0); // tap brake to settle
+    if (r.wheelie > 0.35) r.speed = Math.min(top * 1.06, r.speed + MAXSPD * 0.05 * dt * r.wheelie);
+
+    // steering — grip drops while the front wheel is up
+    const grip = 1 - r.wheelie * 0.55;
+    const steerRate = dt * 2.05 * Math.max(0.15, spd01) * grip;
+    let steer = 0;
+    if (k.left)  steer -= 1;
+    if (k.right) steer += 1;
+    r.lane += steer * steerRate;
+
+    // lean builds a small corner-boost; overcooking a lean wipes you out
+    const targetLean = steer * (0.6 + spd01 * 0.4);
+    r.lean += (targetLean - r.lean) * Math.min(1, dt * 6);
+    const seg = findSeg(r.z + ROAD.cameraHeight);
+    const curve = seg ? seg.curve : 0;
+    // leaning the right way into a curve at speed = grippy boost
+    if (steer !== 0 && Math.sign(steer) === Math.sign(curve) && Math.abs(curve) > 0.4 && spd01 > 0.55) {
+      r.speed = Math.min(top * 1.05, r.speed + MAXSPD * 0.06 * dt);
+    }
+    // over-lean: hard steer + wheelie + high speed risks a low-side
+    const leanLoad = Math.abs(r.lean) + r.wheelie * 0.5 + Math.abs(curve) * 0.06 * spd01;
+    if (leanLoad > 1.35 && spd01 > 0.7 && rand() < dt * 0.9) wipeout(r, false);
+
+    // centrifugal push from the curve
+    r.lane -= steerRate * spd01 * curve * 0.3;
+
+    // off-road grass drags hard
+    if (Math.abs(r.lane) > 1.0) {
+      if (r.speed > MAXSPD * 0.3) r.speed -= MAXSPD * 0.5 * dt;
+      r.wheelie = Math.max(0, r.wheelie - dt * 2.0);
+    }
+    r.lane = Math.max(-1.5, Math.min(1.5, r.lane));
+
+    // tick perk timers
+    r.nitro = Math.max(0, r.nitro - dt);
+    r.slip  = Math.max(0, r.slip - dt);
+    r.tuck  = Math.max(0, r.tuck - dt);
+
+    // RUSH meter slowly bleeds; near-misses (in collision pass) top it up
+    r.rush = Math.max(0, r.rush - dt * 0.12);
+    r.rushPeak = Math.max(r.rushPeak || 0, r.rush);
+  }
+
+  function stepAI(r, dt) {
+    if (r.wipe > 0) {
+      r.wipe -= dt;
+      r.speed = Math.max(0, r.speed - MAXSPD * 0.2 * dt) + MAXSPD * 0.16 * dt;
+      return;
+    }
+    const top = MAXSPD * r.aiSkill;
+    // accelerate toward target; ease near top
+    if (r.speed < top) r.speed += MAXSPD * 0.5 * dt;
+    else               r.speed -= MAXSPD * 0.15 * dt;
+    r.speed = Math.max(0, Math.min(MAXSPD * 1.02, r.speed));
+
+    // weave: follow the curve + a slow lane oscillation, dodge toward open lane
+    r.aiLaneT += dt * (0.6 + r.aiSkill);
+    const seg = findSeg(r.z + ROAD.cameraHeight);
+    const curve = seg ? seg.curve : 0;
+    const target = Math.sin(r.aiLaneT) * 0.5 - curve * 0.08;
+    r.lane += (target - r.lane) * Math.min(1, dt * 1.6);
+    r.lane = Math.max(-0.95, Math.min(0.95, r.lane));
+    r.wheelie = 0; r.lean = (target - r.lane);
+  }
+
+  // shared: advance a racer along the track + handle finish
+  function advance(r, dt) {
+    r.z += r.speed * dt;
+    const len = ROAD.trackSegs * ROAD.segLen;
+    if (!r.finished && r.z >= FINISH_Z + 10 * ROAD.segLen) {
+      r.finished = true;
+      r.finishTime = G.raceTime;
+    }
+    if (r.z > len) r.z = len; // point-to-point: clamp at end
+  }
+
+  function update(dt) {
+    if (!G.running) return;
+
+    if (G.phase === 'countdown') {
+      G.countdown -= dt;
+      // beep on each whole second
+      const whole = Math.ceil(G.countdown);
+      if (whole !== G._lastBeep && whole >= 1 && whole <= 3) {
+        G._lastBeep = whole; audio.blip(whole === 1 ? 660 : 440, 0.12, 'square');
+      }
+      if (G.countdown <= 0) {
+        G.phase = 'race'; G._lastBeep = 0;
+        audio.blip(990, 0.25, 'square');
+        spawnPickups();
+      }
+      return;
+    }
+
+    if (G.phase !== 'race') return;
+
+    G.raceTime += dt; G.timer = G.raceTime;
+
+    // RETIRED guest mode (host-auth snapshots): nothing sends 'state' anymore.
+    if (config.mode === 'guest') { recomputePlaces(); return; }
+
+    // step every racer. In PEER mode the partner's bike is a ghost driven by packets.
+    for (const r of G.racers) {
+      if (isPeerMode() && r.human && r.idx !== mySlot) { ghostStep(r, dt); continue; }
+      if (r.finished) { r.speed *= (1 - dt); advance(r, dt); continue; }
+      if (r.human) {
+        stepHuman(r, input[r.idx] || input[1], dt);
+      } else {
+        stepAI(r, dt);
+      }
+      advance(r, dt);
+    }
+
+    // collisions + near-miss RUSH (player-vs-rival, and rival-vs-rival lightly)
+    collideAndRush(dt);
+
+    // pickups (only humans collect, to keep it deterministic & simple)
+    for (const pk of pickups) {
+      if (pk.taken) continue;
+      for (const r of G.racers) {
+        if (!r.human || r.wipe > 0) continue;
+        let rel = pk.z - r.z;
+        if (rel > -ROAD.segLen && rel < ROAD.segLen && Math.abs(pk.lane - r.lane) < 0.34) {
+          pk.taken = true; grantPerk(r, pk.kind); break;
+        }
+      }
+    }
+
+    recomputePlaces();
+    const mc = myCar();
+    audio.update(mc ? mc.speed / MAXSPD : 0, mc ? mc.wheelie : 0);
+    G.flash = Math.max(0, G.flash - dt);
+
+    // finish: when MY bike crosses, lock results (each client posts its OWN run in peer mode)
+    if (mc && mc.finished && G.phase === 'race') {
+      finishRace(mc.place, mc.finishTime);
+    }
+  }
+
+  function collideAndRush(dt) {
+    const racers = G.racers;
+    for (let a = 0; a < racers.length; a++) {
+      const r = racers[a];
+      if (r.wipe > 0) continue;
+      for (let b = 0; b < racers.length; b++) {
+        if (a === b) continue;
+        const o = racers[b];
+        let rel = o.z - r.z;
+        const laneGap = Math.abs(o.lane - r.lane);
+        // near-miss RUSH: someone close ahead/beside that we just threaded past
+        if (r.human && rel > -ROAD.segLen * 0.6 && rel < ROAD.segLen * 2.2 &&
+            laneGap > 0.30 && laneGap < 0.7 && r.speed > MAXSPD * 0.55) {
+          r.rush = Math.min(1, r.rush + dt * 0.5);
+        }
+        if (r.human) {
+          // You rear-end a bike ONLY when YOU catch it: same lane, you're faster (closing), and the
+          // gap crossed the bike's contact length THIS frame. prevRel reconstructs last frame's gap
+          // from the closing speed (rel shrinks by closing*dt each frame), so even at top speed you
+          // can't tunnel through a bike, it never fires while the bike is still far ahead, and a
+          // faster rival overtaking you (you're NOT closing) is never your crash.
+          const sameLane = laneGap < 0.22;
+          const closing  = r.speed - o.speed;            // >0 = player gaining on the bike ahead
+          const CONTACT  = ROAD.segLen * 0.18;           // bike contact length in z (~touching)
+          const prevRel  = rel + closing * dt;           // the gap one frame ago
+          if (sameLane && closing > 0 && rel < CONTACT && prevRel >= CONTACT) {
+            const hard = closing > MAXSPD * 0.30;         // caught it fast -> wipeout
+            if (hard) wipeout(r, true);
+            else { r.speed = Math.min(r.speed, o.speed) * 0.9; r.lane += (r.lane - o.lane) >= 0 ? 0.16 : -0.16; }
+          }
+        } else if (Math.abs(rel) < ROAD.segLen * 0.5 && laneGap < 0.26) {
+          // rivals only nudge apart from each other (never drag the player into a crash)
+          r.lane += (r.lane >= o.lane ? 1 : -1) * 0.12;
+          r.speed *= 0.92;
+        }
+      }
+    }
+  }
+
+  function recomputePlaces() {
+    const order = G.racers.slice().sort((a, b) => {
+      // finished racers rank by time; others by distance
+      if (a.finished && b.finished) return a.finishTime - b.finishTime;
+      if (a.finished) return -1;
+      if (b.finished) return 1;
+      return b.z - a.z;
+    });
+    order.forEach((r, i) => { r.place = i + 1; });
+  }
+
+  // ===========================================================================
+  // RENDER  — viewport-factored. renderView(playerIndex,x,y,w,h) draws ONE
+  // player's camera into the rect (vx,vy,vw,vh). Nothing inside assumes the
+  // full canvas: all coords are scaled by sx=vw/W, sy=vh/H and offset by vx,vy.
+  // Solo calls renderView(1, 0,0,W,H). 2-player (Lua) calls it twice.
+  // ===========================================================================
+  function roundRect(c, x, y, w, h, r) {
+    if (w < 2 * r) r = w / 2; if (h < 2 * r) r = h / 2;
+    c.beginPath();
+    c.moveTo(x + r, y);
+    c.arcTo(x + w, y, x + w, y + h, r);
+    c.arcTo(x + w, y + h, x, y + h, r);
+    c.arcTo(x, y + h, x, y, r);
+    c.arcTo(x, y, x + w, y, r);
+    c.closePath();
+  }
+
+  function neonText(c, txt, x, y, size, color, align, glow) {
+    c.font = `900 ${size}px "Courier New", monospace`;
+    c.textAlign = align || 'left';
+    c.textBaseline = 'alphabetic';
+    c.shadowColor = color; c.shadowBlur = glow == null ? size * 0.5 : glow;
+    c.fillStyle = color; c.fillText(txt, x, y);
+    c.shadowBlur = 0;
+  }
+
+  function laneColors(color) {
+    if (color === 2) return { road: '#cfd2da', rumble: '#0c0c12', grass: '#0a1326', lane: '#cfd2da' }; // start
+    if (color === 3) return { road: '#15161e', rumble: '#fafafa', grass: '#0a1326', lane: '#fafafa' };  // finish
+    if (color === 0) return { road: '#21222e', rumble: '#ff2e74', grass: '#0a1326', lane: '#33344a' };
+    return                  { road: '#262732', rumble: '#48d1ff', grass: '#0c1730', lane: '#33344a' };
+  }
+
+  // project a world point relative to a camera into the VIEW's pixel space
+  function project(p, camX, camY, camZ, vw, vh, roadW) {
+    p.camera.x = (p.world.x || 0) - camX;
+    p.camera.y = (p.world.y || 0) - camY;
+    p.camera.z = (p.world.z || 0) - camZ;
+    if (p.camera.z <= 0.0001) p.camera.z = 0.0001;
+    p.scale = cameraDepth / p.camera.z;
+    p.screen.x = (vw / 2) + (p.scale * p.camera.x * vw / 2);
+    p.screen.y = (vh / 2) - (p.scale * p.camera.y * vh / 2);
+    p.screen.w = (p.scale * roadW * vw / 2);
+  }
+
+  function poly(c, x1, y1, x2, y2, x3, y3, x4, y4, fill) {
+    c.fillStyle = fill;
+    c.beginPath();
+    c.moveTo(x1, y1); c.lineTo(x2, y2); c.lineTo(x3, y3); c.lineTo(x4, y4);
+    c.closePath(); c.fill();
+  }
+
+  // -- the core view renderer. (vx,vy,vw,vh) is the on-canvas destination rect.
+  function renderView(playerIndex, vx, vy, vw, vh) {
+    const cam = (playerIndex === 2 ? G.p2 : G.p1) || G.p1;
+    const t = performance.now() / 1000;
+
+    ctx.save();
+    ctx.beginPath(); ctx.rect(vx, vy, vw, vh); ctx.clip();
+    ctx.translate(vx, vy);
+
+    const horizon = vh * 0.46;
+
+    // --- sky (synthwave night) ---
+    const sky = ctx.createLinearGradient(0, 0, 0, horizon + vh * 0.1);
+    sky.addColorStop(0, '#05040f');
+    sky.addColorStop(0.45, '#190a3a');
+    sky.addColorStop(0.8, '#5a1670');
+    sky.addColorStop(1, '#ff3d6e');
+    ctx.fillStyle = sky; ctx.fillRect(0, 0, vw, horizon + 2);
+
+    // stars
+    ctx.fillStyle = 'rgba(255,255,255,0.7)';
+    for (let i = 0; i < 40; i++) {
+      const sxp = ((i * 977) % vw);
+      const syp = ((i * 613) % (horizon * 0.7));
+      const tw = 0.4 + 0.6 * Math.abs(Math.sin(t * 1.5 + i));
+      ctx.globalAlpha = 0.5 * tw; ctx.fillRect(sxp, syp, 2, 2);
+    }
+    ctx.globalAlpha = 1;
+
+    // moon
+    ctx.fillStyle = '#ffe3a0'; ctx.shadowColor = '#ffd27a'; ctx.shadowBlur = 30;
+    ctx.beginPath(); ctx.arc(vw * 0.78, horizon * 0.35, vh * 0.06, 0, Math.PI * 2); ctx.fill();
+    ctx.shadowBlur = 0;
+
+    // city skyline silhouette (parallax with camera position)
+    const camZ0 = cam.z;
+    ctx.fillStyle = '#0c0820';
+    for (let i = 0; i < 30; i++) {
+      const bx = (i * (vw / 18)) - ((camZ0 * 0.01) % (vw / 18)) - vw / 18;
+      const bh = (vh * 0.05) + ((i * 71) % (vh * 0.16));
+      ctx.fillRect(bx, horizon - bh, vw / 22, bh);
+      // lit windows
+      ctx.fillStyle = 'rgba(120,180,255,0.25)';
+      for (let wy = horizon - bh + 4; wy < horizon - 4; wy += 7)
+        for (let wx = bx + 2; wx < bx + vw / 22 - 2; wx += 5)
+          if (((wx + wy) | 0) % 3 === 0) ctx.fillRect(wx, wy, 2, 3);
+      ctx.fillStyle = '#0c0820';
+    }
+
+    // glossy asphalt ground base under the horizon
+    const grd = ctx.createLinearGradient(0, horizon, 0, vh);
+    grd.addColorStop(0, '#0a1326'); grd.addColorStop(1, '#05060d');
+    ctx.fillStyle = grd; ctx.fillRect(0, horizon, vw, vh - horizon);
+
+    // --- project & paint the road from the camera (cam.z, cam.lane) ---
+    const baseSeg = findSeg(cam.z);
+    if (!baseSeg) { drawHUD(ctx, vw, vh, cam, playerIndex, t); drawOverlays(ctx, vw, vh, cam, playerIndex, t); ctx.restore(); return; }
+
+    const basePercent = ((cam.z % ROAD.segLen) + ROAD.segLen) % ROAD.segLen / ROAD.segLen;
+    const playerY = baseSeg.p1.world.y + (baseSeg.p2.world.y - baseSeg.p1.world.y) * basePercent;
+    const camHeight = ROAD.cameraHeight + playerY + (cam.wheelie || 0) * 120; // wheelie lifts camera a touch
+    const camX = (cam.lane || 0) * ROAD.roadW;
+
+    let x = 0, dxc = -(baseSeg.curve) * basePercent;
+    let maxY = vh;
+    const trackLen = ROAD.trackSegs * ROAD.segLen;
+
+    // store projected screen data so we can place sprites/props on the surface
+    const projCache = [];
+
+    for (let n = 0; n < ROAD.drawDist; n++) {
+      const idx = (baseSeg.index + n) % segments.length;
+      const s = segments[idx];
+      const looped = idx < baseSeg.index;
+      const camZ = cam.z - (looped ? trackLen : 0);
+
+      project(s.p1, camX - x,       camHeight, camZ, vw, vh, ROAD.roadW);
+      project(s.p2, camX - x - dxc, camHeight, camZ, vw, vh, ROAD.roadW);
+
+      x += dxc; dxc += s.curve;
+
+      if (s.p1.camera.z <= cameraDepth || s.p2.screen.y >= s.p1.screen.y || s.p2.screen.y >= maxY) continue;
+
+      drawSegment(ctx, s, t, vw);
+      // record this segment's near-edge projection for prop/sprite grounding
+      projCache.push({ idx, looped, n,
+        x1: s.p1.screen.x, y1: s.p1.screen.y, w1: s.p1.screen.w,
+        x2: s.p2.screen.x, y2: s.p2.screen.y, w2: s.p2.screen.w,
+        worldZ: s.index * ROAD.segLen });
+      maxY = s.p2.screen.y;
+    }
+
+    // helper: find the projected screen pos for a given world Z (and lane)
+    function groundAt(worldZ, lane) {
+      // pick the segment that contains worldZ within the cache
+      for (let i = 0; i < projCache.length; i++) {
+        const pc = projCache[i];
+        if (worldZ >= pc.worldZ && worldZ < pc.worldZ + ROAD.segLen) {
+          const f = (worldZ - pc.worldZ) / ROAD.segLen;
+          const sxp = pc.x1 + (pc.x2 - pc.x1) * f;
+          const syp = pc.y1 + (pc.y2 - pc.y1) * f;
+          const sw  = pc.w1 + (pc.w2 - pc.w1) * f;
+          return { x: sxp + sw * lane, y: syp, w: sw, scale: sw / ROAD.roadW };
+        }
+      }
+      return null;
+    }
+
+    // --- roadside scenery (streetlights / signs), far-to-near ---
+    const sceneItems = [];
+    for (const pc of projCache) {
+      const s = segments[pc.idx];
+      for (const pr of s.props) sceneItems.push({ pr, worldZ: pc.worldZ });
+    }
+    sceneItems.sort((a, b) => b.worldZ - a.worldZ);
+    for (const it of sceneItems) {
+      const g = groundAt(it.worldZ, it.pr.side * 1.28);
+      if (g && g.scale > 0) drawRoadsideProp(ctx, it.pr, g, t);
+    }
+
+    // --- racers + pickups, depth-sorted far-to-near, relative to THIS camera ---
+    const drawList = [];
+    for (const r of G.racers) {
+      if (r === cam) continue;             // never draw your own bike in the world set
+      let rel = r.z - cam.z;
+      if (rel < -trackLen / 2) rel += trackLen;
+      // only draw racers AHEAD of (or near) the camera — behind = not drawn (mirror handles it)
+      if (rel > -ROAD.segLen && rel < ROAD.drawDist * ROAD.segLen) {
+        drawList.push({ type: 'racer', r, sortZ: r.z, rel });
+      }
+    }
+    for (const pk of pickups) {
+      if (pk.taken) continue;
+      let rel = pk.z - cam.z;
+      if (rel > 0 && rel < ROAD.drawDist * ROAD.segLen) drawList.push({ type: 'pickup', pk, sortZ: pk.z });
+    }
+    drawList.sort((a, b) => b.sortZ - a.sortZ);
+    for (const d of drawList) {
+      const lane = d.type === 'racer' ? d.r.lane : d.pk.lane;
+      const wz = ((d.sortZ % trackLen) + trackLen) % trackLen;
+      const g = groundAt(wz, lane);
+      if (!g || g.scale <= 0) continue;
+      if (d.type === 'racer') drawBikeSprite(ctx, d.r, g, t);
+      else                    drawPickup(ctx, d.pk, g, t);
+    }
+
+    // --- the camera's OWN bike, fixed near the bottom of the view ---
+    drawOwnBike(ctx, cam, vw, vh, t);
+
+    // --- vignette + scanlines (CRT arcade feel) ---
+    const vg = ctx.createRadialGradient(vw / 2, vh / 2, vh * 0.35, vw / 2, vh / 2, vh * 0.78);
+    vg.addColorStop(0, 'rgba(0,0,0,0)'); vg.addColorStop(1, 'rgba(0,0,0,0.55)');
+    ctx.fillStyle = vg; ctx.fillRect(0, 0, vw, vh);
+    ctx.globalAlpha = 0.05; ctx.fillStyle = '#000';
+    for (let yy = 0; yy < vh; yy += 3) ctx.fillRect(0, yy, vw, 1);
+    ctx.globalAlpha = 1;
+
+    // crash flash (only for the local player's view)
+    if (cam.human && G.flash > 0 && cam === G.p1) {
+      ctx.fillStyle = `rgba(255,60,90,${G.flash * 0.5})`; ctx.fillRect(0, 0, vw, vh);
+    }
+
+    // --- rear mirror: tiny view of the nearest racer BEHIND you ---
+    drawMirror(ctx, cam, vw, vh);
+
+    // --- HUD + overlays for this view ---
+    drawHUD(ctx, vw, vh, cam, playerIndex, t);
+    drawOverlays(ctx, vw, vh, cam, playerIndex, t);
+
+    ctx.restore();
+  }
+
+  function drawSegment(c, s, t, vw) {
+    const col = laneColors(s.color);
+    const p1 = s.p1.screen, p2 = s.p2.screen;
+    // grass band
+    c.fillStyle = col.grass;
+    c.fillRect(0, p2.y, vw, p1.y - p2.y);
+    // rumble strips
+    const r1 = p1.w * 1.16, r2 = p2.w * 1.16;
+    poly(c, p1.x - r1, p1.y, p1.x + r1, p1.y, p2.x + r2, p2.y, p2.x - r2, p2.y, col.rumble);
+    // road
+    poly(c, p1.x - p1.w, p1.y, p1.x + p1.w, p1.y, p2.x + p2.w, p2.y, p2.x - p2.w, p2.y, col.road);
+    // finish-line checker
+    if (s.color === 3) {
+      const cols = 8;
+      for (let i = 0; i < cols; i++) {
+        if (i % 2 === 0) continue;
+        const o1 = (i / cols) * 2 - 1, o2 = ((i + 1) / cols) * 2 - 1;
+        poly(c, p1.x + p1.w * o1, p1.y, p1.x + p1.w * o2, p1.y,
+                p2.x + p2.w * o2, p2.y, p2.x + p2.w * o1, p2.y, '#101018');
+      }
+    } else if (s.color === 1 || s.color === 2) {
+      // dashed lane markers
+      const lw1 = p1.w * 0.035, lw2 = p2.w * 0.035;
+      for (let l = 1; l < ROAD.laneCount; l++) {
+        const off = (l / ROAD.laneCount) * 2 - 1;
+        const lx1 = p1.x + p1.w * off, lx2 = p2.x + p2.w * off;
+        poly(c, lx1 - lw1, p1.y, lx1 + lw1, p1.y, lx2 + lw2, p2.y, lx2 - lw2, p2.y, col.lane);
+      }
+    }
+  }
+
+  function drawRoadsideProp(c, pr, g, t) {
+    const sc = g.scale;
+    const h = ROAD.roadW * sc * (pr.kind === 'light' ? 0.9 : 0.5);
+    if (h < 3) return;
+    const x = g.x, y = g.y;
+    if (pr.kind === 'light') {
+      // streetlight pole + neon glow lamp
+      c.fillStyle = '#1a1a26';
+      c.fillRect(x - h * 0.03, y - h, h * 0.06, h);
+      c.fillStyle = '#2a2a3a';
+      c.fillRect(x - (pr.side < 0 ? -h * 0.18 : h * 0.18) - h * 0.0, y - h, h * 0.2, h * 0.05);
+      const lampX = x + (pr.side < 0 ? h * 0.16 : -h * 0.16);
+      c.fillStyle = '#ffd27a'; c.shadowColor = '#ffb347'; c.shadowBlur = h * 0.4;
+      c.beginPath(); c.arc(lampX, y - h * 0.96, h * 0.06, 0, Math.PI * 2); c.fill();
+      c.shadowBlur = 0;
+    } else {
+      // neon billboard sign
+      const w = h * 0.9;
+      c.fillStyle = '#101018'; c.fillRect(x - w / 2, y - h * 1.4, w, h * 0.7);
+      const hue = (pr.seed * 360) | 0;
+      c.strokeStyle = `hsl(${hue},90%,60%)`; c.lineWidth = Math.max(1, h * 0.04);
+      c.shadowColor = `hsl(${hue},90%,60%)`; c.shadowBlur = h * 0.3;
+      c.strokeRect(x - w / 2 + 2, y - h * 1.4 + 2, w - 4, h * 0.7 - 4);
+      c.shadowBlur = 0;
+      c.fillStyle = '#1a1a26'; c.fillRect(x - h * 0.02, y - h * 0.7, h * 0.04, h * 0.7);
+    }
+  }
+
+  // a rival / other-player bike seen from behind, up the road
+  function drawBikeSprite(c, r, g, t) {
+    const sc = g.scale;
+    const w = ROAD.roadW * sc * 0.34;
+    const h = w * 1.05;
+    if (w < 2) return;
+    const x = g.x, y = g.y;
+    // shadow
+    c.fillStyle = 'rgba(0,0,0,0.4)';
+    c.beginPath(); c.ellipse(x, y, w * 0.5, h * 0.1, 0, 0, Math.PI * 2); c.fill();
+    if (r.wipe > 0) {
+      // wiped-out: sparks/tumble marker
+      c.fillStyle = '#ff9a3c';
+      for (let i = 0; i < 5; i++) {
+        const a = i / 5 * Math.PI * 2 + t * 8;
+        c.fillRect(x + Math.cos(a) * w * 0.5, y - h * 0.2 + Math.sin(a) * w * 0.3, w * 0.12, w * 0.12);
+      }
+      return;
+    }
+    const lean = (r.lean || 0) * 0.4;
+    c.save();
+    c.translate(x, y - h * 0.5); c.rotate(lean); c.translate(-x, -(y - h * 0.5));
+    // rear wheel
+    c.fillStyle = '#08080c';
+    roundRect(c, x - w * 0.12, y - h * 0.42, w * 0.24, h * 0.42, w * 0.06); c.fill();
+    // bodywork (rival colour)
+    c.fillStyle = r.color;
+    roundRect(c, x - w * 0.22, y - h * 0.78, w * 0.44, h * 0.5, w * 0.1); c.fill();
+    // rider back
+    c.fillStyle = '#11121a';
+    roundRect(c, x - w * 0.16, y - h * 1.0, w * 0.32, h * 0.36, w * 0.1); c.fill();
+    // helmet
+    c.fillStyle = '#e8e8f0';
+    c.beginPath(); c.arc(x, y - h * 1.02, w * 0.15, 0, Math.PI * 2); c.fill();
+    // tail light
+    c.fillStyle = '#ff2e2e'; c.shadowColor = '#ff2e2e'; c.shadowBlur = w * 0.3;
+    c.fillRect(x - w * 0.06, y - h * 0.4, w * 0.12, h * 0.06);
+    c.shadowBlur = 0;
+    // nitro flame
+    if (r.nitro > 0) {
+      c.fillStyle = 'rgba(120,200,255,0.8)';
+      c.beginPath(); c.moveTo(x - w * 0.1, y - h * 0.1); c.lineTo(x + w * 0.1, y - h * 0.1);
+      c.lineTo(x, y + h * 0.18 + Math.sin(t * 30) * h * 0.05); c.closePath(); c.fill();
+    }
+    c.restore();
+    // name tag for the OTHER human player so you can tell them apart
+    if (r.human && w > 8) {
+      neonText(c, r.name, x, y - h * 1.25, Math.max(9, w * 0.4), r.color, 'center', 6);
+    }
+  }
+
+  function drawPickup(c, pk, g, t) {
+    const sc = g.scale;
+    const s = ROAD.roadW * sc * 0.22;
+    if (s < 3) return;
+    const x = g.x, y = g.y - s * 0.8 - Math.abs(Math.sin(t * 3)) * s * 0.2;
+    const col = pk.kind === 'NITRO' ? '#7dd3ff' : pk.kind === 'SLIP' ? '#b388ff'
+              : pk.kind === 'TUCK' ? '#7CFC00' : '#ffd23f';
+    c.save();
+    c.translate(x, y); c.rotate(t * 1.5);
+    c.fillStyle = col; c.shadowColor = col; c.shadowBlur = s * 0.6;
+    c.beginPath();
+    for (let i = 0; i < 6; i++) {
+      const a = i / 6 * Math.PI * 2;
+      const rr = i % 2 === 0 ? s * 0.5 : s * 0.24;
+      const px = Math.cos(a) * rr, py = Math.sin(a) * rr;
+      if (i === 0) c.moveTo(px, py); else c.lineTo(px, py);
+    }
+    c.closePath(); c.fill(); c.shadowBlur = 0;
+    c.restore();
+    // single-letter label
+    neonText(c, pk.kind[0], x, y + s * 0.18, s * 0.6, '#05060d', 'center', 0);
+  }
+
+  // the player's own bike, planted near the bottom of the view, leaning/wheelie-ing
+  function drawOwnBike(c, r, vw, vh, t) {
+    const cx = vw / 2 + (r.lane || 0) * vw * 0.012 + (r.lean || 0) * vw * 0.02;
+    const baseY = vh - vh * 0.1;
+    const spd01 = r.speed / MAXSPD;
+    const bob = Math.sin(t * 22) * spd01 * 3;
+    const w = vw * 0.18, h = vh * 0.22;
+    const wy = baseY - h + bob;
+
+    // motion-blur speed streaks at the bottom when fast
+    if (spd01 > 0.4) {
+      c.strokeStyle = `rgba(180,220,255,${(spd01 - 0.4) * 0.5})`; c.lineWidth = 2;
+      for (let i = 0; i < 10; i++) {
+        const yy = vh * 0.6 + (i / 10) * vh * 0.4;
+        const len = (yy - vh * 0.6) * 0.5;
+        c.beginPath(); c.moveTo(((i * 137 + t * 1200) % vw), yy); c.lineTo(((i * 137 + t * 1200) % vw) - len, yy); c.stroke();
+      }
+    }
+
+    // shadow
+    c.fillStyle = 'rgba(0,0,0,0.45)';
+    c.beginPath(); c.ellipse(cx, baseY + h * 0.04, w * 0.5, h * 0.08, 0, 0, Math.PI * 2); c.fill();
+
+    if (r.wipe > 0) {
+      // tumbling wipeout: bike + rider sliding, sparks
+      c.save(); c.translate(cx, baseY - h * 0.3); c.rotate(Math.sin(t * 20) * 0.5 + (r.wipe % 1) * 6);
+      c.fillStyle = r.color; roundRect(c, -w * 0.3, -h * 0.2, w * 0.6, h * 0.3, 8); c.fill();
+      c.restore();
+      c.fillStyle = '#ff9a3c';
+      for (let i = 0; i < 12; i++) {
+        // cosmetic spark jitter — Math.random (NOT the seeded gameplay RNG, so
+        // render never perturbs the deterministic stream the guest relies on)
+        const a = Math.random() * Math.PI * 2, rr = Math.random() * w * 0.7;
+        c.fillRect(cx + Math.cos(a) * rr, baseY - h * 0.1 + Math.sin(a) * rr * 0.4, 3, 3);
+      }
+      neonText(c, 'WIPEOUT!', cx, baseY - h * 0.9, vh * 0.05, '#ff2e74', 'center', 14);
+      return;
+    }
+
+    const wheelieAng = -(r.wheelie || 0) * 0.5;
+    c.save();
+    // lean left/right
+    c.translate(cx, wy + h * 0.7); c.rotate((r.lean || 0) * 0.12); c.translate(-cx, -(wy + h * 0.7));
+    // wheelie pivot at rear wheel
+    c.translate(cx, baseY); c.rotate(wheelieAng); c.translate(-cx, -baseY);
+
+    // rear wheel
+    c.fillStyle = '#0a0a0a';
+    c.beginPath(); c.arc(cx, baseY - h * 0.08, w * 0.16, 0, Math.PI * 2); c.fill();
+    c.fillStyle = '#222'; c.beginPath(); c.arc(cx, baseY - h * 0.08, w * 0.07, 0, Math.PI * 2); c.fill();
+    // front wheel (lifted when wheelie-ing)
+    const fwy = baseY - h * 0.08 - (r.wheelie || 0) * h * 0.5;
+    c.fillStyle = '#0a0a0a';
+    c.beginPath(); c.arc(cx, fwy - h * 0.5, w * 0.14, 0, Math.PI * 2); c.fill();
+    // swingarm/body
+    c.strokeStyle = '#15151f'; c.lineWidth = w * 0.06;
+    c.beginPath(); c.moveTo(cx, baseY - h * 0.08); c.lineTo(cx, fwy - h * 0.5); c.stroke();
+    // tail / bodywork (player colour, glossy)
+    const grad = c.createLinearGradient(cx - w * 0.3, wy, cx + w * 0.3, wy + h);
+    grad.addColorStop(0, r.color); grad.addColorStop(1, '#063a52');
+    c.fillStyle = grad;
+    roundRect(c, cx - w * 0.28, baseY - h * 0.62, w * 0.56, h * 0.5, w * 0.12); c.fill();
+    // seat hump
+    c.fillStyle = '#0c0c14';
+    roundRect(c, cx - w * 0.2, baseY - h * 0.78, w * 0.4, h * 0.22, w * 0.1); c.fill();
+    // rider (tucked when tucking)
+    const tuck = (r.tuck > 0 || (input[r.idx] && input[r.idx].special)) ? 1 : 0;
+    c.fillStyle = '#14151e';
+    roundRect(c, cx - w * 0.16, baseY - h * (tuck ? 0.92 : 1.02), w * 0.32, h * (tuck ? 0.34 : 0.42), w * 0.1); c.fill();
+    // helmet
+    c.fillStyle = '#ff2e74';
+    c.beginPath(); c.arc(cx, baseY - h * (tuck ? 0.9 : 1.04), w * 0.13, 0, Math.PI * 2); c.fill();
+    // tail light + brake glow
+    c.fillStyle = (input[r.idx] && input[r.idx].brake) ? '#ff5050' : '#aa1818';
+    c.shadowColor = '#ff2020'; c.shadowBlur = (input[r.idx] && input[r.idx].brake) ? 14 : 4;
+    c.fillRect(cx - w * 0.12, baseY - h * 0.58, w * 0.24, h * 0.06);
+    c.shadowBlur = 0;
+    // nitro / boost flame out the back
+    if (r.nitro > 0 || (r.slip > 0 && draftingAhead(r))) {
+      c.fillStyle = `rgba(130,200,255,0.85)`;
+      c.beginPath(); c.moveTo(cx - w * 0.12, baseY - h * 0.05);
+      c.lineTo(cx + w * 0.12, baseY - h * 0.05);
+      c.lineTo(cx, baseY + h * 0.18 + Math.sin(t * 40) * h * 0.06); c.closePath(); c.fill();
+    }
+    c.restore();
+  }
+
+  // small rear-view mirror showing the nearest racer BEHIND the camera
+  function drawMirror(c, cam, vw, vh) {
+    let nearest = null, nd = 1e9;
+    const trackLen = ROAD.trackSegs * ROAD.segLen;
+    for (const r of G.racers) {
+      if (r === cam) continue;
+      let rel = cam.z - r.z;                 // positive = behind us
+      if (rel < -trackLen / 2) rel += trackLen;
+      if (rel > 0 && rel < nd && rel < ROAD.drawDist * ROAD.segLen) { nd = rel; nearest = r; }
+    }
+    const mw = vw * 0.16, mh = vh * 0.1, mx = vw / 2 - mw / 2, my = 6;
+    c.fillStyle = 'rgba(5,8,18,0.85)'; roundRect(c, mx, my, mw, mh, 6); c.fill();
+    c.strokeStyle = '#2a3550'; c.lineWidth = 2; c.stroke();
+    c.save(); roundRect(c, mx, my, mw, mh, 6); c.clip();
+    c.fillStyle = '#0a1326'; c.fillRect(mx, my + mh * 0.5, mw, mh * 0.5);
+    if (nearest) {
+      const close = 1 - Math.min(1, nd / (ROAD.drawDist * ROAD.segLen));
+      const bw = mw * (0.1 + close * 0.4);
+      const bx = mx + mw / 2 + (nearest.lane - cam.lane) * mw * 0.4;
+      const by = my + mh * 0.55 + close * mh * 0.3;
+      c.fillStyle = nearest.color;
+      roundRect(c, bx - bw / 2, by - bw * 0.6, bw, bw * 0.6, 3); c.fill();
+      c.fillStyle = '#fff';
+      c.beginPath(); c.arc(bx, by - bw * 0.5, bw * 0.18, 0, Math.PI * 2); c.fill();
+    }
+    c.restore();
+    neonText(c, 'REAR', mx + mw / 2, my + mh - 4, mh * 0.16, '#5a7', 'center', 4);
+  }
+
+  // ---- HUD (per view) -------------------------------------------------------
+  function drawHUD(c, vw, vh, cam, playerIndex, t) {
+    if (G.phase === 'attract') return;     // title screen draws its own
+    const kmh = Math.floor((cam.speed / MAXSPD) * 340);
+    const small = vh / 720;                 // scale fonts to view height
+
+    // speed (bottom-left)
+    neonText(c, 'SPEED', 24 * small, vh - 64 * small, 22 * small, '#7df9ff', 'left', 8);
+    neonText(c, kmh, 24 * small, vh - 24 * small, 48 * small, '#ffffff', 'left', 12);
+    neonText(c, 'KM/H', 24 * small + c.measureText(kmh).width * 0.6 + 60 * small, vh - 24 * small, 18 * small, '#7df9ff', 'left', 6);
+
+    // speed bar
+    const bw = 200 * small, bx = 24 * small, by = vh - 16 * small;
+    c.fillStyle = 'rgba(255,255,255,0.12)'; c.fillRect(bx, by, bw, 7 * small);
+    const pct = cam.speed / MAXSPD;
+    const bar = c.createLinearGradient(bx, 0, bx + bw, 0);
+    bar.addColorStop(0, '#19e6ff'); bar.addColorStop(0.7, '#ffd23f'); bar.addColorStop(1, '#ff2e74');
+    c.fillStyle = bar; c.fillRect(bx, by, bw * pct, 7 * small);
+
+    // position (top-left): e.g. 1/6
+    const field = G.racers.length;
+    neonText(c, 'POS', 24 * small, 40 * small, 20 * small, '#ffd23f', 'left', 8);
+    neonText(c, cam.place + '/' + field, 24 * small, 80 * small, 44 * small, '#ffffff', 'left', 12);
+
+    // time (top-right)
+    neonText(c, 'TIME', vw - 24 * small, 40 * small, 20 * small, '#ff79b0', 'right', 8);
+    neonText(c, G.raceTime.toFixed(1), vw - 24 * small, 80 * small, 40 * small, '#ffffff', 'right', 12);
+
+    // RUSH meter (top-center bar)
+    const rw = vw * 0.26, rx = vw / 2 - rw / 2, ry = mirrorBottom(vh) + 8 * small;
+    neonText(c, 'RUSH', vw / 2, ry - 4 * small, 16 * small, '#ff5cf0', 'center', 6);
+    c.fillStyle = 'rgba(255,255,255,0.12)'; c.fillRect(rx, ry, rw, 8 * small);
+    const rg = c.createLinearGradient(rx, 0, rx + rw, 0);
+    rg.addColorStop(0, '#ff5cf0'); rg.addColorStop(1, '#ffd23f');
+    c.fillStyle = rg; c.fillRect(rx, ry, rw * (cam.rush || 0), 8 * small);
+    if ((cam.rush || 0) > 0.85) neonText(c, 'RUSH!', vw / 2, ry + 26 * small, 18 * small, '#ffd23f', 'center', 10);
+
+    // active perks (bottom-right chips)
+    const chips = [];
+    if (cam.nitro > 0) chips.push(['NITRO', '#7dd3ff']);
+    if (cam.slip > 0)  chips.push(['SLIP', '#b388ff']);
+    if (cam.tuck > 0 || (input[cam.idx] && input[cam.idx].special)) chips.push(['TUCK', '#7CFC00']);
+    if (cam.save)      chips.push(['SAVE', '#ffd23f']);
+    let cyp = vh - 24 * small;
+    for (const [label, col] of chips) {
+      const cwid = 70 * small;
+      const cxp = vw - cwid - 16 * small;
+      c.fillStyle = 'rgba(5,8,18,0.7)'; roundRect(c, cxp, cyp - 18 * small, cwid, 22 * small, 5); c.fill();
+      c.strokeStyle = col; c.lineWidth = 1.5; c.stroke();
+      neonText(c, label, cxp + cwid / 2, cyp - 3 * small, 14 * small, col, 'center', 6);
+      cyp -= 28 * small;
+    }
+
+    // wheelie indicator
+    if (cam.wheelie > 0.3) neonText(c, 'WHEELIE', vw / 2, vh - 24 * small, 20 * small, '#ffd23f', 'center', 10);
+  }
+  function mirrorBottom(vh) { return 6 + vh * 0.1; }
+
+  // ---- overlays: title / countdown / results -------------------------------
+  function drawOverlays(c, vw, vh, cam, playerIndex, t) {
+    if (G.phase === 'attract' && playerIndex === 1) drawTitle(c, vw, vh, t);
+    if (G.phase === 'countdown') drawCountdown(c, vw, vh, t);
+    if (G.phase === 'results') drawResults(c, vw, vh, t);
+  }
+
+  function drawTitle(c, vw, vh, t) {
+    c.fillStyle = 'rgba(5,6,13,0.45)'; c.fillRect(0, 0, vw, vh);
+    const cx = vw / 2;
+    // big pixel-art-ish arcade title
+    const pulse = 0.6 + 0.4 * Math.sin(t * 3);
+    c.save();
+    c.translate(cx, vh * 0.3);
+    // backplate glow
+    neonText(c, 'RACE AND CHASE', 0, 0, vh * 0.11, '#ff2e74', 'center', 30);
+    neonText(c, 'CROTCH ROCKETS', 0, vh * 0.13, vh * 0.135, '#19e6ff', 'center', 34);
+    c.restore();
+    // little bike icon zooming
+    const bx = cx + Math.sin(t * 1.5) * vw * 0.1;
+    c.fillStyle = '#ffd23f'; c.shadowColor = '#ffd23f'; c.shadowBlur = 12;
+    roundRect(c, bx - vw * 0.02, vh * 0.5, vw * 0.04, vh * 0.03, 4); c.fill(); c.shadowBlur = 0;
+
+    c.globalAlpha = pulse;
+    neonText(c, 'PRESS  ACCEL', cx, vh * 0.66, vh * 0.06, '#ffd23f', 'center', 16);
+    c.globalAlpha = 1;
+    neonText(c, 'ACCEL / BRAKE / STEER · SPECIAL = TUCK·NITRO', cx, vh * 0.74, vh * 0.026, '#7df9ff', 'center', 8);
+    neonText(c, 'WHEELIE FOR TOP SPEED · WEAVE TRAFFIC FOR RUSH', cx, vh * 0.79, vh * 0.026, '#ff79b0', 'center', 8);
+    if (G.best > 0) neonText(c, 'BEST  ' + G.best, cx, vh * 0.9, vh * 0.035, '#7df9ff', 'center', 8);
+  }
+
+  function drawCountdown(c, vw, vh, t) {
+    const n = Math.ceil(G.countdown);
+    const txt = n > 0 ? String(n) : 'GO!';
+    const frac = G.countdown - Math.floor(G.countdown);
+    const scale = 1 + (1 - frac) * 0.6;
+    c.save();
+    c.translate(vw / 2, vh * 0.42); c.scale(scale, scale);
+    neonText(c, txt, 0, 0, vh * 0.2, n > 0 ? '#ffd23f' : '#7CFC00', 'center', 30);
+    c.restore();
+  }
+
+  function drawResults(c, vw, vh, t) {
+    c.fillStyle = 'rgba(5,6,13,0.78)'; c.fillRect(0, 0, vw, vh);
+    const cx = vw / 2;
+    const p = G.p1;
+    const pos = p ? p.place : 1;
+    const win = pos === 1;
+    neonText(c, win ? 'WINNER!' : 'FINISH', cx, vh * 0.2, vh * 0.12, win ? '#7CFC00' : '#ff2e74', 'center', 28);
+    // standings table
+    const order = G.racers.slice().sort((a, b) => a.place - b.place);
+    let yy = vh * 0.34;
+    c.textAlign = 'left';
+    for (const r of order.slice(0, 6)) {
+      const me = r === p;
+      const col = me ? '#ffffff' : r.color;
+      neonText(c, r.place + '.', cx - vw * 0.2, yy, vh * 0.045, col, 'left', me ? 10 : 4);
+      neonText(c, r.name, cx - vw * 0.14, yy, vh * 0.045, col, 'left', me ? 10 : 4);
+      const tstr = r.finished ? r.finishTime.toFixed(2) + 's' : 'DNF';
+      neonText(c, tstr, cx + vw * 0.2, yy, vh * 0.04, col, 'right', me ? 10 : 4);
+      yy += vh * 0.06;
+    }
+    const score = computeScore(pos, Math.round((p ? p.finishTime : G.raceTime) * 1000));
+    neonText(c, 'SCORE  ' + score, cx, vh * 0.82, vh * 0.05, '#ffd23f', 'center', 14);
+    const pulse = 0.6 + 0.4 * Math.sin(t * 3);
+    c.globalAlpha = pulse;
+    neonText(c, 'PRESS  ACCEL  TO  RACE  AGAIN', cx, vh * 0.92, vh * 0.035, '#7df9ff', 'center', 12);
+    c.globalAlpha = 1;
+  }
+
+  // ---- full-frame compositor (solo = single full-screen view) ---------------
+  function renderFull() {
+    // clear
+    ctx.setTransform(1, 0, 0, 1, 0, 0);
+    ctx.fillStyle = '#05060d'; ctx.fillRect(0, 0, W, H);
+    if (config.split !== false) {   // default to split on-glass; only /dbg sends split=false for full-canvas
+      // ON-GLASS: the cabinet's half/half UV maps the LEFT canvas half to P1's
+      // physical screen and the RIGHT half to P2's. So P1 ALWAYS renders into the
+      // LEFT half (even solo) or its physical half-screen would show a cut-in-half
+      // view. RIGHT half = P2's POV when 2-player, else solid black.
+      const hw = W / 2;
+      renderView(1, 0, 0, hw, H);
+      if (config.players === 2) {
+        renderView(2, hw, 0, hw, H);
+      } else {
+        ctx.setTransform(1, 0, 0, 1, 0, 0);
+        ctx.fillStyle = '#000'; ctx.fillRect(hw, 0, hw, H);
+      }
+      // 2px vertical divider between the halves
+      ctx.setTransform(1, 0, 0, 1, 0, 0);
+      ctx.fillStyle = '#000'; ctx.fillRect(hw - 1, 0, 2, H);
+    } else {
+      // /dbg FULLSCREEN: player 1 owns the whole canvas.
+      renderView(1, 0, 0, W, H);
+    }
+  }
+
+  // ===========================================================================
+  // SYNC HOOKS  — compact snapshot in/out for the later 2-player Lua layer.
+  // serializeState(): everything a guest needs to render without simulating.
+  // applyState(s):    overwrite local state from an authoritative host snapshot.
+  // ===========================================================================
+  function packRacer(r) {
+    return {
+      i: r.idx, h: r.human ? 1 : 0,
+      z: Math.round(r.z), l: +(r.lane).toFixed(3), s: Math.round(r.speed),
+      w: +(r.wheelie).toFixed(2), ln: +(r.lean).toFixed(2), ru: +(r.rush).toFixed(2),
+      wp: +(r.wipe).toFixed(2), pl: r.place,
+      ni: +(r.nitro).toFixed(2), sl: +(r.slip).toFixed(2), tu: +(r.tuck).toFixed(2), sv: r.save ? 1 : 0,
+      fn: r.finished ? 1 : 0, ft: +(r.finishTime).toFixed(2), c: r.color, nm: r.name
+    };
+  }
+  function serializeState() {
+    return {
+      ph: G.phase, tm: +(G.raceTime).toFixed(2), cd: +(G.countdown).toFixed(2),
+      seed: config.seed,
+      rs: G.racers.map(packRacer),
+      pk: pickups.map(p => ({ z: Math.round(p.z), l: +(p.lane).toFixed(2), k: p.kind, t: p.taken ? 1 : 0 }))
+    };
+  }
+  function applyState(s) {
+    if (!s) return;
+    if (typeof s.seed === 'number' && s.seed !== config.seed) { config.seed = s.seed >>> 0; }
+    if (G.racers.length === 0 || ROAD.trackSegs === 0) buildField();
+    G.phase = s.ph || G.phase;
+    G.raceTime = s.tm || 0; G.timer = G.raceTime;
+    G.countdown = s.cd || 0;
+    G.running = (G.phase === 'race' || G.phase === 'countdown');
+    if (Array.isArray(s.rs)) {
+      // map by idx; rebuild field if counts diverge
+      if (s.rs.length !== G.racers.length) {
+        G.racers.length = 0; G.rivals.length = 0;  // drop stale so the loop rebuilds from the host snapshot (prevents unbounded growth on re-config/reconnect)
+      }
+      for (const rd of s.rs) {
+        let r = G.racers.find(x => x.idx === rd.i);
+        if (!r) { r = makeRacer(rd.i, rd.h === 1); G.racers.push(r); if (!r.human) G.rivals.push(r); }
+        r.z = rd.z; r.lane = rd.l; r.speed = rd.s; r.wheelie = rd.w; r.lean = rd.ln;
+        r.rush = rd.ru; r.wipe = rd.wp; r.place = rd.pl;
+        r.nitro = rd.ni; r.slip = rd.sl; r.tuck = rd.tu; r.save = rd.sv === 1;
+        r.finished = rd.fn === 1; r.finishTime = rd.ft;
+        if (rd.c) r.color = rd.c; if (rd.nm) r.name = rd.nm;
+      }
+      G.p1 = G.racers.find(x => x.idx === 1) || G.p1;
+      G.p2 = G.racers.find(x => x.idx === 2) || G.p2;
+    }
+    if (Array.isArray(s.pk)) {
+      for (let i = 0; i < s.pk.length && i < pickups.length; i++) {
+        pickups[i].z = s.pk[i].z; pickups[i].lane = s.pk[i].l;
+        pickups[i].kind = s.pk[i].k; pickups[i].taken = s.pk[i].t === 1;
+      }
+    }
+  }
+  // expose for the Lua sync layer
+  window.serializeState = serializeState;
+  window.applyState = applyState;
+  window.renderView = renderView;
+
+  // ---- main loop ------------------------------------------------------------
+  // DUI SLEEP CONTRACT: after the player leaves, Lua sends {action:'sleep'} and this page STOPS
+  // rendering (the rAF loop parks). A cached CEF page drawing the attract road at 60fps was
+  // silently costing client FPS everywhere (invisible to resmon). config/reset/start wake it.
+  let RAF_LIVE = true;
+  function duiSleep() { RAF_LIVE = false; }
+  function duiWake() { if (!RAF_LIVE) { RAF_LIVE = true; last = performance.now(); requestAnimationFrame(frame); } }
+  let last = performance.now();
+  function frame(now) {
+    if (!RAF_LIVE) return;
+    let dt = (now - last) / 1000;
+    last = now;
+    if (dt > 0.05) dt = 0.05;        // clamp big stalls (tab hidden, etc.)
+
+    // auto-start from attract/results when P1 hits accel (playable with only forwarded keys)
+    if ((G.phase === 'attract' || G.phase === 'results') && input[1].accel) startGame();
+
+    update(dt);
+    renderFull();
+    requestAnimationFrame(frame);
+  }
+
+  // ---- message handling (from Lua) ------------------------------------------
+  let msgCount = 0;
+  window.addEventListener('message', (e) => {
+    let d;
+    try { d = (typeof e.data === 'string') ? JSON.parse(e.data) : (e.data || {}); }
+    catch (err) { flog('message parse error: ' + err); return; }
+    if (!d || !d.action) return;
+    msgCount++;
+    if (d.action !== 'input' && d.action !== 'state' && msgCount < 200) flog('msg ' + d.action);
+
+    if (d.action === 'sleep') { duiSleep(); return; }
+    if (d.action === 'config' || d.action === 'reset' || d.action === 'start') duiWake();
+    if (d.action === 'input') {
+      const p = (d.player === 2) ? 2 : 1;
+      const k = d.keys || {};
+      const dst = input[p];
+      dst.accel = !!k.accel; dst.brake = !!k.brake;
+      dst.left = !!k.left; dst.right = !!k.right; dst.special = !!k.special;
+      if (k.accel || k.brake || k.left || k.right || k.special) audio.resume();
+    } else if (d.action === 'config') {
+      if (d.mode) config.mode = d.mode;
+      if (typeof d.slot === 'number') mySlot = (d.slot === 2) ? 2 : 1;
+      if (typeof d.seed === 'number') config.seed = d.seed >>> 0;
+      if (typeof d.players === 'number') config.players = (d.players === 2) ? 2 : 1;
+      config.split = d.split;
+      flog('config · mode=' + config.mode + ' slot=' + mySlot + ' seed=' + config.seed + ' players=' + config.players);
+      resetGame();
+    } else if (d.action === 'peer') {
+      applyPeerPacket(d.data);
+    } else if (d.action === 'requestPeer') {
+      try {
+        fetch(`https://${RES}/rocketsPeer`, {
+          method: 'POST', headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(buildPeerPacket())
+        }).catch(() => {});
+      } catch (e2) {}
+    } else if (d.action === 'start') {
+      startGame();
+    } else if (d.action === 'stop') {
+      audio.stop();
+      G.running = false;
+      if (G.phase === 'race' || G.phase === 'countdown') G.phase = 'attract';
+    } else if (d.action === 'reset') {
+      resetGame();
+    } else if (d.action === 'state') {
+      // guest mode: apply an authoritative snapshot from the host (via Lua)
+      if (d.state) applyState(d.state);
+    } else if (d.action === 'volume') {
+      // master output volume 0..1 (scales ALL audio; default 0.5)
+      if (typeof d.level === 'number') audio.setVolume(d.level);
+    } else if (d.action === 'requestState') {
+      // host only: Lua polls this ~20x/sec to broadcast our state to the guest
+      try {
+        fetch(`https://${RES}/rocketsState`, {
+          method: 'POST', headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(serializeState())
+        }).catch(() => {});
+      } catch (e) {}
+    }
+  });
+
+  // local keyboard fallback so the page is testable in a plain browser too (P1)
+  function setKey(code, down) {
+    const k = input[1];
+    if (code === 'ArrowUp'   || code === 'KeyW') k.accel = down;
+    if (code === 'ArrowDown' || code === 'KeyS') k.brake = down;
+    if (code === 'ArrowLeft' || code === 'KeyA') k.left = down;
+    if (code === 'ArrowRight'|| code === 'KeyD') k.right = down;
+    if (code === 'Space'     || code === 'ShiftLeft') k.special = down;
+  }
+  window.addEventListener('keydown', (e) => { setKey(e.code, true); if (e.code === 'Space') e.preventDefault(); });
+  window.addEventListener('keyup',   (e) => { setKey(e.code, false); });
+
+  // ---- boot -----------------------------------------------------------------
+  resetGame();
+  requestAnimationFrame(frame);
+
+  window.addEventListener('load', () => {
+    flog('window load — sending rocketsReady');
+    fetch(`https://${RES}/rocketsReady`, { method: 'POST', body: '{}' })
+      .then(() => flog('rocketsReady POST ok'))
+      .catch((e) => flog('rocketsReady POST failed: ' + e));
+  });
+  flog('rockets script end · readyState=' + document.readyState);
+  </script>
+<!-- ARCADE HIGH-SCORES overlay (attract screen). Fed by {action:'leaderboard',entries:[{name,score}]}
+     from the cabinet before play. Self-contained + own message listener; shown on 'leaderboard',
+     hidden on 'start'/'reset'. Additive — does not touch the game's own message handler. -->
+<style>
+  #arc-hs{position:fixed;top:50%;right:3.5%;transform:translateY(-50%);width:33%;max-width:440px;
+    display:none;font-family:'Consolas','Menlo','Courier New',monospace;color:#eaf6ff;z-index:99999;
+    background:rgba(6,10,20,.74);border:2px solid rgba(90,200,255,.55);border-radius:10px;
+    box-shadow:0 0 22px rgba(60,180,255,.35),inset 0 0 18px rgba(20,60,120,.4);padding:14px 16px 12px}
+  #arc-hs h3{margin:0 0 9px;text-align:center;font-size:21px;letter-spacing:3px;color:#5fd0ff;
+    text-shadow:0 0 8px rgba(80,200,255,.9);text-transform:uppercase}
+  #arc-hs ol{list-style:none;margin:0;padding:0}
+  #arc-hs li{display:flex;align-items:baseline;gap:9px;padding:3px 4px;font-size:16px;
+    border-bottom:1px solid rgba(90,160,220,.14)}
+  #arc-hs li:nth-child(1){color:#ffd86b;text-shadow:0 0 8px rgba(255,200,70,.7)}
+  #arc-hs li:nth-child(3){color:#e6b98a}
+  #arc-hs .r{width:24px;text-align:right;opacity:.75}
+  #arc-hs .n{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;text-transform:uppercase}
+  #arc-hs .s{font-variant-numeric:tabular-nums;font-weight:bold}
+  #arc-hs .e{opacity:.6;text-align:center;padding:12px 0;font-size:14px;letter-spacing:1px}
+</style>
+<div id="arc-hs"><h3>High Scores</h3><ol id="arc-hs-list"></ol></div>
+<script>
+(function(){
+  var box=document.getElementById('arc-hs'),list=document.getElementById('arc-hs-list'),have=[];
+  function esc(s){return String(s==null?'':s).replace(/[<&>]/g,function(c){return{'<':'&lt;','&':'&amp;','>':'&gt;'}[c];});}
+  function render(){
+    list.innerHTML='';
+    if(!have.length){list.innerHTML='<li class="e">NO SCORES YET — BE THE FIRST</li>';return;}
+    for(var i=0;i<have.length&&i<10;i++){
+      var e=have[i]||{},li=document.createElement('li');
+      li.innerHTML='<span class="r">'+(i+1)+'</span><span class="n">'+esc(e.name||'?')+'</span><span class="s">'+((parseInt(e.score,10)||0).toLocaleString())+'</span>';
+      list.appendChild(li);
+    }
+  }
+  window.addEventListener('message',function(ev){
+    var d;try{d=(typeof ev.data==='string')?JSON.parse(ev.data):(ev.data||{});}catch(x){return;}
+    var a=d.action||d.type;
+    if(a==='leaderboard'){have=Array.isArray(d.entries)?d.entries:[];render();box.style.display='block';}
+    else if(a==='start'||a==='reset'){box.style.display='none';}
+  });
+})();
+</script>
+</body>
+</html>

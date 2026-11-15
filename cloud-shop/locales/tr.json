@@ -1,0 +1,89 @@
+{
+  "ui": {
+    "currency": {
+      "symbol": "$",
+      "position": "before"
+    },
+    "main": {
+      "item": {
+        "add_cart": "Sepete Ekle"
+      }
+    },
+    "cart": {
+      "payment": {
+        "title": "Ödeme",
+        "pay_bank": "Kart",
+        "pay_cash": "Nakit"
+      }
+    }
+  },
+  "interaction": {
+    "help_text": "~INPUT_CONTEXT~  Ürün Kataloğunu Görüntüle",
+    "floating_text": "~INPUT_CONTEXT~ Ürün Kataloğunu Görüntüle",
+    "target": {
+      "icon": "fa-solid fa-cart-shopping",
+      "label": "Ürün Kataloğunu Görüntüle"
+    }
+  },
+  "dialog": {
+    "license": {
+      "header": "Bu dükkâna erişmek için **%s** gereklidir!",
+      "content": "**$%s** karşılığında bir adet **%s** satın almak ister misiniz?"
+    }
+  },
+  "notify": {
+    "requirement": {
+      "job": {
+        "title": "Erişim Gereksinimi",
+        "description": "Bu dükkâna erişmek için **%s** mesleğine sahip olmalısınız!",
+        "type": "warning"
+      },
+      "job_grade": {
+        "title": "Erişim Gereksinimi",
+        "description": "Meslek rütbeniz bu dükkâna erişmek için yeterli değil!",
+        "type": "warning"
+      },
+      "license": {
+        "title": "Erişim Gereksinimi",
+        "description": "Bu dükkâna erişmek için **%s** gereklidir!",
+        "type": "warning"
+      }
+    },
+    "cant_add": {
+      "item": {
+        "title": "Satın Alma Başarısız",
+        "description": "**%s** satın alınırken bir hata oluştu.",
+        "type": "error"
+      },
+      "weapon": {
+        "title": "Taşıma Kısıtlaması",
+        "description": "Birden fazla **%s** taşıyamazsınız.",
+        "type": "error"
+      }
+    },
+    "no_money": {
+      "shop": {
+        "title": "Satın Alma Başarısız",
+        "description": "**$%s** karşılığında **%s** satın almak için yeterli paranız yok.",
+        "type": "error"
+      },
+      "license": {
+        "title": "Satın Alma Başarısız",
+        "description": "**%s** satın almak için yeterli paranız yok.",
+        "type": "error"
+      }
+    },
+    "payment_success": {
+      "shop": {
+        "title": "Satın Alma Tamamlandı",
+        "description": "**$%s** karşılığında ürün(ler) başarıyla satın alındı.",
+        "type": "success"
+      },
+      "license": {
+        "title": "Satın Alma Tamamlandı",
+        "description": "**$%s** karşılığında **%s** başarıyla satın alındı.",
+        "type": "success"
+      }
+    }
+  }
+}

@@ -1,0 +1,44 @@
+{
+   "error": {
+      "canceled": "İptal edildi..",
+      "cruise_control_disabled": "Hız sabitleyici devre dışı",
+      "cruise_control_unavailable": "Hız sabitleyici kullanılamıyor",
+      "deleted_recording": "Kayıt silindi!",
+      "later_aligator": "Görüşürüz!",
+      "stress_gain": "Stres seviyen artıyor!",
+      "no_vehicle_nearby": "Yakınlarda düzeltilecek bir araç yok.",
+      "is_handcuffed": "Kelepçelisin.",
+      "is_fastened": "Emniyet kemerin takılı."
+   },
+   "success": {
+      "cruise_control_enabled": "Hız sabitleyici aktif",
+      "started_recording": "Kayıt başlatıldı!",
+      "stopped_recording": "Kayıt durduruldu!",
+      "saved_recording": "Kayıt kaydedildi!",
+      "stress_relief": "Daha rahatlamış hissediyorsun!",
+      "flipped_car": "Araç başarıyla düzeltildi!"
+   },
+   "progress": {
+      "eating": "Yemek yeniliyor..",
+      "drinking": "İçiliyor..",
+      "redbull": "İçiliyor..",
+      "drinking_liquor": "Alkol alınıyor..",
+      "quick_sniff": "Koklanıyor..",
+      "smoking_crack": "Crack içiliyor..",
+      "popping_pills": "Hap yutuluyor..",
+      "healing": "İyileşiliyor..",
+      "smoking_meth": "Met içiliyor..",
+      "lighting_joint": "Joint yakılıyor..",
+      "flipping_car": "Araç düzeltiliyor...",
+      "ifaks": "IFAK kullanılıyor..."
+   },
+   "info": {
+      "minutes": "dakika",
+      "seconds": "saniye..",
+      "shuffleSeat": "Yan koltuğa geç"
+   },
+   "actions": {
+      "push_vehicle": "Aracı itmek için [~g~SHIFT~w~] bırakana kadar [~g~SHIFT~w~] ve [~g~E~w~] tuşlarına basın",
+      "toggle_cruise_control": "Hız sabitleyiciyi aç/kapat"
+   }
+}

@@ -1,0 +1,1 @@
+import{Fn as e,On as t,Qn as n,Yn as r,jr as i,sn as a}from"./api-Dx2fosVJ.js";var o=a(e({__name:`GlassGroup`,props:{size:{default:`md`}},setup(e){return(a,o)=>(r(),t(`div`,{class:i([`ggroup chrome`,e.size])},[n(a.$slots,`default`)],2))}}),[[`__scopeId`,`data-v-0111a158`]]);export{o as t};

@@ -1,0 +1,1 @@
+import{s as e}from"./_plugin-vue_export-helper-Bhaq9fRO.js";import{l as t}from"./useSession-PHOrJ86E.js";var n={author:!1,student:!1,passPct:70};function r(){let{session:r}=t();return{capabilities:e(()=>r.value?.capabilities??n),lessons:e(()=>r.value?.lessons??[])}}export{r as t};

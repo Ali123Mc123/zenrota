@@ -1,0 +1,99 @@
+{
+    "placement": {
+        "title": "Plasare",
+        "mode_surface": "Suprafață",
+        "mode_move": "Mută",
+        "mode_rotate": "Rotește",
+        "space_world": "Lume",
+        "space_local": "Local",
+        "snap": "Pas fix",
+        "nudge": "Ajustare fină",
+        "yaw": "Întoarce",
+        "ground": "Pune pe sol",
+        "reset": "Resetează",
+        "accept": "Plasează",
+        "cancel": "Anulează",
+        "hint_surface": "Click pentru a plasa TV-ul",
+        "hint_move": "Trage săgețile",
+        "hint_rotate": "Trage un inel",
+        "hint_wheel": "Rotiță: rotește",
+        "hint_camera": "Click dreapta: cameră pornit / oprit",
+        "camera_active": "Mod cameră - click dreapta pentru a reveni",
+        "hint_snap": "Butoane podea / perete: fixează",
+        "hint_toggle": "R: mută / rotește",
+        "hint_accept": "Enter: plasează",
+        "hint_cancel": "X / Backspace / Esc: anulează",
+        "tip_floor": "Fixează pe podea",
+        "tip_wall": "Fixează pe perete",
+        "tip_move": "Treci la mutare",
+        "tip_rotate": "Treci la rotire"
+    },
+    "header": {
+        "title": "Televizoare & SmartTV",
+        "admin": "Administrare TV",
+        "subtitle": "Bun venit!"
+    },
+    "search": {
+        "placeholder": "Introdu un URL..."
+    },
+    "admin": {
+        "categories": {
+            "player": "Televizoarele jucătorilor",
+            "default": "Televizoare implicite",
+            "general": "General",
+            "jobs": "Joburi / Grupuri"
+        },
+        "no_video": "Niciun videoclip în redare",
+        "create": "Creează TV",
+        "update": "Actualizează TV",
+        "cancel": "Anulează",
+        "no_result": "Niciun rezultat găsit.",
+        "search": "Caută TV după nume sau ID",
+        "input": {
+            "model": {
+                "label": "Model",
+                "placeholder": "Selectează un model de TV"
+            },
+            "name": {
+                "label": "Nume",
+                "placeholder": "Dă un nume televizorului tău"
+            },
+            "platform": {
+                "label": "Platformă",
+                "placeholder": "YouTube, Kick, etc."
+            },
+            "loop": {
+                "label": "Buclă",
+                "placeholder": "Videoclipul ar trebui redat în buclă?",
+                "true": "Da",
+                "false": "Nu"
+            },
+            "volume": {
+                "label": "Volum",
+                "placeholder": "Setează volumul implicit (0-100)"
+            },
+            "videourl": {
+                "label": "URL video / stream",
+                "placeholder": "Introdu URL-ul videoclipului / stream-ului"
+            },
+            "controlable": {
+                "label": "Controlabil",
+                "tooltip": "Permite utilizatorilor să controleze televizorul (redare, pauză, etc.)"
+            },
+            "defaultvideo": {
+                "label": "Videoclip implicit",
+                "tooltip": "Dacă se redă sau nu un videoclip implicit"
+            },
+            "jobs": {
+                "label": "Joburi / Grupuri",
+                "placeholder": "Joburi/grupuri autorizate să folosească acest TV (lasă gol pentru toți)"
+            }
+        }
+    },
+    "stream": "Live",
+    "recently": "Recent",
+    "favorites": "Favorite",
+    "no_favorites": "Niciun videoclip favorit.",
+    "no_recently": "Niciun videoclip redat recent.",
+    "televisions": "Televizoare"
+}

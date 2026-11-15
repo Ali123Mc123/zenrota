@@ -1,0 +1,48 @@
+.border-image {
+    border-image: url(border.png) 100% 100% / 100% 100%;
+  }
+  
+  .ipad {
+    border: 45px solid #101010;
+    border-left: 65px solid #101010;
+    border-right: 60px solid #101010;
+    border-radius: 50px;
+    overflow: initial;
+  }
+  
+  .ipad::after {
+    content: "";
+    display: block;
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    background: #101010;
+    border: 2px solid #595959;
+    border-radius: 50%;
+    left: -50px;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 2222;
+  }
+  
+  .error-message {
+    display: block;
+    position: absolute;
+    z-index: 222222;
+    width: 80%;
+    left: 50%;
+    transform: translateX(-50%);
+    border-radius: 0.75rem;
+    padding: 0.75rem;
+    top: -68px;
+    font-size: 1rem;
+    opacity: 0;
+    transition: all 0.3s ease-in-out;
+  }
+  
+  .error-message.visible {
+    top: 0;
+    opacity: 1;
+    transition: all 0.2s ease-in-out;
+  }
+  

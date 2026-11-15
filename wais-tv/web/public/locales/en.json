@@ -1,0 +1,99 @@
+{
+    "placement": {
+        "title": "Placement",
+        "mode_surface": "Surface",
+        "mode_move": "Move",
+        "mode_rotate": "Rotate",
+        "space_world": "World",
+        "space_local": "Local",
+        "snap": "Snap",
+        "nudge": "Nudge",
+        "yaw": "Turn",
+        "ground": "Drop to ground",
+        "reset": "Reset",
+        "accept": "Place",
+        "cancel": "Cancel",
+        "hint_surface": "Click to drop the TV",
+        "hint_move": "Drag the arrows",
+        "hint_rotate": "Drag a ring",
+        "hint_wheel": "Wheel: turn",
+        "hint_camera": "Right click: camera on / off",
+        "camera_active": "Camera mode - right click to go back",
+        "hint_snap": "Floor / wall buttons: snap",
+        "hint_toggle": "R: move / rotate",
+        "hint_accept": "Enter: place",
+        "hint_cancel": "X / Backspace / Esc: cancel",
+        "tip_floor": "Snap to floor",
+        "tip_wall": "Snap to wall",
+        "tip_move": "Switch to move",
+        "tip_rotate": "Switch to rotate"
+    },
+    "header": {
+        "title": "Television & SmartTv's",
+        "admin": "TV Admin",
+        "subtitle": "Welcome!"
+    },
+    "search": {
+        "placeholder": "Enter a URL..."
+    },
+    "admin": {
+        "categories": {
+            "player": "Player TV`s",
+            "default": "Default TV`s",
+            "general": "General",
+            "jobs": "Jobs / Groups"
+        },
+        "no_video": "No video playing",
+        "create": "Create TV",
+        "update": "Update TV",
+        "cancel": "Cancel",
+        "no_result": "No results found.",
+        "search": "Search TV by name or ID",
+        "input": {
+            "model": {
+                "label": "Model",
+                "placeholder": "Select a TV model"
+            },
+            "name": {
+                "label": "Name",
+                "placeholder": "Give your TV a name"
+            },
+            "platform": {
+                "label": "Platform",
+                "placeholder": "YouTube, Kick, etc."
+            },
+            "loop": {
+                "label": "Loop",
+                "placeholder": "Should the video loop?",
+                "true": "Yes",
+                "false": "No"
+            },
+            "volume": {
+                "label": "Volume",
+                "placeholder": "Set the default volume (0-100)"
+            },
+            "videourl": {
+                "label": "Video / Stream URL",
+                "placeholder": "Enter the video / stream URL"
+            },
+            "controlable": {
+                "label": "Controlable",
+                "tooltip": "Allow users to control the tv (play, pause, etc.)"
+            },
+            "defaultvideo": {
+                "label": "Default Video",
+                "tooltip": "Whether a default video is played or not"
+            },
+            "jobs": {
+                "label": "Jobs / Groups",
+                "placeholder": "Jobs/groups allowed to use this TV (leave empty for all)"
+            }
+        }
+    },
+    "stream": "Live",
+    "recently": "Recently",
+    "favorites": "Favorites",
+    "no_favorites": "No favorite videos.",
+    "no_recently": "No recently played videos.",
+    "televisions": "Televisions"
+}

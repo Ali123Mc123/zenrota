@@ -1,0 +1,18 @@
+{
+    "menu": {
+        "header": {
+            "title": "Daddy",
+            "subtitle": "قائمة مكبر الصوت",
+            "search_placeholder": "https://www.youtube.com"
+        },
+        "favorites": {
+            "title": "المفضلة",
+            "show_all": "عرض الكل",
+            "show_less": "عرض أقل"
+        },
+        "footer": {
+            "no_music": "لا توجد موسيقى",
+            "no_author": "فنان غير معروف"
+        }
+    }
+}

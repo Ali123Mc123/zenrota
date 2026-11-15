@@ -1,0 +1,339 @@
+{
+    "music": [
+        {
+            "title": "ALO",
+            "artist": "Wegh",
+            "src": "music/music-1.mp3"
+        }
+    ],
+    "theme": {
+        "accentDark": "#cc0030",
+        "textPrimary": "#e2e8f0",
+        "bgPrimary": "#0a0e17",
+        "bgSecondary": "#111827",
+        "textSecondary": "#94a3b8",
+        "accent": "#ff003c",
+        "bgCard": "#1a1f2e"
+    },
+    "schemaVersion": 6,
+    "debug": false,
+    "musicPlaybackMode": "sequential",
+    "screen": {
+        "rules": [
+            {
+                "text": "Tüm oyunculara saygı ile davran. Taciz, ayrımcılık ve toxik davranış kesinlikle yasaktır.",
+                "title": "Herkese Saygı"
+            },
+            {
+                "text": "Hack, exploit veya izinsiz mod kullanımı kesinlikle yasaktır. İhlal tespit edilenler kalıcı ban alır.",
+                "title": "Hile Yasak"
+            },
+            {
+                "text": "Roleplay sırasında her zaman karakterinde kal. Sebepsiz öldürme (RDM) ve araçla çarpma (VDM) yasaktır.",
+                "title": "Karakterde Kal (RDM/VDM Yasak)"
+            },
+            {
+                "text": "Gerçekçi olmayan eylemler yapma. Oyun mekaniğini kötüye kullanmak yasaktır.",
+                "title": "Powergaming Yasak"
+            },
+            {
+                "text": "Oyun dışından elde ettiğin bilgileri karakter olarak kullanma.",
+                "title": "Metagaming Yasak"
+            },
+            {
+                "text": "Moderatör ve yöneticilerin kararlarına saygı göster. Anlaşmazlıklarda Discord'dan iletişime geç.",
+                "title": "Yetkililere Saygı"
+            }
+        ],
+        "mediaStyle": "dock",
+        "serverMetaStyle": "minimal",
+        "anim": "fade",
+        "topPlayersStatic": [
+            {
+                "score": "8.45",
+                "image": "https://api.dicebear.com/7.x/adventurer/svg?seed=Leo",
+                "name": "Leo",
+                "kd": "4404K / 521D"
+            },
+            {
+                "score": "2.00",
+                "image": "https://api.dicebear.com/7.x/adventurer/svg?seed=Cabbar",
+                "name": "Cabbar",
+                "kd": "4158K / 2075D"
+            },
+            {
+                "score": "3.36",
+                "image": "https://api.dicebear.com/7.x/adventurer/svg?seed=Sylex",
+                "name": "Sylex",
+                "kd": "3830K / 1141D"
+            },
+            {
+                "score": "2.92",
+                "image": "https://api.dicebear.com/7.x/adventurer/svg?seed=Krypton",
+                "name": "Krypton",
+                "kd": "3500K / 1200D"
+            },
+            {
+                "score": "2.07",
+                "image": "https://api.dicebear.com/7.x/adventurer/svg?seed=Lucifer",
+                "name": "Lucifer",
+                "kd": "3100K / 1500D"
+            }
+        ],
+        "tips": [
+            "Telefonunu açmak için F1 tuşuna bas.",
+            "Envanterini açmak için F2 tuşuna bas.",
+            "Sunucu kurallarını okumayı unutma.",
+            "Müziği duraklatmak için Space tuşuna bas.",
+            "Genelde fıssın!"
+        ],
+        "identity": {
+            "name": "Daddy",
+            "subtitle": "Roleplay",
+            "description": "Premium FiveM Roleplay Deneyimi.",
+            "logo": "image/logo.png"
+        },
+        "social": {
+            "discord": "https://discord.gg/ddroleplay",
+            "youtube": "https://www.youtube.com/@daddyroleplay",
+            "twitter": "https://twitter.com",
+            "instagram": "https://instagram.com",
+            "website": "https://daddy.com.tr/"
+        },
+        "loadingBarStyle": "line",
+        "activeLook": "look-mqo7629c-z7g7",
+        "news": [
+            {
+                "title": "Sunucu Açılışı!",
+                "description": "Daddy RP'ye hoş geldiniz! Yolculuğumuz başlıyor.",
+                "date": "2026-03-04",
+                "type": "announcement"
+            },
+            {
+                "title": "v1.2.0 Güncellemesi",
+                "description": "Yeni araç sistemi, geliştirilmiş envanter arayüzü ve performans iyileştirmeleri.",
+                "date": "2026-03-03",
+                "type": "update"
+            },
+            {
+                "title": "Hotfix #3",
+                "description": "Araç spawn hatası, envanter kaybı ve ses kesintisi sorunları giderildi.",
+                "date": "2026-03-02",
+                "type": "bugfix"
+            },
+            {
+                "time": "20:00",
+                "description": "Haftalık topluluk toplantısı ve yarış etkinliği. Tüm oyuncular davetlidir!",
+                "type": "event",
+                "date": "2026-03-14",
+                "title": "Haftalık Toplantı"
+            }
+        ],
+        "leaderCrewStatic": [
+            {
+                "name": "CAN9WORK TEAM",
+                "killsText": "12.4K K / 3.1K D",
+                "image": "https://api.dicebear.com/7.x/identicon/svg?seed=DaddyTeam"
+            },
+            {
+                "name": "KRYPTON TEAM",
+                "killsText": "9.2K K / 2.8K D",
+                "image": "https://api.dicebear.com/7.x/identicon/svg?seed=KryptonTeam"
+            },
+            {
+                "name": "SIVASLI TEAM",
+                "killsText": "7.5K K / 2.1K D",
+                "image": "https://api.dicebear.com/7.x/identicon/svg?seed=SivasliTeam"
+            },
+            {
+                "name": "VALORANT TEAM",
+                "killsText": "5.5K K / 1.8K D",
+                "image": "https://api.dicebear.com/7.x/identicon/svg?seed=ValorantTeam"
+            },
+            {
+                "name": "APEX TEAM",
+                "killsText": "4.2K K / 1.1K D",
+                "image": "https://api.dicebear.com/7.x/identicon/svg?seed=ApexTeam"
+            }
+        ],
+        "looks": [
+            {
+                "name": "Görünüm 3",
+                "mediaStyle": "minimal",
+                "serverMetaStyle": "minimal",
+                "theme": [],
+                "skin": "solid",
+                "layout": "editorial",
+                "loadingBarStyle": "line",
+                "overrides": {
+                    "crew": {
+                        "h": 30,
+                        "visible": false,
+                        "w": 20,
+                        "y": 37,
+                        "x": 77
+                    },
+                    "spotlight": {
+                        "visible": false
+                    },
+                    "updates": {
+                        "visible": false
+                    },
+                    "creator": {
+                        "visible": false
+                    },
+                    "tip": {
+                        "visible": false
+                    },
+                    "serverMeta": {
+                        "w": 14,
+                        "visible": true,
+                        "y": 12,
+                        "x": 3
+                    },
+                    "media": {
+                        "w": 14,
+                        "visible": true,
+                        "y": 8.5,
+                        "x": 83
+                    },
+                    "rules": {
+                        "visible": false
+                    },
+                    "progress": {
+                        "w": 93.5
+                    },
+                    "gallery": {
+                        "visible": false
+                    },
+                    "community": {
+                        "visible": false
+                    },
+                    "news": {
+                        "visible": false
+                    },
+                    "leaderboard": {
+                        "w": 19,
+                        "visible": false
+                    },
+                    "team": {
+                        "w": 20,
+                        "visible": false,
+                        "y": 5,
+                        "x": 41
+                    }
+                },
+                "anim": "fade",
+                "moduleStyle": "compact",
+                "id": "look-mqo7629c-z7g7"
+            }
+        ],
+        "gallery": [
+            {
+                "src": "https://cdn.discordapp.com/attachments/1450822835927908515/1479211485703180479/image.png?ex=69b66b4c&is=69b519cc&hm=f54b587eca01f6bd8cf5597960fff0bacc0da2c680c43ccd4dd59074a4dc5b02&",
+                "caption": "Test 1"
+            },
+            {
+                "src": "https://cdn.discordapp.com/attachments/1450822835927908515/1478906376200786080/image.png?ex=69b5f7e4&is=69b4a664&hm=21cbe9eca54c0fe68ec94072707a5085f0061eb47f974feedc31ad3dc2cf16bb&",
+                "caption": "Test 2"
+            }
+        ],
+        "quickModules": {
+            "order": [
+                "gallery",
+                "keyGuide",
+                "newsHub",
+                "media"
+            ],
+            "visible": {
+                "gallery": false,
+                "keyGuide": true,
+                "newsHub": false,
+                "media": true
+            }
+        },
+        "keyBindings": [
+            {
+                "key": "F1",
+                "title": "Telefon",
+                "description": "Telefonunu açar."
+            },
+            {
+                "key": "F2",
+                "title": "Envanter",
+                "description": "Envanterini açar."
+            }
+        ],
+        "socialVisible": {
+            "discord": true,
+            "instagram": false,
+            "twitter": false,
+            "youtube": true,
+            "website": true
+        },
+        "layout": "editorial",
+        "moduleStyle": "card",
+        "overrides": [],
+        "skin": "glass",
+        "creatorStatic": {
+            "name": "Daddy Creator",
+            "platform": "youtube",
+            "channelName": "@daddy_content",
+            "avatar": "image/logo.png",
+            "platformLink": "https://youtube.com"
+        },
+        "team": [
+            {
+                "name": "CAN9WORK",
+                "rank": "LEAD DEV",
+                "social": {
+                    "discord": "",
+                    "youtube": "",
+                    "instagram": ""
+                },
+                "gallery": [],
+                "info": "",
+                "title": "DADDY PVP",
+                "img": "image/can9work.webp"
+            },
+            {
+                "name": "KRYPTON",
+                "rank": "DEV",
+                "social": {
+                    "discord": "",
+                    "youtube": "",
+                    "instagram": ""
+                },
+                "gallery": [],
+                "info": "",
+                "title": "DADDY PVP",
+                "img": "image/krypton.webp"
+            },
+            {
+                "name": "SIVASLI",
+                "rank": "DEV",
+                "social": {
+                    "discord": "",
+                    "youtube": "",
+                    "instagram": ""
+                },
+                "gallery": [],
+                "info": "",
+                "title": "DADDY PVP",
+                "img": "image/sivasli.webp"
+            }
+        ]
+    },
+    "server": {
+        "name": "Daddy",
+        "backgrounds": [],
+        "background": "image/bg2.png",
+        "maxPlayers": 450,
+        "bgMode": "video",
+        "bgVideoMuted": true,
+        "bgVideo": "video/loading-screen.mp4",
+        "subtitle": "Roleplay",
+        "description": "Premium FiveM Roleplay Deneyimi.",
+        "logo": "image/logo.png"
+    }
+}

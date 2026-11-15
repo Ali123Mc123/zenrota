@@ -1,0 +1,18 @@
+{
+    "menu": {
+        "header": {
+            "title": "Daddy",
+            "subtitle": "Menu Haut-parleur",
+            "search_placeholder": "https://www.youtube.com"
+        },
+        "favorites": {
+            "title": "Favoris",
+            "show_all": "Tout afficher",
+            "show_less": "Afficher moins"
+        },
+        "footer": {
+            "no_music": "Pas de musique",
+            "no_author": "Artiste inconnu"
+        }
+    }
+}

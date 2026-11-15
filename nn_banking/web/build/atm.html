@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>NN Bank ATM</title>
+    <style>
+      html, body {
+        margin: 0;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        background: transparent; /* only the screen sub-rect is painted; rest stays untouched art */
+      }
+      #root { position: absolute; top: 0; left: 0; }
+      * { cursor: none !important; -webkit-user-select: none; -moz-user-select: none; user-select: none; }
+
+      /* mouse interaction (client streams the cursor + clicks; the UI hit-tests its buttons).
+         Colours use the live --c-accent token so they follow the per-ATM skin accent. */
+      [data-atm-action] { transition: transform 0.08s ease, outline-color 0.08s ease; }
+      .atm-hover { outline: 3px solid rgb(var(--c-accent)); outline-offset: 3px; border-radius: 20px; }
+      .atm-press { transform: scale(0.95); }
+    </style>
+    <script type="module" crossorigin src="./assets/atm-CitzmzwL.js"></script>
+    <link rel="modulepreload" crossorigin href="./assets/index-Cl_Cv07b.js">
+    <link rel="modulepreload" crossorigin href="./assets/arrow-left-COj-XBR1.js">
+    <link rel="stylesheet" crossorigin href="./assets/index-BPoWldje.css">
+  </head>
+  <body>
+    <div id="root"></div>
+  </body>
+</html>

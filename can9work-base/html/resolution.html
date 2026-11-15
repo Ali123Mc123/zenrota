@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Resolution Warning</title>
+  <style>
+    html, body {
+      width: 100vw;
+      height: 100vh;
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+    }
+    #overlay {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(200,0,0,0.6);
+      z-index: 9999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+    }
+    #overlay h1 {
+      color: #fff;
+      font-size: 3vw;
+      margin: 0 0 1vw 0;
+      text-shadow: 2px 2px 8px #000;
+    }
+    #overlay p {
+      color: #fff;
+      font-size: 1.5vw;
+      margin: 0;
+      text-shadow: 1px 1px 6px #000;
+    }
+    #photo {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: auto;
+      height: auto;
+      z-index: 10000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+    }
+    #photo img {
+      width: 100%;
+      height: 100%;
+    }
+  </style>
+</head>
+<body>
+  <div id="overlay" style="display: none;">
+    <h1>UYARI</h1>
+    <p>Desteklenmeyen ekran oranı kullanıyorsunuz!<br> Lütfen 16:9, 16:10 veya 5:3 çözünürlüklerden birini seçin.</p>
+    <p id="timer" style="margin-top:2vw;font-size:2vw;color:#fff;"></p>
+  </div>
+
+  <div id="photo">
+    <img id="photo-img" src="" alt="">
+  </div>
+  <script>
+    let countdown = null;
+    window.addEventListener('message', function(event) {
+      if (event.data && event.data.action === 'hide') {
+        document.getElementById('overlay').style.display = 'none';
+        document.getElementById('timer').innerText = '';
+      } else if (event.data && event.data.action === 'show') {
+        document.getElementById('overlay').style.display = 'flex';
+      } else if (event.data && event.data.action === 'showPhoto') {
+        const photoDiv = document.getElementById('photo');
+        const photoImg = document.getElementById('photo-img');
+        photoImg.src = event.data.url;
+        photoDiv.style.display = 'flex';
+      } else if (event.data && event.data.action === 'hidePhoto') {
+        const photoDiv = document.getElementById('photo');
+        photoDiv.style.display = 'none';
+      }
+      if (event.data && event.data.timeLeft !== undefined) {
+        document.getElementById('timer').innerText = 'Sunucudan atılmaya kalan süre: ' + event.data.timeLeft + ' sn';
+      }
+    });
+
+    window.addEventListener('keydown', function (event) {
+      if (event.key === 'Escape' || event.key === 'Delete') {
+        document.getElementById('photo').style.display = 'none';
+        window.postNUI('closePhoto', {}, function(response) {
+          console.log('NUI callback response:', response);
+        });
+      }
+    });
+
+    var resourceName = "can9work-base";
+
+    if (window.GetParentResourceName) {
+        resourceName = window.GetParentResourceName();
+    }
+
+    window.postNUI = (name, data, callback) => {
+      fetch(`https://${resourceName}/${name}`, {
+          method: "POST",
+          mode: "cors",
+          cache: "no-cache",
+          credentials: "same-origin",
+          headers: {
+              "Content-Type": "application/json"
+          },
+          redirect: "follow",
+          referrerPolicy: "no-referrer",
+          body: JSON.stringify(data)
+      })
+      .then(response => {
+          if (!response.ok) {
+              throw new Error(`Network response was not ok, status: ${response.status}`);
+          }
+          return response.json();
+      })
+      .then(responseData => {
+          if (callback && typeof callback === "function") {
+              callback(responseData);
+          }
+      })
+    };
+  </script>
+</body>
+</html>
+

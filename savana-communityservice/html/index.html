@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>savana.tebex.io</title>
+	<link rel="stylesheet" href="style.css" />
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
+
+<body>
+	<div class="container">
+		<div class="main">
+			<div class="main-page pages page-main">
+				<img class="background" src="images/bg.png" />
+				<img class="icon" src="images/icon.png" />
+
+				<p class="title">KAMU</p>
+				<p class="subtitle">SİSTEMİ</p>
+
+				<p class="info">Bilgilendirme</p>
+				<p class="descrption">Kamu hizmeti sistemine hoş geldiniz. Buradan suçlulara görev atayabilir ve
+					takibini yapabilirsiniz.</p>
+
+				<div class="profile">
+					<img class="circle" src="images/profile.png" />
+					<img class="pp profilePicture" src="images/pp.jpg" />
+
+					<p class="name pName">Baran Kaya</p>
+					<p class="grade pGrade">Chief</p>
+				</div>
+
+				<div class="locations">
+					<div class="location location-central">
+						<img class="image" src="images/locations/central.png" />
+
+						<div class="title-area">
+							<p class="loc-title">MERKEZ PARKI</p>
+							<p class="loc-subtitle">LOKASYON</p>
+						</div>
+						<div class="informationTextArea">
+							<p class="İnformationText">Bilgilendirme</p>
+							<p class="informationDetailsText">Bu bölgede çevre temizliği ve park düzenleme çalışmaları
+								yapılarak kamu hizmeti yerine getirilir.</p>
+						</div>
+						<div onclick="selectLocation('central')" class="selectArea">
+							<img class="tickBox" src="images/tick.svg" />
+							<p class="selectText">Seç</p>
+						</div>
+						<div class="difficuityBox box-central">
+							<p class="difficuityText">Zorluk;</p>
+							<div class="levelSelectArea">
+								<div onclick="selectDifficulty('Easy')" class="selectLevel">
+									<p class="EasyText">Kolay</p>
+								</div>
+								<div onclick="selectDifficulty('Medium')" class="selectLevel">
+									<p class="EasyText">Orta</p>
+								</div>
+								<div onclick="selectDifficulty('Hard')" class="selectLevel">
+									<p class="EasyText">Zor</p>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="location location-mirror">
+						<img class="image" src="images/locations/mirror.png" />
+
+						<div class="title-area">
+							<p class="loc-title">MIRROR PARKI</p>
+							<p class="loc-subtitle">LOKASYON</p>
+						</div>
+						<div class="informationTextArea">
+							<p class="İnformationText">Bilgilendirme</p>
+							<p class="informationDetailsText">Göl çevresinde ve yeşil alanlarda genel temizlik faaliyeti
+								yürütülerek kamu yararı gözetilir.</p>
+						</div>
+						<div onclick="selectLocation('mirror')" class="selectArea">
+							<img class="tickBox" src="images/tick.svg" />
+							<p class="selectText">Seç</p>
+						</div>
+						<div class="difficuityBox box-mirror">
+							<p class="difficuityText">Zorluk;</p>
+							<div class="levelSelectArea">
+								<div onclick="selectDifficulty('Easy')" class="selectLevel">
+									<p class="EasyText">Kolay</p>
+								</div>
+								<div onclick="selectDifficulty('Medium')" class="selectLevel">
+									<p class="EasyText">Orta</p>
+								</div>
+								<div onclick="selectDifficulty('Hard')" class="selectLevel">
+									<p class="EasyText">Zor</p>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="location location-mine">
+						<img class="image" src="images/locations/mine.png" />
+
+						<div class="title-area">
+							<p class="loc-title">MADEN OCAĞI</p>
+							<p class="loc-subtitle">LOKASYON</p>
+						</div>
+						<div class="informationTextArea">
+							<p class="İnformationText">Bilgilendirme</p>
+							<p class="informationDetailsText">Maden ocağı sahasında ağır işler ve kazı çalışmaları
+								yapılarak ceza infaz süreci yürütülür.</p>
+						</div>
+						<div onclick="selectLocation('mine')" class="selectArea">
+							<img class="tickBox" src="images/tick.svg" />
+							<p class="selectText">Seç</p>
+						</div>
+						<div class="difficuityBox box-mine">
+							<p class="difficuityText">Zorluk;</p>
+							<div class="levelSelectArea">
+								<div onclick="selectDifficulty('Easy')" class="selectLevel">
+									<p class="EasyText">Kolay</p>
+								</div>
+								<div onclick="selectDifficulty('Medium')" class="selectLevel">
+									<p class="EasyText">Orta</p>
+								</div>
+								<div onclick="selectDifficulty('Hard')" class="selectLevel">
+									<p class="EasyText">Zor</p>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="medicalArea">
+				<img class="medicalBox" src="images/box.png" />
+				<div class="medicalDepartmentArea">
+					<p class="MedicalText">SAĞLIK</p>
+					<p class="departmentText">Departmanı</p>
+					<p class="easyBox">Kolay</p>
+				</div>
+				<div class="addBoxArea"></div>
+				<input class="value" type="text" placeholder="Miktar..." />
+				<div onclick="send()" class="enterBox">
+					<p class="enterText">Onayla</p>
+				</div>
+			</div>
+			<div class="publicPage pages page-dashboard">
+				<img class="backgroundImages" src="images/background.png" />
+				<div class="titleOtherPage">
+					<img class="iconOtherPage" src="images/icon.png" />
+					<p class="BoldTitle">KAMU</p>
+					<p class="lightText">PANELİ</p>
+					<p class="infoText">Bilgilendirme</p>
+					<p class="infoDetail">Aktif olan kamu hizmetlerini ve geçmiş kayıtları buradan inceleyebilirsiniz.
+					</p>
+					<div class="profileSet">
+						<img class="profileCircle" src="images/profile.png" />
+						<img class="myFoto profilePicture" src="images/pp.jpg" />
+						<p class="myName pName">Baran Kaya</p>
+						<p class="myJob pGrade">Chief</p>
+					</div>
+				</div>
+				<div class="historyPage">
+					<div class="historyInput">
+						<input class="history-input" placeholder="Oyuncu Adı..." />
+						<img src="images/search.svg" />
+					</div>
+					<div class="historyArea">
+						<img class="timeIcon" src="images/time.png" />
+						<p class="historyText">Geçmiş</p>
+					</div>
+					<div class="historyConteiner">
+						<div class="conteinerPeople history"></div>
+					</div>
+				</div>
+				<div class="historyPage">
+					<div class="historyInput">
+						<input class="ongoing-input" placeholder="Oyuncu Adı..." />
+						<img src="images/search.svg" />
+					</div>
+					<!-- <p onclick="release(undefined, 'all')" class="release">Hepsini Çıkar</p> -->
+					<div class="historyArea">
+						<img class="timeIcon" src="images/polygon.png" />
+						<p class="historyText">Devam Edenler</p>
+					</div>
+					<div class="historyConteiner">
+						<div class="conteinerPeople ongoing"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="rightTopBox">
+		<img class="rightTheme" src="images/rightBox.png" />
+		<div class="rightSizeBox">
+			<p class="MedicalRightText">Sağlık</p>
+			<p class="departmentRightText">Departmanı</p>
+			<p class="rightTextBox">25</p>
+			<p class="rightTextEasy">Kolay</p>
+		</div>
+		<div class="textBottom">
+			<p class="progressbarText">İlerleme Çubuğu</p>
+			<p class="elevenText">11 <span class="otherText">/25</span></p>
+		</div>
+		<div class="stickBar">
+			<div class="stickLoadingBar"></div>
+		</div>
+	</div>
+	<script src="main.js"></script>
+</body>
+
+</html>

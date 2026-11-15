@@ -1,0 +1,148 @@
+{
+    "login":  {
+                  "system_access":  "ACCESSO AL SISTEMA",
+                  "identity_label":  "IDENTITÀ",
+                  "officer_name_placeholder":  "Nome Agente",
+                  "callsign_label":  "NOMINATIVO",
+                  "callsign_placeholder":  "000",
+                  "department_label":  "DIPARTIMENTO",
+                  "initialize_system":  "INIZIALIZZA SISTEMA",
+                  "title":  "AUTHENTICATION",
+                  "tap_to_connect":  "TAP TO CONNECT",
+                  "connecting":  "AUTHENTICATING...",
+                  "subtitle":  "ENTER CREDENTIALS TO ACCESS SYSTEM"
+              },
+    "dashboard":  {
+                      "tactical_view":  "VISTA TATTICA",
+                      "tactical_view_desc":  "Abilita la proiezione visiva dei coni per le unità alleate sulla mappa tattica.",
+                      "active_units":  "UNITÀ ATTIVE",
+                      "no_active_units":  "Nessuna unità attiva in questo canale",
+                      "mark_location":  "Segna Posizione",
+                      "follow_unit":  "Segui Unità",
+                      "secure_networks":  "RETI SICURE",
+                      "unit_settings":  "IMPOSTAZIONI UNITÀ",
+                      "callsign_label":  "NOMINATIVO",
+                      "update":  "AGGIORNA",
+                      "ui_scale":  "SCALA UI",
+                      "reset":  "REIMPOSTA",
+                      "move_ui":  "SPOSTA UI",
+                      "dragging":  "TRASCINAMENTO...",
+                      "enable_drag":  "ABILITA TRASCINAMENTO",
+                      "system_theme":  "TEMA SISTEMA",
+                      "tabs":  {
+                                   "home":  "Home",
+                                   "channels":  "Canali",
+                                   "private":  "Privato",
+                                   "settings":  "Impostazioni",
+                                   "profile":  "Profilo"
+                               },
+                      "position":  "POSIZIONE DISPOSITIVO",
+                      "finish_move":  "FINE SPOSTAMENTO",
+                      "system_control":  "CONTROLLO SISTEMA",
+                      "display_scale":  "SCALA SCHERMO",
+                      "search_unit":  "Cerca unita / nominativo...",
+                      "theme_color":  "COLORE TEMA",
+                      "disconnect":  "DISCONNETTI",
+                      "move_desc":  "Trascina liberamente il dispositivo GPS sullo schermo.",
+                      "identity":  "IDENTITA",
+                      "reset_default":  "RIPRISTINA PREDEFINITO",
+                      "reset_position":  "RIPRISTINA POSIZIONE",
+                      "you":  "TU",
+                      "officer_name_label":  "NOME AGENTE",
+                      "officer_name_placeholder":  "Nome Agente",
+                      "identity_settings":  "IDENTITA",
+                      "self_blip":  "MIO BLIP",
+                      "self_blip_desc":  "Mostra il tuo blip unita sulla mappa"
+                  },
+    "broken":  {
+                   "system_failure":  "GUASTO DEL SISTEMA",
+                   "repairing":  "RIPARAZIONE...",
+                   "critical_error":  "ERRORE CRITICO",
+                   "water_intrusion":  "INTRUSIONE ACQUA RILEVATA",
+                   "err_code_h2o":  "COD_ERR: H2O_FATAL",
+                   "system_restore":  "RIPRISTINO SISTEMA",
+                   "verifying_integrity":  "VERIFICA INTEGRITÀ...",
+                   "restoring_kernel":  "RIPRISTINO KERNEL...",
+                   "rebooting_modules":  "RIAVVIO MODULI...",
+                   "system_online":  "SISTEMA ONLINE",
+                   "system_halted":  "SISTEMA ARRESTATO",
+                   "hardware_integrity":  "INTEGRITÀ HARDWARE COMPROMESSA",
+                   "initiate_manual_repair":  "AVVIA RIPARAZIONE MANUALE",
+                   "repair":  "RIPARA",
+                   "close":  "CHIUDI",
+                   "footer_text":  "DADDY_GPS_OS v2.4.1 // DUMP_CORE_RILEVATO"
+               },
+    "controls":  {
+                     "connect":  "Connetti",
+                     "leave":  "Lascia"
+                 },
+    "department_select":  {
+                              "label":  "Dipartimento",
+                              "select_placeholder":  "Seleziona..."
+                          },
+    "gps_frame":  {
+                      "officer_name_label":  "Nome Agente",
+                      "officer_name_placeholder":  "es. Mario Rossi",
+                      "callsign_label":  "Nominativo",
+                      "callsign_placeholder":  "es. 215"
+                  },
+    "app":  {
+                "drag_to_move":  "TRASCINA PER SPOSTARE",
+                "save_position":  "SALVA POSIZIONE",
+                "press_esc":  "ESC PER CHIUDERE",
+                "drag_hint":  "TIENI PER TRASCINARE"
+            },
+    "settings":  {
+                     "language":  "LINGUA",
+                     "language_desc":  "Seleziona la lingua di visualizzazione per l\u0027interfaccia GPS.",
+                     "language_changed":  "Lingua cambiata. Riaprire il GPS per applicare.",
+                     "hard_reset":  "HARD RESET",
+                     "reset_clearing":  "CANCELLAZIONE DATI...",
+                     "reset_resetting":  "RIPRISTINO SISTEMA...",
+                     "reset_rebooting":  "RIAVVIO...",
+                     "reset_complete":  "RIPRISTINO COMPLETATO"
+                 },
+    "notify":  {
+                   "no_permission":  "Non hai il permesso di usare questo sistema.",
+                   "gps_disconnected":  "GPS disconnesso.",
+                   "gps_connected":  "GPS connesso.",
+                   "no_gps_item":  "Non hai un dispositivo GPS.",
+                   "follow_cancelled":  "Tracciamento annullato.",
+                   "gps_repaired":  "Dispositivo GPS riparato con successo!",
+                   "tracking_activated":  "Tracciamento GPS attivato.",
+                   "gps_reconnected":  "GPS riconnesso dopo la riparazione.",
+                   "gps_connecting":  "GPS in connessione...",
+                   "gps_disconnecting":  "GPS in disconnessione...",
+                   "invalid_name":  "Nome non valido.",
+                   "tracking_disabled":  "Tracciamento GPS disattivato.",
+                   "callsign_range":  "Il nominativo deve essere un numero tra %s e %s.",
+                   "select_department":  "Devi selezionare un dipartimento.",
+                   "invalid_department":  "Dipartimento non valido.",
+                   "waypoint_set":  "Waypoint impostato.",
+                   "name_empty":  "Il nome dell agente non puo essere vuoto."
+               },
+    "units":  {
+                  "you":  "TU",
+                  "filter_department":  "FILTRO DIPARTIMENTO",
+                  "filter_all":  "TUTTI",
+                  "start_tracking":  "Traccia unita",
+                  "stop_tracking":  "Ferma tracciamento",
+                  "set_waypoint":  "Imposta waypoint"
+              },
+    "profile":  {
+                    "radar_sizes":  "DIMENSIONI RADAR",
+                    "motorcycle":  "MOTO",
+                    "reset":  "REIMPOSTA",
+                    "vehicle":  "VEICOLO",
+                    "plane":  "AEREO",
+                    "helicopter":  "ELICOTTERO",
+                    "on_foot":  "A PIEDI",
+                    "boat":  "BARCA"
+                },
+    "channels":  {
+                     "active_unit":  "UNITA ATTIVA",
+                     "global_desc":  "Tutti i dipartimenti comunicano sullo stesso canale",
+                     "global_network":  "RETE GLOBALE",
+                     "global_channel":  "CANALE GLOBALE"
+                 }
+}

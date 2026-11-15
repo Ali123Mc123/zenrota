@@ -1,0 +1,18 @@
+{
+    "menu": {
+        "header": {
+            "title": "Daddy",
+            "subtitle": "Meniu Difuzor",
+            "search_placeholder": "https://www.youtube.com"
+        },
+        "favorites": {
+            "title": "Favorite",
+            "show_all": "Arată tot",
+            "show_less": "Arată mai puțin"
+        },
+        "footer": {
+            "no_music": "Nicio muzică",
+            "no_author": "Artist necunoscut"
+        }
+    }
+}

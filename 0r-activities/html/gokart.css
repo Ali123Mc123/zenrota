@@ -1,0 +1,559 @@
+.gokart-hud {
+    position: fixed;
+    top: 20vh;
+    right: 3vw;
+    z-index: 35;
+    width: var(--dialog-width);
+    color: #fff;
+    font-family: var(--sg-font);
+    pointer-events: none;
+    animation: multiplayer-row-in 260ms ease-out both;
+}
+
+.gokart-hud[hidden],
+.gokart-overlay[hidden],
+.gokart-overlay [hidden] {
+    display: none !important;
+}
+
+.rh-tag {
+    display: inline-block;
+    padding: clamp(6px, 0.6vh, 9px) clamp(12px, 0.7vw, 18px);
+    color: var(--picked-text);
+    background: var(--picked);
+    border-radius: 3px 3px 0 0;
+    font-family: var(--heading-font);
+    font-size: clamp(16px, 0.9vw, 22px);
+    font-style: italic;
+    font-weight: 700;
+    line-height: 1.1;
+    letter-spacing: 0.03em;
+}
+
+.rh-box {
+    padding: clamp(12px, 1.3vh, 18px) clamp(14px, 0.85vw, 20px);
+    overflow: hidden;
+    background: var(--dialog-bg);
+    border-radius: 0 3px 3px 3px;
+}
+
+.rh-top {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.rh-top small,
+.rh-speed small,
+.rh-start-box small,
+.rh-result-box small {
+    display: block;
+    color: rgba(255, 255, 255, 0.55);
+    font-size: clamp(9px, 0.5vw, 12px);
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+}
+
+.rh-top b {
+    display: block;
+    font-family: var(--heading-font);
+    font-size: clamp(34px, 2.2vw, 52px);
+    font-weight: 700;
+    line-height: 1;
+    font-variant-numeric: tabular-nums;
+}
+
+.rh-lap {
+    text-align: right;
+}
+
+.rh-lap b {
+    font-size: clamp(26px, 1.6vw, 38px);
+}
+
+.rh-status {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 12px;
+    margin-top: clamp(8px, 0.9vh, 12px);
+}
+
+.rh-status span {
+    color: rgba(255, 255, 255, 0.82);
+    font-size: clamp(9px, 0.5vw, 12px);
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+}
+
+.rh-status strong {
+    flex-shrink: 0;
+    font-size: clamp(14px, 0.8vw, 19px);
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+}
+
+.rh-progress {
+    height: 2px;
+    margin: clamp(8px, 0.8vh, 11px) calc(clamp(14px, 0.85vw, 20px) * -1) calc(clamp(12px, 1.3vh, 18px) * -1);
+    overflow: hidden;
+    background: rgba(255, 255, 255, 0.14);
+}
+
+.rh-progress i {
+    display: block;
+    height: 100%;
+    background: var(--picked);
+    transform: scaleX(0);
+    transform-origin: left center;
+    transition: transform 350ms ease;
+}
+
+.rh-section {
+    margin-top: clamp(10px, 1.1vh, 15px);
+}
+
+.rh-section em {
+    order: 2;
+    margin-left: 0;
+    color: rgba(255, 255, 255, 0.6);
+    font-family: var(--sg-font);
+    font-size: clamp(9px, 0.5vw, 12px);
+    font-style: normal;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+}
+
+.rh-section::after {
+    order: 1;
+}
+
+.rh-track {
+    padding: clamp(6px, 0.6vh, 9px) clamp(12px, 0.7vw, 16px);
+    background: var(--bar);
+    border-radius: 2px;
+}
+
+.gokart-route {
+    display: block;
+    width: 100%;
+    height: clamp(90px, 10.5vh, 140px);
+}
+
+.gokart-route path { fill: none; stroke: rgba(255, 255, 255, 0.3); stroke-width: 4; stroke-linejoin: round; }
+#kart-route-start { fill: rgba(255, 255, 255, 0.5); }
+#kart-route-target { fill: rgba(255, 255, 255, 0.35); }
+#kart-route-car { fill: var(--picked); stroke: var(--picked-text); stroke-width: 2; filter: drop-shadow(0 0 3px rgba(255, 255, 255, 0.65)); }
+
+.rh-speed {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: var(--bar-gap);
+    padding: clamp(8px, 0.8vh, 11px) clamp(14px, 0.85vw, 20px) clamp(12px, 1.2vh, 16px);
+    background: var(--bar);
+    border-radius: 2px;
+}
+
+.rh-speed > div:first-child {
+    display: flex;
+    align-items: baseline;
+    gap: clamp(10px, 0.6vw, 14px);
+}
+
+.rh-speed b {
+    font-family: var(--heading-font);
+    font-size: clamp(34px, 2.2vw, 52px);
+    font-weight: 700;
+    line-height: 1;
+    font-variant-numeric: tabular-nums;
+}
+
+.rh-speed kbd {
+    display: grid;
+    place-items: center;
+    min-width: clamp(34px, 2vw, 46px);
+    height: clamp(34px, 2vw, 46px);
+    color: var(--picked-text);
+    background: var(--picked);
+    border-radius: 2px;
+    font-family: var(--heading-font);
+    font-size: clamp(20px, 1.2vw, 28px);
+    font-weight: 700;
+}
+
+.rh-revs {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    height: 2px;
+    background: rgba(255, 255, 255, 0.12);
+}
+
+.rh-revs i {
+    display: block;
+    height: 100%;
+    background: var(--picked);
+    transform: scaleX(0);
+    transform-origin: left center;
+    transition: transform 100ms linear;
+}
+
+.gokart-hud.finished .rh-speed { display: none; }
+
+.gokart-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 36;
+    color: #fff;
+    font-family: var(--sg-font);
+    pointer-events: none;
+}
+
+.rh-start,
+.rh-result {
+    position: absolute;
+    left: 50%;
+    width: var(--dialog-width);
+    transform: translateX(-50%);
+}
+
+.rh-start { top: 14vh; }
+.rh-result { top: 50%; transform: translate(-50%, -50%); }
+
+.rh-start-box,
+.rh-result-box {
+    padding: clamp(14px, 1.5vh, 20px) clamp(14px, 0.85vw, 20px);
+    text-align: center;
+    background: var(--dialog-bg);
+    border-radius: 0 3px 3px 3px;
+}
+
+.gokart-start-lights {
+    display: flex;
+    justify-content: center;
+    gap: clamp(10px, 0.7vw, 16px);
+}
+
+.gokart-start-lights i {
+    width: clamp(22px, 1.4vw, 30px);
+    height: clamp(22px, 1.4vw, 30px);
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.12);
+    transition: background 150ms;
+}
+
+.gokart-start-lights .on { background: var(--picked); box-shadow: 0 0 14px rgba(255, 255, 255, 0.35); }
+.rh-start.go .gokart-start-lights { visibility: hidden; }
+
+.rh-start-box b {
+    display: block;
+    margin: clamp(8px, 0.9vh, 12px) 0 4px;
+    font-family: var(--heading-font);
+    font-size: clamp(56px, 4.6vw, 96px);
+    font-weight: 700;
+    line-height: 1;
+}
+
+.rh-toast {
+    position: absolute;
+    top: 9vh;
+    left: 50%;
+    min-width: 240px;
+    padding: 10px 24px;
+    text-align: center;
+    color: var(--picked-text);
+    background: var(--picked);
+    border-radius: 3px;
+    transform: translateX(-50%);
+}
+
+.rh-toast small { display: block; font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; }
+.rh-toast b { display: block; margin-top: 2px; font-family: var(--heading-font); font-size: 30px; font-weight: 700; }
+
+.rh-result-box p {
+    margin: 0 0 clamp(10px, 1.1vh, 14px);
+    padding: clamp(8px, 0.8vh, 11px) 12px;
+    color: var(--picked-text);
+    background: var(--picked);
+    border-radius: 2px;
+    font-size: clamp(11px, 0.6vw, 14px);
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+}
+
+.rh-result-box b {
+    display: block;
+    margin-top: 4px;
+    font-family: var(--heading-font);
+    font-size: clamp(36px, 2.4vw, 54px);
+    font-weight: 700;
+    line-height: 1;
+    font-variant-numeric: tabular-nums;
+}
+
+.rh-result-box footer {
+    margin-top: clamp(10px, 1.1vh, 14px);
+    color: rgba(255, 255, 255, 0.75);
+    font-size: clamp(11px, 0.6vw, 14px);
+    line-height: 1.45;
+}
+
+.rh-gear {
+    display: flex;
+    align-items: flex-end;
+    gap: clamp(8px, 0.5vw, 12px);
+}
+
+.rh-status span {
+    text-transform: capitalize;
+}
+
+.rh-start-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: clamp(185px, 18.5vh, 250px);
+}
+
+.rh-start.go .gokart-start-lights {
+    display: none;
+}
+
+.rh-gate {
+    text-align: center;
+}
+
+.rh-gate b {
+    font-size: clamp(26px, 1.6vw, 38px);
+}
+
+.rh-gear small {
+    margin-bottom: 2px;
+}
+
+.rh-bottom {
+    display: flex;
+    gap: var(--bar-gap);
+    margin-top: var(--bar-gap);
+}
+
+.rh-bottom .rh-speed {
+    flex: 1;
+    justify-content: flex-start;
+    gap: clamp(16px, 1vw, 24px);
+    margin-top: 0;
+}
+
+.rh-gate-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-width: 34%;
+    padding: clamp(8px, 0.8vh, 11px) clamp(10px, 0.6vw, 14px);
+    background: var(--bar);
+    border-radius: 2px;
+}
+
+.rh-gate-box small {
+    color: rgba(255, 255, 255, 0.55);
+    font-size: clamp(9px, 0.5vw, 12px);
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    white-space: nowrap;
+}
+
+.rh-gate-box b {
+    margin-top: 2px;
+    font-family: var(--heading-font);
+    font-size: clamp(26px, 1.6vw, 38px);
+    font-weight: 700;
+    line-height: 1;
+    font-variant-numeric: tabular-nums;
+}
+
+.gokart-hud.finished .rh-bottom {
+    display: none;
+}
+
+.rh-bottom .rh-speed {
+    align-items: flex-end;
+}
+
+.rh-gear {
+    align-items: flex-end;
+}
+
+.rh-gear small {
+    margin-bottom: calc(clamp(34px, 2.2vw, 52px) * 0.07);
+}
+
+.rh-speed kbd {
+    min-width: clamp(34px, 2.2vw, 52px);
+    height: clamp(34px, 2.2vw, 52px);
+    font-size: clamp(24px, 1.55vw, 36px);
+}
+
+.rh-start-box small {
+    text-transform: capitalize;
+}
+
+.rh-gear {
+    display: none;
+}
+
+.rh-bottom .rh-speed {
+    justify-content: space-between;
+    align-items: flex-end;
+    padding-bottom: clamp(12px, 1.2vh, 16px);
+}
+
+.rh-gate-inline {
+    text-align: right;
+}
+
+.rh-gate-inline small {
+    display: block;
+    color: rgba(255, 255, 255, 0.55);
+    font-size: clamp(9px, 0.5vw, 12px);
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    white-space: nowrap;
+}
+
+.rh-gate-inline b {
+    display: block;
+    margin-top: 2px;
+    font-family: var(--heading-font);
+    font-size: clamp(26px, 1.6vw, 38px);
+    font-weight: 700;
+    line-height: 1;
+    font-variant-numeric: tabular-nums;
+}
+
+.rh-lapbar {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    height: 2px;
+    overflow: hidden;
+    background: rgba(255, 255, 255, 0.12);
+}
+
+.rh-lapbar i {
+    display: block;
+    height: 100%;
+    background: var(--picked);
+    transform: scaleX(0);
+    transform-origin: left center;
+    transition: transform 350ms ease;
+}
+
+.rh-revs[hidden] {
+    display: none;
+}
+
+.rh-head {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.rh-brand {
+    margin-bottom: clamp(6px, 0.6vh, 9px);
+    text-align: right;
+    text-transform: uppercase;
+}
+
+.rh-brand span {
+    display: block;
+    font-size: clamp(26px, 1.83vw, 47px);
+    font-style: italic;
+    font-weight: 800;
+    line-height: 0.94;
+    letter-spacing: 0.005em;
+    transform: scaleX(0.88);
+    transform-origin: right center;
+    text-shadow: 0 2px 7px rgba(0, 0, 0, 0.76);
+}
+
+.rh-brand small {
+    display: block;
+    margin-top: 6px;
+    color: rgba(255, 255, 255, 0.78);
+    font-size: clamp(10px, 0.62vw, 16px);
+    font-style: italic;
+    font-weight: 800;
+    line-height: 1.2;
+    letter-spacing: 0.015em;
+    text-shadow: 0 2px 7px rgba(0, 0, 0, 0.76);
+}
+
+.rh-gate-inline small {
+    letter-spacing: 0.04em;
+    text-transform: capitalize;
+}
+
+.rh-start {
+    top: 12vh;
+    width: clamp(240px, 15vw, 330px);
+}
+
+.rh-start-row {
+    position: relative;
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 12px;
+    padding: clamp(10px, 1vh, 14px) clamp(14px, 0.85vw, 18px) clamp(12px, 1.2vh, 16px);
+    overflow: hidden;
+    color: #fff;
+    background: var(--dialog-bg);
+    border-radius: 0 3px 3px 3px;
+}
+
+.rh-start-row small {
+    color: rgba(255, 255, 255, 0.82);
+    font-size: clamp(12px, 0.66vw, 15px);
+    font-weight: 700;
+    letter-spacing: 0;
+    text-transform: none;
+}
+
+.rh-start-row b {
+    font-family: var(--heading-font);
+    font-size: clamp(26px, 1.6vw, 36px);
+    font-weight: 700;
+    line-height: 1;
+    font-variant-numeric: tabular-nums;
+}
+
+.rh-start-bar {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    height: 2px;
+    background: rgba(255, 255, 255, 0.14);
+}
+
+.rh-start-bar span {
+    display: block;
+    height: 100%;
+    background: var(--picked);
+    transform: scaleX(0);
+    transform-origin: left center;
+    transition: transform 1000ms linear;
+}

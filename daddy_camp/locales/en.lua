@@ -1,0 +1,150 @@
+Locales = Locales or {}
+
+Locales.en = {
+    camp = {
+        -- Pieces
+        piece = {
+            tent_dome = 'Dome Tent', tent_cabin = 'Cabin Tent', tent_canvas = 'Canvas Tent', sleeping_bag = 'Sleeping Bag', tarp = 'Tarp Shelter',
+            hammock = 'Hammock', fire_pit = 'Fire Pit', grill = 'Campfire Grill', tripod = 'Tripod and Pot', firewood_stack = 'Firewood Stack',
+            chopping_block = 'Chopping Block', log_bench = 'Log Bench', stump = 'Stump Seat', camp_chair = 'Camp Chair', lantern_hook = 'Lantern Hook',
+            camp_table = 'Camp Table', cooler = 'Cooler', stove = 'Camp Stove', water_jug = 'Water Jug', backpack = 'Backpack',
+            flashlight = 'Flashlight', torch = 'Torch', lantern = 'Lantern', axe = 'Camp Hatchet', roast_stick = 'Roasting Stick',
+            tent_bag = 'Tent Bag', firewood_bundle = 'Firewood', coffee_pot = 'Coffee Percolator', skillet = 'Cast Iron Skillet', mug = 'Enamel Mug', canteen = 'Canteen',
+        },
+        stash_label = '%s',
+
+        -- Targets
+        opt_sit = 'Sit down',
+        opt_lie = 'Lie down',
+        opt_open = 'Open',
+        opt_close = 'Close',
+        opt_stash = 'Look inside',
+        opt_fold = 'Fold or unfold',
+        opt_wood = 'Add firewood',
+        opt_light = 'Light the fire',
+        opt_douse = 'Put the fire out',
+        opt_roast = 'Roast on a stick',
+        opt_cook = 'Cook',
+        opt_collect = 'Take the food',
+        opt_fill = 'Fill with water',
+        opt_stove_on = 'Turn the stove on',
+        opt_stove_off = 'Turn the stove off',
+        opt_take_wood = 'Take firewood',
+        opt_store_wood = 'Stack firewood',
+        opt_put_log = 'Put a log on',
+        opt_chop = 'Split the log',
+        opt_switch = 'Switch on or off',
+        opt_pickup = 'Pack up',
+        opt_shop = 'Browse camping gear',
+
+        -- Progress bars
+        work_place = 'Setting it down...',
+        work_pitch = 'Pitching the tent...',
+        work_light = 'Lighting...',
+        work_wood = 'Handling firewood...',
+        work_douse = 'Pouring water...',
+        work_collect = 'Taking it off the heat...',
+        work_fill = 'Filling the pot...',
+        work_cook = 'Putting it on...',
+        work_pickup = 'Packing up...',
+
+        -- Help
+        place_help = '[E] Place  [Scroll] Turn  [Right click] Cancel',
+        stand_help = '[X] Get up',
+        roast_help = '[E] Pull it out of the fire',
+        key_toggle = 'Camp: switch the light in your hand',
+        key_drop = 'Camp: set the light in your hand down',
+
+        -- Menus
+        cook_title = 'Cook',
+        roast_title = 'Roast on a stick',
+        roast_food = { camp_marshmallow = 'Marshmallows', camp_sausage = 'Sausage' },
+        recipe_time = 'Ready in %s seconds',
+        recipe_missing = 'You are missing something for this',
+        shop_title = 'Camping Gear',
+        ui = {
+            station = 'Paleto Forest Ranger Station',
+            cats = { sleep = 'Tents & Sleep', fire = 'Fire & Kitchen', seat = 'Seating', light = 'Light', tool = 'Tools', food = 'Pantry', sport = 'Sports' },
+            cash = 'Cash', bank = 'Bank', pay_with = 'Pay with',
+            slip = 'Order slip', empty = 'Pick something off the wall.', add = 'Add to slip', each = 'each',
+            total = 'Total', pay = 'Pay', paid = 'Paid', close = 'Close', weight = '%s kg', remove = 'Remove',
+            short = 'Short by $%s', thanks = 'Happy camping!', in_slip = '%s on the slip', count = 'How many',
+        },
+        shop_blip = 'Camping Gear',
+
+        -- Results
+        paid = 'Paid $%s. Happy camping!',
+        roast_raw = 'Still raw: try again.',
+        roast_golden = 'Perfect, golden brown!',
+        roast_burnt = 'Burnt to a crisp.',
+        seat_taken = 'There is no free spot.',
+        no_recipes = 'Nothing can be cooked here right now.',
+
+        -- Problems
+        limit = 'You have set up as much camp gear as you may.',
+        not_now = 'You cannot do that now.',
+        slow_down = 'Slow down a little.',
+        too_far = 'That is too far away.',
+        no_camp_zone = 'You cannot camp here.',
+        crowded = 'Something is already standing there.',
+        no_item = 'You do not have that item any more.',
+        no_model = 'This piece needs the camp prop pack.',
+        not_yours = 'This is not yours.',
+        busy = 'It is in use: put the fire out or finish cooking first.',
+        cannot_carry = 'You cannot carry that.',
+        no_wood = 'You need firewood.',
+        fire_full = 'The fire cannot take more wood.',
+        no_igniter = 'You need a lighter or matches.',
+        no_water = 'You need water.',
+        stack_empty = 'The stack is empty.',
+        stack_full = 'The stack is full.',
+        no_money = 'You do not have enough money.',
+        not_ready = 'It is not ready yet.',
+        no_ingredients = 'You do not have what this needs.',
+        no_stick = 'You need a roasting stick.',
+        no_log = 'You need a log.',
+        no_axe = 'You need a camp hatchet.',
+        chop_missed = 'You missed: the log is still there.',
+        not_allowed = 'You are not allowed to do that.',
+
+        -- Where a camp may stand
+        indoors = 'Not indoors: camps go outside.',
+        bad_ground = 'Camps go on grass, earth, sand, gravel or snow.',
+        near_road = 'Too close to a road.',
+        water = 'Not in the water.',
+        slope = 'The ground is too steep.',
+        in_vehicle = 'Get out of the vehicle first.',
+        not_here = 'You cannot camp here.',
+        need_camp = 'Set up a tent or a fire first: that is where your camp is.',
+        camp_far = 'Too far from your camp: stay close to its tent or fire.',
+        camp_near = "Too close to someone else's camp.",
+        area_full = 'There are too many camps around here already.',
+
+        -- Packed-up camps
+        returned = '%s camp items were given back to you.',
+        returns_waiting = '%s camp items are waiting for you: make room in your pockets.',
+
+        -- Admin
+        admin_help = 'Camps around you',
+        admin_title = 'Camps nearby',
+        admin_none = 'No camps around here.',
+        admin_camp_on = '%s pieces here, %s in all, %s m away. Online',
+        admin_camp_off = '%s pieces here, %s in all, %s m away. Offline',
+        admin_mark = 'Mark it on the map',
+        admin_remove_camp = 'Remove this camp',
+        admin_remove_all = 'Remove everything of this player (%s)',
+        admin_dist = '%s m away',
+        admin_sure_camp = 'Remove the camp of %s? The pieces go back to them as items.',
+        admin_sure_all = 'Remove all %s pieces of %s, wherever they are? They go back to them as items.',
+        admin_sure_piece = 'Remove the %s? It goes back to its owner as an item.',
+        admin_removed = 'Removed %s pieces; they went back to their owner.',
+
+        -- Discord log
+        log = {
+            set_up = '**%s** (%s) set up a camp at %s',
+            packed = 'The camp of %s was packed up after they left: %s pieces wait for them',
+            removed = '**%s** removed the camp pieces of %s: %s (%s)',
+            scope_piece = 'one piece', scope_camp = 'camp', scope_owner = 'all of them',
+        },
+    },
+}

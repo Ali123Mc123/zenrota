@@ -1,0 +1,26 @@
+{
+    "NOTEBOOK_DEFAULT_LABEL": "Notebook",
+
+    "page": "PAGE",
+    "of": "OF",
+    "type_here": "Type here...",
+    "select_page_to_remove": "Select the page you want to remove",
+    "click_page_to_add_text": "Click on a page to add text",
+    "select_page_to_draw": "Select a page to start drawing",
+    "select_page_to_add_image": "Select a page to add an image",
+    "enter_image_url": "Enter image URL",
+    "add_image": "Add image",
+    "image_style": "Image style",
+    "drawing": "Drawing",
+    "tool": "Tool",
+    "draw_size": "Draw size",
+    "draw_color": "Draw color",
+    "draw_opacity": "Draw opacity",
+    "options": "Options",
+    "font": "Font",
+    "font_size": "Font size",
+    "font_styling": "Font styling",
+    "color": "Color",
+    "book_title": "Book title",
+    "book_color": "Book color"
+}

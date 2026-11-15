@@ -1,0 +1,1 @@
+import{dr as e}from"./api-Dx2fosVJ.js";var t=e({kind:``}),n=0;function r(e,r=1500){t.kind=e,window.clearTimeout(n),n=window.setTimeout(()=>t.kind=``,r)}export{r as n,t};

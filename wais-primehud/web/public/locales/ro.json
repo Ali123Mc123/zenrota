@@ -1,0 +1,610 @@
+{
+    "rightCorner": {
+        "job": "Loc de muncă",
+        "gang": "Bandă",
+        "bank": "Bancă",
+        "cash": "Numerar",
+        "weapon": "Armă",
+        "blackMoney": "Bani negri"
+    },
+    "weaponHud": {
+        "melee": "Corp la corp"
+    },
+    "carhud": {
+        "kmh": "km/h",
+        "mph": "mile/h",
+        "bpm": "BPM",
+        "rpmUnit": "RPM ×1000",
+        "meter": "m",
+        "feet": "ft"
+    },
+    "quickMenu": {
+        "markText": "Apasă pentru a marca",
+        "categories": {
+            "nearby": "Aproape",
+            "music": "Muzică",
+            "car": "Mașină"
+        },
+        "nearby": {
+            "bank": "Bancă",
+            "shop": "Magazin",
+            "clothing": "Magazin de haine",
+            "garage": "Garaj",
+            "mechanic": "Mecanic",
+            "gunshop": "Armurier"
+        },
+        "music": {
+            "placeholder": "Introduceți un link al melodiei",
+            "play": "Redă",
+            "errorTitle": "Eroare Muzică",
+            "errorMessages": {
+                "invalidUrl": "URL invalid. Te rugăm să introduci un link valid al melodiei.",
+                "invalidVideoData": "Date video invalide. Verifică URL-ul și încearcă din nou.",
+                "apiError": "Eroare API. Te rugăm să încerci mai târziu."
+            }
+        },
+        "car": {
+            "allDoors": "Deschide sau închide toate ușile",
+            "bonnet": "Capotă",
+            "boot": "Portbagaj",
+            "engine": "Motor",
+            "doorHint": "Clic stânga: ușă · Clic dreapta: geam",
+            "seat": "Scaun",
+            "seatTaken": "Scaun ocupat",
+            "seatCurrent": "Scaunul tău",
+            "scroll": "Derulează"
+        }
+    },
+    "location": {
+        "nearPostal": "Aproape de codul poștal"
+    },
+    "settingsMenu": {
+        "title": "HUD",
+        "subtitle": "Setări",
+        "reset": "Resetează setările",
+        "confirm": "Confirmă",
+        "cancel": "Anulează",
+        "categories": {
+            "general": "General",
+            "carhud": "HUD Mașină",
+            "status": "HUD Status",
+            "corner": "Colț Dreapta"
+        },
+        "fuel": {
+            "title": "Tip Combustibil",
+            "description": "Selectează tipul de combustibil al vehiculului. Litri sau galoane. * Modificările vor fi salvate.",
+            "litres": "Litri 100L",
+            "gallons": "Galoane 100G"
+        },
+        "map": {
+            "title": "Hartă",
+            "description": "Selectează formatul în care dorești să vezi harta.",
+            "square": "Pătrat",
+            "circle": "Cerc"
+        },
+        "cinematic": {
+            "title": "Mod Cinematic",
+            "description": "Activează sau dezactivează modul cinematic.",
+            "enabled": "Activat",
+            "disabled": "Dezactivat"
+        },
+        "carhuds": {
+            "horizon": "Horizon",
+            "apex": "Apex",
+            "velocity": "Velocity",
+            "minimal": "Minimal",
+            "pulse": "Pulse",
+            "orbit": "Orbit",
+            "heritage": "Heritage",
+            "gauge": "Gauge",
+            "halo": "Halo",
+            "duo": "Duo",
+            "changes": "*Modificările tale vor fi salvate",
+            "description": "În dreapta poți edita paletele de culori ale HUD-ului mașinii și să îți alegi propria culoare."
+        },
+        "status": {
+            "circle": "Cerc",
+            "circlev2": "Cerc V2",
+            "circlev3": "Cerc V3",
+            "circlev4": "Cerc V4",
+            "square": "Pătrat",
+            "squarev2": "Pătrat V2",
+            "hexagon": "Hexagon",
+            "wave": "Val",
+            "simple": "Simplu",
+            "simplev2": "Simplu V2",
+            "regular": "Normal",
+            "changes": "*Modificările tale vor fi salvate",
+            "description": "În dreapta poți edita paletele de culori ale HUD-ului status și să îți alegi propria culoare."
+        },
+        "rightCorner": {
+            "color": {
+                "title": "Selectează Culorile",
+                "description": "Alege culorile pentru elementele din colțul dreapta. Poți alege culori diferite pentru fiecare pictogramă și text."
+            },
+            "classic": {
+                "title": "Classic",
+                "description": "Conține informații în stil vechi, într-un singur rând."
+            },
+            "boxed": {
+                "title": "Boxed",
+                "description": "Forma cutiei este dinamică. Culorile se pot schimba în funcție de ora zilei."
+            },
+            "sleek": {
+                "title": "Sleek",
+                "description": "Are un aspect modern într-o cutie. Recomandat cu încredere."
+            },
+            "simple": {
+                "title": "Simplu",
+                "description": "Un design simplu fără cutii. Foarte util pentru cei care preferă simplitatea."
+            },
+            "slim": {
+                "title": "Slim",
+                "description": "Un aspect compact cu bloc de identitate, linie de stare și rânduri de bani cu gradient. Câștigurile și pierderile înlocuiesc suma pe loc."
+            },
+            "pill": {
+                "title": "Pastilă",
+                "description": "Etichete rotunjite cu pictograme pe trei rânduri aliniate la dreapta. Câștigurile și pierderile de bani înlocuiesc suma pe loc."
+            }
+        },
+        "mapRadius": {
+            "title": "Mărginirea hărții",
+            "description": "Poți selecta cât de rotunjite sunt marginile hărții pătrate aici.",
+            "enabled": "Activat",
+            "disabled": "Dezactivat"
+        },
+        "performance": {
+            "title": "Mod performanță",
+            "description": "Poți selecta modul de performanță aici. Va schimba performanța HUD-ului. Este recomandat să folosești acest mod dacă ai un PC slab.",
+            "balanced": "Echilibrat",
+            "performance": "Performanță"
+        },
+        "speed": {
+            "title": "Tip viteză",
+            "description": "Selectează tipul de viteză pe care vrei să îl vezi în Carhud.",
+            "kmh": "KM/H",
+            "mph": "MP/H"
+        },
+        "theme_data": {
+            "title": "Exportă Tema",
+            "export": "Exportă",
+            "description": "Poți exporta tema curentă. Înlocuiește datele copiate cu datele din Config.json"
+        },
+        "editor": {
+            "title": "Mod Personalizare",
+            "description": "Aranjează pozițiile elementelor HUD. Obține aspectul dorit.",
+            "button": "Personalizare"
+        },
+        "minimap": {
+            "title": "Minimap",
+            "description": "Poți ascunde sau afișa minimapa aici.",
+            "show": "Afișează",
+            "hide": "Ascunde"
+        },
+        "scale": {
+            "title": "Scală",
+            "description": "Aici poți modifica scala HUD-ului. Acest lucru va schimba dimensiunea elementelor HUD-ului."
+        }
+    },
+    "settings": {
+        "brand": {
+            "title": "Setări HUD"
+        },
+        "nav": {
+            "main": "Principal",
+            "status": "Stare",
+            "carhud": "HUD vehicul",
+            "map": "Hartă",
+            "corner": "Colțul din dreapta",
+            "location": "Locație",
+            "voice": "Voce",
+            "weapon": "Armă",
+            "customization": "Personalizare",
+            "damage": "Daune",
+            "waypoint": "Waypoint"
+        },
+        "pages": {
+            "main": {
+                "title": "Principal",
+                "subtitle": "Unități, culori de zi și de noapte și când apare HUD-ul"
+            },
+            "status": {
+                "title": "Stare",
+                "subtitle": "Alege stilul, ce stări apar și când se ascund"
+            },
+            "carhud": {
+                "title": "HUD vehicul",
+                "subtitle": "Stil, culori și unități pentru fiecare HUD de vehicul"
+            },
+            "map": {
+                "title": "Hartă",
+                "subtitle": "Forma și când apare minihărta"
+            },
+            "corner": {
+                "title": "Colțul din dreapta",
+                "subtitle": "Alege un stil și ce apare sus în dreapta"
+            },
+            "location": {
+                "title": "Locație",
+                "subtitle": "Informații despre stradă și busolă"
+            },
+            "voice": {
+                "title": "Voce",
+                "subtitle": "Stilul și culorile indicatorului de microfon"
+            },
+            "weapon": {
+                "title": "Armă",
+                "subtitle": "Stilul și culorile casetei de armă"
+            },
+            "customization": {
+                "title": "Personalizare",
+                "subtitle": "Distribuie setările HUD sau încarcă pe ale altcuiva"
+            },
+            "damage": {
+                "title": "Daune",
+                "subtitle": "Indicator pentru direcția loviturii și efect de sânge"
+            },
+            "waypoint": {
+                "title": "Waypoint",
+                "subtitle": "Marcaj pentru waypoint-ul tău: stil, distanță, înălțime și marginile ecranului"
+            }
+        },
+        "actions": {
+            "editLayout": "Editează aspectul",
+            "close": "ESC",
+            "copyCode": "Copiază codul",
+            "import": "Importă",
+            "resetDefault": "Resetează la implicit",
+            "resetNight": "Resetează culorile de noapte",
+            "resetPosition": "Resetează poziția hărții",
+            "startPreview": "Previzualizează acest HUD",
+            "stopPreview": "Oprește previzualizarea",
+            "applyAll": "Aplică tuturor",
+            "applyAllConfirm": "Apasă din nou pentru confirmare",
+            "previewHit": "Previzualizează lovitura"
+        },
+        "editing": {
+            "label": "Editezi culorile pentru",
+            "day": "Zi",
+            "night": "Noapte"
+        },
+        "cards": {
+            "general": "General",
+            "dayNight": "Culori de zi și de noapte",
+            "behaviour": "Comportament",
+            "performance": "Performanță",
+            "style": "Stil",
+            "showStatuses": "Stările afișate",
+            "colours": "Culori",
+            "nightHint": "Culorile de noapte folosesc culoarea de zi până le schimbi",
+            "options": "Opțiuni",
+            "hideWhenFull": "Ascunde când e plin",
+            "position": "Poziție",
+            "units": "Unități",
+            "display": "Afișare",
+            "shape": "Formă",
+            "showOnScreen": "Afișează pe ecran",
+            "moneyChanges": "Modificări de bani",
+            "locationWidget": "Widget de locație",
+            "compassWidget": "Busolă",
+            "visibility": "Vizibilitate",
+            "look": "Aspect",
+            "mapView": "Vizualizare hartă",
+            "waypoint": "Marcaj waypoint",
+            "hudParts": "Elemente HUD",
+            "damage": "Efecte de daune",
+            "waypointStyle": "Stilul marcajului"
+        },
+        "hints": {
+            "dayNight": "Culorile de noapte se activează la 20:00 și se opresc la 06:00, ora serverului",
+            "performance": "Echilibrat actualizează HUD-ul mai rar și consumă mai puțin CPU",
+            "statusStyle": "Modificările se aplică instant",
+            "hideWhenFull": "O stare dispare peste această valoare și revine când scade",
+            "oxygen": "Doar sub apă",
+            "previewLive": "Ești într-un vehicul, HUD-ul real este deja vizibil",
+            "carStyle": "Stilul folosit în mașini și alte vehicule terestre",
+            "mapPosition": "Trage harta în Editează aspectul ca să o muți",
+            "cornerStyle": "Blocul de informații din dreapta sus",
+            "moneyChanges": "Suma +/- de lângă numerar, bancă și bani murdari",
+            "hiddenWidget": "Acest widget este ascuns. Alege un stil mai sus ca să-l afișezi din nou.",
+            "location": "Strada, zona și codul poștal din apropiere",
+            "compass": "Banda de direcție din partea de sus a ecranului, urmează camera",
+            "voice": "Raza vocii și indicatorul de vorbire",
+            "weapon": "Arma curentă și muniția",
+            "code": "Copiază-l ca să-ți distribui HUD-ul sau lipește aici un cod și apasă Importă",
+            "applyAll": "Aceasta salvează setările tale ca implicite ale serverului pentru toți. Jucătorii le primesc după repornirea scriptului, iar setările lor proprii sunt resetate. Apasă din nou butonul pentru confirmare.",
+            "mapView": "Ce textură de hartă se afișează. Auto comută între zi și noapte.",
+            "waypoint": "Arată waypoint-ul tău în lume cu distanța și dacă se află deasupra sau sub tine",
+            "gangEmpty": "Ascuns cât timp nu ai o gaşcă",
+            "hudParts": "Ascunde elementele de care nu ai nevoie. Rămân vizibile cât editezi aranjarea.",
+            "damage": "Arată de unde a venit o lovitură și afișează sânge când primești daune"
+        },
+        "fields": {
+            "language": "Limbă",
+            "speedUnit": "Unitate de viteză",
+            "fuelUnit": "Unitate de combustibil",
+            "clock": "Ceas",
+            "hideAbove": "Ascunde peste",
+            "fadeAfter": "Dispare după",
+            "anchor": "Ancorare",
+            "layout": "Aranjare",
+            "showFor": "Afișează timp de",
+            "animation": "Animație",
+            "depthUnit": "Unitate de adâncime",
+            "altitudeUnit": "Unitate de altitudine"
+        },
+        "units": {
+            "litres": "Litri",
+            "gallons": "Galoane",
+            "metres": "Metri",
+            "feet": "Picioare",
+            "clock24": "24 de ore",
+            "clock12": "12 ore",
+            "km": "Kilometri",
+            "mi": "Mile"
+        },
+        "dayNight": {
+            "auto": "Automat",
+            "day": "Mereu zi",
+            "night": "Mereu noapte"
+        },
+        "behaviour": {
+            "hideInPause": "Ascunde HUD-ul în meniul de pauză",
+            "hideAiming": "Ascunde HUD-ul când țintești",
+            "firstPerson": "Arată HUD-ul în persoana întâi",
+            "cinematic": "Benzi negre cinematice",
+            "hideAll": "Ascunde toate elementele HUD",
+            "beltSound": "Sunete centură"
+        },
+        "performance": {
+            "balanced": "Echilibrat",
+            "performance": "Performanță"
+        },
+        "serverDefault": "Implicit server",
+        "auto": "Auto",
+        "seconds": "{n} secunde",
+        "styles": {
+            "none": "Ascuns"
+        },
+        "status": {
+            "health": "Viață",
+            "armour": "Armură",
+            "hunger": "Foame",
+            "thirst": "Sete",
+            "stamina": "Rezistență",
+            "stress": "Stres",
+            "oxygen": "Oxigen",
+            "autoHide": "Ascunde stările pline",
+            "alwaysInVehicle": "Arată mereu în vehicul"
+        },
+        "layout": {
+            "row": "Rând",
+            "column": "Coloană"
+        },
+        "anchors": {
+            "map": "Jos stânga, lângă hartă",
+            "bottomCenter": "Jos la mijloc",
+            "bottomRight": "Jos dreapta",
+            "topLeft": "Sus stânga"
+        },
+        "vehicles": {
+            "car": "Mașină",
+            "boat": "Barcă",
+            "aircraft": "Aeronavă",
+            "bike": "Bicicletă",
+            "motorcycle": "Motocicletă"
+        },
+        "map": {
+            "square": "Pătrat",
+            "circle": "Cerc",
+            "vehicleOnly": "Arată doar în vehicule",
+            "rotate": "Rotește cu camera",
+            "border": "Arată bordura",
+            "softCorners": "Colțuri rotunjite",
+            "hexagon": "Hexagon",
+            "pentagon": "Pentagon",
+            "pill": "Pastilă"
+        },
+        "corner": {
+            "playerId": "ID jucător",
+            "playerCount": "Jucători online",
+            "clock": "Ceas",
+            "date": "Dată",
+            "logo": "Logo server",
+            "job": "Job",
+            "gang": "Gang",
+            "money": "Numerar",
+            "bank": "Bancă",
+            "blackMoney": "Bani murdari",
+            "name": "Numele jucătorului"
+        },
+        "animations": {
+            "slide": "Alunecare",
+            "fade": "Estompare",
+            "none": "Niciuna"
+        },
+        "weapon": {
+            "show": "Arată caseta de armă"
+        },
+        "share": {
+            "copied": "Cod copiat în clipboard",
+            "invalid": "Acest cod nu poate fi citit",
+            "imported": "Setări importate",
+            "reset": "Setări resetate",
+            "applied": "Setările tale au fost trimise serverului"
+        },
+        "colors": {
+            "text": "Text",
+            "icons": "Iconițe",
+            "icon": "Iconiță",
+            "speed": "Viteză",
+            "fuel": "Combustibil",
+            "rpm": "Turație",
+            "warning": "Avertizare",
+            "orange": "Atenție",
+            "indicator": "Indicator",
+            "arrow": "Săgeată de direcție",
+            "symbol": "Simbol",
+            "sky": "Cer",
+            "ground": "Sol",
+            "gear": "Viteză",
+            "red": "Zona roșie",
+            "heart": "Inimă",
+            "stamina": "Rezistență",
+            "engine": "Motor",
+            "trail": "Bară",
+            "live": "Vorbește",
+            "muted": "Dezactivat",
+            "background": "Fundal",
+            "tick": "Liniuțe mici",
+            "tickMajor": "Liniuțe lungi",
+            "active": "Direcția activă",
+            "pointer": "Indicator",
+            "north": "Nord",
+            "street": "Numele străzii",
+            "subStreet": "A doua stradă",
+            "postal": "Cod poștal",
+            "pill": "Capsula de direcție",
+            "pillBorder": "Bordura capsulei",
+            "dim": "Direcții laterale",
+            "reserve": "Muniție de rezervă",
+            "electric": "Combustibil electric",
+            "accent": "Accent",
+            "line": "Contur",
+            "above": "Țintă deasupra",
+            "below": "Țintă dedesubt",
+            "arrived": "Ai ajuns"
+        },
+        "options": {
+            "showDepth": "Arată adâncimea",
+            "showLetters": "Arată literele busolei",
+            "showAltitude": "Arată altitudinea",
+            "showLanding": "Arată trenul de aterizare",
+            "showHeart": "Arată ritmul cardiac",
+            "showStamina": "Arată rezistența",
+            "showFuel": "Arată combustibilul",
+            "showSub": "Arată a doua stradă",
+            "showPostal": "Arată codul poștal",
+            "showDegrees": "Arată gradele",
+            "width": "Lățime",
+            "ppd": "Spațiere",
+            "radius": "Raza curbei",
+            "tickShort": "Înălțimea liniuțelor scurte",
+            "tickLong": "Înălțimea liniuțelor lungi",
+            "textSize": "Mărimea textului",
+            "gap": "Spațiu",
+            "bgOpacity": "Opacitatea fundalului",
+            "minorOpacity": "Opacitatea liniuțelor mici",
+            "degreeOpacity": "Opacitatea gradelor",
+            "lift": "Trage în sus",
+            "lineMax": "Cel mai lung nume de stradă",
+            "indicator": "Direcția loviturii",
+            "blood": "Efect de sânge",
+            "critical": "Sânge la viață scăzută",
+            "indicatorOpacity": "Opacitate indicator",
+            "bloodOpacity": "Opacitate sânge",
+            "size": "Mărime indicator",
+            "showDistance": "Arată distanța",
+            "showHeight": "Arată indiciul de înălțime",
+            "showPole": "Arată stâlpul",
+            "shrink": "Micșorează cu distanța",
+            "fadeFar": "Estompează la distanță",
+            "hideOffscreen": "Ascunde în afara ecranului",
+            "arriveRadius": "Distanța de sosire",
+            "edgeMargin": "Marginea ecranului",
+            "markerSize": "Dimensiunea marcajului"
+        },
+        "mapStyles": {
+            "default": "Implicit",
+            "postal": "Postal",
+            "auto": "Zi și noapte",
+            "gta6": "GTA 6"
+        },
+        "waypoint": {
+            "show": "Arată marcajul"
+        },
+        "parts": {
+            "status": "Stări",
+            "carhud": "HUD vehicul",
+            "rightCorner": "Colț dreapta sus",
+            "weapon": "Armă",
+            "location": "Locație",
+            "compass": "Busolă",
+            "microphone": "Microfon",
+            "map": "Minihartă"
+        },
+        "presets": {
+            "title": "Aspecte salvate",
+            "hint": "Dă un nume aspectului curent și revino la el oricând",
+            "placeholder": "Numele aspectului",
+            "save": "Salvează",
+            "apply": "Aplică",
+            "delete": "Șterge",
+            "empty": "Nu există aspecte salvate",
+            "saved": "Aspect salvat",
+            "applied": "Aspect aplicat",
+            "deleted": "Aspect șters",
+            "full": "Poți păstra cel mult {max} aspecte",
+            "needName": "Scrie mai întâi un nume",
+            "savedOn": "Salvat la {date}"
+        },
+        "damage": {
+            "show": "Afișează efectele de daune"
+        }
+    },
+    "editor": {
+        "mode": "Mod editor",
+        "hint": {
+            "idle": "Trage pentru a muta · trage de colț pentru a redimensiona · trage în afara colțului pentru a roti · dublu clic pentru resetare",
+            "moving": "Se mută: {name}",
+            "overlaps": "se suprapune cu {name}",
+            "snapped": "aliniat la {edge}"
+        },
+        "edges": {
+            "left": "marginea stângă",
+            "right": "marginea dreaptă",
+            "top": "marginea de sus",
+            "bottom": "marginea de jos",
+            "centerX": "centrul orizontal",
+            "centerY": "centrul vertical"
+        },
+        "toolbar": {
+            "snap": "Aliniere",
+            "grid": "Grilă",
+            "guides": "Ghidaje",
+            "showHidden": "Arată ascunse",
+            "undo": "Anulează",
+            "redo": "Refă",
+            "reset": "Resetează",
+            "cancel": "Renunță",
+            "save": "Salvează"
+        },
+        "grids": {
+            "small": "Mică",
+            "medium": "Medie",
+            "large": "Mare"
+        },
+        "names": {
+            "server_infos": "Info server",
+            "time_date": "Ceas și dată",
+            "boat": "HUD barcă",
+            "air": "HUD aeronavă",
+            "bike": "HUD bicicletă",
+            "moto": "HUD motocicletă",
+            "waypoint": "Waypoint",
+            "health_armour": "Viață și armură",
+            "hunger_thirst": "Foame și sete",
+            "quickMenu": "Meniu rapid"
+        },
+        "dock": {
+            "rotateLeft": "Rotește la stânga",
+            "rotateRight": "Rotește la dreapta",
+            "rotation": "Rotație (grade)",
+            "scale": "Scară (procente)",
+            "reset": "Resetează dimensiunea și rotația"
+        }
+    },
+    "waypoint": {
+        "arrived": "AI AJUNS"
+    }
+}

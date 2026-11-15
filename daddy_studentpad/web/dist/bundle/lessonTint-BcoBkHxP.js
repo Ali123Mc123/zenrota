@@ -1,0 +1,1 @@
+var e=[`red`,`blue`,`green`,`orange`,`purple`,`teal`,`pink`,`indigo`,`yellow`,`cyan`];function t(t){let n=0;for(let e of t)n=n*31+e.charCodeAt(0)>>>0;return e[n%e.length]}export{t};

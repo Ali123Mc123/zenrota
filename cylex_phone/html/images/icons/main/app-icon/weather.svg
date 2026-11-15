@@ -1,0 +1,61 @@
+<svg width="100" height="100" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" class="app-icon">
+
+    <!-- ===== DEFINITIONS ===== -->
+    <defs>
+        <!-- Dark background gradient -->
+        <linearGradient id="weather-bgGradientDark" x1="50" y1="0" x2="50" y2="100" gradientUnits="userSpaceOnUse">
+            <stop stop-color="#525755"/>
+            <stop offset="0.52" stop-color="#232625"/>
+            <stop offset="1" stop-color="#181A19"/>
+        </linearGradient>
+
+        <!-- Default (blue) background gradient -->
+        <linearGradient id="weather-bgGradient" x1="50.5432" y1="99" x2="50.4577" y2="0.999992" gradientUnits="userSpaceOnUse">
+            <stop stop-color="#00D6FA"/>
+            <stop offset="1" stop-color="#008EE7"/>
+        </linearGradient>
+
+        <!-- Sun icon gradient (used in dark & default) -->
+        <linearGradient id="weather-sunGradient" x1="32.3333" y1="24" x2="32.3333" y2="60.6667" gradientUnits="userSpaceOnUse">
+            <stop stop-color="#FFCC51"/>
+            <stop offset="1" stop-color="#F2DA48"/>
+        </linearGradient>
+    </defs>
+
+    <!-- ================= DARK ================= -->
+    <g class="icon-dark" style="display: none;">
+        <!-- Dark gradient background -->
+        <rect width="100" height="100" fill="url(#weather-bgGradientDark)"/>
+
+        <!-- Sun icon with yellow gradient -->
+        <path d="M32.3333 60.6667C42.4586 60.6667 50.6667 52.4586 50.6667 42.3333C50.6667 32.2081 42.4586 24 32.3333 24C22.2081 24 14 32.2081 14 42.3333C14 52.4586 22.2081 60.6667 32.3333 60.6667Z" fill="url(#weather-sunGradient)"/>
+
+        <!-- Cloud icon -->
+        <path opacity="0.9" fill-rule="evenodd" clip-rule="evenodd" d="M35.6666 75.6663H70.6666V75.6447C79.0241 75.2113 85.6666 68.298 85.6666 59.833C85.6666 51.0888 78.5774 43.9997 69.8333 43.9997C68.6758 43.9997 67.5474 44.1247 66.4599 44.3597C64.1624 37.3755 57.5866 32.333 49.8333 32.333C40.3066 32.333 32.5583 39.9447 32.3383 49.4188C26.5849 50.8972 22.3333 56.1188 22.3333 62.333C22.3333 69.6972 28.3024 75.6663 35.6666 75.6663Z" fill="white"/>
+    </g>
+
+    <!-- ================= TINTED ================= -->
+    <g class="icon-tinted" style="display: none;">
+        <!-- Solid background (theme controlled) -->
+        <rect width="100" height="100" fill="var(--icon-bg, #D9D9D9)"/>
+
+        <!-- Sun icon tintable -->
+        <path d="M32.3333 60.6667C42.4586 60.6667 50.6667 52.4586 50.6667 42.3333C50.6667 32.2081 42.4586 24 32.3333 24C22.2081 24 14 32.2081 14 42.3333C14 52.4586 22.2081 60.6667 32.3333 60.6667Z" fill="currentColor"/>
+
+        <!-- Cloud icon tintable -->
+        <path opacity="0.9" fill-rule="evenodd" clip-rule="evenodd" d="M35.6666 75.6663H70.6666V75.6447C79.0241 75.2113 85.6666 68.298 85.6666 59.833C85.6666 51.0888 78.5774 43.9997 69.8333 43.9997C68.6758 43.9997 67.5474 44.1247 66.4599 44.3597C64.1624 37.3755 57.5866 32.333 49.8333 32.333C40.3066 32.333 32.5583 39.9447 32.3383 49.4188C26.5849 50.8972 22.3333 56.1188 22.3333 62.333C22.3333 69.6972 28.3024 75.6663 35.6666 75.6663Z" fill="currentColor"/>
+    </g>
+
+    <!-- ================= DEFAULT ================= -->
+    <g class="icon-default" style="display: block;">
+        <!-- Blue gradient background -->
+        <rect width="100" height="100" fill="url(#weather-bgGradient)"/>
+
+        <!-- Sun icon with yellow gradient -->
+        <path d="M32.3333 60.6667C42.4586 60.6667 50.6667 52.4586 50.6667 42.3333C50.6667 32.2081 42.4586 24 32.3333 24C22.2081 24 14 32.2081 14 42.3333C14 52.4586 22.2081 60.6667 32.3333 60.6667Z" fill="url(#weather-sunGradient)"/>
+
+        <!-- Cloud icon white -->
+        <path opacity="0.9" fill-rule="evenodd" clip-rule="evenodd" d="M35.6666 75.6663H70.6666V75.6447C79.0241 75.2113 85.6666 68.298 85.6666 59.833C85.6666 51.0888 78.5774 43.9997 69.8333 43.9997C68.6758 43.9997 67.5474 44.1247 66.4599 44.3597C64.1624 37.3755 57.5866 32.333 49.8333 32.333C40.3066 32.333 32.5583 39.9447 32.3383 49.4188C26.5849 50.8972 22.3333 56.1188 22.3333 62.333C22.3333 69.6972 28.3024 75.6663 35.6666 75.6663Z" fill="white"/>
+    </g>
+
+</svg>

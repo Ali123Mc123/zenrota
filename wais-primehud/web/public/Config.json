@@ -1,0 +1,45 @@
+{
+    "language": "en",
+    "timerLocation": "auto",
+    "timerLocales": {
+        "en": "en-US",
+        "tr": "tr-TR",
+        "de": "de-DE",
+        "fr": "fr-FR",
+        "it": "it-IT",
+        "cz": "cs-CZ",
+        "ro": "ro-RO",
+        "ar": "ar"
+    },
+    "disableMusicSystem": false,
+    "YOUTUBE_API_KEY": "",
+    "money": {
+        "prefix": ".",
+        "symbol": "$"
+    },
+    "nearbys": [
+        "bank",
+        "shop",
+        "clothing",
+        "garage",
+        "mechanic",
+        "gunshop"
+    ],
+    "emptyGangLabels": [
+        "unknown",
+        "bilinmiyor",
+        "unbekannt",
+        "inconnu",
+        "sconosciuto",
+        "neznámý",
+        "necunoscut",
+        "غير معروف",
+        "none",
+        "nogang",
+        "no gang",
+        "nil",
+        "null",
+        "undefined"
+    ],
+    "serverName": "Daddy Roleplay"
+}

@@ -1,0 +1,610 @@
+{
+    "rightCorner": {
+        "job": "Job",
+        "gang": "Gang",
+        "bank": "Bank",
+        "cash": "Cash",
+        "weapon": "Weapon",
+        "blackMoney": "Black Money"
+    },
+    "weaponHud": {
+        "melee": "Melee"
+    },
+    "carhud": {
+        "kmh": "km/h",
+        "mph": "mp/h",
+        "bpm": "BPM",
+        "rpmUnit": "RPM ×1000",
+        "meter": "m",
+        "feet": "ft"
+    },
+    "quickMenu": {
+        "markText": "Click to mark it",
+        "categories": {
+            "nearby": "Nearby",
+            "music": "Music",
+            "car": "Car"
+        },
+        "nearby": {
+            "bank": "Bank",
+            "shop": "Shop",
+            "clothing": "Clothing Store",
+            "garage": "Garage",
+            "mechanic": "Mechanic",
+            "gunshop": "Gun Shop"
+        },
+        "music": {
+            "placeholder": "Enter a song URL",
+            "play": "Play",
+            "errorTitle": "Music Error",
+            "errorMessages": {
+                "invalidUrl": "Invalid URL. Please enter a valid song URL.",
+                "invalidVideoData": "Invalid video data. Please check the URL and try again.",
+                "apiError": "API Error. Please try again later."
+            }
+        },
+        "car": {
+            "allDoors": "Open or close all doors",
+            "bonnet": "Bonnet",
+            "boot": "Boot",
+            "engine": "Engine",
+            "doorHint": "Left click: Door · Right click: Window",
+            "seat": "Seat",
+            "seatTaken": "Seat taken",
+            "seatCurrent": "Your seat",
+            "scroll": "Scroll"
+        }
+    },
+    "location": {
+        "nearPostal": "Near Postal"
+    },
+    "settingsMenu": {
+        "title": "Hud",
+        "subtitle": "Settings",
+        "reset": "Reset Settings",
+        "confirm": "Confirm",
+        "cancel": "Cancel",
+        "categories": {
+            "general": "General",
+            "carhud": "Car Hud",
+            "status": "Status Hud",
+            "corner": "Right Corner"
+        },
+        "fuel": {
+            "title": "Fuel Type",
+            "description": "Select the type of fuel used by the vehicle. Litres or Gallons. * Changes will be saved.",
+            "litres": "Litres 100L",
+            "gallons": "Gallons 100G"
+        },
+        "map": {
+            "title": "Map",
+            "description": "Select the format in which you want to see the map.",
+            "square": "Square",
+            "circle": "Circle"
+        },
+        "cinematic": {
+            "title": "Cinematic Mode",
+            "description": "Enable or disable cinematic mode..",
+            "enabled": "Enabled",
+            "disabled": "Disabled"
+        },
+        "carhuds": {
+            "horizon": "Horizon",
+            "apex": "Apex",
+            "velocity": "Velocity",
+            "minimal": "Minimal",
+            "pulse": "Pulse",
+            "orbit": "Orbit",
+            "heritage": "Heritage",
+            "gauge": "Gauge",
+            "halo": "Halo",
+            "duo": "Duo",
+            "changes": "*Your changes will be saved",
+            "description": "On the right you can edit carhud's colour palettes and find your own colour."
+        },
+        "status": {
+            "circle": "Circle",
+            "circlev2": "Circle V2",
+            "circlev3": "Circle V3",
+            "circlev4": "Circle V4",
+            "square": "Square",
+            "squarev2": "Square V2",
+            "hexagon": "Hexagon",
+            "wave": "Wave",
+            "simple": "Simple",
+            "simplev2": "Simple V2",
+            "regular": "Regular",
+            "changes": "*Your changes will be saved",
+            "description": "On the right you can edit hud's colour palettes and find your own colour."
+        },
+        "rightCorner": {
+            "color": {
+                "title": "Select Colors",
+                "description": "Select the colors for the right corner elements. You can choose a different colour for each icon and text."
+            },
+            "classic": {
+                "title": "Classic",
+                "description": "Contains the old-looking information in a row."
+            },
+            "boxed": {
+                "title": "Boxed",
+                "description": "The box shape has a dynamic appearance. The colours can change according to the morning or evening cycle."
+            },
+            "sleek": {
+                "title": "Sleek",
+                "description": "It is boxed and has the newest look. Definitely recommended."
+            },
+            "simple": {
+                "title": "Simple",
+                "description": "It is a simple design that does not contain any boxes. It is very useful for those who like simplicity."
+            },
+            "slim": {
+                "title": "Slim",
+                "description": "A compact layout with a name block, a status line and gradient money rows. Money gains and losses replace the amount in place."
+            },
+            "pill": {
+                "title": "Pill",
+                "description": "Rounded chips with icon tiles, laid out in three right-aligned rows. Money gains and losses replace the amount in place."
+            }
+        },
+        "mapRadius": {
+            "title": "Map softness",
+            "description": "You can select the edge softness of the square map here.",
+            "enabled": "Enabled",
+            "disabled": "Disabled"
+        },
+        "performance": {
+            "title": "Performance Mode",
+            "description": "You can select the performance mode here. It will change the performance of the hud. It is recommended to use this mode if you have a low-end PC.",
+            "balanced": "Balanced",
+            "performance": "Performance"
+        },
+        "theme_data": {
+            "title": "Export Theme",
+            "export": "Export",
+            "description": "You can export your current theme. Replace the copied data with the data in Config.json"
+        },
+        "speed": {
+            "title": "Speed type",
+            "description": "Select the speed type you want to see in Carhud.",
+            "kmh": "KM/H",
+            "mph": "MP/H"
+        },
+        "editor": {
+            "title": "Customization Mode",
+            "description": "Arrange the positions of the HUD elements. Achieve the desired appearance.",
+            "button": "Customization"
+        },
+        "minimap": {
+            "title": "Minimap",
+            "description": "You can hide or show the minimap here.",
+            "show": "Show",
+            "hide": "Hide"
+        },
+        "scale": {
+            "title": "Scale",
+            "description": "You can change the scale of the hud here. It will change the size of the hud elements."
+        }
+    },
+    "settings": {
+        "brand": {
+            "title": "HUD Settings"
+        },
+        "nav": {
+            "main": "Main",
+            "status": "Status",
+            "carhud": "Car HUD",
+            "map": "Map",
+            "corner": "Right Corner",
+            "location": "Location",
+            "voice": "Voice",
+            "weapon": "Weapon",
+            "customization": "Customization",
+            "damage": "Damage",
+            "waypoint": "Waypoint"
+        },
+        "pages": {
+            "main": {
+                "title": "Main",
+                "subtitle": "Units, day and night colours, and when the HUD shows"
+            },
+            "status": {
+                "title": "Status",
+                "subtitle": "Pick the style, which statuses show and when they hide"
+            },
+            "carhud": {
+                "title": "Car HUD",
+                "subtitle": "Style, colours and units for each vehicle HUD"
+            },
+            "map": {
+                "title": "Map",
+                "subtitle": "Shape and when the minimap shows"
+            },
+            "corner": {
+                "title": "Right Corner",
+                "subtitle": "Pick a style and choose what shows in the top right"
+            },
+            "location": {
+                "title": "Location",
+                "subtitle": "Street info and compass widgets"
+            },
+            "voice": {
+                "title": "Voice",
+                "subtitle": "Microphone indicator style and colours"
+            },
+            "weapon": {
+                "title": "Weapon",
+                "subtitle": "Weapon box style and colours"
+            },
+            "customization": {
+                "title": "Customization",
+                "subtitle": "Share your HUD setup or load someone else's"
+            },
+            "damage": {
+                "title": "Damage",
+                "subtitle": "Hit direction indicator and blood overlay"
+            },
+            "waypoint": {
+                "title": "Waypoint",
+                "subtitle": "Marker for your map waypoint: style, distance, height and screen edges"
+            }
+        },
+        "actions": {
+            "editLayout": "Edit layout",
+            "close": "ESC",
+            "copyCode": "Copy code",
+            "import": "Import",
+            "resetDefault": "Reset to default",
+            "resetNight": "Reset night colours",
+            "resetPosition": "Reset map position",
+            "startPreview": "Preview this HUD",
+            "stopPreview": "Stop preview",
+            "applyAll": "Apply to everyone",
+            "applyAllConfirm": "Press again to confirm",
+            "previewHit": "Preview a hit"
+        },
+        "editing": {
+            "label": "Editing colours for",
+            "day": "Day",
+            "night": "Night"
+        },
+        "cards": {
+            "general": "General",
+            "dayNight": "Day and night colours",
+            "behaviour": "Behaviour",
+            "performance": "Performance",
+            "style": "Style",
+            "showStatuses": "Show these statuses",
+            "colours": "Colours",
+            "nightHint": "Night colours fall back to the day colour until you change them",
+            "options": "Options",
+            "hideWhenFull": "Hide when full",
+            "position": "Position",
+            "units": "Units",
+            "display": "Display",
+            "shape": "Shape",
+            "showOnScreen": "Show on screen",
+            "moneyChanges": "Money changes",
+            "locationWidget": "Location widget",
+            "compassWidget": "Compass",
+            "visibility": "Visibility",
+            "look": "Look",
+            "mapView": "Map view",
+            "waypoint": "Waypoint marker",
+            "hudParts": "HUD parts",
+            "damage": "Damage effects",
+            "waypointStyle": "Marker style"
+        },
+        "hints": {
+            "dayNight": "Night colours switch on at 20:00 and off at 06:00, server time",
+            "performance": "Balanced updates the HUD less often and uses less CPU",
+            "statusStyle": "Changes apply instantly",
+            "hideWhenFull": "A status fades out above this value and comes back when it drops",
+            "oxygen": "Only under water",
+            "previewLive": "You are in a vehicle, the real HUD is already showing",
+            "carStyle": "The style used in cars and other land vehicles",
+            "mapPosition": "Drag the map in Edit layout to move it",
+            "cornerStyle": "The top right information block",
+            "moneyChanges": "The +/- amount next to cash, bank and black money",
+            "hiddenWidget": "This widget is hidden. Pick a style above to show it again.",
+            "location": "Street, area and nearby postal code",
+            "compass": "Heading tape at the top of the screen, follows the camera",
+            "voice": "Voice range and talking indicator",
+            "weapon": "Current weapon and ammo",
+            "code": "Copy it to share your HUD, or paste a code here and press Import",
+            "applyAll": "This saves your settings as the server default for everyone. Players get them after the script restarts and their own settings are reset. Press the button again to confirm.",
+            "mapView": "Which map texture to show. Auto switches between day and night.",
+            "waypoint": "Marks your map waypoint in the world with its distance and whether it is above or below you",
+            "gangEmpty": "Hidden while you have no gang",
+            "hudParts": "Hide the parts you do not need. Hidden parts still show while you edit the layout.",
+            "damage": "Shows where a hit came from and a blood overlay when you take damage"
+        },
+        "fields": {
+            "language": "Language",
+            "speedUnit": "Speed unit",
+            "fuelUnit": "Fuel unit",
+            "clock": "Clock",
+            "hideAbove": "Hide above",
+            "fadeAfter": "Fade out after",
+            "anchor": "Anchor",
+            "layout": "Layout",
+            "showFor": "Show for",
+            "animation": "Animation",
+            "depthUnit": "Depth unit",
+            "altitudeUnit": "Altitude unit"
+        },
+        "units": {
+            "litres": "Litres",
+            "gallons": "Gallons",
+            "metres": "Metres",
+            "feet": "Feet",
+            "clock24": "24-hour",
+            "clock12": "12-hour",
+            "km": "Kilometres",
+            "mi": "Miles"
+        },
+        "dayNight": {
+            "auto": "Automatic",
+            "day": "Always day",
+            "night": "Always night"
+        },
+        "behaviour": {
+            "hideInPause": "Hide HUD in the pause menu",
+            "hideAiming": "Hide HUD while aiming",
+            "firstPerson": "Show HUD in first person",
+            "cinematic": "Cinematic black bars",
+            "hideAll": "Hide all HUD elements",
+            "beltSound": "Seatbelt sounds"
+        },
+        "performance": {
+            "balanced": "Balanced",
+            "performance": "Performance"
+        },
+        "serverDefault": "Server default",
+        "auto": "Auto",
+        "seconds": "{n} seconds",
+        "styles": {
+            "none": "Hidden"
+        },
+        "status": {
+            "health": "Health",
+            "armour": "Armour",
+            "hunger": "Hunger",
+            "thirst": "Thirst",
+            "stamina": "Stamina",
+            "stress": "Stress",
+            "oxygen": "Oxygen",
+            "autoHide": "Hide full statuses",
+            "alwaysInVehicle": "Always show while in a vehicle"
+        },
+        "layout": {
+            "row": "Row",
+            "column": "Column"
+        },
+        "anchors": {
+            "map": "Bottom left, next to the map",
+            "bottomCenter": "Bottom centre",
+            "bottomRight": "Bottom right",
+            "topLeft": "Top left"
+        },
+        "vehicles": {
+            "car": "Car",
+            "boat": "Boat",
+            "aircraft": "Aircraft",
+            "bike": "Bike",
+            "motorcycle": "Motorcycle"
+        },
+        "map": {
+            "square": "Square",
+            "circle": "Circle",
+            "vehicleOnly": "Show only in vehicles",
+            "rotate": "Rotate with camera",
+            "border": "Show border",
+            "softCorners": "Soft corners",
+            "hexagon": "Hexagon",
+            "pentagon": "Pentagon",
+            "pill": "Pill"
+        },
+        "corner": {
+            "playerId": "Player ID",
+            "playerCount": "Players online",
+            "clock": "Clock",
+            "date": "Date",
+            "logo": "Server logo",
+            "job": "Job",
+            "gang": "Gang",
+            "money": "Cash",
+            "bank": "Bank",
+            "blackMoney": "Black money",
+            "name": "Player name"
+        },
+        "animations": {
+            "slide": "Slide in",
+            "fade": "Fade",
+            "none": "None"
+        },
+        "weapon": {
+            "show": "Show the weapon box"
+        },
+        "share": {
+            "copied": "Code copied to the clipboard",
+            "invalid": "This code could not be read",
+            "imported": "Settings imported",
+            "reset": "Settings reset to default",
+            "applied": "Your settings were sent to the server"
+        },
+        "colors": {
+            "text": "Text",
+            "icons": "Icons",
+            "icon": "Icon",
+            "speed": "Speed",
+            "fuel": "Fuel",
+            "rpm": "RPM",
+            "warning": "Warning",
+            "orange": "Caution",
+            "indicator": "Indicator",
+            "arrow": "Heading arrow",
+            "symbol": "Symbol",
+            "sky": "Sky",
+            "ground": "Ground",
+            "gear": "Gear",
+            "red": "Redline",
+            "heart": "Heart",
+            "stamina": "Stamina",
+            "engine": "Engine",
+            "trail": "Bar",
+            "live": "Talking",
+            "muted": "Muted",
+            "background": "Background",
+            "tick": "Small ticks",
+            "tickMajor": "Long ticks",
+            "active": "Active direction",
+            "pointer": "Pointer",
+            "north": "North",
+            "street": "Street name",
+            "subStreet": "Second street",
+            "postal": "Postal code",
+            "pill": "Direction pill",
+            "pillBorder": "Pill border",
+            "dim": "Side directions",
+            "reserve": "Reserve ammo",
+            "electric": "Electric fuel",
+            "accent": "Accent",
+            "line": "Outline",
+            "above": "Target above",
+            "below": "Target below",
+            "arrived": "Arrived"
+        },
+        "options": {
+            "showDepth": "Show depth",
+            "showLetters": "Show compass letters",
+            "showAltitude": "Show altitude",
+            "showLanding": "Show landing gear",
+            "showHeart": "Show heart rate",
+            "showStamina": "Show stamina",
+            "showFuel": "Show fuel",
+            "showSub": "Show second street",
+            "showPostal": "Show postal code",
+            "showDegrees": "Show degrees",
+            "width": "Width",
+            "ppd": "Spacing",
+            "radius": "Curve radius",
+            "tickShort": "Short tick height",
+            "tickLong": "Long tick height",
+            "textSize": "Text size",
+            "gap": "Gap",
+            "bgOpacity": "Background opacity",
+            "minorOpacity": "Small tick opacity",
+            "degreeOpacity": "Degree text opacity",
+            "lift": "Pull up",
+            "lineMax": "Longest street name",
+            "indicator": "Hit direction",
+            "blood": "Blood overlay",
+            "critical": "Low health blood",
+            "indicatorOpacity": "Indicator opacity",
+            "bloodOpacity": "Blood opacity",
+            "size": "Indicator size",
+            "showDistance": "Show distance",
+            "showHeight": "Show height cue",
+            "showPole": "Show pole",
+            "shrink": "Shrink with distance",
+            "fadeFar": "Fade when far",
+            "hideOffscreen": "Hide when off screen",
+            "arriveRadius": "Arrival distance",
+            "edgeMargin": "Edge margin",
+            "markerSize": "Marker size"
+        },
+        "mapStyles": {
+            "default": "Default",
+            "postal": "Postal",
+            "auto": "Day and night",
+            "gta6": "GTA 6"
+        },
+        "waypoint": {
+            "show": "Show waypoint marker"
+        },
+        "parts": {
+            "status": "Status",
+            "carhud": "Vehicle HUD",
+            "rightCorner": "Right corner",
+            "weapon": "Weapon",
+            "location": "Location",
+            "compass": "Compass",
+            "microphone": "Microphone",
+            "map": "Minimap"
+        },
+        "presets": {
+            "title": "Saved layouts",
+            "hint": "Name your current layout and bring it back any time",
+            "placeholder": "Layout name",
+            "save": "Save",
+            "apply": "Apply",
+            "delete": "Delete",
+            "empty": "No saved layouts yet",
+            "saved": "Layout saved",
+            "applied": "Layout applied",
+            "deleted": "Layout deleted",
+            "full": "You can keep up to {max} layouts",
+            "needName": "Type a name first",
+            "savedOn": "Saved {date}"
+        },
+        "damage": {
+            "show": "Show damage effects"
+        }
+    },
+    "editor": {
+        "mode": "Editor mode",
+        "hint": {
+            "idle": "Drag to move · drag a corner to resize · drag outside a corner to rotate · double-click to reset",
+            "moving": "Moving: {name}",
+            "overlaps": "overlaps {name}",
+            "snapped": "snapped to {edge}"
+        },
+        "edges": {
+            "left": "left edge",
+            "right": "right edge",
+            "top": "top edge",
+            "bottom": "bottom edge",
+            "centerX": "horizontal centre",
+            "centerY": "vertical centre"
+        },
+        "toolbar": {
+            "snap": "Snap",
+            "grid": "Grid",
+            "guides": "Guides",
+            "showHidden": "Show hidden",
+            "undo": "Undo",
+            "redo": "Redo",
+            "reset": "Reset",
+            "cancel": "Cancel",
+            "save": "Save"
+        },
+        "grids": {
+            "small": "Small",
+            "medium": "Medium",
+            "large": "Large"
+        },
+        "names": {
+            "server_infos": "Server info",
+            "time_date": "Clock and date",
+            "boat": "Boat HUD",
+            "air": "Aircraft HUD",
+            "bike": "Bike HUD",
+            "moto": "Motorcycle HUD",
+            "waypoint": "Waypoint",
+            "health_armour": "Health and armour",
+            "hunger_thirst": "Hunger and thirst",
+            "quickMenu": "Quick menu"
+        },
+        "dock": {
+            "rotateLeft": "Rotate left",
+            "rotateRight": "Rotate right",
+            "rotation": "Rotation (degrees)",
+            "scale": "Scale (percent)",
+            "reset": "Reset size and rotation"
+        }
+    },
+    "waypoint": {
+        "arrived": "ARRIVED"
+    }
+}

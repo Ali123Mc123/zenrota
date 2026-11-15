@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CVehicleModelInfoVariation>
+  <variationData>
+    <!-- ONX Fire Pack Start -->
+
+    <!-- Miscellaneous Start -->
+    <!-- Miscellaneous End -->
+
+    <!-- Engines & Pumpers Start -->
+    <!-- Brenner Starkstrom (0010-NX) -->
+    <Item>
+      <modelName>onx_firestark</modelName>
+      <colors>
+        <Item>
+          <indices content="char_array">
+            28
+            28
+            2
+            0
+            111
+            111
+          </indices>
+          <liveries>
+            <Item value="false" />
+            <Item value="false" />
+            <Item value="false" />
+            <Item value="false" />
+            <Item value="false" />
+            <Item value="false" />
+            <Item value="false" />
+            <Item value="false" />
+          </liveries>
+        </Item>
+      </colors>
+      <kits>
+        <Item>5710_onx_firestark_modkit</Item>
+      </kits>
+      <windowsWithExposedEdges />
+      <plateProbabilities>
+        <Probabilities>
+          <Item>
+            <Name>Police guv plate</Name>
+            <Value value="100" />
+          </Item>
+        </Probabilities>
+      </plateProbabilities>
+      <lightSettings value="1" />
+      <sirenSettings value="5700" />
+    </Item>
+    <!-- MTL Impulse (0011-NX) -->
+    <Item>
+      <modelName>onx_fireimpulse</modelName>
+      <colors>
+        <Item>
+          <indices content="char_array">
+            31
+            117
+            0
+            29
+            42
+            111
+          </indices>
+        </Item>
+      </colors>
+      <kits>
+        <Item>5711_onx_fireimpulse_modkit</Item>
+      </kits>
+      <windowsWithExposedEdges />
+      <plateProbabilities>
+        <Probabilities>
+          <Item>
+            <Name>Police guv plate</Name>
+            <Value value="100" />
+          </Item>
+        </Probabilities>
+      </plateProbabilities>
+      <lightSettings value="3684" />
+      <sirenSettings value="5701" />
+    </Item>
+    <!-- Engines & Pumpers End -->
+
+    <!-- Ladder Trucks, Towers & Quints Start -->
+    <!-- Ladder Trucks, Towers & Quints End -->
+
+    <!-- Rescue & Squad Units Start -->
+    <!-- Rescue & Squad Units End -->
+
+    <!-- Tankers & Tenders Start -->
+    <!-- Tankers & Tenders End -->
+
+    <!-- Brush & Wildland Units Start -->
+    <!-- Brush & Wildland Units End -->
+
+    <!-- Command & Battalion Units Start -->
+    <!-- Command & Battalion Units End -->
+
+    <!-- Hazmat & Special Operations Start -->
+    <!-- Hazmat & Special Operations End -->
+
+    <!-- Airport, Marine & Aircraft Start -->
+    <!-- Airport, Marine & Aircraft End -->
+
+    <!-- Utility & Support Start -->
+    <!-- Utility & Support End -->
+
+    <!-- ONX Fire Pack End -->
+  </variationData>
+</CVehicleModelInfoVariation>

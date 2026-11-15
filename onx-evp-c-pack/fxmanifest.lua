@@ -1,0 +1,31 @@
+shared_script '@FeloxAC/modules/include/shared.lua'
+client_script '@FeloxAC/modules/include/client.lua'
+server_script '@FeloxAC/modules/include/server.lua'
+shared_script '@FeloxAC/modules/include/guard_runtime.lua'
+client_script '@FeloxAC/modules/include/weaponGuard.lua'
+fx_version 'cerulean'
+game 'gta5'
+author 'ONX'
+description 'WiseGuy Emergency Vehicles Pack'
+version '3.0.2'
+lua54 'yes'
+
+data_file 'HANDLING_FILE' 'data/handling.meta'
+data_file 'VEHICLE_METADATA_FILE' 'data/vehicles.meta'
+data_file 'CARCOLS_FILE' 'data/carcols.meta'
+data_file 'VEHICLE_VARIATION_FILE' 'data/carvariations.meta'
+
+files {
+  'data/*.meta'
+}
+
+escrow_ignore {
+  'data/*.meta',
+  'stream/*.ytd'
+}
+
+server_scripts {
+  'version.lua',
+}
+
+dependency '/assetpacks'

@@ -1,0 +1,610 @@
+{
+    "rightCorner": {
+        "job": "Povolání",
+        "gang": "Gang",
+        "bank": "Banka",
+        "cash": "Hotovost",
+        "weapon": "Zbraň",
+        "blackMoney": "Černé peníze"
+    },
+    "weaponHud": {
+        "melee": "Zblízka"
+    },
+    "carhud": {
+        "kmh": "km/h",
+        "mph": "mph",
+        "bpm": "BPM",
+        "rpmUnit": "RPM ×1000",
+        "meter": "m",
+        "feet": "ft"
+    },
+    "quickMenu": {
+        "markText": "Klikni pro označení",
+        "categories": {
+            "nearby": "Blízko",
+            "music": "Hudba",
+            "car": "Auto"
+        },
+        "nearby": {
+            "bank": "Banka",
+            "shop": "Obchod",
+            "clothing": "Obchod s oblečením",
+            "garage": "Garáž",
+            "mechanic": "Mechanik",
+            "gunshop": "Obchod se zbraněmi"
+        },
+        "music": {
+            "placeholder": "Zadejte URL písničky",
+            "play": "Přehrát",
+            "errorTitle": "Chyba Hudby",
+            "errorMessages": {
+                "invalidUrl": "Neplatná URL. Prosím zadejte platnou URL písničky.",
+                "invalidVideoData": "Neplatná data videa. Zkontrolujte URL a zkuste to znovu.",
+                "apiError": "Chyba API. Zkuste to prosím později."
+            }
+        },
+        "car": {
+            "allDoors": "Otevřít nebo zavřít všechny dveře",
+            "bonnet": "Kapota",
+            "boot": "Kufr",
+            "engine": "Motor",
+            "doorHint": "Levé tlačítko: dveře · Pravé tlačítko: okno",
+            "seat": "Sedadlo",
+            "seatTaken": "Sedadlo je obsazené",
+            "seatCurrent": "Tvé sedadlo",
+            "scroll": "Posunout"
+        }
+    },
+    "location": {
+        "nearPostal": "Blízko PSČ"
+    },
+    "settingsMenu": {
+        "title": "Hud",
+        "subtitle": "Nastavení",
+        "reset": "Obnovit nastavení",
+        "confirm": "Potvrdit",
+        "cancel": "Zrušit",
+        "categories": {
+            "general": "Obecné",
+            "carhud": "Auto HUD",
+            "status": "Status HUD",
+            "corner": "Pravý roh"
+        },
+        "fuel": {
+            "title": "Typ paliva",
+            "description": "Vyberte typ paliva používaného vozidlem. Litry nebo Galony. * Změny budou uloženy.",
+            "litres": "Litry 100L",
+            "gallons": "Galony 100G"
+        },
+        "map": {
+            "title": "Mapa",
+            "description": "Vyberte formát mapy, který chcete zobrazit.",
+            "square": "Čtverec",
+            "circle": "Kruh"
+        },
+        "cinematic": {
+            "title": "Filmový režim",
+            "description": "Povolit nebo zakázat filmový režim.",
+            "enabled": "Povoleno",
+            "disabled": "Zakázáno"
+        },
+        "carhuds": {
+            "horizon": "Horizon",
+            "apex": "Apex",
+            "velocity": "Velocity",
+            "minimal": "Minimal",
+            "pulse": "Pulse",
+            "orbit": "Orbit",
+            "heritage": "Heritage",
+            "gauge": "Gauge",
+            "halo": "Halo",
+            "duo": "Duo",
+            "changes": "*Vaše změny budou uloženy",
+            "description": "Vpravo můžete upravit barevné palety HUDu a najít si vlastní barvy."
+        },
+        "status": {
+            "circle": "Kruh",
+            "circlev2": "Kruh V2",
+            "circlev3": "Kruh V3",
+            "circlev4": "Kruh V4",
+            "square": "Čtverec",
+            "squarev2": "Čtverec V2",
+            "hexagon": "Šestiúhelník",
+            "wave": "Vlna",
+            "simple": "Jednoduchý",
+            "simplev2": "Jednoduchý V2",
+            "regular": "Běžný",
+            "changes": "*Vaše změny budou uloženy",
+            "description": "Vpravo můžete upravit barevné palety HUDu a najít si vlastní barvy."
+        },
+        "rightCorner": {
+            "color": {
+                "title": "Vyberte barvy",
+                "description": "Vyberte barvy pro prvky v pravém rohu. Každá ikona a text může mít svou vlastní barvu."
+            },
+            "classic": {
+                "title": "Classic",
+                "description": "Obsahuje starší styl zobrazení v řádku."
+            },
+            "boxed": {
+                "title": "Boxed",
+                "description": "Box má dynamický vzhled. Barvy se mění podle denního cyklu."
+            },
+            "sleek": {
+                "title": "Sleek",
+                "description": "Krabicový s moderním vzhledem. Určitě doporučeno."
+            },
+            "simple": {
+                "title": "Jednoduchý",
+                "description": "Jednoduchý design bez rámečků. Velmi vhodné pro milovníky jednoduchosti."
+            },
+            "slim": {
+                "title": "Slim",
+                "description": "Kompaktní rozvržení s blokem identity, stavovým řádkem a řádky peněz s přechodem. Přírůstky a úbytky nahradí částku na místě."
+            },
+            "pill": {
+                "title": "Pilulka",
+                "description": "Zaoblené štítky s ikonami ve třech řádcích zarovnaných vpravo. Zisky a ztráty peněz nahradí částku na místě."
+            }
+        },
+        "mapRadius": {
+            "title": "Měkké okraje mapy",
+            "description": "Zde můžete nastavit měkkost okrajů čtvercové mapy.",
+            "enabled": "Povoleno",
+            "disabled": "Zakázáno"
+        },
+        "performance": {
+            "title": "Režim výkonu",
+            "description": "Zde můžete vybrat režim výkonu. Změní to výkon HUDu. Doporučuje se použít tento režim, pokud máte slabší PC.",
+            "balanced": "Vyvážený",
+            "performance": "Výkon"
+        },
+        "speed": {
+            "title": "Typ rychlosti",
+            "description": "Vyberte typ rychlosti, který chcete zobrazit v Carhudu.",
+            "kmh": "KM/H",
+            "mph": "MP/H"
+        },
+        "theme_data": {
+            "title": "Export motivu",
+            "export": "Exportovat",
+            "description": "Můžete exportovat svůj aktuální motiv. Nahraďte zkopírovaná data daty v Config.json"
+        },
+        "editor": {
+            "title": "Režim přizpůsobení",
+            "description": "Uspořádejte pozice prvků HUD. Dosáhněte požadovaného vzhledu.",
+            "button": "Přizpůsobení"
+        },
+        "minimap": {
+            "title": "Minimapa",
+            "description": "Zde můžete minimapu skrýt nebo zobrazit.",
+            "show": "Zobrazit",
+            "hide": "Skrýt"
+        },
+        "scale": {
+            "title": "Měřítko",
+            "description": "Zde můžete změnit měřítko HUDu. Změní to velikost prvků HUDu."
+        }
+    },
+    "settings": {
+        "brand": {
+            "title": "Nastavení HUD"
+        },
+        "nav": {
+            "main": "Hlavní",
+            "status": "Stav",
+            "carhud": "HUD vozidla",
+            "map": "Mapa",
+            "corner": "Pravý roh",
+            "location": "Poloha",
+            "voice": "Hlas",
+            "weapon": "Zbraň",
+            "customization": "Úpravy",
+            "damage": "Poškození",
+            "waypoint": "Waypoint"
+        },
+        "pages": {
+            "main": {
+                "title": "Hlavní",
+                "subtitle": "Jednotky, denní a noční barvy a kdy se HUD zobrazuje"
+            },
+            "status": {
+                "title": "Stav",
+                "subtitle": "Vyber styl, které stavy se zobrazí a kdy se skryjí"
+            },
+            "carhud": {
+                "title": "HUD vozidla",
+                "subtitle": "Styl, barvy a jednotky pro každé HUD vozidla"
+            },
+            "map": {
+                "title": "Mapa",
+                "subtitle": "Tvar a kdy se zobrazí minimapa"
+            },
+            "corner": {
+                "title": "Pravý roh",
+                "subtitle": "Vyber styl a co se zobrazí vpravo nahoře"
+            },
+            "location": {
+                "title": "Poloha",
+                "subtitle": "Informace o ulici a kompas"
+            },
+            "voice": {
+                "title": "Hlas",
+                "subtitle": "Styl a barvy ukazatele mikrofonu"
+            },
+            "weapon": {
+                "title": "Zbraň",
+                "subtitle": "Styl a barvy panelu zbraně"
+            },
+            "customization": {
+                "title": "Úpravy",
+                "subtitle": "Sdílej své nastavení HUD nebo načti cizí"
+            },
+            "damage": {
+                "title": "Poškození",
+                "subtitle": "Ukazatel směru zásahu a efekt krve"
+            },
+            "waypoint": {
+                "title": "Waypoint",
+                "subtitle": "Značka tvého bodu na mapě: styl, vzdálenost, výška a okraje obrazovky"
+            }
+        },
+        "actions": {
+            "editLayout": "Upravit rozložení",
+            "close": "ESC",
+            "copyCode": "Kopírovat kód",
+            "import": "Importovat",
+            "resetDefault": "Obnovit výchozí",
+            "resetNight": "Obnovit noční barvy",
+            "resetPosition": "Obnovit polohu mapy",
+            "startPreview": "Náhled tohoto HUD",
+            "stopPreview": "Zastavit náhled",
+            "applyAll": "Použít pro všechny",
+            "applyAllConfirm": "Potvrďte dalším stisknutím",
+            "previewHit": "Náhled zásahu"
+        },
+        "editing": {
+            "label": "Úprava barev pro",
+            "day": "Den",
+            "night": "Noc"
+        },
+        "cards": {
+            "general": "Obecné",
+            "dayNight": "Denní a noční barvy",
+            "behaviour": "Chování",
+            "performance": "Výkon",
+            "style": "Styl",
+            "showStatuses": "Zobrazené stavy",
+            "colours": "Barvy",
+            "nightHint": "Noční barvy používají denní, dokud je nezměníš",
+            "options": "Možnosti",
+            "hideWhenFull": "Skrýt při plné hodnotě",
+            "position": "Pozice",
+            "units": "Jednotky",
+            "display": "Zobrazení",
+            "shape": "Tvar",
+            "showOnScreen": "Zobrazit na obrazovce",
+            "moneyChanges": "Změny peněz",
+            "locationWidget": "Widget polohy",
+            "compassWidget": "Kompas",
+            "visibility": "Viditelnost",
+            "look": "Vzhled",
+            "mapView": "Zobrazení mapy",
+            "waypoint": "Značka waypointu",
+            "hudParts": "Části HUD",
+            "damage": "Efekty poškození",
+            "waypointStyle": "Styl značky"
+        },
+        "hints": {
+            "dayNight": "Noční barvy se zapnou ve 20:00 a vypnou v 06:00 serverového času",
+            "performance": "Vyvážený režim aktualizuje HUD méně často a šetří CPU",
+            "statusStyle": "Změny se projeví okamžitě",
+            "hideWhenFull": "Stav zmizí nad touto hodnotou a vrátí se, když klesne",
+            "oxygen": "Jen pod vodou",
+            "previewLive": "Jsi ve vozidle, skutečné HUD už je vidět",
+            "carStyle": "Styl pro auta a ostatní pozemní vozidla",
+            "mapPosition": "Mapu přesuneš tažením v Upravit rozložení",
+            "cornerStyle": "Informační blok vpravo nahoře",
+            "moneyChanges": "Částka +/- vedle hotovosti, banky a špinavých peněz",
+            "hiddenWidget": "Tento widget je skrytý. Vyber nahoře styl, aby se zobrazil.",
+            "location": "Ulice, oblast a blízké PSČ",
+            "compass": "Pás směru nahoře na obrazovce, sleduje kameru",
+            "voice": "Dosah hlasu a ukazatel mluvení",
+            "weapon": "Aktuální zbraň a munice",
+            "code": "Zkopíruj kód ke sdílení HUD, nebo sem vlož kód a stiskni Importovat",
+            "applyAll": "Tím se vaše nastavení uloží jako výchozí serverové pro všechny. Hráči ho dostanou po restartu skriptu a jejich vlastní nastavení se resetuje. Potvrďte opětovným stisknutím tlačítka.",
+            "mapView": "Jaká textura mapy se zobrazí. Auto přepíná mezi dnem a nocí.",
+            "waypoint": "Ukáže tvůj bod na mapě ve světě i s vzdáleností a tím, zda je nad tebou, nebo pod tebou",
+            "gangEmpty": "Skryto, dokud nemáte gang",
+            "hudParts": "Skryjte části, které nepotřebujete. Při úpravě rozložení zůstanou viditelné.",
+            "damage": "Ukáže, odkud zásah přišel, a při zranění zobrazí krev"
+        },
+        "fields": {
+            "language": "Jazyk",
+            "speedUnit": "Jednotka rychlosti",
+            "fuelUnit": "Jednotka paliva",
+            "clock": "Hodiny",
+            "hideAbove": "Skrýt nad",
+            "fadeAfter": "Zmizet po",
+            "anchor": "Ukotvení",
+            "layout": "Rozložení",
+            "showFor": "Zobrazit po dobu",
+            "animation": "Animace",
+            "depthUnit": "Jednotka hloubky",
+            "altitudeUnit": "Jednotka výšky"
+        },
+        "units": {
+            "litres": "Litry",
+            "gallons": "Galony",
+            "metres": "Metry",
+            "feet": "Stopy",
+            "clock24": "24hodinový",
+            "clock12": "12hodinový",
+            "km": "Kilometry",
+            "mi": "Míle"
+        },
+        "dayNight": {
+            "auto": "Automaticky",
+            "day": "Vždy den",
+            "night": "Vždy noc"
+        },
+        "behaviour": {
+            "hideInPause": "Skrýt HUD v pozastaveném menu",
+            "hideAiming": "Skrýt HUD při míření",
+            "firstPerson": "Zobrazit HUD v pohledu z první osoby",
+            "cinematic": "Filmové černé pruhy",
+            "hideAll": "Skrýt všechny prvky HUD",
+            "beltSound": "Zvuky pásu"
+        },
+        "performance": {
+            "balanced": "Vyvážený",
+            "performance": "Výkon"
+        },
+        "serverDefault": "Výchozí serveru",
+        "auto": "Auto",
+        "seconds": "{n} s",
+        "styles": {
+            "none": "Skryto"
+        },
+        "status": {
+            "health": "Zdraví",
+            "armour": "Vesta",
+            "hunger": "Hlad",
+            "thirst": "Žízeň",
+            "stamina": "Výdrž",
+            "stress": "Stres",
+            "oxygen": "Kyslík",
+            "autoHide": "Skrýt plné stavy",
+            "alwaysInVehicle": "Ve vozidle vždy zobrazit"
+        },
+        "layout": {
+            "row": "Řádek",
+            "column": "Sloupec"
+        },
+        "anchors": {
+            "map": "Vlevo dole vedle mapy",
+            "bottomCenter": "Dole uprostřed",
+            "bottomRight": "Vpravo dole",
+            "topLeft": "Vlevo nahoře"
+        },
+        "vehicles": {
+            "car": "Auto",
+            "boat": "Loď",
+            "aircraft": "Letadlo",
+            "bike": "Kolo",
+            "motorcycle": "Motorka"
+        },
+        "map": {
+            "square": "Čtverec",
+            "circle": "Kruh",
+            "vehicleOnly": "Zobrazit jen ve vozidlech",
+            "rotate": "Otáčet s kamerou",
+            "border": "Zobrazit okraj",
+            "softCorners": "Měkké rohy",
+            "hexagon": "Šestiúhelník",
+            "pentagon": "Pětiúhelník",
+            "pill": "Pilulka"
+        },
+        "corner": {
+            "playerId": "ID hráče",
+            "playerCount": "Hráči online",
+            "clock": "Hodiny",
+            "date": "Datum",
+            "logo": "Logo serveru",
+            "job": "Práce",
+            "gang": "Gang",
+            "money": "Hotovost",
+            "bank": "Banka",
+            "blackMoney": "Špinavé peníze",
+            "name": "Jméno hráče"
+        },
+        "animations": {
+            "slide": "Vsunutí",
+            "fade": "Prolnutí",
+            "none": "Žádná"
+        },
+        "weapon": {
+            "show": "Zobrazit panel zbraně"
+        },
+        "share": {
+            "copied": "Kód zkopírován do schránky",
+            "invalid": "Tento kód nelze přečíst",
+            "imported": "Nastavení importováno",
+            "reset": "Nastavení obnoveno",
+            "applied": "Vaše nastavení bylo odesláno na server"
+        },
+        "colors": {
+            "text": "Text",
+            "icons": "Ikony",
+            "icon": "Ikona",
+            "speed": "Rychlost",
+            "fuel": "Palivo",
+            "rpm": "Otáčky",
+            "warning": "Varování",
+            "orange": "Pozor",
+            "indicator": "Ukazatel",
+            "arrow": "Šipka směru",
+            "symbol": "Symbol",
+            "sky": "Obloha",
+            "ground": "Země",
+            "gear": "Rychlostní stupeň",
+            "red": "Červená zóna",
+            "heart": "Srdce",
+            "stamina": "Výdrž",
+            "engine": "Motor",
+            "trail": "Pruh",
+            "live": "Mluví",
+            "muted": "Ztlumeno",
+            "background": "Pozadí",
+            "tick": "Malé čárky",
+            "tickMajor": "Dlouhé čárky",
+            "active": "Aktivní směr",
+            "pointer": "Ukazatel polohy",
+            "north": "Sever",
+            "street": "Název ulice",
+            "subStreet": "Druhá ulice",
+            "postal": "PSČ",
+            "pill": "Kapsle směru",
+            "pillBorder": "Okraj kapsle",
+            "dim": "Vedlejší směry",
+            "reserve": "Rezervní munice",
+            "electric": "Elektrické palivo",
+            "accent": "Zvýraznění",
+            "line": "Obrys",
+            "above": "Cíl nahoře",
+            "below": "Cíl dole",
+            "arrived": "Dorazil jsi"
+        },
+        "options": {
+            "showDepth": "Zobrazit hloubku",
+            "showLetters": "Zobrazit písmena kompasu",
+            "showAltitude": "Zobrazit výšku",
+            "showLanding": "Zobrazit podvozek",
+            "showHeart": "Zobrazit tep",
+            "showStamina": "Zobrazit výdrž",
+            "showFuel": "Zobrazit palivo",
+            "showSub": "Zobrazit druhou ulici",
+            "showPostal": "Zobrazit PSČ",
+            "showDegrees": "Zobrazit stupně",
+            "width": "Šířka",
+            "ppd": "Rozestup",
+            "radius": "Poloměr křivky",
+            "tickShort": "Výška krátkých čárek",
+            "tickLong": "Výška dlouhých čárek",
+            "textSize": "Velikost textu",
+            "gap": "Mezera",
+            "bgOpacity": "Průhlednost pozadí",
+            "minorOpacity": "Průhlednost malých čárek",
+            "degreeOpacity": "Průhlednost stupňů",
+            "lift": "Posunout nahoru",
+            "lineMax": "Nejdelší název ulice",
+            "indicator": "Směr zásahu",
+            "blood": "Efekt krve",
+            "critical": "Krev při nízkém zdraví",
+            "indicatorOpacity": "Průhlednost ukazatele",
+            "bloodOpacity": "Průhlednost krve",
+            "size": "Velikost ukazatele",
+            "showDistance": "Zobrazit vzdálenost",
+            "showHeight": "Zobrazit nápovědu výšky",
+            "showPole": "Zobrazit tyč",
+            "shrink": "Zmenšit se vzdáleností",
+            "fadeFar": "Zeslabit v dálce",
+            "hideOffscreen": "Skrýt mimo obrazovku",
+            "arriveRadius": "Vzdálenost příchodu",
+            "edgeMargin": "Odsazení od okraje",
+            "markerSize": "Velikost značky"
+        },
+        "mapStyles": {
+            "default": "Výchozí",
+            "postal": "Postal",
+            "auto": "Den a noc",
+            "gta6": "GTA 6"
+        },
+        "waypoint": {
+            "show": "Zobrazit značku waypointu"
+        },
+        "parts": {
+            "status": "Stavy",
+            "carhud": "HUD vozidla",
+            "rightCorner": "Pravý horní roh",
+            "weapon": "Zbraň",
+            "location": "Poloha",
+            "compass": "Kompas",
+            "microphone": "Mikrofon",
+            "map": "Minimapa"
+        },
+        "presets": {
+            "title": "Uložená rozložení",
+            "hint": "Pojmenuj aktuální rozložení a kdykoli ho vrať",
+            "placeholder": "Název rozložení",
+            "save": "Uložit",
+            "apply": "Použít",
+            "delete": "Smazat",
+            "empty": "Zatím žádná uložená rozložení",
+            "saved": "Rozložení uloženo",
+            "applied": "Rozložení použito",
+            "deleted": "Rozložení smazáno",
+            "full": "Můžeš mít nejvýše {max} rozložení",
+            "needName": "Nejdřív zadej název",
+            "savedOn": "Uloženo {date}"
+        },
+        "damage": {
+            "show": "Zobrazit efekty poškození"
+        }
+    },
+    "editor": {
+        "mode": "Režim úprav",
+        "hint": {
+            "idle": "Tažením přesuneš · tažením za roh změníš velikost · tažením mimo roh otočíš · dvojklikem obnovíš",
+            "moving": "Přesouvání: {name}",
+            "overlaps": "překrývá {name}",
+            "snapped": "přichyceno k {edge}"
+        },
+        "edges": {
+            "left": "levému okraji",
+            "right": "pravému okraji",
+            "top": "hornímu okraji",
+            "bottom": "dolnímu okraji",
+            "centerX": "vodorovnému středu",
+            "centerY": "svislému středu"
+        },
+        "toolbar": {
+            "snap": "Přichytávat",
+            "grid": "Mřížka",
+            "guides": "Vodítka",
+            "showHidden": "Zobrazit skryté",
+            "undo": "Zpět",
+            "redo": "Znovu",
+            "reset": "Obnovit",
+            "cancel": "Zrušit",
+            "save": "Uložit"
+        },
+        "grids": {
+            "small": "Malá",
+            "medium": "Střední",
+            "large": "Velká"
+        },
+        "names": {
+            "server_infos": "Info o serveru",
+            "time_date": "Čas a datum",
+            "boat": "HUD lodi",
+            "air": "HUD letadla",
+            "bike": "HUD kola",
+            "moto": "HUD motorky",
+            "waypoint": "Waypoint",
+            "health_armour": "Zdraví a vesta",
+            "hunger_thirst": "Hlad a žízeň",
+            "quickMenu": "Rychlé menu"
+        },
+        "dock": {
+            "rotateLeft": "Otočit doleva",
+            "rotateRight": "Otočit doprava",
+            "rotation": "Otočení (stupně)",
+            "scale": "Měřítko (procenta)",
+            "reset": "Obnovit velikost a otočení"
+        }
+    },
+    "waypoint": {
+        "arrived": "DORAZIL JSI"
+    }
+}

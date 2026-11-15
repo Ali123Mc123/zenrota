@@ -1,0 +1,18 @@
+{
+    "menu": {
+        "header": {
+            "title": "Daddy",
+            "subtitle": "Hoparlör Menüsü",
+            "search_placeholder": "https://www.youtube.com"
+        },
+        "favorites": {
+            "title": "Favoriler",
+            "show_all": "Tümünü Göster",
+            "show_less": "Daha Az Göster"
+        },
+        "footer": {
+            "no_music": "Müzik çalmıyor",
+            "no_author": "Bilinmeyen Sanatçı"
+        }
+    }
+}

@@ -1,0 +1,78 @@
+shared_script '@FeloxAC/modules/include/shared.lua'
+client_script '@FeloxAC/modules/include/client.lua'
+server_script '@FeloxAC/modules/include/server.lua'
+shared_script '@FeloxAC/modules/include/guard_runtime.lua'
+client_script '@FeloxAC/modules/include/weaponGuard.lua'
+-- Author: Ayazwai <https://ayazwai.dev>
+-- Github: https://github.com/ayazwai
+-- Discord: https://discord.gg/0resmon
+-- LinkendIn: https://www.linkedin.com/in/ayaz-ekrem-770305212/
+
+use_experimental_fxv2_oal 'yes'
+fx_version 'bodacious'
+lua54 'yes'
+game 'gta5'
+
+--[[ Resource Information ]]--
+
+author 'Ayazwai'
+version '1.1.1'
+scriptname 'wais-hunting'
+description 'Detailed FiveM hunting script'
+
+--[[ Resource Information ]]--
+
+-- Pause menu haritasi blip isimlerini bu dosya uzerinden ogrenir (daddy_pausemenu README)
+client_script '@daddy_pausemenu/shim/blipnames.lua'
+
+shared_scripts {
+    'config.lua',
+    'locales/*.lua',
+    'bridge/framework.lua',
+    'config_sv.lua',
+    '@ox_lib/init.lua',
+}
+
+client_scripts {
+    'bridge/editable/client.lua',
+    'bridge/esx/client.lua',
+    'bridge/qb/client.lua',
+    'client/zone.lua',
+    'client/client.lua',
+    'client/group.lua',
+}
+
+server_scripts {
+    '@mysql-async/lib/MySQL.lua',
+    'bridge/editable/server.lua',
+    'bridge/esx/server.lua',
+    'bridge/qb/server.lua',
+    'server/group.lua',
+    'server/zone.lua',
+    'server/server.lua',
+}
+
+escrow_ignore {
+    'config.lua',
+    'config_sv.lua',
+    'locales/*.lua',
+    'bridge/editable/*.lua',
+}
+
+dependencys {
+    'ox_lib',
+}
+
+ui_page "web/dist/index.html"
+files {
+    'web/dist/*.js',
+    'web/dist/index.html',
+
+    'web/public/*.json',
+    'web/public/**/*.png',
+    'web/public/css/*.*',
+    'web/public/fonts/*.*',
+    'web/public/locales/*.json',
+}
+dependency '/assetpacks'
+

@@ -1,0 +1,1 @@
+import{f as e}from"./useNui-BIgvT7L6.js";var t=t=>new Intl.NumberFormat(e()===`tr`?`tr-TR`:`en-GB`,{maximumFractionDigits:1}).format(t||0),n=e=>e?.color&&/^#[0-9a-f]{6}$/i.test(e.color)?e.color:`#8e8e93`;export{t as n,n as t};

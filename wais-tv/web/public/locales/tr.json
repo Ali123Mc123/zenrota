@@ -1,0 +1,99 @@
+{
+    "placement": {
+        "title": "Yerleştirme",
+        "mode_surface": "Yüzey",
+        "mode_move": "Taşı",
+        "mode_rotate": "Döndür",
+        "space_world": "Dünya",
+        "space_local": "Yerel",
+        "snap": "Adım",
+        "nudge": "İnce ayar",
+        "yaw": "Çevir",
+        "ground": "Zemine bırak",
+        "reset": "Sıfırla",
+        "accept": "Yerleştir",
+        "cancel": "İptal",
+        "hint_surface": "TV'yi bırakmak için tıkla",
+        "hint_move": "Okları sürükle",
+        "hint_rotate": "Bir halkayı sürükle",
+        "hint_wheel": "Tekerlek: çevir",
+        "hint_camera": "Sağ tık: kamerayı aç / kapat",
+        "camera_active": "Kamera modu - geri dönmek için sağ tık",
+        "hint_snap": "Zemin / duvar tuşları: sabitle",
+        "hint_toggle": "R: taşı / döndür",
+        "hint_accept": "Enter: yerleştir",
+        "hint_cancel": "X / Backspace / Esc: iptal",
+        "tip_floor": "Zemine sabitle",
+        "tip_wall": "Duvara sabitle",
+        "tip_move": "Taşıma moduna geç",
+        "tip_rotate": "Döndürme moduna geç"
+    },
+    "header": {
+        "title": "Televizyon & SmartTV'ler",
+        "admin": "TV Yönetimi",
+        "subtitle": "Hoş geldin!"
+    },
+    "search": {
+        "placeholder": "Bir URL girin..."
+    },
+    "admin": {
+        "categories": {
+            "player": "Oyuncu TV'leri",
+            "default": "Varsayılan TV'ler",
+            "general": "Genel",
+            "jobs": "Meslekler / Gruplar"
+        },
+        "no_video": "Oynatılan video yok",
+        "create": "TV Oluştur",
+        "update": "TV Güncelle",
+        "cancel": "İptal",
+        "no_result": "Sonuç bulunamadı.",
+        "search": "TV'yi isme veya ID'ye göre ara",
+        "input": {
+            "model": {
+                "label": "Model",
+                "placeholder": "Bir TV modeli seçin"
+            },
+            "name": {
+                "label": "İsim",
+                "placeholder": "TV'nize bir isim verin"
+            },
+            "platform": {
+                "label": "Platform",
+                "placeholder": "YouTube, Kick, vb."
+            },
+            "loop": {
+                "label": "Döngü",
+                "placeholder": "Video döngüye alınsın mı?",
+                "true": "Evet",
+                "false": "Hayır"
+            },
+            "volume": {
+                "label": "Ses",
+                "placeholder": "Varsayılan sesi ayarlayın (0-100)"
+            },
+            "videourl": {
+                "label": "Video / Yayın URL'si",
+                "placeholder": "Video / yayın URL'sini girin"
+            },
+            "controlable": {
+                "label": "Kontrol Edilebilir",
+                "tooltip": "Kullanıcıların TV'yi kontrol etmesine izin ver (oynat, duraklat, vb.)"
+            },
+            "defaultvideo": {
+                "label": "Varsayılan Video",
+                "tooltip": "Varsayılan bir videonun oynatılıp oynatılmayacağı"
+            },
+            "jobs": {
+                "label": "Meslekler / Gruplar",
+                "placeholder": "Bu TV'yi kullanabilecek meslekler/gruplar (herkes için boş bırakın)"
+            }
+        }
+    },
+    "stream": "Canlı",
+    "recently": "Son Oynatılanlar",
+    "favorites": "Favoriler",
+    "no_favorites": "Favori video yok.",
+    "no_recently": "Yakın zamanda oynatılan video yok.",
+    "televisions": "Televizyonlar"
+}

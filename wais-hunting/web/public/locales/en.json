@@ -1,0 +1,43 @@
+{
+    "xp": "XP",
+    "name": "Player Name",
+    "level": "Level",
+    "start": "Start Job",
+    "accept": "Accept",
+    "cancel": "Cancel",
+    "awards": "Awards:",
+    "invite": "Invite Player [ID]",
+    "hunting": "Hunting",
+    "hunting_desc": "%s has invited you to a group. If you wish, you can accept and hunt together.",
+    "unknowns": {
+        "label": "Unknown",
+        "level": "Unknown",
+        "description": "No description available."
+    },
+    "progress": {
+        "title": "Level Progress",
+        "description": "Improving your hunting skills"
+    },
+    "cancel_job": "Cancel Job",
+
+    "header": {
+        "title": "Hunting Job",
+        "description": "Welcome to the Hunting, You can start a hunt from here and check out the missions. Good luck!"
+    },
+    "sections": {
+        "profile": "Profile",
+        "mission": "Missions",
+        "player_list": "Player List",
+        "job_details": "Job Details"
+    },
+
+    "steps": {
+        "progress": "Progress",
+        "information": "Press the indicated key to learn what you need to do. Press for more details.",
+        "details": {
+            "step1": "Go to the hunting area and take your weapons from the vehicle. Use the [Target] key,",
+            "step2": "Kill anilmals and Skin the animals with [TARGET] ( If there is a mission, it will proceed ),",
+            "step3": "Go to the area where you started your job, look at the NPC with [TARGET], and click the “Sell animal parts” option to sell them."
+        }
+    }
+}

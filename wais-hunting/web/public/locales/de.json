@@ -1,0 +1,43 @@
+{
+    "xp": "XP",
+    "name": "Spielername",
+    "level": "Level",
+    "start": "Job starten",
+    "accept": "Akzeptieren",
+    "cancel": "Abbrechen",
+    "awards": "Belohnungen:",
+    "invite": "Spieler einladen [ID]",
+    "hunting": "Jagd",
+    "hunting_desc": "%s hat dich in eine Gruppe eingeladen. Wenn du möchtest, kannst du akzeptieren und zusammen jagen.",
+    "unknowns": {
+        "label": "Unbekannt",
+        "level": "Unbekannt",
+        "description": "Keine Beschreibung verfügbar."
+    },
+    "progress": {
+        "title": "Level-Fortschritt",
+        "description": "Verbesserung deiner Jagdfähigkeiten"
+    },
+    "cancel_job": "Job abbrechen",
+
+    "header": {
+        "title": "Jagdjob",
+        "description": "Willkommen bei der Jagd, du kannst hier eine Jagd starten und die Missionen überprüfen. Viel Glück!"
+    },
+    "sections": {
+        "profile": "Profil",
+        "mission": "Missionen",
+        "player_list": "Spielerliste",
+        "job_details": "Job-Details"
+    },
+
+    "steps": {
+        "progress": "Fortschritt",
+        "information": "Drücke die angezeigte Taste, um zu erfahren, was du tun musst. Drücke für weitere Details.",
+        "details": {
+            "step1": "Gehe zum Jagdgebiet und nimm deine Waffen aus dem Fahrzeug. Benutze die [Target] Taste,",
+            "step2": "Töte Tiere und häute die Tiere mit [TARGET] (wenn es eine Mission gibt, wird sie fortgesetzt),",
+            "step3": "Gehe zu dem Bereich, in dem du deinen Beruf begonnen hast, schaue mit [TARGET] auf den NPC und klicke auf die Option 'Tierteile verkaufen', um sie zu verkaufen."
+        }
+    }
+}

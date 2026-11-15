@@ -1,0 +1,1646 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&family=Inter:wght@400;500;600;700;800&family=Cinzel:wght@600;700;800;900&family=Outfit:wght@400;500;600;700;800;900&family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet">
+</head>
+<body style="background-color: transparent; overflow: hidden; width: 100vw; height: 128.583vh;">
+
+<div id="universal-lobby-modal" style="display: none;">
+    <div class="lobby-card">
+        <h2 id="uni-lobby-title" data-i18n="common.game_lobby">Game Lobby</h2>
+        <p class="lobby-subtitle" id="uni-lobby-subtitle" data-i18n="common.set_your_bet_and_get_ready_to_start_the">Set your bet and get ready to start the match</p>
+        
+        <div id="uni-lobby-players-container">
+            
+            <div class="lobby-players" id="uni-lobby-vs-layout" style="display: none;">
+                <div class="lobby-player-col" id="uni-lobby-p1-col">
+                    <div class="lobby-avatar" id="uni-lobby-p1-avatar"></div>
+                    <div class="lobby-player-name" id="uni-lobby-p1-name" data-i18n="common.waiting">Waiting...</div>
+                    <div class="lobby-player-bet" id="uni-lobby-p1-bet" data-i18n="common.bet">Bet: $0</div>
+                    <div class="lobby-ready-status status-not-ready" id="uni-lobby-p1-status" data-i18n="common.not_ready">NOT READY</div>
+                </div>
+                
+                <div class="lobby-center-col">
+                    <div class="pot-container">
+                        <span class="pot-title" data-i18n="common.total_pot">TOTAL POT</span>
+                        <span class="pot-value" id="uni-lobby-total-pot-vs">$0</span>
+                    </div>
+                    <div class="time-control-box" id="uni-lobby-time-buttons" style="display: none;">
+                        <label data-i18n="common.time_limit">Time Limit</label>
+                        <div class="time-limit-options">
+                            <button class="uni-time-limit-btn active" data-time="0">∞</button>
+                            <button class="uni-time-limit-btn" data-time="180" data-i18n="common.key_3m">3m</button>
+                            <button class="uni-time-limit-btn" data-time="300" data-i18n="common.key_5m">5m</button>
+                            <button class="uni-time-limit-btn" data-time="600" data-i18n="common.key_10m">10m</button>
+                            <button class="uni-time-limit-btn" data-time="900" data-i18n="common.key_15m">15m</button>
+                        </div>
+                    </div>
+                    <div class="bet-input-box">
+                        <label data-i18n="common.set_your_bet">Set Your Bet</label>
+                        <div class="lobby-bet-input">
+                            <span class="currency-symbol">$</span>
+                            <input type="number" id="uni-lobby-bet-amount-vs" placeholder="0" min="0" / data-i18n="common.key">
+                        </div>
+                        <button class="lobby-btn" id="uni-lobby-update-bet-btn-vs" data-i18n="common.set_bet">Set Bet</button>
+                    </div>
+                </div>
+                
+                <div class="lobby-player-col" id="uni-lobby-p2-col">
+                    <div class="lobby-avatar" id="uni-lobby-p2-avatar"></div>
+                    <div class="lobby-player-name" id="uni-lobby-p2-name" data-i18n="common.waiting">Waiting...</div>
+                    <div class="lobby-player-bet" id="uni-lobby-p2-bet" data-i18n="common.bet">Bet: $0</div>
+                    <div class="lobby-ready-status status-not-ready" id="uni-lobby-p2-status" data-i18n="common.not_ready">NOT READY</div>
+                </div>
+            </div>
+
+            
+            <div id="uni-lobby-multi-layout" style="display: none;">
+                <div class="lobby-players" id="uni-lobby-players-list" style="justify-content: center; flex-wrap: wrap;"></div>
+                
+                <div class="lobby-center-col" style="margin: 0 auto; flex-direction: row; align-items: stretch; width: 100%; max-width: 500px; gap: 20px;">
+                    <div class="pot-container" style="flex: 1; justify-content: center;">
+                        <span class="pot-title" data-i18n="common.total_pot">TOTAL POT</span>
+                        <span class="pot-value" id="uni-lobby-total-pot-multi">$0</span>
+                    </div>
+                    <div class="bet-input-box" style="flex: 1;">
+                        <label data-i18n="common.set_your_bet">Set Your Bet</label>
+                        <div class="lobby-bet-input">
+                            <span class="currency-symbol" style="color: #10B981; font-weight: bold; margin-right: 8px;">$</span>
+                            <input type="number" id="uni-lobby-bet-amount-multi" placeholder="0" min="0" style="background: none; border: none; color: white; width: 100%; outline: none; margin: 0; padding: 0;"/ data-i18n="common.key">
+                        </div>
+                        <button class="lobby-btn" id="uni-lobby-update-bet-btn-multi" style="margin-top:10px;" data-i18n="common.set_bet">Set Bet</button>
+                    </div>
+                    <div class="time-limit-box" id="uni-lobby-time-select" style="flex: 1; display: none; flex-direction: column; gap: 8px;">
+                        <label style="color: #9CA3AF; font-size: 1.2vh; font-weight: 600; letter-spacing: 0.05em;" data-i18n="common.time_limit_2">TIME LIMIT</label>
+                        <select id="uni-lobby-time-select-input" style="width: 100%; padding: 10px; border-radius: 6px; border: 1px solid #2B2E33; background-color: #0B0E14; color: white; font-family: 'Inter', sans-serif; font-size: 14px; outline: none;">
+                            <option value="0" data-i18n="common.unlimited">Unlimited</option>
+                            <option value="20" data-i18n="common.key_20_minutes">20 Minutes</option>
+                            <option value="30" data-i18n="common.key_30_minutes">30 Minutes</option>
+                            <option value="60" data-i18n="common.key_60_minutes">60 Minutes</option>
+                            <option value="90" data-i18n="common.key_90_minutes">90 Minutes</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="lobby-actions" style="justify-content: center; margin-top: 20px;">
+            <button class="lobby-ready-btn" id="uni-lobby-ready-toggle-btn" style="max-width: 300px;" data-i18n="common.ready">READY</button>
+            <button class="lobby-exit-btn" id="uni-lobby-exit-btn" style="max-width: 300px; margin-left: 10px; display: none;" data-i18n="common.stand_up">Stand Up</button>
+        </div>
+    </div>
+</div>
+
+    
+    <div id="eno-toast-container" class="eno-toast-container" style="display: none;">
+        <div class="eno-toast-body">
+            <span id="eno-toast-text" data-i18n="common.william_roberts_eno">William Roberts COLOR MATCH!</span>
+        </div>
+    </div>
+
+    
+    <div id="winner-toast-container" class="winner-toast-container" style="display: none;">
+        <div class="winner-toast-body">
+            <span id="winner-toast-text">William Roberts WON!</span>
+        </div>
+    </div>
+
+    
+    <div id="block-toast-container" class="block-toast-container" style="display: none;">
+        <div class="chain-toast-body">
+            <div class="chain-graphic-left">
+                <svg viewBox="0 0 24 24" width="4.5vh" height="4.5vh" fill="none" stroke="#F59E0B" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
+                    <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
+                </svg>
+            </div>
+            <div class="chain-content">
+                <span class="chain-title">CHAIN!</span>
+                <span class="chain-subtitle">PLAY AGAIN</span>
+            </div>
+            <div class="chain-graphic-right">
+                <svg viewBox="0 0 24 24" width="4.5vh" height="4.5vh" fill="none" stroke="#F59E0B" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
+                    <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
+                </svg>
+            </div>
+        </div>
+    </div>
+
+    
+    <div id="reverse-toast-container" class="reverse-toast-container" style="display: none;">
+        <div class="rotate-toast-body">
+            <div class="gear-graphic gear-left">
+                <svg viewBox="0 0 24 24" width="5.5vh" height="5.5vh" fill="none" stroke="#38BDF8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="spinning-gear-cw">
+                    <circle cx="12" cy="12" r="3"></circle>
+                    <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+                </svg>
+            </div>
+            <div class="rotate-content">
+                <div class="rotate-title-wrap">
+                    <svg viewBox="0 0 24 24" width="3.2vh" height="3.2vh" fill="none" stroke="#38BDF8" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="spinning-arrows-ccw">
+                        <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/>
+                    </svg>
+                    <span class="rotate-title">ROTATE!</span>
+                </div>
+                <span class="rotate-subtitle">DIRECTION REVERSED</span>
+            </div>
+            <div class="gear-graphic gear-right">
+                <svg viewBox="0 0 24 24" width="5.5vh" height="5.5vh" fill="none" stroke="#38BDF8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="spinning-gear-ccw">
+                    <circle cx="12" cy="12" r="3"></circle>
+                    <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+                </svg>
+            </div>
+        </div>
+    </div>
+
+    
+    <div id="draw-toast-container" class="draw-toast-container" style="display: none;">
+        <div class="draw-toast-body">
+            <span id="draw-toast-text">+2</span>
+        </div>
+    </div>
+
+    
+    <div id="color-toast-container" class="color-toast-container" style="display: none;">
+        <div class="color-toast-body" id="color-toast-bg">
+            <span id="color-toast-text">🎨</span>
+        </div>
+    </div>
+
+    
+
+    <div id="game-ui" style="display: none;">
+        
+        <div class="mantine-panel" id="eno-game-state-panel">
+            <div class="panel-header">
+                <span class="panel-title" data-i18n="common.eno_uno">COLOR MATCH</span>
+                <span class="turn-badge" id="turn-badge" data-i18n="common.waiting_for_turn">Waiting for Turn</span>
+            </div>
+            
+            <div class="panel-body">
+                <div class="state-row">
+                    <span class="state-label" data-i18n="common.active_color">Active Color</span>
+                    <span class="color-badge" id="color-badge">-</span>
+                </div>
+                
+                <div class="state-row">
+                    <span class="state-label" data-i18n="common.total_pot_2">🏆 Total Pot</span>
+                    <span class="color-badge" id="pot-badge" style="background: rgba(250, 176, 5, 0.15); color: #FCC419;">$0</span>
+                </div>
+                
+                <div class="state-row status-row">
+                    <span id="turn-text" data-i18n="common.loading_game_state">Loading game state...</span>
+                </div>
+            </div>
+        </div>
+
+        
+        <div class="discard-display-panel">
+            <span class="panel-title-small" data-i18n="common.last_played_card">LAST PLAYED CARD</span>
+            <div class="uno-card-container">
+                <div class="uno-card" id="uno-card">
+                    <img id="uno-card-img" class="card-face-img" src="cards/blue_0.png" alt="Last Played Card" />
+                </div>
+            </div>
+        </div>
+
+        
+        <div id="color-picker-modal" class="color-picker-modal" style="display: none;">
+            <div class="eno-pie-menu">
+                <div class="pie-quarter color-btn pie-top-left red" data-color="red"></div>
+                <div class="pie-quarter color-btn pie-top-right blue" data-color="blue"></div>
+                <div class="pie-quarter color-btn pie-bottom-right green" data-color="green"></div>
+                <div class="pie-quarter color-btn pie-bottom-left yellow" data-color="yellow"></div>
+                <div class="pie-center">
+                    <span data-i18n="common.choose_color">CHOOSE COLOR</span>
+                </div>
+            </div>
+        </div>
+
+        <div id="swap-player-modal" style="display: none; position: absolute; z-index: 1000; top: 50%; left: 50%; transform: translate(-50%, -50%); background: linear-gradient(145deg, rgba(16, 20, 28, 0.98) 0%, rgba(9, 11, 16, 0.99) 100%); border: 0.12vh solid rgba(212, 175, 55, 0.4); border-radius: 1.2vh; box-shadow: 0 1.5vh 3.5vh rgba(0, 0, 0, 0.8); padding: 2vh; color: #FFF; text-align: center; width: 30vh; pointer-events: all;">
+            <h3 style="color: #D4AF37; margin-top: 0; font-family: 'Inter', sans-serif; font-size: 2vh; text-shadow: 0 0.2vh 0.4vh rgba(0,0,0,0.8); font-weight: 800; border-bottom: 0.1vh solid rgba(212, 175, 55, 0.2); padding-bottom: 1vh; margin-bottom: 1.5vh;" data-i18n="common.swap_cards">SWAP CARDS</h3>
+            <p style="font-size: 1.2vh; color: #CDBBA7; margin-bottom: 2vh;" data-i18n="common.select_swap_target">Select a player to swap hands with:</p>
+            <div id="swap-player-list" style="display: flex; flex-direction: column; gap: 1vh;">
+                <!-- buttons dynamically added -->
+            </div>
+        </div>
+
+        
+        <div class="controls-panel mantine-panel" style="top: auto; bottom: 2.083vh; left: 2.083vh; width: 23.333vh; animation: slideInUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;">
+            <div class="panel-header" style="margin-bottom: 0.667vh; padding-bottom: 0.667vh;">
+                <span class="panel-title" style="font-size: 1.083vh; color: #9CA3AF;" data-i18n="common.controls">CONTROLS</span>
+            </div>
+            <div class="panel-body" style="gap: 0.667vh;">
+                <div class="state-row">
+                    <span class="state-label" style="font-size: 1.000vh;" data-i18n="common.drag_drop_draw">Drag & Drop / Draw</span>
+                    <span class="key-badge" data-i18n="common.left_click">LEFT CLICK</span>
+                </div>
+                <div class="state-row" id="pass-control-row" style="display: none;">
+                    <span class="state-label" style="font-size: 1.000vh;" data-i18n="common.pass_turn">Pass Turn</span>
+                    <span class="key-badge" data-i18n="common.space">SPACE</span>
+                </div>
+                <div class="state-row">
+                    <span class="state-label" style="font-size: 1.000vh;" data-i18n="common.call_eno">Call COLOR MATCH</span>
+                    <span class="key-badge" data-i18n="common.e">E</span>
+                </div>
+                <div class="state-row">
+                    <span class="state-label" style="font-size: 1.000vh;" data-i18n="common.toggle_camera">Toggle Camera</span>
+                    <span class="key-badge" data-i18n="common.v">V</span>
+                </div>
+                <div class="state-row">
+                    <span class="state-label" style="font-size: 1.000vh;" data-i18n="common.leave_table">Leave Table</span>
+                    <span class="key-badge" data-i18n="common.backspace">BACKSPACE</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    
+    
+
+    <div id="checkers-ui-container">
+        <div class="checkers-card">
+            <div class="player-section white-player">
+                <div class="player-avatar white-avatar"></div>
+                <div class="player-info">
+                    <div class="player-name-wrapper">
+                        <span class="player-name" id="white-name" data-i18n="common.waiting_2">Waiting</span>
+                        <span class="player-score" id="white-score" data-i18n="common.key_0_pts">0 pts</span>
+                    </div>
+                    <div class="player-timer-wrapper" id="white-timer-box" style="display: none;">
+                        <span class="timer-icon">⏳</span> <span class="player-timer" id="white-timer">--:--</span>
+                    </div>
+                    <span class="check-badge" id="white-check" data-i18n="common.check">CHECK!</span>
+                </div>
+            </div>
+
+            <div class="status-section">
+                <div class="vs-text" data-i18n="common.vs">VS</div>
+                <div class="status-badge" id="turn-status" data-i18n="common.loading">LOADING...</div>
+                <div class="bet-badge" id="hud-bet-display" style="display: none;">
+                    <span class="bet-pot-icon">💰</span> <span id="hud-bet-val">$0</span>
+                </div>
+            </div>
+
+            <div class="player-section black-player">
+                <div class="player-info">
+                    <div class="player-name-wrapper">
+                        <span class="player-score" id="black-score" data-i18n="common.key_0_pts">0 pts</span>
+                        <span class="player-name" id="black-name" data-i18n="common.waiting_2">Waiting</span>
+                    </div>
+                    <div class="player-timer-wrapper" id="black-timer-box" style="display: none; justify-content: flex-end;">
+                        <span class="player-timer" id="black-timer">--:--</span> <span class="timer-icon">⏳</span>
+                    </div>
+                    <span class="check-badge" id="black-check" data-i18n="common.check">CHECK!</span>
+                </div>
+                <div class="player-avatar black-avatar"></div>
+            </div>
+        </div>
+        <div class="keyboard-hint" style="position: absolute; bottom: 0; left: 0; background: transparent; padding: 0; pointer-events: auto;">
+            <div id="player-hints">
+                <div class="controls-panel mantine-panel" style="top: auto; bottom: 2.083vh; left: 2.083vh; width: 23.333vh; animation: slideInUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;">
+                    <div class="panel-header" style="margin-bottom: 0.667vh; padding-bottom: 0.667vh;">
+                        <span class="panel-title" style="font-size: 1.083vh; color: #9CA3AF;" data-i18n="common.controls">CONTROLS (PLAYING)</span>
+                    </div>
+                    <div class="panel-body" style="gap: 0.667vh;">
+                        <div class="state-row">
+                            <span class="state-label" style="font-size: 1.000vh;" data-i18n="common.move_piece">Move Piece</span>
+                            <span class="key-badge" data-i18n="common.left_click">LEFT CLICK</span>
+                        </div>
+                        <div class="state-row" id="bet-hint-wrapper" style="display: none;">
+                            <span class="state-label" style="font-size: 1.000vh;" data-i18n="common.set_bet">Set Bet</span>
+                            <span class="key-badge" data-i18n="common.g_2">G</span>
+                        </div>
+                        <div class="state-row">
+                            <span class="state-label" style="font-size: 1.000vh;" data-i18n="common.move_history">Move History</span>
+                            <span class="key-badge" data-i18n="common.h_2">H</span>
+                        </div>
+                        <div class="state-row">
+                            <span class="state-label" style="font-size: 1.000vh;" data-i18n="common.toggle_camera">Toggle Camera</span>
+                            <span class="key-badge" data-i18n="common.v">V</span>
+                        </div>
+                        <div class="state-row">
+                            <span class="state-label" style="font-size: 1.000vh;" data-i18n="common.leave_table">Stand Up</span>
+                            <span class="key-badge" data-i18n="common.backspace">BACKSPACE</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="spectator-hints" style="display: none;">
+                <div class="controls-panel mantine-panel" style="top: auto; bottom: 2.083vh; left: 2.083vh; width: 23.333vh; animation: slideInUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;">
+                    <div class="panel-header" style="margin-bottom: 0.667vh; padding-bottom: 0.667vh;">
+                        <span class="panel-title" style="font-size: 1.083vh; color: #9CA3AF;" data-i18n="common.controls">CONTROLS (SPECTATOR)</span>
+                    </div>
+                    <div class="panel-body" style="gap: 0.667vh;">
+                        <div class="state-row">
+                            <span class="state-label" style="font-size: 1.000vh;" data-i18n="common.ui.cycle_camera">Cycle Camera</span>
+                            <span class="key-badge">C</span>
+                        </div>
+                        <div class="state-row">
+                            <span class="state-label" style="font-size: 1.000vh;" data-i18n="common.toggle_camera">Toggle Camera</span>
+                            <span class="key-badge" data-i18n="common.v">V</span>
+                        </div>
+                        <div class="state-row">
+                            <span class="state-label" style="font-size: 1.000vh;" data-i18n="common.ui.stop_spectating">Stop Spectating</span>
+                            <span class="key-badge" data-i18n="common.backspace">BACKSPACE</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="checkers-leave-prompt-modal" class="chance-modal" style="display: none; z-index: 10010;">
+        <div class="leave-prompt-container">
+            <h2 class="leave-prompt-title" data-i18n="common.leave_table_2">LEAVE TABLE</h2>
+            <p class="leave-prompt-desc" data-i18n="common.are_you_sure_you_want_to_leave_the_table">Are you sure you want to leave the table?</p>
+            <div class="leave-prompt-actions">
+                <button id="checkers-leave-yes" class="leave-btn confirm-btn" data-i18n="common.yes_leave">YES</button>
+                <button id="checkers-leave-no" class="leave-btn cancel-btn" data-i18n="common.no_stay">NO</button>
+            </div>
+        </div>
+    </div>
+    <div id="gamemode-modal" style="display: none;">
+        <div class="gamemode-card">
+            <h3 id="gamemode-title" data-i18n="common.select_game_mode">Select Game Mode</h3>
+            <p id="gamemode-desc" data-i18n="common.choose_how_you_want_to_play">Choose how you want to play:</p>
+            
+            <div class="gamemode-options" id="mode-selection-step">
+                <div class="gamemode-option" data-mode="player">
+                    <span class="option-name" data-i18n="common.play_with_player">Play with Player</span>
+                    <span class="option-desc" data-i18n="common.wait_for_another_player">Wait for another player</span>
+                </div>
+                <div class="gamemode-option" data-mode="ped">
+                    <span class="option-name" data-i18n="common.play_with_ai">Play with AI</span>
+                    <span class="option-desc" data-i18n="common.play_against_an_npc">Play against an NPC</span>
+                </div>
+            </div>
+
+            <div class="gamemode-options" id="difficulty-selection-step" style="display: none;">
+                <div class="difficulty-option easy" data-difficulty="easy">
+                    <span class="diff-level" data-i18n="common.easy">Easy</span>
+                    <span class="diff-desc" data-i18n="common.ai_makes_random_moves">AI makes random moves</span>
+                </div>
+                <div class="difficulty-option normal" data-difficulty="normal">
+                    <span class="diff-level" data-i18n="common.normal">Normal</span>
+                    <span class="diff-desc" data-i18n="common.ai_captures_and_plays_simple_tactics">AI captures and plays simple tactics</span>
+                </div>
+                <div class="difficulty-option hard" data-difficulty="hard">
+                    <span class="diff-level" data-i18n="common.hard">Hard</span>
+                    <span class="diff-desc" data-i18n="common.ai_uses_minimax_evaluation">AI uses Minimax evaluation</span>
+                </div>
+            </div>
+            
+            <button class="cancel-btn" id="close-gamemode-btn" data-i18n="common.cancel">Cancel</button>
+        </div>
+    </div>
+
+    <div id="pgn-toggle-btn" style="display: none;" title="Toggle Move History">
+        <span>📜</span>
+    </div>
+
+    <div id="pgn-container" style="display: none;">
+        <div class="pgn-header">
+            <span class="pgn-icon">📜</span>
+            <span class="pgn-title" data-i18n="common.move_history">Move History</span>
+        </div>
+        <div class="pgn-moves-list" id="pgn-moves-list">
+            
+        </div>
+    </div>
+
+    <div id="leaderboard-modal" style="display: none;">
+        <div class="leaderboard-card">
+            <h2 data-i18n="common.checkers_leaderboard">Checkers Leaderboard</h2>
+            <p class="leaderboard-subtitle" data-i18n="common.top_players_in_the_city">Top players in the city</p>
+            <div class="leaderboard-table-container">
+                <table class="leaderboard-table">
+                    <thead>
+                        <tr>
+                            <th style="width: 15%;" data-i18n="common.rank">Rank</th>
+                            <th style="width: 45%; text-align: left;" data-i18n="common.player">Player</th>
+                            <th style="width: 25%;" data-i18n="common.w_l_d">W / L / D</th>
+                            <th style="width: 15%;" data-i18n="common.elo">Elo</th>
+                        </tr>
+                    </thead>
+                    <tbody id="leaderboard-list">
+                        
+                    </tbody>
+                </table>
+            </div>
+            <button class="leaderboard-close-btn" id="close-leaderboard-btn" data-i18n="common.close">Close</button>
+        </div>
+    </div>
+    
+    <div id="crowns-container"></div>
+    
+    
+
+    <div id="chess-ui-container">
+        <div class="chess-card">
+            <div class="player-section white-player">
+                <div class="player-avatar white-avatar"></div>
+                <div class="player-info">
+                    <div class="player-name-wrapper">
+                        <span class="player-name" id="white-name" data-i18n="common.waiting_2">Waiting</span>
+                        <span class="player-score" id="white-score" data-i18n="common.key_0_pts">0 pts</span>
+                    </div>
+                    <div class="player-timer-wrapper" id="white-timer-box" style="display: none;">
+                        <span class="timer-icon">⏳</span> <span class="player-timer" id="white-timer">--:--</span>
+                    </div>
+                    <span class="check-badge" id="white-check" data-i18n="common.check">CHECK!</span>
+                </div>
+            </div>
+
+            <div class="status-section">
+                <div class="vs-text" data-i18n="common.vs">VS</div>
+                <div class="status-badge" id="turn-status" data-i18n="common.loading">LOADING...</div>
+                <div class="bet-badge" id="hud-bet-display" style="display: none;">
+                    <span class="bet-pot-icon">💰</span> <span id="hud-bet-val">$0</span>
+                </div>
+            </div>
+
+            <div class="player-section black-player">
+                <div class="player-info">
+                    <div class="player-name-wrapper">
+                        <span class="player-score" id="black-score" data-i18n="common.key_0_pts">0 pts</span>
+                        <span class="player-name" id="black-name" data-i18n="common.waiting_2">Waiting</span>
+                    </div>
+                    <div class="player-timer-wrapper" id="black-timer-box" style="display: none; justify-content: flex-end;">
+                        <span class="player-timer" id="black-timer">--:--</span> <span class="timer-icon">⏳</span>
+                    </div>
+                    <span class="check-badge" id="black-check" data-i18n="common.check">CHECK!</span>
+                </div>
+                <div class="player-avatar black-avatar"></div>
+            </div>
+        </div>
+        <div class="keyboard-hint" style="position: absolute; bottom: 0; left: 0; background: transparent; padding: 0; pointer-events: auto;">
+            <div id="player-hints">
+                <div class="controls-panel mantine-panel" style="top: auto; bottom: 2.083vh; left: 2.083vh; width: 23.333vh; animation: slideInUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;">
+                    <div class="panel-header" style="margin-bottom: 0.667vh; padding-bottom: 0.667vh;">
+                        <span class="panel-title" style="font-size: 1.083vh; color: #9CA3AF;" data-i18n="common.controls">CONTROLS (PLAYING)</span>
+                    </div>
+                    <div class="panel-body" style="gap: 0.667vh;">
+                        <div class="state-row">
+                            <span class="state-label" style="font-size: 1.000vh;" data-i18n="common.move_piece">Move Piece</span>
+                            <span class="key-badge" data-i18n="common.left_click">LEFT CLICK</span>
+                        </div>
+                        <div class="state-row" id="bet-hint-wrapper" style="display: none;">
+                            <span class="state-label" style="font-size: 1.000vh;" data-i18n="common.set_bet">Set Bet</span>
+                            <span class="key-badge" data-i18n="common.g_2">G</span>
+                        </div>
+                        <div class="state-row">
+                            <span class="state-label" style="font-size: 1.000vh;" data-i18n="common.move_history">Move History</span>
+                            <span class="key-badge" data-i18n="common.h_2">H</span>
+                        </div>
+                        <div class="state-row">
+                            <span class="state-label" style="font-size: 1.000vh;" data-i18n="common.toggle_camera">Toggle Camera</span>
+                            <span class="key-badge" data-i18n="common.v">V</span>
+                        </div>
+                        <div class="state-row">
+                            <span class="state-label" style="font-size: 1.000vh;" data-i18n="common.toggle_3d_icons">Toggle 3D Icons</span>
+                            <span class="key-badge">Y</span>
+                        </div>
+                        <div class="state-row">
+                            <span class="state-label" style="font-size: 1.000vh;" data-i18n="common.leave_table">Stand Up</span>
+                            <span class="key-badge" data-i18n="common.backspace">BACKSPACE</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="spectator-hints" style="display: none;">
+                <div class="controls-panel mantine-panel" style="top: auto; bottom: 2.083vh; left: 2.083vh; width: 23.333vh; animation: slideInUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;">
+                    <div class="panel-header" style="margin-bottom: 0.667vh; padding-bottom: 0.667vh;">
+                        <span class="panel-title" style="font-size: 1.083vh; color: #9CA3AF;" data-i18n="common.controls">CONTROLS (SPECTATOR)</span>
+                    </div>
+                    <div class="panel-body" style="gap: 0.667vh;">
+                        <div class="state-row">
+                            <span class="state-label" style="font-size: 1.000vh;" data-i18n="common.ui.cycle_camera">Cycle Camera</span>
+                            <span class="key-badge">C</span>
+                        </div>
+                        <div class="state-row">
+                            <span class="state-label" style="font-size: 1.000vh;" data-i18n="common.toggle_camera">Toggle Camera</span>
+                            <span class="key-badge" data-i18n="common.v">V</span>
+                        </div>
+                        <div class="state-row">
+                            <span class="state-label" style="font-size: 1.000vh;" data-i18n="common.toggle_3d_icons">Toggle 3D Icons</span>
+                            <span class="key-badge">Y</span>
+                        </div>
+                        <div class="state-row">
+                            <span class="state-label" style="font-size: 1.000vh;" data-i18n="common.ui.stop_spectating">Stop Spectating</span>
+                            <span class="key-badge" data-i18n="common.backspace">BACKSPACE</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="gamemode-modal" style="display: none;">
+        <div class="gamemode-card">
+            <h3 id="gamemode-title" data-i18n="common.select_game_mode">Select Game Mode</h3>
+            <p id="gamemode-desc" data-i18n="common.choose_how_you_want_to_play">Choose how you want to play:</p>
+            
+            <div class="gamemode-options" id="mode-selection-step">
+                <div class="gamemode-option" data-mode="player">
+                    <span class="option-name" data-i18n="common.play_with_player">Play with Player</span>
+                    <span class="option-desc" data-i18n="common.wait_for_another_player">Wait for another player</span>
+                </div>
+                <div class="gamemode-option" data-mode="ped">
+                    <span class="option-name" data-i18n="common.play_with_ai">Play with AI</span>
+                    <span class="option-desc" data-i18n="common.play_against_an_npc">Play against an NPC</span>
+                </div>
+            </div>
+
+            <div class="gamemode-options" id="difficulty-selection-step" style="display: none;">
+                <div class="difficulty-option easy" data-difficulty="easy">
+                    <span class="diff-level" data-i18n="common.easy">Easy</span>
+                    <span class="diff-desc" data-i18n="common.ai_makes_random_moves">AI makes random moves</span>
+                </div>
+                <div class="difficulty-option normal" data-difficulty="normal">
+                    <span class="diff-level" data-i18n="common.normal">Normal</span>
+                    <span class="diff-desc" data-i18n="common.ai_captures_and_plays_simple_tactics">AI captures and plays simple tactics</span>
+                </div>
+                <div class="difficulty-option hard" data-difficulty="hard">
+                    <span class="diff-level" data-i18n="common.hard">Hard</span>
+                    <span class="diff-desc" data-i18n="common.ai_uses_minimax_evaluation">AI uses Minimax evaluation</span>
+                </div>
+            </div>
+            
+            <button class="cancel-btn" id="close-gamemode-btn" data-i18n="common.cancel">Cancel</button>
+        </div>
+    </div>
+    <div id="promotion-modal" style="display: none;">
+        <div class="promotion-card">
+            <h3 data-i18n="common.pawn_promotion">Pawn Promotion</h3>
+            <p data-i18n="common.select_a_piece_to_promote_your_pawn">Select a piece to promote your pawn:</p>
+            <div class="promotion-options">
+                <div class="promotion-option" data-choice="queen">
+                    <span class="option-symbol">♛</span>
+                    <span class="option-name" data-i18n="common.queen">Queen</span>
+                    <span class="option-pts" data-i18n="common.key_9_pts">+9 pts</span>
+                </div>
+                <div class="promotion-option" data-choice="rook">
+                    <span class="option-symbol">♜</span>
+                    <span class="option-name" data-i18n="common.rook">Rook</span>
+                    <span class="option-pts" data-i18n="common.key_5_pts">+5 pts</span>
+                </div>
+                <div class="promotion-option" data-choice="bishop">
+                    <span class="option-symbol">♝</span>
+                    <span class="option-name" data-i18n="common.bishop">Bishop</span>
+                    <span class="option-pts" data-i18n="common.key_3_pts">+3 pts</span>
+                </div>
+                <div class="promotion-option" data-choice="knight">
+                    <span class="option-symbol">♞</span>
+                    <span class="option-name" data-i18n="common.knight">Knight</span>
+                    <span class="option-pts" data-i18n="common.key_3_pts">+3 pts</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="chess-leave-prompt-modal" class="chance-modal" style="display: none; z-index: 10010;">
+        <div class="leave-prompt-container">
+            <h2 class="leave-prompt-title" data-i18n="common.leave_table_2">LEAVE TABLE</h2>
+            <p class="leave-prompt-desc" data-i18n="common.are_you_sure_you_want_to_leave_the_table">Are you sure you want to leave the table?</p>
+            <div class="leave-prompt-actions">
+                <button id="chess-leave-yes" class="leave-btn confirm-btn" data-i18n="common.yes_leave">YES</button>
+                <button id="chess-leave-no" class="leave-btn cancel-btn" data-i18n="common.no_stay">NO</button>
+            </div>
+        </div>
+    </div>
+    <div id="pgn-toggle-btn" style="display: none;" title="Toggle Move History">
+        <span>📜</span>
+    </div>
+
+    <div id="pgn-container" style="display: none;">
+        <div class="pgn-header">
+            <span class="pgn-icon">📜</span>
+            <span class="pgn-title" data-i18n="common.move_history">Move History</span>
+        </div>
+        <div class="pgn-moves-list" id="pgn-moves-list">
+            
+        </div>
+    </div>
+
+    <div id="leaderboard-modal" style="display: none;">
+        <div class="leaderboard-card">
+            <h2 data-i18n="common.chess_leaderboard">Chess Leaderboard</h2>
+            <p class="leaderboard-subtitle" data-i18n="common.top_players_in_the_city">Top players in the city</p>
+            <div class="leaderboard-table-container">
+                <table class="leaderboard-table">
+                    <thead>
+                        <tr>
+                            <th style="width: 15%;" data-i18n="common.rank">Rank</th>
+                            <th style="width: 45%; text-align: left;" data-i18n="common.player">Player</th>
+                            <th style="width: 25%;" data-i18n="common.w_l_d">W / L / D</th>
+                            <th style="width: 15%;" data-i18n="common.elo">Elo</th>
+                        </tr>
+                    </thead>
+                    <tbody id="leaderboard-list">
+                        
+                    </tbody>
+                </table>
+            </div>
+            <button class="leaderboard-close-btn" id="close-leaderboard-btn" data-i18n="common.close">Close</button>
+        </div>
+    </div>
+    
+
+    
+    <div id="player-list-container" class="container hidden">
+        <div class="modal">
+            <div class="modal-header">
+                <h2 data-i18n="common.select_a_player">Select a Player</h2>
+                <button class="close-btn" id="close-list" data-i18n="common.times">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p class="subtitle" data-i18n="common.choose_a_nearby_player_to_play_guess_who">Choose a nearby player to play Who Am I with.</p>
+                <div class="player-list" id="player-list">
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+
+    
+    <div id="request-container" class="container hidden">
+        <div class="modal request-modal">
+            <div class="modal-header">
+                <h2 data-i18n="common.game_request">Game Request</h2>
+            </div>
+            <div class="modal-body">
+                <p class="request-text"><strong id="requester-name">Someone</strong> <span data-i18n="common.ui.wants_to_play_guesswho">wants to play Who Am I with you.</span></p>
+                <div class="button-group">
+                    <button class="btn btn-outline" id="btn-decline" data-i18n="common.decline">Decline</button>
+                    <button class="btn btn-filled" id="btn-accept" data-i18n="common.accept">Accept</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    
+    <div id="image-selection-container" class="container hidden">
+        <div class="modal" style="width: 550px;">
+            <div class="modal-header">
+                <h2 data-i18n="common.select_character_image">Select Character Image</h2>
+                <button class="close-btn" id="close-image-list" data-i18n="common.times">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p class="subtitle" data-i18n="common.search_for_a_character_e_g_lewis_hamilto">Search for a character (e.g. Lewis Hamilton) or paste a direct image URL.</p>
+                <div class="search-bar">
+                    <input type="text" id="image-search-input" placeholder="Search or paste URL..." autocomplete="off" data-i18n="common.search_or_paste_url">
+                    <button class="btn btn-filled" id="btn-search" data-i18n="common.search">Search</button>
+                </div>
+                <div class="image-grid" id="image-grid">
+                    
+                </div>
+                <div class="selected-action hidden" id="selected-action-area" style="display:flex; gap:10px; margin-top: 12px;">
+                    <select id="timer-select" class="form-select" style="flex:1;">
+                        <option value="60" data-i18n="common.key_60_seconds">60 Seconds</option>
+                        <option value="120" selected data-i18n="common.key_120_seconds">120 Seconds</option>
+                        <option value="180" data-i18n="common.key_180_seconds">180 Seconds</option>
+                        <option value="0" data-i18n="common.unlimited">Unlimited</option>
+                    </select>
+                    <button class="btn btn-filled" id="btn-confirm-image" style="flex:2; background-color: #10B981;" data-i18n="common.confirm_image">Confirm Image</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    
+    <div id="timer-hud-container" class="hud-container hidden">
+        <div class="timer-box">
+            <span id="timer-text">02:00</span>
+            <div class="timer-bar-bg"><div class="timer-bar-fill" id="timer-bar"></div></div>
+            <div class="hud-hint" data-i18n="common.press_e_to_guess">Press [E] to Guess</div>
+        </div>
+    </div>
+
+    
+    <div id="guess-input-container" class="container hidden">
+        <div class="modal" style="width: 400px;">
+            <div class="modal-header">
+                <h2 data-i18n="common.take_a_guess">Take a Guess!</h2>
+                <button class="close-btn" id="close-guess-input" data-i18n="common.times">&times;</button>
+            </div>
+            <div class="modal-body">
+                <input type="text" id="guess-text-input" class="form-input" placeholder="Who am I?" autocomplete="off" style="width: 100%; margin-bottom: 12px; box-sizing: border-box;" data-i18n="common.who_am_i">
+                <button class="btn btn-filled" id="btn-submit-guess" style="width: 100%;" data-i18n="common.submit_guess">Submit Guess</button>
+            </div>
+        </div>
+    </div>
+
+    
+    <div id="verify-guess-container" class="container hidden">
+        <div class="modal request-modal">
+            <div class="modal-header">
+                <h2 data-i18n="common.is_this_correct">Is this correct?</h2>
+            </div>
+            <div class="modal-body">
+                <p class="request-text" style="text-align: center;"><span data-i18n="common.ui.they_guessed">They guessed:</span><br><strong id="verify-guess-text" style="color: #10B981; font-size: 24px; display: block; margin-top: 10px;">Lewis Hamilton</strong></p>
+                <div class="button-group" style="margin-top: 20px;">
+                    <button class="btn btn-outline" id="btn-verify-no" style="border-color: #EF4444; color: #EF4444;" data-i18n="common.no_wrong">No (Wrong)</button>
+                    <button class="btn btn-filled" id="btn-verify-yes" style="background-color: #10B981;" data-i18n="common.yes_correct">Yes (Correct)</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    
+
+    <div id="jengo-ui-container" style="display: none;">
+        <div id="jengo-waiting-display" style="display: none;">
+            <div class="waiting-card">
+                <div class="waiting-spinner"></div>
+                <span data-i18n="common.waiting_for_opponent">Waiting for opponent...</span>
+                <div class="waiting-hint" data-i18n="common.esc_stand_up">[ESC] Stand Up</div>
+            </div>
+        </div>
+
+        
+        <div id="jengo-game-hud" style="display: none;">
+            <div class="turn-indicator" id="jengo-turn-display">Waiting...</div>
+            <div class="controls-hint" id="jengo-controls-display">
+                <div class="hint-row">
+                    <span class="hint-key" data-i18n="common.w_a_s_d">W A S D</span>
+                    <span class="hint-text" data-i18n="common.move_camera">Move Camera</span>
+                </div>
+                <div class="hint-row">
+                    <span class="hint-key" data-i18n="common.e">E</span>
+                    <span class="hint-text" id="jengo-mouse-hint-text" data-i18n="common.enable_cursor">Enable Cursor</span>
+                </div>
+                <div class="hint-row" id="jengo-drag-hint-row" style="display: none;">
+                    <span class="hint-key" data-i18n="common.left_click">LEFT CLICK</span>
+                    <span class="hint-text" data-i18n="common.pull_move_block">Pull / Move Block</span>
+                </div>
+                <div class="hint-row">
+                    <span class="hint-key" data-i18n="common.esc">ESC</span>
+                    <span class="hint-text" data-i18n="common.stand_up">Masadan Kalk</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="jengo-leave-prompt-modal" class="chance-modal" style="display: none; z-index: 10010;">
+        <div class="leave-prompt-container">
+            <h2 class="leave-prompt-title" data-i18n="common.leave_table_2">LEAVE TABLE</h2>
+            <p class="leave-prompt-desc" data-i18n="common.are_you_sure_you_want_to_leave_the_table">Are you sure you want to leave the table?</p>
+            <div class="leave-prompt-actions">
+                <button id="jengo-leave-yes" class="leave-btn confirm-btn" data-i18n="common.yes_leave">YES</button>
+                <button id="jengo-leave-no" class="leave-btn cancel-btn" data-i18n="common.no_stay">NO</button>
+            </div>
+        </div>
+    </div>
+    
+
+    <div class="rhythm-container" id="rodeo-rhythm-game" style="display: none;">
+        <div class="score-display"><span data-i18n="common.score">SCORE:</span> <span id="rodeo-score">0</span></div>
+        <div class="tracks">
+            <div class="track" data-key="A" id="rodeo-track-A">
+                <div class="target-zone">A</div>
+            </div>
+            <div class="track" data-key="W" id="rodeo-track-W">
+                <div class="target-zone">W</div>
+            </div>
+            <div class="track" data-key="S" id="rodeo-track-S">
+                <div class="target-zone">S</div>
+            </div>
+            <div class="track" data-key="D" id="rodeo-track-D">
+                <div class="target-zone">D</div>
+            </div>
+        </div>
+    </div>
+
+    <div id="rodeo-rodeo-stats-modal" style="display: none;">
+        <div class="rodeo-stats-card">
+            <h2 data-i18n="common.rodeo_leaderboard">Rodeo Leaderboard</h2>
+            <p class="rodeo-stats-subtitle" data-i18n="common.top_players_in_the_city">Top players in the city</p>
+            <div class="rodeo-stats-table-container">
+                <table class="rodeo-stats-table">
+                    <thead>
+                        <tr>
+                            <th style="width: 15%;" data-i18n="common.rank">Rank</th>
+                            <th style="width: 45%; text-align: left;" data-i18n="common.player">Player</th>
+                            <th style="width: 20%;" data-i18n="common.rides">Rides</th>
+                            <th style="width: 20%;" data-i18n="common.high_score">High Score</th>
+                        </tr>
+                    </thead>
+                    <tbody id="rodeo-rodeo-stats-list">
+                        
+                    </tbody>
+                </table>
+            </div>
+            <button class="rodeo-stats-close-btn" id="rodeo-close-rodeo-stats-btn" data-i18n="common.close">Close</button>
+        </div>
+    </div>
+    
+    
+
+    
+
+    
+    <div id="santospoly-game-ui" style="display: none;">
+        
+        <div class="controls-panel mantine-panel" style="top: auto; bottom: 2.083vh; left: 2.083vh; width: 23.333vh; animation: slideInUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;">
+            <div class="panel-header" style="margin-bottom: 0.667vh; padding-bottom: 0.667vh;">
+                <span class="panel-title" style="font-size: 1.083vh; color: #9CA3AF;" data-i18n="common.controls">CONTROLS</span>
+            </div>
+            <div class="panel-body" style="gap: 0.667vh;" id="santospoly-controls-container">
+                
+            </div>
+        </div>
+    </div>
+
+    
+    <div id="santospoly-game-info-ui" style="display: none; position: absolute; top: 2.083vh; right: 2.083vh; display: flex; flex-direction: column; gap: 1vh;">
+        
+    </div>
+
+    
+    <div id="santospoly-game-countdown-ui" style="display: none; position: absolute; top: 2.083vh; left: 50%; transform: translateX(-50%); background-color: rgba(26, 27, 30, 0.9); border: 0.2vh solid #10B981; border-radius: 1vh; padding: 1vh 2vh; box-shadow: 0 0.4vh 1.5vh rgba(0,0,0,0.5); z-index: 5000;">
+        <span style="color: #9CA3AF; font-family: 'Outfit', sans-serif; font-size: 1.5vh; font-weight: 600; margin-right: 1vh;" data-i18n="common.time_remaining">TIME REMAINING:</span>
+        <span id="santospoly-game-countdown-text" style="color: #10B981; font-family: 'Outfit', sans-serif; font-size: 2.2vh; font-weight: 800; letter-spacing: 0.1vh;">00:00</span>
+    </div>
+    </div>
+
+    
+    <div id="santospoly-property-card-modal" class="pc-modal" style="display: none;">
+        <div class="property-card" id="santospoly-property-card-content">
+            <div class="pc-header" id="santospoly-pc-header-box" style="background-color: #87CEEB;">
+                <div class="pc-title-deed" data-i18n="common.title_deed">TITLE DEED</div>
+                <div class="pc-prop-name" id="santospoly-pc-name">BOARDWALK</div>
+            </div>
+            <div class="pc-body">
+                <div class="santospoly-pc-rent" id="santospoly-pc-rent">RENT M50</div>
+                
+                <div class="pc-row">
+                    <span data-i18n="common.with_1_house">With 1 House</span>
+                    <span id="santospoly-pc-h1">M 200.</span>
+                </div>
+                <div class="pc-row">
+                    <span data-i18n="common.with_2_houses">With 2 Houses</span>
+                    <span id="santospoly-pc-h2">600.</span>
+                </div>
+                <div class="pc-row">
+                    <span data-i18n="common.with_3_houses">With 3 Houses</span>
+                    <span id="santospoly-pc-h3">1400.</span>
+                </div>
+                <div class="pc-row">
+                    <span data-i18n="common.with_4_houses">With 4 Houses</span>
+                    <span id="santospoly-pc-h4">1700.</span>
+                </div>
+                
+                <div class="santospoly-pc-hotel" id="santospoly-pc-hotel">With HOTEL M2000</div>
+                <div class="santospoly-pc-mortgage" id="santospoly-pc-mortgage">Mortgage Value M200</div>
+                <div class="pc-cost" id="santospoly-pc-house-cost">Houses cost M200 each</div>
+                <div class="pc-cost" id="santospoly-pc-hotel-cost">Hotels, M200 plus 4 houses</div>
+                
+                <div class="pc-footer" data-i18n="common.if_a_player_owns_all_the_lots_of_any_col">
+                    If a player owns ALL the Lots of any Color-Group, the rent is Doubled on Unimproved Lots in that group
+                </div>
+            </div>
+
+            <div id="santospoly-pc-purchase-actions" style="display:none; margin-top: 1vh; flex-direction: column; gap: 0.5vh;">
+                <div style="font-family: 'Cinzel', serif; font-weight: 800; font-size: 1.3vh; margin-bottom: 0.5vh; text-align: center; color: #3a2512; letter-spacing: 0.1vh;" data-i18n="common.purchase_options">PURCHASE OPTIONS</div>
+                
+                <label style="display: flex; justify-content: space-between; font-size: 1.25vh; color: #3a2512; font-weight: 600; cursor: pointer; padding: 0.2vh 0;">
+                    <span><input type="checkbox" id="santospoly-chk-buy-flag" value="flag" checked data-i18n="common.flag"> Flag</span>
+                    <span id="santospoly-price-flag" style="font-weight: 800; color: #27ae60;">M0</span>
+                </label>
+                <label class="house-opt" style="display: flex; justify-content: space-between; font-size: 1.25vh; color: #3a2512; font-weight: 600; cursor: pointer; padding: 0.2vh 0;">
+                    <span><input type="checkbox" id="santospoly-chk-buy-h1" value="1" data-i18n="common.key_1st_house"> 1st House</span>
+                    <span id="santospoly-price-h1" style="font-weight: 800; color: #27ae60;">M0</span>
+                </label>
+                <label class="house-opt" style="display: flex; justify-content: space-between; font-size: 1.25vh; color: #3a2512; font-weight: 600; cursor: pointer; padding: 0.2vh 0;">
+                    <span><input type="checkbox" id="santospoly-chk-buy-h2" value="2" disabled data-i18n="common.key_2nd_house"> 2nd House</span>
+                    <span id="santospoly-price-h2" style="font-weight: 800; color: #27ae60;">M0</span>
+                </label>
+                <label class="house-opt" style="display: flex; justify-content: space-between; font-size: 1.25vh; color: #3a2512; font-weight: 600; cursor: pointer; padding: 0.2vh 0;">
+                    <span><input type="checkbox" id="santospoly-chk-buy-h3" value="3" disabled data-i18n="common.key_3rd_house"> 3rd House</span>
+                    <span id="santospoly-price-h3" style="font-weight: 800; color: #27ae60;">M0</span>
+                </label>
+                <label class="house-opt" id="santospoly-lbl-buy-h4" style="display: flex; justify-content: space-between; font-size: 1.25vh; color: #3a2512; font-weight: 600; cursor: pointer; padding: 0.2vh 0;">
+                    <span><input type="checkbox" id="santospoly-chk-buy-h4" value="4" disabled data-i18n="common.key_4th_house"> 4th House</span>
+                    <span id="santospoly-price-h4" style="font-weight: 800; color: #27ae60;">M0</span>
+                </label>
+
+                <div style="border-top: 0.15vh solid #c5a059; margin-top: 0.5vh; padding-top: 0.6vh; display: flex; justify-content: space-between; font-weight: 900; font-size: 1.4vh; color: #3a2512; font-family: 'Cinzel', serif;">
+                    <span data-i18n="common.total">TOTAL:</span>
+                    <span id="santospoly-purchase-total-price" style="color: #1e8449;">M0</span>
+                </div>
+
+                <div style="display: flex; justify-content: space-around; margin-top: 1.2vh;">
+                    <button id="santospoly-pc-buy-selected-btn" style="background: linear-gradient(135deg, #27ae60, #196f3d); border: 0.15vh solid #2ecc71; color: white; padding: 0.6vh 2.5vh; border-radius: 0.6vh; cursor: pointer; font-family: 'Cinzel', serif; font-weight: 800; font-size: 1.3vh; box-shadow: 0 0.4vh 1vh rgba(39, 174, 96, 0.3); transition: all 0.2s ease;" data-i18n="common.buy">BUY</button>
+                    <button id="santospoly-pc-skip-btn" style="background: linear-gradient(135deg, #c0392b, #781c12); border: 0.15vh solid #e74c3c; color: white; padding: 0.6vh 2.5vh; border-radius: 0.6vh; cursor: pointer; font-family: 'Cinzel', serif; font-weight: 800; font-size: 1.3vh; box-shadow: 0 0.4vh 1vh rgba(192, 57, 43, 0.3); transition: all 0.2s ease;" data-i18n="common.skip">SKIP</button>
+                </div>
+            </div>
+            
+            <div id="santospoly-pc-build-actions" style="display:none; margin-top: 1.2vh; justify-content: center;">
+                <button id="santospoly-pc-build-house-btn" style="background: linear-gradient(135deg, #d4af37, #996515); border: 0.15vh solid #f5deb3; color: #1a120b; padding: 0.8vh 2.5vh; border-radius: 0.6vh; cursor: pointer; font-family: 'Cinzel', serif; font-weight: 900; font-size: 1.4vh; box-shadow: 0 0.5vh 1.4vh rgba(212, 175, 55, 0.35); transition: all 0.2s ease;"><span id="santospoly-pc-build-text" data-i18n="common.house">Ev</span> (M<span id="santospoly-pc-build-price"></span>)</button>
+            </div>
+            <button class="santospoly-pc-close-btn" id="santospoly-pc-close-btn" data-i18n="common.x">✕</button>
+        </div>
+    </div>
+
+    
+    <div id="santospoly-jail-card-modal" class="jail-modal" style="display: none;">
+        <div class="jail-card">
+            <div class="jail-header">
+                <img src="santostycoon_jail_card.png" alt="Jail Card" class="jail-illustration" />
+                <div class="jail-title" data-i18n="common.santospoly_jail">SANTOS TYCOON JAIL</div>
+            </div>
+            <div class="jail-body">
+                <p class="jail-description" data-i18n="common.you_are_in_jail_choose_an_action_to_get">You are in jail! Choose an action to get out:</p>
+                <div class="jail-status"><span data-i18n="common.double_dice_attempts">Double Dice Attempts Left:</span> <span id="santospoly-jail-turns-count">3</span></div>
+                
+                <div class="jail-actions">
+                    <button id="santospoly-jail-roll-btn" class="jail-btn roll-btn" data-i18n="common.roll_dice_try_for_double">Roll Dice (Try for Double)</button>
+                    <button id="santospoly-jail-pay-btn" class="jail-btn pay-btn" data-i18n="common.pay_bail_m500">Pay Bail (M500)</button>
+                    <button id="santospoly-jail-card-btn" class="jail-btn card-btn" data-i18n="common.use_get_out_of_jail_card">Use Get Out of Jail Card</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    
+    <div id="santospoly-chance-reveal-modal" class="chance-modal" style="display: none;">
+        <div class="chance-card-container flip-container">
+            <div class="chance-card-flipper" id="santospoly-chance-flipper">
+                
+                <div class="chance-card-face chance-card-back-reveal">
+                    <div class="chance-back-pattern">
+                        <span class="chance-back-question">?</span>
+                        <span class="chance-back-text" data-i18n="common.chance">CHANCE</span>
+                    </div>
+                </div>
+                
+                <div class="chance-card-face chance-card-front">
+                    <div class="chance-card-header">
+                        <span class="chance-header-title" data-i18n="common.chance">CHANCE</span>
+                    </div>
+                    <div class="chance-card-body">
+                        <h3 class="chance-card-title" id="santospoly-chance-card-title-text">EARTHQUAKE!</h3>
+                        <p class="chance-card-desc" id="santospoly-chance-card-desc-text">1 house was destroyed from a random property!</p>
+                        <div class="chance-card-result" id="santospoly-chance-card-result-text">Earthquake resulted in 1 house destroyed on VESPUCCI BEACH!</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    
+    <div id="santospoly-chest-reveal-modal" class="chance-modal chest-modal-reveal" style="display: none;">
+        <div class="chance-card-container flip-container">
+            <div class="chance-card-flipper" id="santospoly-chest-flipper">
+                
+                <div class="chance-card-face chest-card-back-reveal">
+                    <div class="chance-back-pattern chest-back-pattern">
+                        <span class="chance-back-question">?</span>
+                        <span class="chance-back-text" data-i18n="common.chest">CHEST</span>
+                    </div>
+                </div>
+                
+                <div class="chance-card-face chance-card-front">
+                    <div class="chance-card-header chest-card-header">
+                        <span class="chance-header-title" data-i18n="common.community_chest">COMMUNITY CHEST</span>
+                    </div>
+                    <div class="chance-card-body chest-card-body">
+                        <h3 class="chance-card-title chest-card-title" id="santospoly-chest-card-title-text">BANK ERROR!</h3>
+                        <p class="chance-card-desc" id="santospoly-chest-card-desc-text">Bank error in your favor. Collect M200.</p>
+                        <div class="chance-card-result chest-card-result" id="santospoly-chest-card-result-text">Received M200 due to bank error!</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    
+    <div id="connect4-leave-prompt-modal" class="chance-modal" style="display: none; z-index: 10010;">
+        <div class="leave-prompt-container">
+            <h2 class="leave-prompt-title" data-i18n="common.leave_table_2">LEAVE TABLE</h2>
+            <p class="leave-prompt-desc" data-i18n="common.are_you_sure_you_want_to_leave_the_table">Are you sure you want to leave the table?</p>
+            <div class="leave-prompt-actions">
+                <button id="connect4-leave-yes" class="leave-btn confirm-btn" data-i18n="common.yes_leave">YES, LEAVE</button>
+                <button id="connect4-leave-no" class="leave-btn cancel-btn" data-i18n="common.no_stay">NO, STAY</button>
+            </div>
+        </div>
+    </div>
+    
+    <div id="santospoly-leave-prompt-modal" class="chance-modal" style="display: none; z-index: 10010;">
+        <div class="leave-prompt-container">
+            <h2 class="leave-prompt-title" data-i18n="common.leave_table_2">LEAVE TABLE</h2>
+            <p class="leave-prompt-desc" data-i18n="common.are_you_sure_you_want_to_leave_the_table">Are you sure you want to leave the table?</p>
+            <div class="leave-prompt-actions">
+                <button id="santospoly-leave-confirm-btn" class="leave-btn confirm-btn" data-i18n="common.yes_leave">YES, LEAVE</button>
+                <button id="santospoly-leave-cancel-btn" class="leave-btn cancel-btn" data-i18n="common.no_stay">NO, STAY</button>
+            </div>
+        </div>
+    </div>
+
+    
+    <div id="santospoly-takeover-modal" class="chance-modal" style="display: none; z-index: 10010;">
+        <div class="leave-prompt-container" style="border: 0.25vh solid #d4af37;">
+            <h2 class="leave-prompt-title" style="font-family: 'Cinzel', serif; font-size: 2.2vh; font-weight: 900; color: #ffd700; text-shadow: 0 0 1vh rgba(255, 215, 0, 0.5);" data-i18n="common.hostile_takeover">HOSTILE TAKEOVER</h2>
+            <p class="leave-prompt-desc" id="santospoly-takeover-desc" style="font-size: 1.5vh; margin-bottom: 2vh; color: #f5ebd7; font-family: 'Outfit', sans-serif;" data-i18n="common.buy_property_prompt">Do you want to buy this property?</p>
+            <div class="leave-prompt-actions">
+                <button id="santospoly-takeover-buy-btn" class="leave-btn confirm-btn" style="background: linear-gradient(135deg, #27ae60, #196f3d); border: 0.15vh solid #2ecc71; color: #fff; font-family: 'Cinzel', serif; font-weight: 800;" data-i18n="common.buyout">BUYOUT</button>
+                <button id="santospoly-takeover-skip-btn" class="leave-btn cancel-btn" style="background: linear-gradient(135deg, #c0392b, #781c12); border: 0.15vh solid #e74c3c; color: #fff; font-family: 'Cinzel', serif; font-weight: 800;" data-i18n="common.skip_2">SKIP</button>
+            </div>
+        </div>
+    </div>
+
+    
+    <div id="santospoly-debt-modal" class="chance-modal" style="display: none;">
+        <div class="debt-container">
+            <div class="debt-header">
+                <h2 data-i18n="common.debt_payment_system">DEBT PAYMENT SYSTEM</h2>
+                <p id="santospoly-debt-reason-text">You must pay rent for Mission Row property.</p>
+            </div>
+            
+            <div class="debt-summary">
+                <div class="summary-box">
+                    <span class="summary-label" data-i18n="common.total_debt">Total Debt</span>
+                    <span class="summary-value" id="santospoly-debt-amount-text">M0</span>
+                </div>
+                <div class="summary-box">
+                    <span class="summary-label" data-i18n="common.your_wallet">Your Wallet</span>
+                    <span class="summary-value" id="santospoly-debt-wallet-text">M0</span>
+                </div>
+                <div class="summary-box highlight">
+                    <span class="summary-label" data-i18n="common.selected_value">Selected Value</span>
+                    <span class="summary-value" id="santospoly-debt-selected-text">M0</span>
+                </div>
+                <div class="summary-box highlight">
+                    <span class="summary-label" data-i18n="common.remaining_debt">Remaining Debt</span>
+                    <span class="summary-value" id="santospoly-debt-remaining-text">M0</span>
+                </div>
+            </div>
+
+            <div class="debt-auto-select-row">
+                <span class="debt-instruction" data-i18n="common.select_your_properties_to_clear_the_debt">Select your properties to clear the debt:</span>
+                <button id="santospoly-debt-auto-select-btn" class="auto-select-btn" data-i18n="common.auto_select">Auto Select</button>
+            </div>
+            
+            <div class="debt-properties-list" id="santospoly-debt-properties-container">
+                
+            </div>
+            
+            <div class="debt-actions">
+                <button id="santospoly-debt-pay-btn" class="debt-btn pay-btn" disabled data-i18n="common.sell_selected_pay">SELL SELECTED & PAY</button>
+                <button id="santospoly-debt-bankrupt-btn" class="debt-btn bankrupt-btn" data-i18n="common.declare_bankruptcy">DECLARE BANKRUPTCY</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- SantosPoly Modern Luxury Dynamic Announcements Stack -->
+    <div id="santospoly-announcements-container" class="santospoly-announcements-container"></div>
+
+    
+    <div id="santospoly-cursor-overlay" style="display: none;"></div>
+
+    
+
+    <div id="connect4-ui-container" style="display: none;">
+        <div id="connect4-game-hud">
+            <div class="controls-hint" id="connect4-controls-display">
+                <div class="state-row" id="connect4-turn-row" style="display: none; justify-content: center; margin-bottom: 1vh;">
+                    <span id="connect4-turn-indicator" class="connect4-turn-badge">WAITING...</span>
+                </div>
+                <div class="state-row">
+                    <span class="state-label" style="font-size: 1.000vh;" data-i18n="common.toggle_camera">Toggle Camera</span>
+                    <span class="key-badge" data-i18n="common.v">V</span>
+                </div>
+                <div class="state-row">
+                    <span class="state-label" style="font-size: 1.000vh;" data-i18n="common.stand_up">Stand Up</span>
+                    <span class="key-badge" data-i18n="common.backspace">BACKSPACE</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="truthOrDare-app">
+        <div id="truthOrDare-game-panel" class="mantine-card hidden">
+
+            <div class="mantine-section">
+                <div class="truthOrDare-player-list-title" data-i18n="common.seated_players">Seated Players</div>
+                <div id="truthOrDare-player-list" class="truthOrDare-player-list"></div>
+            </div>
+            <div class="mantine-footer">
+                <div id="truthOrDare-leader-controls" class="hidden">
+                    <button id="truthOrDare-spin-btn" class="mantine-btn mantine-btn-blue hidden" data-i18n="common.spin_the_bottle">Spin Bottle</button>
+                    <div class="keybind-list">
+                        <div class="keybind-item"><kbd class="mantine-kbd" data-i18n="common.e">E</kbd> Spin Bottle</div>
+                        <div class="keybind-item"><kbd class="mantine-kbd" data-i18n="common.x">X</kbd> Stand Up</div>
+                    </div>
+                </div>
+                <div id="truthOrDare-normal-controls">
+                    <div class="keybind-list">
+                        <div id="truthOrDare-status-text" class="status-msg" style="text-align: left; margin-bottom: 10px;" data-i18n="common.waiting_for_the_leader_to_spin_the_bottl">Waiting for leader to spin...</div>
+                        <div class="keybind-item"><kbd class="mantine-kbd" data-i18n="common.x">X</kbd> Stand Up</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="truthOrDare-respondent-choice-panel" class="mantine-modal hidden">
+            <div class="mantine-card">
+                <div class="mantine-header" data-i18n="common.make_your_choice">Make Your Choice!</div>
+                <div class="mantine-section">
+                    <p class="role-desc" data-i18n="common.your_turn_truth_or_dare">Your turn. Truth or Dare?</p>
+                    <div class="respondent-buttons">
+                        <button id="truthOrDare-resp-truth-btn" class="mantine-btn mantine-btn-green" data-i18n="common.truth">Truth</button>
+                        <button id="truthOrDare-resp-dare-btn" class="mantine-btn mantine-btn-orange" data-i18n="common.dare">Dare</button>
+                    </div>
+                    <div id="truthOrDare-resp-truth-warning" class="status-msg hidden" style="color: #fa5252; margin-top: 10px; font-weight: 500;" data-i18n="common.you_can_choose_truth_at_most_3_times_in">
+                        You can choose truth at most 3 times in a row!
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="truthOrDare-asker-panel" class="mantine-modal hidden">
+            <div class="mantine-card">
+                <div class="mantine-header" data-i18n="common.decision_time">Decision Time!</div>
+                <div class="mantine-section">
+                    <p class="role-desc">Player <span id="truthOrDare-target-name-asker" class="highlight"></span> chose <span id="truthOrDare-asker-choice-type" class="highlight"></span>. Prepare a question/task.</p>
+                    <div id="truthOrDare-asker-choices">
+                        <button id="truthOrDare-asker-random-btn" class="mantine-btn mantine-btn-blue" data-i18n="common.random_question_task">Random Question / Task</button>
+                        <button id="truthOrDare-asker-custom-btn" class="mantine-btn mantine-btn-outline" data-i18n="common.i_will_ask_myself">I Will Ask Myself</button>
+                    </div>
+                    <div id="truthOrDare-asker-custom-sub" class="hidden">
+                        <div class="input-group">
+                            <label id="truthOrDare-custom-question-label" for="truthOrDare-custom-question-input" data-i18n="common.write_your_question">Write Your Question</label>
+                            <textarea id="truthOrDare-custom-question-input" rows="3" placeholder="Enter question or task..."></textarea>
+                        </div>
+                        <button id="truthOrDare-asker-submit-btn" class="mantine-btn mantine-btn-blue" data-i18n="common.submit">Submit</button>
+                        <button id="truthOrDare-asker-custom-back-btn" class="mantine-btn mantine-btn-subtle" data-i18n="common.go_back">Go Back</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="truthOrDare-wait-panel" class="mantine-modal hidden">
+            <div class="mantine-card">
+                <div class="mantine-header" data-i18n="common.bottle_stopped">Bottle Stopped</div>
+                <div class="mantine-section">
+                    <p id="truthOrDare-wait-panel-text" class="role-desc"></p>
+                    <div class="spinner"></div>
+                </div>
+            </div>
+        </div>
+
+        <div id="truthOrDare-question-card" class="mantine-modal hidden">
+            <div class="mantine-card">
+                <div class="mantine-header" data-i18n="common.question_task">Question / Task</div>
+                <div class="mantine-section">
+                    <div class="round-info"><span data-i18n="common.asker">Soran:</span> <span id="truthOrDare-asker-name-card" class="highlight"></span></div>
+                    <div class="round-info"><span data-i18n="common.answerer">Cevaplayan:</span> <span id="truthOrDare-target-name-card" class="highlight"></span></div>
+                    <div id="truthOrDare-question-text" class="question-box"></div>
+                </div>
+                <div class="mantine-footer">
+                    <button id="truthOrDare-close-question-btn" class="mantine-btn mantine-btn-blue hidden" data-i18n="common.new_round">Yeni El</button>
+                    <div id="truthOrDare-waiting-close-text" class="status-msg" data-i18n="common.waiting_for_the_leader_to_start_the_next">Waiting for leader to start new round...</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+
+        <div id="armwrestling-countdown-ui" class="hidden">
+            <span id="armwrestling-countdown-num"></span>
+        </div>
+
+        <div id="armwrestling-result-ui" class="hidden">
+            <span id="armwrestling-result-text"></span>
+            <span id="armwrestling-result-sub"></span>
+        </div>
+
+        <div id="armwrestling-mash-ui" class="hidden">
+            <div class="orbit-ring"></div>
+            <div class="wave w1"></div>
+            <div class="wave w2"></div>
+            <div class="wave w3"></div>
+            <div class="core">
+                <span class="key" data-i18n="common.e">E</span>
+            </div>
+        </div>
+
+        
+    
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="script.js"></script>
+
+    
+    <div id="xox-ui-container" style="display: none; position: absolute; left: 0; bottom: 0; width: 100%; height: 100%; pointer-events: none;">
+        <div class="controls-panel mantine-panel" style="top: auto; bottom: 2.083vh; left: 2.083vh; width: 23.333vh; animation: slideInUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards; pointer-events: auto;">
+            <div class="panel-header" style="margin-bottom: 0.667vh; padding-bottom: 0.667vh;">
+                <span class="panel-title" style="font-size: 1.083vh; color: #9CA3AF;" data-i18n="common.controls">CONTROLS</span>
+            </div>
+            <div class="panel-body" style="gap: 0.667vh;">
+                <div class="state-row" id="xox-turn-row" style="display: none; justify-content: center; margin-bottom: 1vh;">
+                    <span id="xox-turn-indicator" class="connect4-turn-badge">WAITING...</span>
+                </div>
+                <div class="state-row">
+                    <span class="state-label" style="font-size: 1.000vh;" data-i18n="common.place_piece">Place Piece</span>
+                    <span class="key-badge" data-i18n="common.left_click">LEFT CLICK</span>
+                </div>
+                <div class="state-row">
+                    <span class="state-label" style="font-size: 1.000vh;" data-i18n="common.toggle_camera">Toggle Camera</span>
+                    <span class="key-badge" data-i18n="common.v">V</span>
+                </div>
+                <div class="state-row">
+                    <span class="state-label" style="font-size: 1.000vh;" data-i18n="common.leave_table">Leave Table</span>
+                    <span class="key-badge" data-i18n="common.backspace">BACKSPACE</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="xox-leave-prompt-modal" class="chance-modal" style="display: none; z-index: 10010;">
+        <div class="leave-prompt-container">
+            <h2 class="leave-prompt-title" data-i18n="common.leave_table_2">LEAVE TABLE</h2>
+            <p class="leave-prompt-desc" data-i18n="common.are_you_sure_you_want_to_leave_the_table">Are you sure you want to leave the table?</p>
+            <div class="leave-prompt-actions">
+                <button id="xox-leave-yes" class="leave-btn confirm-btn" data-i18n="common.yes_leave">YES</button>
+                <button id="xox-leave-no" class="leave-btn cancel-btn" data-i18n="common.no_stay">NO</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="eno-leave-prompt-modal" class="chance-modal" style="display: none; z-index: 10010;">
+        <div class="leave-prompt-container">
+            <h2 class="leave-prompt-title" data-i18n="common.leave_table_2">LEAVE TABLE</h2>
+            <p class="leave-prompt-desc" data-i18n="common.are_you_sure_you_want_to_leave_the_table">Are you sure you want to leave the table?</p>
+            <div class="leave-prompt-actions">
+                <button id="eno-leave-yes" class="leave-btn confirm-btn" data-i18n="common.yes_leave">YES</button>
+                <button id="eno-leave-no" class="leave-btn cancel-btn" data-i18n="common.no_stay">NO</button>
+            </div>
+        </div>
+    </div>
+    
+    <div id="admin-menu-modal" style="display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(10, 10, 10, 0.7); z-index: 20000; align-items: center; justify-content: center; font-family: 'Inter', sans-serif; pointer-events: auto;">
+        <style>
+            .admin-scrollable::-webkit-scrollbar {
+                width: 6px;
+            }
+            .admin-scrollable::-webkit-scrollbar-track {
+                background: #05060A;
+            }
+            .admin-scrollable::-webkit-scrollbar-thumb {
+                background: #1F2937;
+                border-radius: 4px;
+            }
+            .admin-scrollable::-webkit-scrollbar-thumb:hover {
+                background: #3b5bdb;
+            }
+            .admin-tab-btn {
+                background: none;
+                border: none;
+                color: #9CA3AF;
+                padding: 10px 18px;
+                font-size: 13px;
+                font-weight: 600;
+                cursor: pointer;
+                border-radius: 6px;
+                transition: all 0.2s;
+                display: flex;
+                align-items: center;
+                gap: 8px;
+            }
+            .admin-tab-btn:hover {
+                background: #151A23;
+                color: #fff;
+            }
+            .admin-tab-btn.active {
+                background: #1F2937;
+                color: #fff;
+            }
+        </style>
+        <div style="width: 800px; height: 600px; background: #0B0E14; border: 1px solid #1F2937; border-radius: 12px; box-shadow: 0 8px 32px rgba(0,0,0,0.5); display: flex; flex-direction: column; overflow: hidden; color: #c1c2c5;">
+            
+            <div style="padding: 20px 24px; border-bottom: 1px solid #1F2937; display: flex; align-items: center; justify-content: space-between; background: #151A23;">
+                <div>
+                    <h2 style="margin: 0; font-size: 20px; font-weight: 700; color: #fff;" data-i18n="common.ui.admin_board_games">Admin Board Games</h2>
+                    <p style="margin: 4px 0 0 0; font-size: 13px; color: #9CA3AF;" data-i18n="common.ui.admin_board_games_desc">Manage player-placed tables and spawn new ones.</p>
+                </div>
+                <button id="admin-close-btn" style="background: none; border: none; color: #9CA3AF; cursor: pointer; font-size: 24px; padding: 4px; display: flex; align-items: center; justify-content: center; transition: color 0.2s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='#9CA3AF'">&times;</button>
+            </div>
+            
+            
+            <div style="flex: 1; display: flex; overflow: hidden;">
+                
+                <div class="admin-scrollable" style="width: 280px; border-right: 1px solid #1F2937; padding: 20px; display: flex; flex-direction: column; gap: 16px; background: #05060A; overflow-y: auto;">
+                    <h3 style="margin: 0; font-size: 14px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; color: #9CA3AF;" data-i18n="common.ui.spawn_new_game">Spawn New Game</h3>
+                    <div style="display: flex; flex-direction: column; gap: 10px;" id="admin-spawn-list">
+                        
+                    </div>
+                </div>
+                
+                
+                <div style="flex: 1; padding: 20px; display: flex; flex-direction: column; gap: 16px; overflow: hidden; background: #0B0E14;">
+                    
+                    <div style="display: flex; gap: 8px; border-bottom: 1px solid #1F2937; padding-bottom: 12px; margin-bottom: 4px;">
+                        <button class="admin-tab-btn active" data-tab="player">
+                            <span data-i18n="common.ui.player_placed">Player Placed</span>
+                            <span id="player-tables-count" style="font-size: 11px; background: #151A23; color: #a6a7ab; padding: 2px 6px; border-radius: 10px; font-weight: 500;">0</span>
+                        </button>
+                        <button class="admin-tab-btn" data-tab="admin">
+                            <span data-i18n="common.ui.admin_placed">Admin Placed</span>
+                            <span id="admin-tables-count" style="font-size: 11px; background: #151A23; color: #a6a7ab; padding: 2px 6px; border-radius: 10px; font-weight: 500;">0</span>
+                        </button>
+                    </div>
+                    
+                    
+                    <div class="admin-scrollable" id="player-tab-content" style="flex: 1; display: flex; flex-direction: column; gap: 10px; overflow-y: auto;">
+                        <div style="display: flex; flex-direction: column; gap: 10px;" id="admin-player-tables-list">
+                            
+                        </div>
+                    </div>
+                    
+                    <div class="admin-scrollable" id="admin-tab-content" style="flex: 1; display: none; flex-direction: column; gap: 10px; overflow-y: auto;">
+                        <div style="display: flex; flex-direction: column; gap: 10px;" id="admin-placed-tables-list">
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div id="admin-price-modal" style="display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.6); z-index: 21000; align-items: center; justify-content: center;">
+                <div style="width: 320px; background: #0B0E14; border: 1px solid #1F2937; border-radius: 8px; padding: 20px; box-shadow: 0 8px 32px rgba(0,0,0,0.5); display: flex; flex-direction: column; gap: 14px;">
+                    <h3 style="margin: 0; font-size: 16px; font-weight: 700; color: #fff;" data-i18n="common.ui.play_price">Play Price</h3>
+                    <p style="margin: 0; font-size: 12px; color: #9CA3AF;" data-i18n="common.ui.price_desc">Set how much money it costs for players to play a match at this table (0 for free).</p>
+                    <input type="number" id="admin-price-input" min="0" value="0" style="width: 100%; background: #151A23; border: 1px solid #1F2937; border-radius: 6px; padding: 8px 12px; color: #fff; font-size: 14px; font-family: inherit; outline: none; box-sizing: border-box;" />
+                    <div style="display: flex; gap: 10px; justify-content: flex-end;">
+                        <button id="admin-price-cancel" style="background: none; border: 1px solid #1F2937; color: #a6a7ab; border-radius: 6px; padding: 8px 14px; font-size: 13px; font-weight: 600; cursor: pointer; transition: background 0.2s;" data-i18n="common.ui.cancel" onmouseover="this.style.background='#1F2937'" onmouseout="this.style.background='none'">Cancel</button>
+                        <button id="admin-price-confirm" style="background: #228be6; color: #fff; border: none; border-radius: 6px; padding: 8px 14px; font-size: 13px; font-weight: 600; cursor: pointer; transition: background 0.2s;" data-i18n="common.ui.confirm" onmouseover="this.style.background='#1c7ed6'" onmouseout="this.style.background='#228be6'">Confirm</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="game-payment-modal" class="chance-modal" style="display: none; z-index: 25000;">
+        <div class="leave-prompt-container">
+            <h2 class="leave-prompt-title" data-i18n="common.ui.entry_fee">GAME ENTRY FEE</h2>
+            <p class="leave-prompt-desc" id="game-payment-desc">You must pay $100 to start the game.</p>
+            <div class="leave-prompt-actions">
+                <button id="game-payment-no" class="leave-btn cancel-btn" data-i18n="common.ui.no">NO</button>
+                <button id="game-payment-yes" class="leave-btn confirm-btn" data-i18n="common.ui.yes">YES</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="global-leaderboard-modal" class="chance-modal" style="display: none; z-index: 26000; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(10, 10, 12, 0.85); justify-content: center; align-items: center; font-family: 'Outfit', sans-serif;">
+        <div class="leaderboard-card" style="width: 700px; padding: 24px;">
+            <h2 data-i18n="common.ui.global_leaderboard">Global Leaderboard</h2>
+            
+            <div class="leaderboard-tabs" style="display: flex; gap: 8px; margin-top: 15px; margin-bottom: 15px; border-bottom: 2px solid #1F2937; padding-bottom: 8px;">
+                <div class="leaderboard-tab active" id="leaderboard-tab-active" style="cursor: pointer; padding: 6px 16px; border-radius: 4px; color: #9CA3AF; font-weight: 600; font-size: 14px;" data-i18n="common.ui.active_rankings">Active Rankings</div>
+                <div class="leaderboard-tab" id="leaderboard-tab-history" style="cursor: pointer; padding: 6px 16px; border-radius: 4px; color: #9CA3AF; font-weight: 600; font-size: 14px;" data-i18n="common.ui.hall_of_fame">Hall of Fame</div>
+            </div>
+
+            <div id="leaderboard-active-controls" style="display: flex; gap: 12px; align-items: center; margin-top: 8px; margin-bottom: 12px;">
+                <label style="color: #9CA3AF; font-size: 14px; font-weight: 600;" data-i18n="common.ui.select_game">Select Game:</label>
+                <select id="global-leaderboard-game-select" style="flex: 1; padding: 8px 12px; border-radius: 6px; border: 1px solid #2B2E33; background-color: #151A23; color: white; font-family: inherit; font-size: 14px; outline: none; cursor: pointer;">
+                    <option value="chess" data-i18n="common.ui.chess">Chess</option>
+                    <option value="checkers" data-i18n="common.ui.checkers">Checkers</option>
+                    <option value="connect4" data-i18n="common.ui.connect4">4 In Line</option>
+                    <option value="xox" data-i18n="common.ui.xox">XOX</option>
+                    <option value="eno" data-i18n="common.ui.eno">Color Match</option>
+                    <option value="jengo" data-i18n="common.ui.jengo">Tower Blocks</option>
+                    <option value="santospoly" data-i18n="common.ui.santospoly">Santos Tycoon</option>
+                    <option value="rodeo" data-i18n="common.ui.rodeo">Rodeo</option>
+                    <option value="armWrestling" data-i18n="common.ui.arm_wrestling">Arm Wrestling</option>
+                    <option value="boxmachine" data-i18n="common.ui.boxmachine">Box Machine</option>
+                    <option value="basketball" data-i18n="common.ui.basketball">Basketball</option>
+                </select>
+            </div>
+
+            <div id="leaderboard-history-controls" style="display: none; gap: 12px; align-items: center; margin-top: 8px; margin-bottom: 12px;">
+                <label style="color: #9CA3AF; font-size: 14px; font-weight: 600;" data-i18n="common.ui.select_season">Select Season:</label>
+                <select id="global-leaderboard-season-select" style="flex: 1; padding: 8px 12px; border-radius: 6px; border: 1px solid #2B2E33; background-color: #151A23; color: white; font-family: inherit; font-size: 14px; outline: none; cursor: pointer;">
+                    <!-- Dynamic seasons list -->
+                </select>
+            </div>
+            
+            <div class="leaderboard-table-container" style="max-height: none; overflow: hidden;">
+                <table class="leaderboard-table" style="width: 100%; border-collapse: collapse;">
+                    <thead>
+                        <tr>
+                            <th style="text-align: left; padding: 12px; color: #9CA3AF; font-weight: 600; font-size: 13px;" data-i18n="common.ui.rank">Rank</th>
+                            <th style="text-align: left; padding: 12px; color: #9CA3AF; font-weight: 600; font-size: 13px;" data-i18n="common.ui.player">Player</th>
+                            <th style="text-align: left; padding: 12px; color: #9CA3AF; font-weight: 600; font-size: 13px;" id="global-leaderboard-record-header" data-i18n="common.ui.record">Record</th>
+                            <th style="text-align: left; padding: 12px; color: #9CA3AF; font-weight: 600; font-size: 13px;" id="global-leaderboard-rating-header" data-i18n="common.ui.rating">Rating</th>
+                        </tr>
+                    </thead>
+                    <tbody id="global-leaderboard-list">
+                        <!-- Dynamic list -->
+                    </tbody>
+                </table>
+            </div>
+            
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 10px; padding-top: 15px; border-top: 1px solid #1F2937;">
+                <div id="global-leaderboard-my-stats" style="color: #9CA3AF; font-size: 14px;">
+                    <!-- My Stats -->
+                </div>
+                <button class="leaderboard-close-btn" id="close-global-leaderboard-btn" style="margin: 0; padding: 8px 20px;" data-i18n="common.ui.close">Close</button>
+            </div>
+        </div>
+    </div>
+    <!-- Table Color Picker Modal (Mantine UI Style) -->
+    <div id="table-color-picker-modal" style="display: none;">
+        <div class="tcp-overlay"></div>
+        <div class="tcp-container">
+            <div class="tcp-header">
+                <h3 class="tcp-title" data-i18n="common.ui.color_picker_title">Masa Rengi Seçin</h3>
+                <button class="tcp-close-btn" id="close-color-picker-btn">
+                    <svg viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg" width="14" height="14"><path d="M11.7816 4.03157C12.0062 3.80702 12.0062 3.44295 11.7816 3.2184C11.5571 2.99385 11.193 2.99385 10.9685 3.2184L7.50005 6.68682L4.03164 3.2184C3.80708 2.99385 3.44301 2.99385 3.21846 3.2184C2.99391 3.44295 2.99391 3.80702 3.21846 4.03157L6.68688 7.49999L3.21846 10.9684C2.99391 11.193 2.99391 11.557 3.21846 11.7816C3.44301 12.0061 3.80708 12.0061 4.03164 11.7816L7.50005 8.31316L10.9685 11.7816C11.193 12.0061 11.5571 12.0061 11.7816 11.7816C12.0062 11.557 12.0062 11.193 11.7816 10.9684L8.31322 7.49999L11.7816 4.03157Z" fill="currentColor" fill-rule="evenodd" clip-rule="evenodd"></path></svg>
+                </button>
+            </div>
+            <div class="tcp-body">
+                <div class="tcp-grid">
+                    <div class="tcp-color-item" data-model="boardgame_table">
+                        <div class="tcp-color-swatch" style="background-color: #8B5A2B;"></div>
+                        <span data-i18n="common.ui.color_wood">Wood</span>
+                    </div>
+                    <div class="tcp-color-item" data-model="boardgame_table_blue">
+                        <div class="tcp-color-swatch" style="background-color: #228be6;"></div>
+                        <span data-i18n="common.ui.color_blue">Blue</span>
+                    </div>
+                    <div class="tcp-color-item" data-model="boardgame_table_green">
+                        <div class="tcp-color-swatch" style="background-color: #40c057;"></div>
+                        <span data-i18n="common.ui.color_green">Green</span>
+                    </div>
+                    <div class="tcp-color-item" data-model="boardgame_table_oceanblue">
+                        <div class="tcp-color-swatch" style="background-color: #15aabf;"></div>
+                        <span data-i18n="common.ui.color_oceanblue">Ocean Blue</span>
+                    </div>
+                    <div class="tcp-color-item" data-model="boardgame_table_orange">
+                        <div class="tcp-color-swatch" style="background-color: #fd7e14;"></div>
+                        <span data-i18n="common.ui.color_orange">Orange</span>
+                    </div>
+                    <div class="tcp-color-item" data-model="boardgame_table_red">
+                        <div class="tcp-color-swatch" style="background-color: #fa5252;"></div>
+                        <span data-i18n="common.ui.color_red">Red</span>
+                    </div>
+                    <div class="tcp-color-item" data-model="boardgame_table_yellow">
+                        <div class="tcp-color-swatch" style="background-color: #fab005;"></div>
+                        <span data-i18n="common.ui.color_yellow">Yellow</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="chess-3d-ui-container" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 999999; overflow: hidden; display: none;"></div>
+
+    <!-- Box Machine Skill Bar -->
+    <style>
+        .box-skill-container {
+            width: 600px;
+            text-align: center;
+            display: none;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 99999;
+        }
+        .box-skill-container.active { display: block; }
+        .box-skill-bar {
+            position: relative; width: 100%; height: 60px; background: rgba(0, 0, 0, 0.8);
+            border: 3px solid rgba(255, 255, 255, 0.5); border-radius: 10px; overflow: visible;
+            box-shadow: 0 0 30px rgba(255, 100, 0, 0.5);
+        }
+        .box-target-circle {
+            position: absolute; width: 50px; height: 50px; border-radius: 50%;
+            background: rgba(0, 255, 0, 0.2); border: 4px solid rgba(0, 255, 0, 0.6);
+            top: 50%; transform: translateY(-50%); transition: all 0.1s;
+            box-shadow: 0 0 20px rgba(0, 255, 0, 0.4);
+        }
+        .box-moving-circle {
+            position: absolute; width: 50px; height: 50px; border-radius: 50%;
+            background: linear-gradient(135deg, #ff6600, #ff3300); border: 3px solid #ffffff;
+            top: 50%; left: 0; transform: translateY(-50%);
+            box-shadow: 0 0 25px rgba(255, 100, 0, 0.8);
+        }
+        .box-instruction {
+            margin-top: 20px; color: #ffffff; font-size: 20px; font-weight: bold;
+            text-shadow: 0 0 10px rgba(255, 100, 0, 0.8), 2px 2px 4px rgba(0, 0, 0, 0.8);
+            opacity: 1; transition: opacity 0.5s ease-out;
+        }
+        .box-instruction.hide { opacity: 0; }
+    </style>
+    <div class="box-skill-container" id="boxSkillContainer">
+        <div class="box-skill-bar">
+            <div class="box-target-circle" id="boxTargetCircle"></div>
+            <div class="box-moving-circle" id="boxMovingCircle"></div>
+        </div>
+        <div class="box-instruction" id="boxInstruction">SPACE</div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/howler/2.2.4/howler.min.js"></script>
+    <script>
+        let bIsActive = false;
+        let bIsStopped = false;
+        let bMovingPos = 0;
+        let bMovingDir = 1;
+        let bAnimFrame = null;
+        let bTargetPos = 0;
+
+        let punchSound = new Howl({
+            src: ["boxmachine/punchSound.ogg"],
+            volume: 0.5,
+        });
+
+        const bMovingCircle = document.getElementById("boxMovingCircle");
+        const bTargetCircle = document.getElementById("boxTargetCircle");
+        const bInstruction = document.getElementById("boxInstruction");
+        const bSkillContainer = document.getElementById("boxSkillContainer");
+
+        const BAR_WIDTH = 550;
+        const SPEED = 6;
+
+        window.addEventListener("message", function (event) {
+            const data = event.data || {};
+            if (data.action === "showSkillBar") {
+                bIsActive = true;
+                bIsStopped = false;
+                bMovingPos = 0;
+                bMovingDir = 1;
+                bInstruction.classList.remove("hide");
+                bSkillContainer.classList.add("active");
+                bTargetPos = Math.floor(Math.random() * 400) + 75;
+                bTargetCircle.style.left = bTargetPos + "px";
+                
+                function animate() {
+                    if (!bIsActive || bIsStopped) return;
+                    bMovingPos += SPEED * bMovingDir;
+                    if (bMovingPos >= BAR_WIDTH) {
+                        bMovingPos = BAR_WIDTH;
+                        bMovingDir = -1;
+                    } else if (bMovingPos <= 0) {
+                        bMovingPos = 0;
+                        bMovingDir = 1;
+                    }
+                    bMovingCircle.style.left = bMovingPos + "px";
+                    bAnimFrame = requestAnimationFrame(animate);
+                }
+                animate();
+            } else if (data.action === "hideSkillBar") {
+                bIsActive = false;
+                bSkillContainer.classList.remove("active");
+                if (bAnimFrame) {
+                    cancelAnimationFrame(bAnimFrame);
+                    bAnimFrame = null;
+                }
+            } else if (data.action === "playSound") {
+                const volume = data.volume || 1.0;
+                if (punchSound) {
+                    punchSound.volume(volume);
+                    punchSound.play();
+                }
+            }
+        });
+
+        document.addEventListener("keydown", function (event) {
+            if (event.code === "Space" && bIsActive && !bIsStopped) {
+                event.preventDefault();
+                bIsStopped = true;
+                if (bAnimFrame) cancelAnimationFrame(bAnimFrame);
+                
+                const movingCenter = bMovingPos + 25;
+                const targetCenter = bTargetPos + 25;
+                const distance = Math.abs(movingCenter - targetCenter);
+                let score = 0;
+
+                if (distance <= 3) score = 1200;
+                else if (distance <= 15) score = 1150 - Math.floor((distance - 5) * 5);
+                else if (distance <= 35) score = 1050 - Math.floor((distance - 15) * 7);
+                else if (distance <= 65) score = 850 - Math.floor((distance - 35) * 6);
+                else if (distance <= 110) score = 550 - Math.floor((distance - 65) * 4);
+                else if (distance <= 180) score = 300 - Math.floor((distance - 110) * 2);
+                else score = Math.max(0, 150 - Math.floor(distance - 180));
+
+                score = Math.max(0, Math.min(1200, score));
+                bInstruction.classList.add("hide");
+
+                fetch(`https://${window.GetParentResourceName ? window.GetParentResourceName() : 'ak4y-boardGames'}/skillBarResult`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                        score: score,
+                        distance: Math.round(distance),
+                    }),
+                }).catch(() => {});
+
+                setTimeout(() => {
+                    bIsActive = false;
+                    bSkillContainer.classList.remove("active");
+                    if (bAnimFrame) cancelAnimationFrame(bAnimFrame);
+                }, 1000);
+            }
+        });
+    </script>
+</body>
+</html>
+

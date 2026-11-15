@@ -1,0 +1,118 @@
+-- ============================================================================
+--  Türkçe metinler — TStudio harita sistemleri (asansörler, araç asansörleri,
+--  asansör panelleri, akıllı anahtarlar, gizlilik camı, tuş atamaları).
+--  ~INPUT_CONTEXT~ ve %s yer tutucularını koruyun.
+-- ============================================================================
+TStudioLocales = TStudioLocales or {}
+
+TStudioLocales["tr"] = {
+    -- Asansörler
+    ["elevator-help-notify"] = "~INPUT_CONTEXT~ Asansörü Aç",
+    ["floor-description"]    = "%s katına git",
+    ["floor-number"]         = "Kat %s",
+    ["menu-close"]           = "kapat",
+
+    -- Araç asansörleri
+    ["car-menu-title"]        = "Araç Asansörü",
+    ["car-menu-description"]  = "Araç Taşıma",
+    ["car-floor-description"] = "%s katına sür",
+    ["car-help-notify"]       = "~INPUT_CONTEXT~ Araç Asansörünü Kullan",
+    ["car-help-return"]       = "~INPUT_CONTEXT~ Geri Sür",
+    ["car-no-vehicle"]        = "Bu asansörü kullanmak için bir araç gerekiyor",
+
+    -- Akıllı anahtarlar (jaluzi / perde)
+    ["smart-switch-help-notify"]      = "~INPUT_CONTEXT~ Akıllı Ev Kontrolleri",
+    ["smart-switch-menu-title"]       = "Akıllı Ev",
+    ["smart-switch-menu-description"] = "Jaluzi Kontrolleri",
+    ["smart-switch-open-blinds"]      = "Jaluzileri Aç",
+    ["smart-switch-close-blinds"]     = "Jaluzileri Kapat",
+
+    -- Gizlilik camı
+    ["privacy-glass-help-notify"] = "~INPUT_CONTEXT~ Gizlilik Camını Değiştir",
+
+    -- Tuş atama adları (GTA Ayarlar > Tuş Atamaları > FiveM)
+    ["keybind-elevators"]     = "TStudio Haritalar: Asansörler",
+    ["keybind-carElevators"]  = "TStudio Haritalar: Araç Asansörleri",
+    ["keybind-smartSwitches"] = "TStudio Haritalar: Akıllı Anahtarlar",
+    ["keybind-privacyGlass"]  = "TStudio Haritalar: Gizlilik Camı",
+
+    -- Oyun içi asansör panelleri
+    ["display-help-notify"]        = "~INPUT_CONTEXT~ Asansör Panelini Kullan",
+    ["display-current-floor"]      = "Bulunulan Kat",
+    ["display-select-floor"]       = "Katını seç",
+    ["display-select-destination"] = "Hedef Seç",
+    ["display-cancel"]             = "İptal",
+    ["display-door-open"]          = "Aç",
+    ["display-door-close"]         = "Kapat",
+    ["display-travelling-to"]      = "%s katına gidiliyor",
+    ["display-doors-opening"]      = "Kapılar açılıyor",
+    ["display-ready"]              = "Hazır",
+    ["display-in-transit"]         = "Hareket Halinde",
+    ["display-arrived"]            = "Varıldı",
+    ["display-welcome"]            = "Hoş Geldiniz",
+    ["display-floor-prefix"]       = "Kat",
+    ["display-elevator"]           = "Asansör",
+    ["display-out-of-service"]     = "Hizmet dışı",
+    ["display-online"]             = "Çevrimiçi",
+    ["display-max-capacity"]       = "Maks. Kapasite",
+    ["display-load"]               = "Yük",
+    ["display-elevator-status"]    = "Asansör Durumu",
+    ["display-stop"]               = "Dur",
+    ["display-call-help"]          = "Yardım",
+    ["display-am"]                 = "ÖÖ",
+    ["display-pm"]                 = "ÖS",
+    ["display-days"]   = { "PAZ", "PZT", "SAL", "ÇAR", "PER", "CUM", "CMT" },
+    ["display-months"] = { "OCA", "ŞUB", "MAR", "NİS", "MAY", "HAZ", "TEM", "AĞU", "EYL", "EKİ", "KAS", "ARA" },
+    ["display-clock-24h"]        = true,
+    ["display-temperature-unit"] = "C",
+
+    -- Kat / hedef adlarının çevirileri (sol: elevators/*.lua'daki İngilizce ad)
+    floors = {
+        ["Apartment"] = "Daire",
+        ["Bar & Nightclub"] = "Bar & Gece Kulübü",
+        ["Basement"] = "Bodrum",
+        ["Boss Room"] = "Patron Odası",
+        ["Burton Lobby"] = "Burton Lobisi",
+        ["Business Lounge"] = "İş Salonu",
+        ["Casino Main Hall"] = "Kumarhane Ana Salonu",
+        ["Crime Entry Point A"] = "Suç Giriş Noktası A",
+        ["Crime Entry Point B"] = "Suç Giriş Noktası B",
+        ["Crime Tunnel Point A"] = "Suç Tünel Noktası A",
+        ["Crime Tunnel Point B"] = "Suç Tünel Noktası B",
+        ["Emergency Garage"] = "Acil Servis Garajı",
+        ["Floor 01 - Basement"] = "Kat 01 - Bodrum",
+        ["Floor 02 - Public Area"] = "Kat 02 - Halka Açık Alan",
+        ["Floor 03 - MRPD Staff"] = "Kat 03 - MRPD Personeli",
+        ["Floor 04 - SWAT"] = "Kat 04 - SWAT",
+        ["Floor 05 - Rooftop Access"] = "Kat 05 - Çatı Erişimi",
+        ["Helipad Roof"] = "Helikopter Pisti (Çatı)",
+        ["Helipad"] = "Helikopter Pisti",
+        ["Horizon Link"] = "Horizon Bağlantısı",
+        ["Lobby Back Entrance"] = "Lobi - Arka Giriş",
+        ["Lobby Front Entrance"] = "Lobi - Ön Giriş",
+        ["Lobby Park Side"] = "Lobi - Park Tarafı",
+        ["Lobby Pool"] = "Lobi - Havuz",
+        ["Lobby"] = "Lobi",
+        ["Main Lobby ER Elevator"] = "Ana Lobi - Acil Servis Asansörü",
+        ["Main Lobby"] = "Ana Lobi",
+        ["Nightclub"] = "Gece Kulübü",
+        ["Office Space"] = "Ofis Alanı",
+        ["Parking Deck"] = "Otopark Katı",
+        ["Parking Garage"] = "Kapalı Otopark",
+        ["Peak Tower Lobby"] = "Peak Tower Lobisi",
+        ["Peak Towers Lobby"] = "Peak Towers Lobisi",
+        ["Reception Tower B"] = "Resepsiyon - B Kulesi",
+        ["Reception"] = "Resepsiyon",
+        ["Restaurant"] = "Restoran",
+        ["Rooftop"] = "Çatı",
+        ["Station 1"] = "İstasyon 1",
+        ["Station 2"] = "İstasyon 2",
+        ["Station 3"] = "İstasyon 3",
+        ["Street Level A"] = "Sokak Seviyesi A",
+        ["Street Level B"] = "Sokak Seviyesi B",
+        ["Ushero Nightclub Lobby"] = "Ushero Gece Kulübü Lobisi",
+        ["Vanilla Unicorn Lobby"] = "Vanilla Unicorn Lobisi",
+        ["Vanilla Unicorn Rooftop"] = "Vanilla Unicorn Çatısı",
+        ["Vinewood Hills Lobby"] = "Vinewood Hills Lobisi",
+    },
+}

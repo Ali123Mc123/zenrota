@@ -1,0 +1,2707 @@
+/* Daddy look: Archivo for everything, narrow italic caps for titles, one red accent instead of the mint. */
+
+@font-face {
+  font-family: 'Archivo';
+  font-style: normal;
+  font-weight: 100 900;
+  font-stretch: 62% 125%;
+  src: url("../fonts/archivo-latin-ext-wdth-normal.woff2") format("woff2");
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+
+@font-face {
+  font-family: 'Archivo';
+  font-style: normal;
+  font-weight: 100 900;
+  font-stretch: 62% 125%;
+  src: url("../fonts/archivo-latin-wdth-normal.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: 'Archivo';
+  font-style: italic;
+  font-weight: 100 900;
+  font-stretch: 62% 125%;
+  src: url("../fonts/archivo-latin-ext-wdth-italic.woff2") format("woff2");
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+
+@font-face {
+  font-family: 'Archivo';
+  font-style: italic;
+  font-weight: 100 900;
+  font-stretch: 62% 125%;
+  src: url("../fonts/archivo-latin-wdth-italic.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+* {
+  margin: 0;
+  box-sizing: border-box;
+  user-select: none;
+}
+
+/* Global smooth transitions */
+*,
+*::before,
+*::after {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Smooth animations for all interactive elements */
+button,
+.categoryMenu,
+.createLobbyButtonCL,
+.JoinLobbyButton,
+.LobbyJoin,
+.playMatchButton,
+.createLobbyTimeButton,
+.container-c-c-Lobby,
+.container-c-c-product {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+body {
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  background-size: cover;
+  /* background-image: url("../img/delete_bg.png"); */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  animation: fadeIn 0.5s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.container {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  flex-direction: column;
+  align-items: center;
+  overflow: hidden;
+  z-index: 2;
+  background: rgba(9, 11, 14, 0.96);
+  animation: slideUp 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.container-topside {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 11.4063vw;
+}
+
+.container-topside-topborder {
+  position: absolute;
+  top: 0;
+  width: 10.5729vw;
+  height: 0.1042vw;
+  flex-shrink: 0;
+  background: #e23a50;
+  box-shadow: 0 0.2083vw 4.125vw 0.2604vw #e23a50;
+}
+
+.container-topside-bottomborder {
+  position: absolute;
+  width: 92.2917vw;
+  height: 0.0521vw;
+  bottom: 0;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.container-topside-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 92.2917vw;
+  height: 7.125vw;
+}
+
+.container-topside-left {
+  width: 27.6563vw;
+}
+
+.container-topside-left > t {
+  color: #fff;
+  font-family: 'Archivo';
+  font-weight: 500;
+  font-size: 1.1719vw;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 90%;
+}
+
+.container-topside-left > p {
+  color: rgba(255, 255, 255, 0.5);
+  font-family: 'Archivo';
+  font-weight: 400;
+  font-size: 1.0547vw;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 112%;
+  margin-top: 0.4vw;
+}
+
+.container-topside-logo {
+  display: flex;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  height: 7.3896vw;
+  padding: 0.5729vw;
+}
+
+.container-topside-logo-bg {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  width: 7.2526vw;
+  background-image: url("../img/logo-bg.svg");
+  background-size: contain;
+  background-repeat: no-repeat;
+  scale: 1.1;
+}
+
+.container-topside-logo-bg > img {
+  width: 90%;
+  height: 90%;
+  object-fit: cover;
+}
+
+.container-topside-logo-text > t {
+  font-family: 'Archivo';
+  font-style: italic;
+  font-weight: 900;
+  font-stretch: 62%;
+  text-transform: uppercase;
+  font-size: 3.8398vw;
+  line-height: 112%;
+  background: linear-gradient(97deg, #e23a50 -5.34%, #8a0c22 108.43%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.container-topside-logo-text > p {
+  color: #fff;
+  font-family: 'Archivo';
+  font-style: italic;
+  font-weight: 900;
+  font-stretch: 62%;
+  text-transform: uppercase;
+  font-size: 2.5599vw;
+  line-height: 42%;
+}
+
+.container-topside-profileside {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  width: auto;
+  right: 0;
+  gap: 0.7292vw;
+}
+
+.container-topside-profileside > img {
+  width: 3.8542vw;
+  height: 3.8542vw;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.container-topside-profileside-text {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 0.2vw;
+}
+
+.container-topside-profileside {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  height: 100%;
+  right: 0;
+  gap: 0.7292vw;
+}
+
+.container-topside-profileside > img {
+  width: 3.8542vw;
+  height: 3.8542vw;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.container-topside-profileside-text {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 0.3vw;
+}
+
+.container-topside-profileside-text > t {
+  color: #fff;
+  font-family: 'Archivo';
+  font-weight: 500;
+  font-size: 1.3901vw;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 112%;
+  white-space: nowrap;
+}
+
+.container-topside-profileside-text > p {
+  display: inline-block;
+  text-align: center;
+  border-radius: 0.1264vw;
+  background: rgba(127, 255, 92, 0.14);
+  color: #7fff5c;
+  font-family: 'Archivo';
+  font-weight: 400;
+  font-size: 1.0109vw;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 112%;
+  padding: 0.249vw 0.3682vw;
+  width: fit-content;
+}
+
+.logoTextShadow {
+  position: absolute;
+  right: 0;
+  top: 2.5vw;
+  filter: blur(3.9134vw);
+  width: 14.6875vw;
+  height: 1.3229vw;
+  background: linear-gradient(97deg, #e23a50 -5.34%, #8a0c22 108.43%);
+}
+
+.container-container {
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 92.2917vw;
+  flex: 1;
+  margin-top: 1.875vw;
+  gap: 1.6667vw;
+  overflow: hidden;
+  padding-bottom: 2.7vw;
+}
+
+.container-c-leftside {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 18.4896vw;
+}
+
+.container-c-c {
+  display: flex;
+  flex-direction: column;
+  z-index: 45;
+  position: relative;
+  width: 72.1875vw;
+  height: 100%;
+  overflow: hidden;
+}
+
+.container-c-l-title {
+  display: flex;
+  align-items: center;
+  gap: 0.9115vw;
+}
+
+.container-c-l-title > img {
+  width: 1.0938vw;
+  height: 1.0938vw;
+  object-fit: contain;
+}
+
+.container-c-l-title > t {
+  color: #fff;
+  font-family: 'Archivo';
+  font-weight: 500;
+  font-size: 1.25vw;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 90%;
+}
+
+.categoryMenu {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  height: 4.4792vw;
+  border-radius: 0.4167vw;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.1) 0%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  margin-top: 1.1979vw;
+  padding: 0.6771vw;
+  overflow: hidden;
+  cursor: pointer;
+  transform: translateX(0);
+}
+
+.categoryMenu:hover {
+  transform: translateX(5px);
+  background: linear-gradient(
+    90deg,
+    rgba(226, 58, 80, 0.15) 0%,
+    rgba(226, 58, 80, 0) 100%
+  );
+}
+
+.categoryMenu:hover .categoryMenuIcon {
+  background: rgba(226, 58, 80, 0.2);
+  transform: scale(1.05);
+}
+
+.categoryMenuIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 3.125vw;
+  height: 3.125vw;
+  border-radius: 0.2604vw;
+  background: rgba(226, 58, 80, 0.06);
+}
+
+.categoryMenuText {
+  display: block;
+  margin-left: 0.625vw;
+}
+
+.categoryMenuText > t {
+  color: #e23a50;
+  font-family: 'Archivo';
+  font-style: italic;
+  font-weight: 900;
+  font-stretch: 62%;
+  text-transform: uppercase;
+  font-size: 2.0833vw;
+  line-height: 90%; /* 36px */
+}
+
+.categoryMenuText > p {
+  color: rgba(255, 255, 255, 0.68);
+  font-family: 'Archivo';
+  font-weight: 400;
+  font-size: 0.9375vw;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 90%; /* 16.2px */
+}
+
+.categoryMenuIcon > img {
+  width: 2.2917vw;
+  height: 2.2917vw;
+  object-fit: contain;
+}
+
+.useCategory {
+  background: linear-gradient(
+    90deg,
+    rgba(226, 58, 80, 0.4) 0%,
+    rgba(226, 58, 80, 0) 100.76%
+  );
+}
+
+.useCategory > .categoryMenuIcon {
+  background: rgba(226, 58, 80, 0.48);
+}
+
+.categoryMenuIconShadow {
+  position: absolute;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  width: 7.5522vw;
+  height: 7.55vw;
+  right: -1vw;
+  opacity: 0.02;
+}
+
+.createLobbyMenu {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  width: 100%;
+  flex: 1;
+  border-radius: 0.4167vw;
+  margin-top: 0.9375vw;
+  background-blend-mode: lighten;
+  border-radius: 0.4167vw;
+  background-image: url("../img/create-loby-bg.png");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  cursor: pointer;
+  transform: scale(1);
+}
+
+.createLobbyMenu:hover .createLobbyIcon {
+  transform: scale(1.1) rotate(5deg);
+}
+
+.createLobbyTop {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  top: 0.6771vw;
+  left: 0.6771vw;
+  gap: 0.6771vw;
+}
+
+.createLobbyTopIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 3.125vw;
+  height: 3.125vw;
+  border-radius: 0.4375vw;
+  background: rgba(255, 255, 255, 0.22);
+  backdrop-filter: blur(0.2438vw);
+}
+
+.createLobbyTopIcon > img {
+  width: 1.3695vw;
+  height: 1.3695vw;
+  object-fit: contain;
+}
+
+.createLobbyTopText {
+  display: block;
+}
+
+.createLobbyTopText > t {
+  color: #fff;
+  font-family: 'Archivo';
+  font-weight: 400;
+  font-size: 1.375vw;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 90%;
+}
+
+.createLobbyTopText > p {
+  color: rgba(255, 255, 255, 0.77);
+  font-family: 'Archivo';
+  font-weight: 500;
+  font-size: 1.125vw;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 120%;
+}
+
+.createLobbyIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 7.5521vw;
+  height: 7.5521vw;
+  border-radius: 1.0938vw;
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(1.6198vw);
+}
+
+.createLobbyIcon > img {
+  width: 4.6354vw;
+  height: 4.6354vw;
+  object-fit: contain;
+}
+
+.createLobbyMenu > t {
+  color: #fff;
+  text-align: center;
+  font-family: 'Archivo';
+  font-style: italic;
+  font-weight: 900;
+  font-stretch: 62%;
+  text-transform: uppercase;
+  font-size: 1.9683vw;
+  line-height: 90%;
+  margin-top: 0.5208vw;
+}
+
+.createLobbyMenu > p {
+  color: rgba(255, 255, 255, 0.34);
+  text-align: center;
+  font-family: 'Archivo';
+  font-style: italic;
+  font-weight: 900;
+  font-stretch: 62%;
+  text-transform: uppercase;
+  font-size: 1.5625vw;
+  line-height: 90%;
+}
+
+.createLobbyLorem {
+  display: flex;
+  align-items: center;
+  position: absolute;
+  width: 18.0729vw;
+  height: 1.875vw;
+  border-radius: 0.4167vw;
+  background: rgba(0, 0, 0, 0.21);
+  backdrop-filter: blur(0.9922vw);
+  bottom: 0.2083vw;
+  padding: 0.5208vw;
+}
+
+.createLobbyLorem > t {
+  color: rgba(255, 255, 255, 0.63);
+  font-family: 'Archivo';
+  font-weight: 500;
+  font-size: 0.8333vw;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 90%;
+  margin-left: 0.3042vw;
+}
+
+.container-c-c-Text {
+  height: 2.13vw;
+  display: flex;
+  align-items: flex-start;
+  min-height: fit-content;
+}
+
+.container-c-c-Text > img {
+  width: 1.328vw;
+  height: 1.3281vw;
+  object-fit: contain;
+}
+
+.container-c-c-Text > t {
+  color: #fff;
+  font-family: 'Archivo';
+  font-weight: 500;
+  font-size: 1.25vw;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 90%;
+  margin-left: 0.5729vw;
+}
+
+.container-c-c-Lobbys {
+  display: flex;
+  gap: 0.553vw;
+  flex-wrap: wrap;
+  width: 100%;
+  flex: 1;
+  align-content: flex-start;
+  overflow-x: hidden;
+  overflow-y: scroll;
+}
+
+.container-c-c-Lobby {
+  position: relative;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  width: 23.5417vw;
+  height: 20.8854vw;
+  border-radius: 0.3125vw;
+  border: 0.0521vw solid rgba(255, 255, 255, 0.05);
+  background: linear-gradient(
+    168deg,
+    rgba(255, 255, 255, 0.09) -6.05%,
+    rgba(255, 255, 255, 0) 91.49%
+  );
+  cursor: pointer;
+  transform: translateY(0);
+}
+
+.container-c-c-Lobby:hover {
+  border: 0.0521vw solid rgba(226, 58, 80, 0.3);
+  background: linear-gradient(
+    168deg,
+    rgba(226, 58, 80, 0.15) -6.05%,
+    rgba(255, 255, 255, 0) 91.49%
+  );
+}
+
+.container-c-c-Lobby:hover .LobbyJoin {
+  background: rgba(226, 58, 80, 0.15);
+  color: rgba(226, 58, 80, 0.8);
+  transform: scale(1.02);
+}
+
+*::-webkit-scrollbar {
+  display: none;
+}
+
+textarea:focus,
+input:focus,
+select:focus {
+  outline: none;
+}
+
+.createLobbyLorem > img {
+  width: 1.0417vw;
+  height: 1.0417vw;
+}
+
+.lobbySearch {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  width: 21.3021vw;
+  min-height: 2.1354vw !important;
+  border-radius: 0.2604vw;
+  background: rgba(255, 255, 255, 0.05);
+  right: 0;
+}
+
+.lobbySearch > img {
+  width: 1.1766vw;
+  min-height: 1.1766vw;
+  object-fit: contain;
+  margin-left: 0.625vw;
+}
+
+.lobbySearch > input {
+  width: 12vw;
+  background: transparent;
+  border: none;
+  margin-left: 0.5208vw;
+  color: rgba(255, 255, 255, 0.51);
+  font-family: 'Archivo';
+  font-weight: 400;
+  font-size: 0.8854vw;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 90%;
+}
+
+.container-c-c-l-TopSide {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  height: 2.6563vw;
+  border-radius: 0.3125vw 0.3125vw 0 0;
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.LobbyName {
+  color: rgba(255, 255, 255, 0.61);
+  font-family: 'Archivo';
+  font-weight: 400;
+  font-size: 1.0417vw;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 90%; /* 18px */
+  margin-left: 0.9375vw;
+}
+
+.lobbyLocked {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  right: 0.4688vw;
+  width: 1.8229vw;
+  height: 1.8229vw;
+  border-radius: 0.2083vw;
+  background: rgba(255, 100, 100, 0.15);
+}
+
+.lobbyLocked > div {
+  background-image: url("../img/locked.svg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  width: 0.9896vw;
+  height: 0.9896vw;
+}
+
+.opened {
+  background: rgba(100, 255, 100, 0.15);
+}
+
+.opened > div {
+  background-image: url("../img/unlock.svg");
+}
+
+.LobbyMap {
+  width: 21.25vw;
+  height: 4.8438vw;
+  border-radius: 0.2083vw;
+  padding: 0.4688vw;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-image: url("../img/default-map.png");
+  margin-top: 1.0417vw;
+}
+
+.LobbyMapName {
+  display: flex;
+  align-items: center;
+  gap: 0.2422vw;
+}
+
+.LobbyMapName > img {
+  width: 1.1423vw;
+  height: 1.1423vw;
+}
+
+.LobbyMapName > t {
+  color: rgba(255, 255, 255, 0.76);
+  font-family: 'Archivo';
+  font-weight: 400;
+  font-size: 0.7813vw;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 90%;
+}
+
+.LobbyTimePlayer {
+  position: relative;
+  display: flex;
+  width: 21.25vw;
+  height: 1.9792vw;
+  gap: 0.4688vw;
+  margin-top: 0.6771vw;
+}
+
+.LobbyTime {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 10.6771vw;
+  height: 1.9792vw;
+  border-radius: 0.2604vw;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.05) 0%,
+    rgba(255, 255, 255, 0) 100%
+  );
+}
+
+.LobbyPlayers {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 10.6771vw;
+  height: 1.9792vw;
+  border-radius: 0.2604vw;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.05) 0%,
+    rgba(255, 255, 255, 0) 100%
+  );
+}
+
+.LobbyTime > img,
+.LobbyPlayers > img {
+  width: 1.1458vw;
+  height: 1.1458vw;
+  object-fit: contain;
+  margin-left: 0.4167vw;
+}
+
+.LobbyTime > t,
+.LobbyPlayers > t {
+  margin-left: 0.4688vw;
+  color: rgba(255, 255, 255, 0.63);
+  font-family: 'Archivo';
+  font-weight: 400;
+  font-size: 0.9375vw;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 90%;
+}
+
+.LobbyTime > div,
+.LobbyPlayers > div {
+  position: absolute;
+  right: 0.5208vw;
+  color: #fff;
+  text-align: right;
+  font-family: 'Archivo';
+  font-weight: 500;
+  font-size: 0.9375vw;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 90%;
+}
+
+.LobbySettingText {
+  width: 21.25vw;
+  color: rgba(255, 255, 255, 0.55);
+  text-align: left;
+  font-family: 'Archivo';
+  font-weight: 500;
+  font-size: 0.9375vw;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 90%;
+  margin-top: 0.625vw;
+}
+
+.LobbyGameMode {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 21.25vw;
+  height: 1.9792vw;
+  border-radius: 0.2604vw;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.05) 0%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  margin-top: 0.625vw;
+}
+
+.LobbyGameWeapon {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 21.25vw;
+  height: 1.9792vw;
+  border-radius: 0.2604vw;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.05) 0%,
+    rgba(255, 255, 255, 0) 110%
+  );
+  margin-top: 0.3646vw;
+}
+
+.LobbyJoin {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 2.2917vw;
+  border-radius: 0.3125vw;
+  background: rgba(226, 58, 80, 0.04);
+  color: rgba(226, 58, 80, 0.42);
+  text-align: right;
+  font-family: 'Archivo';
+  font-weight: 400;
+  font-size: 0.9375vw;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 90%;
+  margin-top: 0.9896vw;
+  border-radius: 0 0 0.3125vw 0.3125vw;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.LobbyJoin:hover {
+  background: rgba(226, 58, 80, 0.12);
+  color: rgba(226, 58, 80, 0.8);
+}
+
+.LobbyJoin:active {
+  transform: scale(0.98);
+}
+
+.LobbyGameWeapon > img,
+.LobbyGameMode > img {
+  width: 1.1458vw;
+  height: 1.1458vw;
+  margin-left: 0.4688vw;
+}
+
+.LobbyGameWeapon > t,
+.LobbyGameMode > t {
+  color: rgba(255, 255, 255, 0.63);
+  font-family: 'Archivo';
+  font-weight: 500;
+  font-size: 0.9375vw;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 90%;
+  margin-left: 0.4167vw;
+}
+
+.LobbyGameMode > div,
+.LobbyGameWeapon > div {
+  position: absolute;
+  right: 0.3646vw;
+  color: #fff;
+  text-align: right;
+  font-family: 'Archivo';
+  font-weight: 500;
+  font-size: 0.9375vw;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 90%; /* 16.2px */
+}
+
+.container-c-c-products {
+  display: flex;
+  gap: 0.553vw;
+  flex-wrap: wrap;
+  width: 100%;
+  flex: 1;
+  align-content: flex-start;
+  overflow-x: hidden;
+  overflow-y: scroll;
+}
+
+.container-c-c-product {
+  position: relative;
+  width: 23.5417vw;
+  height: 12.1875vw;
+  border-radius: 0.3125vw;
+  border: 0.0521vw solid rgba(255, 255, 255, 0.05);
+  background: linear-gradient(
+    168deg,
+    rgba(255, 255, 255, 0.07) -6.05%,
+    rgba(255, 255, 255, 0) 91.49%
+  );
+  cursor: pointer;
+  transform: translateY(0);
+}
+
+.container-c-c-product:hover {
+  border: 0.0521vw solid rgba(226, 58, 80, 0.2);
+}
+
+.container-c-c-product:hover .productImage {
+  transform: scale(1.05);
+}
+
+.productTopText {
+  height: 0.9375vw;
+  margin: 0.9375vw;
+}
+
+.productTopText > t {
+  color: #fff;
+  font-family: 'Archivo';
+  font-weight: 400;
+  font-size: 1.25vw;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 90%;
+}
+
+.productTopText > p {
+  color: rgba(255, 255, 255, 0.38);
+  font-family: 'Archivo';
+  font-weight: 400;
+  font-size: 0.9375vw;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 180%;
+}
+
+.productImage {
+  width: 17.6215vw;
+  height: 5.1042vw;
+  margin-left: 2.9531vw;
+  margin-top: 2.1854vw;
+  scale: 1.25;
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+  background-image: url("../img/default_weapon.png");
+}
+
+.productBottom {
+  position: absolute;
+  display: flex;
+  width: 100%;
+  height: 1.9792vw;
+  bottom: 0;
+  border-radius: 0.2083vw;
+}
+
+.productPrice {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 9.2708vw;
+  height: 100%;
+  color: #5eff91;
+  font-family: 'Archivo';
+  font-weight: 400;
+  font-size: 0.9375vw;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 90%;
+  background: rgba(94, 255, 145, 0.09);
+}
+
+.productBottomButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 14.2708vw;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.08);
+  color: rgba(255, 255, 255, 0.32);
+  font-family: 'Archivo';
+  font-weight: 400;
+  font-size: 0.9375vw;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 90%;
+  gap: 0.3646vw;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.productBottomButton:hover {
+  background: rgba(226, 58, 80, 0.15);
+  color: rgba(226, 58, 80, 0.8);
+  transform: scale(1.02);
+}
+
+.productBottomButton:active {
+  transform: scale(0.98);
+}
+
+.productBottomButton > img {
+  width: 1.0417vw;
+  height: 1.0417vw;
+}
+
+.sectionOne {
+  gap: 0.4vw;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  overflow: hidden;
+}
+
+.container-c-c-CreateLobby {
+  display: flex;
+  gap: 0.553vw;
+  flex-wrap: wrap;
+  width: 100%;
+  flex: 1;
+  align-content: flex-start;
+  overflow-x: hidden;
+  overflow-y: scroll;
+}
+
+.createLobbyMapText {
+  color: rgba(255, 255, 255, 0.63);
+  font-family: 'Archivo';
+  font-weight: 400;
+  font-size: 1.0417vw;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 90%;
+  width: 100%;
+}
+
+.createLobbyMaps {
+  display: flex;
+  width: 100%;
+  gap: 0.5729vw;
+  overflow-y: hidden;
+}
+
+.createLobbyMap {
+  flex: 1;
+  height: 10.3646vw;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-image: url("../img/example_map.png");
+  border-radius: 0.3646vw;
+  opacity: 0.3;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  transform: scale(1);
+}
+
+.createLobbyMap:hover {
+  opacity: 0.8;
+  transform: scale(1.02);
+}
+
+.selectMap {
+  opacity: 1;
+  border: 0.0521vw solid #fff;
+}
+
+.createLobbySettings {
+  display: flex;
+  gap: 0.553vw;
+  flex-wrap: wrap;
+  width: 100%;
+  flex: 1;
+  align-content: flex-start;
+  overflow-x: hidden;
+  overflow-y: scroll;
+}
+
+.createSettingName {
+  display: flex;
+  align-items: center;
+  gap: 0.5938vw;
+}
+
+.createSettingName > img {
+  width: 1.3542vw;
+  height: 1.3542vw;
+  object-fit: contain;
+}
+
+.createSettingName > t {
+  color: #fff;
+  font-family: 'Archivo';
+  font-weight: 500;
+  font-size: 1.1776vw;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 90%;
+}
+
+.createLobbyName {
+  position: relative;
+  width: 55%;
+}
+
+.createLobbyPassword {
+  position: relative;
+  width: 38%;
+}
+
+.createLobbyName > input {
+  width: 100%;
+  height: 2.6042vw;
+  border-radius: 0.2604vw;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.05) 0%,
+    rgba(255, 255, 255, 0) 110%
+  );
+  color: rgba(255, 255, 255, 0.34);
+  font-family: 'Archivo';
+  font-weight: 500;
+  font-size: 1.0417vw;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 90%;
+  border: none;
+  padding-left: 0.8333vw;
+  margin-top: 0.5688vw;
+}
+
+.createLobbyPassword {
+  margin-left: 4.2708vw;
+}
+
+.createLobbyPassword > input {
+  width: 100%;
+  height: 2.6042vw;
+  border-radius: 0.2604vw;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.05) 0%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  color: rgba(255, 255, 255, 0.34);
+  font-family: 'Archivo';
+  font-weight: 500;
+  font-size: 1.0417vw;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 90%;
+  border: none;
+  padding-left: 0.8333vw;
+  margin-top: 0.5688vw;
+}
+
+.createLobbyTime {
+  position: relative;
+  width: 48.55%;
+}
+
+.createLobbyPlayer {
+  position: relative;
+  width: 48.55%;
+  margin-left: 2%;
+}
+
+.createLobbyContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  width: 100%;
+  height: 2.8646vw;
+  border-radius: 0.4167vw;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.05) 0%,
+    rgba(255, 255, 255, 0) 135.07%
+  );
+  margin-top: 0.5688vw;
+}
+
+.createLobbyTimeButton {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.6146vw;
+  height: 1.6146vw;
+  border-radius: 0.2604vw;
+  background: rgba(255, 255, 255, 0.11);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.createLobbyTimeButton:hover {
+  cursor: pointer;
+  opacity: 0.8;
+}
+
+.createLobbyTimeButton:active {
+  opacity: 0.6;
+}
+
+.createLobbyTimeButton > img {
+  width: 1.1979vw;
+  height: 1.1979vw;
+  object-fit: contain;
+}
+
+.createLobbyTimeButton {
+  right: 0.4688vw;
+}
+
+.createLobbyTimeButton:nth-child(1) {
+  left: 0.4688vw;
+}
+
+.createLobbyContainer > t {
+  color: rgba(255, 255, 255, 0.53);
+  font-family: 'Archivo';
+  font-weight: 400;
+  font-size: 1.25vw;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 90%;
+}
+
+.createLobbyGameMode {
+  position: relative;
+  width: 48.55%;
+}
+
+.createLobbyGameMode > select {
+  width: 100%;
+  height: 2.6042vw;
+  border-radius: 0.2604vw;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.05) 0%,
+    rgba(255, 255, 255, 0) 110%
+  );
+  color: rgba(255, 255, 255, 0.34);
+  font-family: 'Archivo';
+  font-weight: 500;
+  font-size: 1.0417vw;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 90%;
+  border: none;
+  padding-left: 0.8333vw;
+  margin-top: 0.5688vw;
+}
+
+.createLobbyGameMode > select > option {
+  background: #1e1e1e;
+  color: rgba(255, 255, 255, 0.34);
+  font-family: 'Archivo';
+  font-weight: 500;
+}
+
+.createLobbyButtonCL {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 3.4375vw;
+  border-radius: 0.3125vw;
+  margin-top: 1.2646vw;
+  background: rgba(226, 58, 80, 0.05);
+  gap: 0.5729vw;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.createLobbyButtonCL::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(226, 58, 80, 0.3),
+    transparent
+  );
+  transition: left 0.5s ease;
+}
+
+.createLobbyButtonCL:hover {
+  background: rgba(226, 58, 80, 0.15);
+  transform: translateY(-2px);
+}
+
+.createLobbyButtonCL:hover::before {
+  left: 100%;
+}
+
+.createLobbyButtonCL:hover > t {
+  color: rgba(226, 58, 80, 0.9);
+}
+
+.createLobbyButtonCL:active {
+  transform: translateY(0);
+}
+
+.createLobbyButtonCL > img {
+  width: 1.5vw;
+  height: 1.5vw;
+  object-fit: contain;
+}
+
+.createLobbyButtonCL > t {
+  color: rgba(226, 58, 80, 0.48);
+  text-align: center;
+  font-family: 'Archivo';
+  font-weight: 400;
+  font-size: 1.1458vw;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 90%; /* 19.8px */
+}
+
+.containerPopupBG {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  z-index: 999;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.32);
+  animation: fadeInBackground 0.3s ease-out;
+  backdrop-filter: blur(5px);
+}
+
+@keyframes fadeInBackground {
+  from {
+    opacity: 0;
+    backdrop-filter: blur(0px);
+  }
+  to {
+    opacity: 1;
+    backdrop-filter: blur(5px);
+  }
+}
+
+.containerPopup {
+  width: 25.625vw;
+  height: 13.3333vw;
+  padding: 1.5625vw;
+  border-radius: 10px;
+  border: 0.0521vw solid rgba(255, 255, 255, 0.06);
+  background: rgba(9, 11, 14, 0.96);
+  animation: popupSlideIn 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+@keyframes popupSlideIn {
+  from {
+    opacity: 0;
+    transform: scale(0.8) translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+.containerPopup > t {
+  color: rgba(255, 255, 255, 0.85);
+  font-family: 'Archivo';
+  font-weight: 400;
+  font-size: 1.25vw;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 90%;
+}
+
+.containerPopup > p {
+  color: rgba(255, 255, 255, 0.33);
+  font-family: 'Archivo';
+  font-weight: 500;
+  font-size: 1.0417vw;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 90%;
+  margin-top: 0.5729vw;
+}
+
+.containerPopup > input {
+  width: 22.5vw;
+  height: 3.5417vw;
+  border-radius: 0.3125vw;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.12) 0%,
+    rgba(255, 255, 255, 0) 125.23%
+  );
+  color: rgba(255, 255, 255, 0.39);
+  font-family: 'Archivo';
+  font-weight: 500;
+  font-size: 1.1458vw;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 90%;
+  border: none;
+  text-align: center;
+  margin-top: 0.7813vw;
+}
+
+.JoinLobbyButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 22.5vw;
+  height: 2.5vw;
+  border-radius: 0.3125vw;
+  background: rgba(226, 58, 80, 0.05);
+  color: rgba(226, 58, 80, 0.48);
+  text-align: center;
+  font-family: 'Archivo';
+  font-weight: 400;
+  font-size: 0.9375vw;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 90%;
+  margin-top: 0.7292vw;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.JoinLobbyButton:hover {
+  background: rgba(226, 58, 80, 0.15);
+  color: rgba(226, 58, 80, 0.9);
+}
+
+.JoinLobbyButton:active {
+  transform: translateY(0);
+}
+
+.scoreboardSide {
+  position: absolute;
+  display: flex;
+  width: 15.7292vw;
+  height: 4.1667vw;
+  gap: 0.2604vw;
+  scale: 1.2;
+  top: 1.1833vw;
+}
+
+.blueScoreboard {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  height: 100%;
+  width: 4.8958vw;
+  border-radius: 0.4167vw 0 0 0.4167vw;
+  background: linear-gradient(
+      270deg,
+      rgba(90, 170, 255, 0) 0%,
+      rgba(90, 170, 255, 0.2) 100%
+    ),
+    rgba(9, 11, 14, 0.9);
+  gap: 0.3646vw;
+}
+
+.scoreboardTime {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 5.4167vw;
+  height: 100%;
+  border-radius: 0.1042vw;
+  background: rgba(9, 11, 14, 0.9);
+}
+
+.redScoreboard {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  height: 100%;
+  width: 4.8958vw;
+  border-radius: 0 0.4167vw 0.4167vw 0;
+  background: linear-gradient(
+      270deg,
+      rgba(255, 90, 90, 0.2) 0%,
+      rgba(255, 90, 90, 0) 100%
+    ),
+    rgba(9, 11, 14, 0.9);
+  gap: 0.3646vw;
+}
+
+.blueScoreboard > t,
+.redScoreboard > t {
+  color: #fff;
+  text-align: center;
+  font-family: 'Archivo';
+  font-weight: 500;
+  font-size: 0.7292vw;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 90%;
+}
+
+.blueScoreboard > p {
+  color: #5aaaff;
+  text-align: center;
+  font-family: 'Archivo';
+  font-style: italic;
+  font-weight: 900;
+  font-stretch: 62%;
+  text-transform: uppercase;
+  font-size: 1.9792vw;
+  line-height: 90%;
+}
+
+.redScoreboard > p {
+  color: #ff5a5a;
+  text-align: center;
+  font-family: 'Archivo';
+  font-style: italic;
+  font-weight: 900;
+  font-stretch: 62%;
+  text-transform: uppercase;
+  font-size: 1.9792vw;
+  line-height: 90%;
+}
+
+.InsidescoreboardTime {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  width: 4.5833vw;
+  height: 3.4375vw;
+  border-radius: 0.2019vw;
+  background: rgba(255, 255, 255, 0.15);
+  /* backdrop-filter: blur(0.2962vw); */
+  gap: 0.2083vw;
+}
+
+.InsidescoreboardTime > img {
+  width: 1.2116vw;
+  height: 1.2116vw;
+}
+
+.InsidescoreboardTime > t {
+  color: #fff;
+  font-family: 'Archivo';
+  font-weight: 500;
+  font-size: 1.25vw;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 90%;
+}
+
+.bigScoreboard {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 43.5vw;
+  height: 18.3438vw;
+  border-radius: 0.5208vw;
+  background: rgba(0, 0, 0, 0.15);
+  animation: scoreboardSlideIn 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+@keyframes scoreboardSlideIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9) translateY(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+.bigScoreboardSide {
+  position: relative;
+  width: 42.5vw;
+  height: 17.3438vw;
+  background-color: rgba(9, 11, 14, 0.96);
+  padding: 1.3542vw;
+}
+
+.bigScoreboardTitle {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  left: 50%;
+  top: 2.5%;
+}
+
+.bigScoreboardTitle > t {
+  text-align: center;
+  -webkit-text-stroke-width: 0.45px;
+  -webkit-text-stroke-color: rgba(255, 255, 255, 0.34);
+  font-family: 'Archivo';
+  font-style: italic;
+  font-weight: 900;
+  font-stretch: 62%;
+  text-transform: uppercase;
+  font-size: 2.8041vw;
+  line-height: 112%;
+  background: linear-gradient(97deg, #e23a50 -5.34%, #8a0c22 108.43%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-transform: uppercase;
+}
+
+.bigScoreboardTitle > p {
+  color: #fff;
+  text-align: center;
+  font-family: 'Archivo';
+  font-style: italic;
+  font-weight: 900;
+  font-stretch: 62%;
+  text-transform: uppercase;
+  font-size: 1.5734vw;
+  line-height: 2%;
+}
+
+.bigScoreboardVersus {
+  display: flex;
+  align-items: center;
+  gap: 0.8333vw;
+}
+
+.bigScoreboardTopSide {
+  display: flex;
+  align-items: center;
+  position: relative;
+  width: 100%;
+  display: flex;
+}
+
+.blueBigScoreboardVersus {
+  color: #0059ff;
+  font-family: 'Archivo';
+  font-style: italic;
+  font-weight: 900;
+  font-stretch: 62%;
+  text-transform: uppercase;
+  font-size: 2.4621vw;
+  line-height: 90%;
+}
+
+.bigScoreboardVersusText {
+  color: #fff;
+  font-family: 'Archivo';
+  font-style: italic;
+  font-weight: 900;
+  font-stretch: 62%;
+  text-transform: uppercase;
+  font-size: 1.231vw;
+  line-height: 90%;
+}
+
+.redBigScoreboardVersus {
+  color: #ff5050;
+  font-family: 'Archivo';
+  font-style: italic;
+  font-weight: 900;
+  font-stretch: 62%;
+  text-transform: uppercase;
+  font-size: 2.4621vw;
+  line-height: 90%;
+}
+
+.BigScoreboardTimeBG {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4036vw;
+  width: 4.3807vw;
+  height: 1.8844vw;
+  right: 0;
+  border-radius: 0.2019vw;
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(0.2962vw);
+}
+
+.BigScoreboardTimeBG > img {
+  width: 1.2116vw;
+  height: 1.2116vw;
+  object-fit: contain;
+}
+
+.BigScoreboardTimeBG > t {
+  color: #fff;
+  font-family: 'Archivo';
+  font-style: italic;
+  font-weight: 900;
+  font-stretch: 62%;
+  text-transform: uppercase;
+  font-size: 1.0096vw;
+  line-height: 90%;
+}
+
+.bigScoreboardScoreSide {
+  position: relative;
+  display: flex;
+  width: 100%;
+  height: 11.5625vw;
+  margin-top: 0.9896vw;
+  gap: 0.685vw;
+}
+
+.bigScoreboardBluePlayers,
+.bigScoreboardRedPlayers {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  width: 17.9167vw;
+  height: 100%;
+  gap: 0.4167vw;
+}
+
+.bigScoreboardScoreSide > t {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-family: 'Archivo';
+  font-style: italic;
+  font-weight: 900;
+  font-stretch: 62%;
+  text-transform: uppercase;
+  font-size: 1.5625vw;
+  line-height: 90%;
+}
+
+.bigScoreboardBluePlayers > div,
+.bigScoreboardRedPlayers > div {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  height: 1.9792vw;
+  border-radius: 0.2604vw;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.1) 0%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  padding: 0.4167vw;
+  gap: 0.5208vw;
+}
+
+.bigScoreboardBluePlayers > div > img,
+.bigScoreboardRedPlayers > div > img {
+  width: 1.1458vw;
+  height: 1.1458vw;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.bigScoreboardBluePlayers > div > t,
+.bigScoreboardRedPlayers > div > t {
+  color: #fff;
+  font-family: 'Archivo';
+  font-weight: 500;
+  font-size: 0.7813vw;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 90%;
+}
+
+.bigScoreboardBluePlayerRight {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  height: 1.25vw;
+  right: 0;
+  gap: 0.4167vw;
+}
+
+.bigScoreboardDeath {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  gap: 0.3125vw;
+  padding: 0.4688vw;
+  border-radius: 0.1563vw;
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(0.2292vw);
+  color: rgba(255, 255, 255, 0.46);
+  font-family: 'Archivo';
+  font-weight: 500;
+  font-size: 0.6771vw;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 90%;
+}
+
+.bigScoreboardKills {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  gap: 0.3125vw;
+  padding: 0.4688vw;
+  border-radius: 0.1563vw;
+  background: rgba(51, 173, 71, 0.15);
+  backdrop-filter: blur(0.2292vw);
+  color: rgba(67, 255, 97, 0.87);
+  font-family: 'Archivo';
+  font-weight: 500;
+  font-size: 0.6771vw;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 90%;
+}
+
+.gameInsideUI {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  z-index: 999999;
+}
+
+.killboardMessages {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  right: 1.7708vw;
+  top: 2.0833vw;
+  gap: 0.4688vw;
+}
+
+.killboardMessage {
+  position: relative;
+  display: flex;
+  align-items: center;
+  height: 1.7708vw;
+  padding: 0.3125vw 0.3646vw;
+  border-radius: 0.2083vw;
+  gap: 0.4167vw;
+  background: rgba(9, 11, 14, 0.4);
+}
+
+.killboardLine {
+  height: 1.7708vw;
+  width: 0.1563vw;
+  border-radius: 0.1563vw;
+  background: rgba(255, 255, 255, 0.45);
+}
+
+.killboardMessageSide {
+  display: flex;
+  gap: 0.1563vw;
+  align-items: center;
+}
+
+.killboardMessage > t {
+  color: rgba(255, 255, 255, 0.8);
+  font-family: 'Archivo';
+  font-weight: 500;
+  font-size: 0.8854vw;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 90%;
+}
+
+.killboardMessage > t2 {
+  color: rgba(255, 107, 107, 0.8);
+  font-family: 'Archivo';
+  font-weight: 500;
+  font-size: 0.8854vw;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 90%;
+}
+
+.killboardMessage > img {
+  width: 1.1458vw;
+  height: 1.1458vw;
+  object-fit: contain;
+}
+
+.Keys {
+  position: absolute;
+  display: flex;
+  bottom: 0.6833vw;
+  right: 0.408vw;
+  gap: 0.3646vw;
+  scale: 0.9;
+}
+
+.Key {
+  display: flex;
+  align-items: center;
+  border-radius: 0.2604vw;
+  background: linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 0.2) 0%,
+      rgba(255, 255, 255, 0) 37.11%
+    ),
+    rgba(9, 11, 14, 0.8);
+  height: 2.3438vw;
+  padding: 0.1042vw 0.5729vw 0.1042vw 0.1042vw;
+  gap: 0.625vw;
+}
+
+.KeyName {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 2.1354vw;
+  border-radius: 0.2604vw;
+  background: rgba(255, 255, 255, 0.07);
+  padding: 0.5208vw;
+  color: #fff;
+  font-family: 'Archivo';
+  font-weight: 500;
+  font-size: 1.3542vw;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 90%;
+}
+
+.KeyInfo {
+  color: rgba(255, 255, 255, 0.52);
+  font-family: 'Archivo';
+  font-weight: 400;
+  font-size: 1.0417vw;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 90%;
+}
+
+.Timer {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: #fff;
+  text-align: center;
+  font-family: 'Archivo';
+  font-style: italic;
+  font-weight: 900;
+  font-stretch: 62%;
+  text-transform: uppercase;
+  font-size: 16.3043vw;
+  line-height: 90%;
+  z-index: 9999999;
+  display: none;
+  animation: timerPulse 1s ease-in-out;
+}
+
+@keyframes timerPulse {
+  0% {
+    transform: translate(-50%, -50%) scale(0.5);
+    opacity: 0;
+  }
+  50% {
+    transform: translate(-50%, -50%) scale(1.2);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 1;
+  }
+}
+
+.winner-text {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 99;
+}
+
+.winner-text > t {
+  position: absolute;
+  text-align: center;
+  -webkit-text-stroke-width: 0.0521vw;
+  -webkit-text-stroke-color: rgba(255, 255, 255, 0.24);
+  font-family: 'Archivo';
+  font-style: italic;
+  font-weight: 900;
+  font-stretch: 62%;
+  text-transform: uppercase;
+  font-size: 16.3043vw;
+  line-height: 90%;
+  background: radial-gradient(
+    246.3% 237.99% at 8.92% -82.8%,
+    #4dff6b 0%,
+    #3bbd51 100%
+  );
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  z-index: 4;
+}
+
+.winner-text > t2 {
+  position: absolute;
+  text-align: center;
+  -webkit-text-stroke-width: 0.0521vw;
+  -webkit-text-stroke-color: rgba(255, 255, 255, 0.24);
+  font-family: 'Archivo';
+  font-style: italic;
+  font-weight: 900;
+  font-stretch: 62%;
+  text-transform: uppercase;
+  font-size: 16.3043vw;
+  line-height: 90%;
+  background: radial-gradient(
+    246.3% 237.99% at 8.92% -82.8%,
+    #4dff6b 0%,
+    #3bbd51 100%
+  );
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  z-index: 3;
+  opacity: 0.4;
+  margin-left: 0.4vw;
+  margin-top: 0.8vw;
+}
+
+.winner-text > t3 {
+  position: absolute;
+  z-index: 2;
+  text-align: center;
+  font-family: 'Archivo';
+  font-style: italic;
+  font-weight: 900;
+  font-stretch: 62%;
+  text-transform: uppercase;
+  font-size: 19.7733vw;
+  line-height: 90%;
+  opacity: 0.23;
+  background: radial-gradient(
+    246.3% 237.99% at 8.92% -82.8%,
+    #4dff6b 0%,
+    #3bbd51 100%
+  );
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.winner-text > t4 {
+  position: absolute;
+  z-index: 1;
+  text-align: center;
+  -webkit-text-stroke-width: 0.0521vw;
+  -webkit-text-stroke-color: #fff;
+  font-family: 'Archivo';
+  font-style: italic;
+  font-weight: 900;
+  font-stretch: 62%;
+  text-transform: uppercase;
+  font-size: 21.4345vw;
+  line-height: 90%; /* 370.388px */
+  opacity: 0.4;
+  background-color: transparent;
+  color: transparent;
+}
+
+.lose-text {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 99;
+}
+
+.lose-text > t {
+  position: absolute;
+  text-align: center;
+  -webkit-text-stroke-width: 0.0521vw;
+  -webkit-text-stroke-color: rgba(255, 255, 255, 0.24);
+  font-family: 'Archivo';
+  font-style: italic;
+  font-weight: 900;
+  font-stretch: 62%;
+  text-transform: uppercase;
+  font-size: 16.3043vw;
+  line-height: 90%; /* 281.739px */
+  background: radial-gradient(
+    246.3% 237.99% at 8.92% -82.8%,
+    #ff4d4d 0%,
+    #bd3b3b 100%
+  );
+
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  z-index: 4;
+}
+
+.lose-text > t2 {
+  position: absolute;
+  text-align: center;
+  -webkit-text-stroke-width: 0.0521vw;
+  -webkit-text-stroke-color: rgba(255, 255, 255, 0.24);
+  font-family: 'Archivo';
+  font-style: italic;
+  font-weight: 900;
+  font-stretch: 62%;
+  text-transform: uppercase;
+  font-size: 16.3043vw;
+  line-height: 90%;
+  background: radial-gradient(
+    246.3% 237.99% at 8.92% -82.8%,
+    #ff4d4d 0%,
+    #bd3b3b 100%
+  );
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  z-index: 3;
+  opacity: 0.4;
+  margin-left: 0.4vw;
+  margin-top: 0.8vw;
+}
+
+.lose-text > t3 {
+  position: absolute;
+  z-index: 2;
+  text-align: center;
+  font-family: 'Archivo';
+  font-style: italic;
+  font-weight: 900;
+  font-stretch: 62%;
+  text-transform: uppercase;
+  font-size: 19.7733vw;
+  line-height: 90%;
+  opacity: 0.23;
+  background: radial-gradient(
+    246.3% 237.99% at 8.92% -82.8%,
+    #ff4d4d 0%,
+    #bd3b3b 100%
+  );
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.lose-text > t4 {
+  position: absolute;
+  z-index: 1;
+  text-align: center;
+  -webkit-text-stroke-width: 0.0521vw;
+  -webkit-text-stroke-color: #fff;
+  font-family: 'Archivo';
+  font-style: italic;
+  font-weight: 900;
+  font-stretch: 62%;
+  text-transform: uppercase;
+  font-size: 21.4345vw;
+  line-height: 90%;
+  opacity: 0.4;
+  background-color: transparent;
+  color: transparent;
+}
+
+.LobbyBG {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(
+    61.51% 67.36% at 50% 50%,
+    rgba(0, 0, 0, 0) 43.29%,
+    rgba(0, 0, 0, 0.45) 100%
+  );
+}
+
+.playMatchButton {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 3.2813vw;
+  padding-left: 5vw;
+  padding-right: 5vw;
+  border-radius: 0.2604vw;
+  border: 0.0521vw solid rgba(0, 0, 0, 0.18);
+  background-color: rgba(9, 11, 14, 0.4);
+  background-image: url("../img/play_match.svg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  gap: 0.5208vw;
+  transform: translate(-50%, -50%);
+  left: 50%;
+  bottom: -0.3vw;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+#lobbyin_Setting:hover {
+  cursor: pointer;
+  opacity: 0.8;
+}
+
+#lobbyin_Quit:hover {
+  cursor: pointer;
+  opacity: 0.8;
+}
+
+.playMatchButton:hover {
+  transform: translate(-50%, -50%) scale(1.05);
+}
+
+.playMatchButton:active {
+  transform: translate(-50%, -50%) scale(0.98);
+}
+
+.playMatchButton > img {
+  width: 1.875vw;
+  height: 1.875vw;
+  object-fit: contain;
+}
+
+.playMatchButton > t {
+  color: rgba(255, 255, 255, 0.64);
+  text-align: center;
+  font-family: 'Archivo';
+  font-style: italic;
+  font-weight: 900;
+  font-stretch: 62%;
+  text-transform: uppercase;
+  font-size: 1.5625vw;
+  line-height: 90%;
+}
+
+.lobbyPlaySettingsDetail {
+  position: absolute;
+  top: 1.5625vw;
+  left: 1.5625vw;
+  gap: 0.4167vw;
+}
+
+.lobbyPlaySettingsDetail > div {
+  display: flex;
+  align-items: center;
+  /* justify-content: center; */
+  gap: 0.4167vw;
+}
+
+.lobbyPlaySettingsDetail > div:nth-child(2) {
+  margin-top: 0.8333vw;
+}
+
+.lobbyPlaySettingsDetail > div:nth-child(1) > t {
+  color: rgba(255, 255, 255, 0.72);
+  font-family: 'Archivo';
+  font-weight: 500;
+  font-size: 1.0417vw;
+  font-style: normal;
+  font-weight: 500;
+}
+
+.lobbyPlaySettingsDetail > div > div {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.3646vw;
+  border-radius: 0.2083vw;
+  background: rgba(9, 11, 14, 0.4);
+  height: 1.7708vw;
+  padding: 0.2604vw 0.3646vw;
+}
+
+.lobbyPlaySettingsDetail > div > div > img {
+  width: 1.25vw;
+  height: 1.25vw;
+  object-fit: contain;
+}
+
+.lobbyPlaySettingsDetail > div > div > t {
+  color: rgba(255, 255, 255, 0.72);
+  font-family: 'Archivo';
+  font-weight: 500;
+  font-size: 0.8854vw;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 90%;
+}
+
+.lobbyPlaySettingsDetail > div:nth-child(3) {
+  margin-top: 0.4167vw;
+}
+
+.lobbyPlaySettingsDetail > div:nth-child(4) {
+  margin-top: 0.5208vw;
+}
+
+.lobbyPlaySettingsDetail > div:nth-child(4) > div:nth-child(1) {
+  background: #fff;
+}
+
+.lobbyPlaySettingsDetail > div:nth-child(4) > div:nth-child(1) > t {
+  color: rgba(0, 0, 0, 0.78);
+  font-weight: 500;
+}
+
+.lobbyPlaySettingsDetail > div:nth-child(4) > div:nth-child(2) {
+  background: #ff5757;
+}
+
+.lobbyPlaySettingsDetail > div:nth-child(4) > div:nth-child(2) > t {
+  color: rgba(255, 255, 255, 0.52);
+  font-weight: 500;
+}
+
+.joinBlue {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  top: 20%;
+  left: 30%;
+  transform: translate(-50%, -50%);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.joinBlue:hover {
+  transform: translate(-50%, -50%) scale(1.1);
+  filter: drop-shadow(0 0 15px rgba(117, 163, 255, 0.5));
+}
+
+.joinBlue:active {
+  transform: translate(-50%, -50%) scale(0.95);
+}
+
+.joinBlue > img {
+  width: 5.0517vw;
+  height: 3.8783vw;
+  object-fit: contain;
+}
+
+.joinBlue > t {
+  color: #75a3ff;
+  text-align: center;
+  text-shadow: 0 0.0902vw 0.0902vw rgba(0, 0, 0, 0.8);
+  font-family: 'Archivo';
+  font-style: italic;
+  font-weight: 900;
+  font-stretch: 62%;
+  text-transform: uppercase;
+  font-size: 1.9843vw;
+  line-height: 90%;
+  margin-top: 1.25vw;
+}
+
+.joinRed {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  top: 20%;
+  left: 70%;
+  transform: translate(-50%, -50%);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.joinRed:hover {
+  transform: translate(-50%, -50%) scale(1.1);
+  filter: drop-shadow(0 0 15px rgba(255, 117, 117, 0.5));
+}
+
+.joinRed:active {
+  transform: translate(-50%, -50%) scale(0.95);
+}
+
+.joinRed > img {
+  width: 5.0517vw;
+  height: 3.8783vw;
+  object-fit: contain;
+}
+
+.joinRed > t {
+  color: #ff7575;
+  text-align: center;
+  text-shadow: 0 0.0902vw 0.0902vw rgba(0, 0, 0, 0.8);
+  font-family: 'Archivo';
+  font-style: italic;
+  font-weight: 900;
+  font-stretch: 62%;
+  text-transform: uppercase;
+  font-size: 1.9843vw;
+  line-height: 90%;
+  margin-top: 1.25vw;
+}
+
+.lobbyPlaySettingsDetail > div > img {
+  width: 1.25vw;
+  height: 1.25vw;
+  object-fit: contain;
+}
+
+.playerPlayer {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 2.1354vw;
+  border-radius: 0.1563vw;
+  background: rgba(9, 11, 14, 0.9);
+  padding: 0.4688vw;
+}
+
+.playerPlayer > div {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.1979vw;
+  height: 1.1979vw;
+  border-radius: 0.1563vw;
+  background: rgba(255, 83, 83, 0.27);
+  margin-left: 1.4583vw;
+}
+
+.playerPlayer > img {
+  width: 1.1979vw;
+  height: 1.1979vw;
+  object-fit: contain;
+}
+
+.playerPlayer > t {
+  color: rgba(255, 255, 255, 0.7);
+  font-family: 'Archivo';
+  font-weight: 400;
+  font-size: 0.9375vw;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 90%;
+  margin-left: 0.4688vw;
+}
+
+.playerPlayer > div > img {
+  width: 0.9896vw;
+  height: 0.9896vw;
+  object-fit: contain;
+}
+
+/* ---------- Daddy look ---------- */
+
+/* No glow behind the logo or under the top line; red is for what is chosen and the main action. */
+.logoTextShadow {
+  display: none;
+}
+
+.container-topside-topborder {
+  box-shadow: none;
+}
+
+.container-topside-logo-text > t {
+  background: none;
+  -webkit-text-fill-color: #fff;
+  color: #fff;
+  line-height: 0.95;
+}
+
+.container-topside-logo-text > p {
+  display: inline-block;
+  margin-top: 0.3vw;
+  padding: 0.15vw 0.7vw 0.2vw;
+  font-size: 1.1vw;
+  letter-spacing: 0.4em;
+  line-height: 1.2;
+  background: #c8102e;
+}
+
+/* Section titles: small spaced caps. */
+.container-c-c-Text > t,
+.container-c-l-title > t {
+  font-size: 0.82vw;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  line-height: 1.4;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.productTopText > t {
+  font-family: 'Archivo';
+  font-style: italic;
+  font-weight: 900;
+  font-stretch: 62%;
+  font-size: 1.45vw;
+  line-height: 1.1;
+  text-transform: uppercase;
+}
+
+.container-c-c-product {
+  border-radius: 0 !important;
+  clip-path: polygon(0 0, calc(100% - 1vw) 0, 100% 1vw, 100% 100%, 0 100%);
+}
+
+.productBottomButton t {
+  font-style: italic;
+  font-weight: 800;
+  font-stretch: 75%;
+  text-transform: uppercase;
+}
+
+/* Lobby and product cards: square, the top right corner cut, names in the display face. */
+.container-c-c-Lobby {
+  border-radius: 0 !important;
+  clip-path: polygon(0 0, calc(100% - 1vw) 0, 100% 1vw, 100% 100%, 0 100%);
+}
+
+.LobbyName {
+  font-family: 'Archivo';
+  font-style: italic;
+  font-weight: 900;
+  font-stretch: 62%;
+  font-size: 1.45vw;
+  text-transform: uppercase;
+  letter-spacing: 0.01em;
+}
+
+/* Join: a solid red bar with the top right corner cut. */
+.LobbyJoin,
+.JoinLobbyButton {
+  border-radius: 0;
+  background: #c8102e;
+  color: #fff;
+  font-style: italic;
+  font-weight: 800;
+  font-stretch: 75%;
+  font-size: 1vw;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  clip-path: polygon(0 0, calc(100% - 0.7vw) 0, 100% 0.7vw, 100% 100%, 0 100%);
+}
+
+.LobbyJoin:hover,
+.JoinLobbyButton:hover {
+  background: #e23a50;
+  color: #fff;
+}
+
+/* The main actions in the create form and the lobby room: solid red, top right corner cut, no sheen. */
+.createLobbyButtonCL,
+.playMatchButton {
+  border-radius: 0 !important;
+  border: 0 !important;
+  background: #c8102e !important;
+  clip-path: polygon(0 0, calc(100% - 0.8vw) 0, 100% 0.8vw, 100% 100%, 0 100%);
+}
+
+.createLobbyButtonCL::before {
+  display: none;
+}
+
+.createLobbyButtonCL:hover,
+.playMatchButton:hover {
+  background: #e23a50 !important;
+  transform: none;
+}
+
+.playMatchButton:hover {
+  transform: translate(-50%, -50%);
+}
+
+.createLobbyButtonCL > t,
+.createLobbyButtonCL:hover > t,
+.playMatchButton > t {
+  color: #fff;
+  font-style: italic;
+  font-weight: 800;
+  font-stretch: 75%;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.createLobbyButtonCL > img {
+  filter: brightness(0) invert(1);
+}
+
+/* Product names keep their own case: they carry the English word Paintball. */
+.productTopText > t {
+  text-transform: none;
+}
+
+/* Lobby room: the lobby name as a title above its chips. */
+.lobbyPlaySettingsDetail {
+  top: 2.6vw;
+}
+
+.lobbyPlaySettingsDetail > div:nth-child(1) > t {
+  color: #fff;
+  font-style: italic;
+  font-weight: 900;
+  font-stretch: 62%;
+  font-size: 1.9vw;
+  text-transform: uppercase;
+}

@@ -1,0 +1,43 @@
+{
+    "xp": "XP",
+    "name": "Jméno hráče",
+    "level": "Úroveň",
+    "start": "Začít práci",
+    "accept": "Přijmout",
+    "cancel": "Zrušit",
+    "awards": "Odměny:",
+    "invite": "Pozvat hráče [ID]",
+    "hunting": "Lov",
+    "hunting_desc": "%s vás pozval do skupiny. Pokud chcete, můžete přijmout a lovit společně.",
+    "unknowns": {
+        "label": "Neznámý",
+        "level": "Neznámý",
+        "description": "Žádný popis není k dispozici."
+    },
+    "progress": {
+        "title": "Postup úrovně",
+        "description": "Zlepšování vašich loveckých dovedností"
+    },
+    "cancel_job": "Zrušit práci",
+
+    "header": {
+        "title": "Lovecká práce",
+        "description": "Vítejte v lovu, zde můžete zahájit lov a prohlédnout si mise. Hodně štěstí!"
+    },
+    "sections": {
+        "profile": "Profil",
+        "mission": "Mise",
+        "player_list": "Seznam hráčů",
+        "job_details": "Podrobnosti o práci"
+    },
+
+    "steps": {
+        "progress": "Postup",
+        "information": "Stiskněte označenou klávesu, abyste se dozvěděli, co musíte udělat. Stiskněte pro další podrobnosti.",
+        "details": {
+            "step1": "Jděte do lovecké oblasti a vezměte si zbraně z vozidla. Použijte klávesu [Target],",
+            "step2": "Zabijte zvířata a stahujte zvířata pomocí [TARGET] (pokud existuje mise, bude pokračovat),",
+            "step3": "Jděte do oblasti, kde jste zahájili své povolání, podívejte se na NPC pomocí [TARGET] a klikněte na možnost 'Prodat části zvířat', abyste je prodali."
+        }
+    }
+}

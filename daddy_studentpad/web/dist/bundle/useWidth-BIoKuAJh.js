@@ -1,0 +1,1 @@
+import{C as e,R as t,S as n}from"./_plugin-vue_export-helper-Bhaq9fRO.js";function r(r,i=`rem`){let a=t(1/0),o,s=()=>parseFloat(getComputedStyle(document.documentElement).fontSize)||16;return e(()=>{r.value&&(o=new ResizeObserver(([e])=>{a.value=e.contentRect.width/(i===`px`?1:s())}),o.observe(r.value))}),n(()=>o?.disconnect()),a}export{r as t};

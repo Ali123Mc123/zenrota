@@ -1,0 +1,152 @@
+{
+    "login":  {
+                  "system_access":  "SYSTEM ACCESS",
+                  "title":  "AUTHENTICATION",
+                  "subtitle":  "ENTER CREDENTIALS TO ACCESS SYSTEM",
+                  "tap_to_connect":  "TAP TO CONNECT",
+                  "connecting":  "AUTHENTICATING...",
+                  "identity_label":  "IDENTITY",
+                  "officer_name_placeholder":  "Officer Name",
+                  "callsign_label":  "CALLSIGN",
+                  "callsign_placeholder":  "e.g. 401",
+                  "department_label":  "DEPARTMENT",
+                  "initialize_system":  "UNLOCK SYSTEM"
+              },
+    "dashboard":  {
+                      "tactical_view":  "TACTICAL VIEW",
+                      "tactical_view_desc":  "Enables visual cone projection for allied units on the tactical map.",
+                      "active_units":  "ACTIVE UNITS",
+                      "no_active_units":  "No active units in this channel",
+                      "mark_location":  "Mark Location",
+                      "follow_unit":  "Follow Unit",
+                      "you":  "YOU",
+                      "secure_networks":  "SECURE NETWORKS",
+                      "unit_settings":  "UNIT SETTINGS",
+                      "identity_settings":  "IDENTITY",
+                      "officer_name_label":  "OFFICER NAME",
+                      "officer_name_placeholder":  "Officer Name",
+                      "callsign_label":  "CALLSIGN",
+                      "update":  "UPDATE",
+                      "ui_scale":  "UI SCALE",
+                      "reset":  "RESET",
+                      "move_ui":  "MOVE UI",
+                      "dragging":  "DRAGGING...",
+                      "enable_drag":  "ENABLE DRAG",
+                      "self_blip":  "SELF BLIP",
+                      "self_blip_desc":  "Show your own unit blip on the map",
+                      "system_theme":  "SYSTEM THEME",
+                      "theme_color":  "THEME COLOR",
+                      "display_scale":  "DISPLAY SCALE",
+                      "reset_default":  "RESET TO DEFAULT",
+                      "position":  "DEVICE POSITION",
+                      "move_desc":  "Freely drag the GPS device to any position on screen.",
+                      "finish_move":  "FINISH MOVING",
+                      "reset_position":  "RESET POSITION",
+                      "system_control":  "SYSTEM CONTROL",
+                      "disconnect":  "DISCONNECT",
+                      "search_unit":  "Search unit name / callsign...",
+                      "identity":  "IDENTITY",
+                      "tabs":  {
+                                   "home":  "Home",
+                                   "channels":  "Channels",
+                                   "profile":  "Profile",
+                                   "settings":  "Settings"
+                               }
+                  },
+    "broken":  {
+                   "system_failure":  "SYSTEM FAILURE",
+                   "repairing":  "REPAIRING...",
+                   "critical_error":  "CRITICAL ERROR",
+                   "water_intrusion":  "WATER INTRUSION DETECTED",
+                   "err_code_h2o":  "ERR_CODE: H2O_FATAL",
+                   "system_restore":  "SYSTEM RESTORE",
+                   "verifying_integrity":  "VERIFYING INTEGRITY...",
+                   "restoring_kernel":  "RESTORING KERNEL...",
+                   "rebooting_modules":  "REBOOTING MODULES...",
+                   "system_online":  "SYSTEM ONLINE",
+                   "system_halted":  "SYSTEM HALTED",
+                   "hardware_integrity":  "HARDWARE INTEGRITY COMPROMISED",
+                   "initiate_manual_repair":  "INITIATE MANUAL REPAIR",
+                   "repair":  "REPAIR",
+                   "close":  "CLOSE",
+                   "footer_text":  "DADDY_GPS_OS v2.4.1 // CORE_DUMP_DETECTED"
+               },
+    "controls":  {
+                     "connect":  "Connect",
+                     "leave":  "Leave"
+                 },
+    "department_select":  {
+                              "label":  "Department",
+                              "select_placeholder":  "Select..."
+                          },
+    "gps_frame":  {
+                      "officer_name_label":  "Officer Name",
+                      "officer_name_placeholder":  "e.g. John Doe",
+                      "callsign_label":  "Callsign",
+                      "callsign_placeholder":  "e.g. 401-SOYGUN"
+                  },
+    "app":  {
+                "drag_to_move":  "DRAG TO MOVE",
+                "save_position":  "SAVE POSITION",
+                "drag_hint":  "HOLD TO DRAG",
+                "press_esc":  "PRESS ESC TO CLOSE"
+            },
+    "notify":  {
+                   "no_gps_item":  "You don\u0027t have a GPS device.",
+                   "no_permission":  "You do not have permission to use this system.",
+                   "select_department":  "You must select a department.",
+                   "name_empty":  "Officer name cannot be empty.",
+                   "callsign_range":  "Callsign must be a number between %s and %s.",
+                   "gps_connecting":  "GPS connecting...",
+                   "gps_disconnecting":  "GPS disconnecting...",
+                   "gps_connected":  "GPS connected.",
+                   "gps_disconnected":  "GPS disconnected.",
+                   "waypoint_set":  "Waypoint set.",
+                   "follow_cancelled":  "Tracking cancelled.",
+                   "tracking_activated":  "GPS tracking activated.",
+                   "tracking_disabled":  "GPS tracking disabled.",
+                   "gps_repaired":  "GPS device repaired successfully!",
+                   "gps_reconnected":  "GPS reconnected after repair.",
+                   "invalid_department":  "Invalid department.",
+                   "invalid_name":  "Invalid name."
+               },
+    "units":  {
+                  "you":  "YOU",
+                  "set_waypoint":  "Set Waypoint",
+                  "stop_tracking":  "Stop Tracking",
+                  "start_tracking":  "Track Unit",
+                  "filter_all":  "ALL",
+                  "filter_department":  "DEPARTMENT FILTER"
+              },
+    "channels":  {
+                     "global_network":  "GLOBAL NETWORK",
+                     "global_channel":  "GLOBAL CHANNEL",
+                     "global_desc":  "All departments communicating on the same channel",
+                     "active_unit":  "ACTIVE UNIT"
+                 },
+    "profile":  {
+                    "radar_sizes":  "RADAR SIZES",
+                    "reset":  "RESET",
+                    "on_foot":  "ON FOOT",
+                    "vehicle":  "VEHICLE",
+                    "motorcycle":  "MOTORCYCLE",
+                    "helicopter":  "HELICOPTER",
+                    "plane":  "PLANE",
+                    "boat":  "BOAT",
+                    "blip_category":  "BLIP CATEGORY",
+                    "blip_category_desc":  "Choose how GPS units are grouped in the map legend.",
+                    "blip_cat_single":  "SINGLE GROUP",
+                    "blip_cat_department":  "BY DEPARTMENT",
+                    "blip_cat_none":  "NO GROUPING"
+                },
+    "settings":  {
+                     "language":  "LANGUAGE",
+                     "language_desc":  "Select the display language for the GPS interface.",
+                     "language_changed":  "Language changed. Reopen GPS to apply.",
+                     "hard_reset":  "HARD RESET",
+                     "reset_clearing":  "CLEARING DATA...",
+                     "reset_resetting":  "RESETTING SYSTEM...",
+                     "reset_rebooting":  "REBOOTING...",
+                     "reset_complete":  "RESET COMPLETE"
+                 }
+}

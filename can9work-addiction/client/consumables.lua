@@ -1,0 +1,3 @@
+-- Redundant local functions removed. Effects now handled in visuals.lua
+-- RegisterNetEvents for specific drugs removed to avoid double execution.
+-- All effects now triggered from main.lua calling _G[config.effect]()

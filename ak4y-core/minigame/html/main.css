@@ -1,0 +1,505 @@
+:root {
+	--hack-primary-color: #0f0;
+	--hack-secondary-color: #050;
+	--hack-background-color: #000;
+	--hack-error-color: #f00;
+	--hack-highlight-color: #ff0;
+}
+
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+	user-select: none;
+}
+
+body {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 100vw;
+	height: 100vh;
+	/* background: rgba(0, 0, 0, 0.95); */
+	overflow: hidden;
+}
+
+.terminal {
+	width: 90vw;
+	max-width: 900px;
+	height: 90vh;
+	max-height: 700px;
+	border: 2px solid var(--hack-primary-color);
+	padding: 20px;
+	overflow: hidden;
+	position: relative;
+	background: rgba(0, 10, 0, 0.8);
+	box-shadow: 0 0 20px var(--hack-primary-color);
+	display: flex;
+	flex-direction: column;
+}
+
+#loading-screen {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	height: 100%;
+	text-align: center;
+}
+
+#loading-text {
+	white-space: pre-wrap;
+	margin-bottom: 20px;
+	font-size: 1em;
+	line-height: 1.6;
+	width: 100%;
+	max-height: 60%;
+	overflow-y: auto;
+	border: 1px dashed var(--hack-secondary-color);
+	padding: 10px;
+	min-height: 100px;
+	color: var(--hack-primary-color);
+	font-family: 'Courier New', monospace;
+}
+
+#loading-text::after {
+	content: '_';
+	opacity: 1;
+	animation: blink 1s infinite;
+}
+
+.progress-bar-container {
+	width: 80%;
+	height: 20px;
+	border: 1px solid var(--hack-primary-color);
+	margin-bottom: 10px;
+}
+
+#progress-bar {
+	width: 0%;
+	height: 100%;
+	background-color: var(--hack-primary-color);
+	transition: width 0.5s ease-out;
+}
+
+#loading-status {
+	margin-top: 10px;
+	font-style: italic;
+	color: var(--hack-secondary-color);
+	font-family: 'Courier New', monospace;
+}
+
+#game-screen {
+	display: flex;
+	flex-direction: column;
+	height: 100%;
+	flex-grow: 1;
+	overflow: hidden;
+}
+
+#game-screen header {
+	text-align: center;
+	border-bottom: 1px dashed var(--hack-primary-color);
+	margin-bottom: 15px;
+	padding-bottom: 10px;
+}
+
+#game-screen header h1 {
+	font-size: 1.5em;
+	margin-bottom: 5px;
+	text-shadow: 0 0 5px var(--hack-primary-color);
+	color: var(--hack-primary-color);
+	font-family: 'Courier New', monospace;
+}
+
+#game-screen header p {
+	color: var(--hack-secondary-color);
+	font-family: 'Courier New', monospace;
+}
+
+.game-area {
+	display: flex;
+	flex-grow: 1;
+	overflow: hidden;
+}
+
+.info-panel {
+	width: 250px;
+	padding-right: 20px;
+	border-right: 1px solid var(--hack-secondary-color);
+	display: flex;
+	flex-direction: column;
+	gap: 15px;
+}
+
+.info-panel h2 {
+	font-size: 1em;
+	color: var(--hack-secondary-color);
+	border-bottom: 1px solid var(--hack-secondary-color);
+	padding-bottom: 3px;
+	margin-bottom: 5px;
+	font-family: 'Courier New', monospace;
+}
+
+.code-display {
+	font-size: 1.2em;
+	word-wrap: break-word;
+	background: var(--hack-secondary-color);
+	padding: 5px;
+	min-height: 30px;
+	color: var(--hack-primary-color);
+	font-family: 'Courier New', monospace;
+}
+
+#status-message {
+	font-weight: bold;
+	min-height: 20px;
+	margin-top: auto;
+	padding-top: 10px;
+	color: var(--hack-primary-color);
+	font-family: 'Courier New', monospace;
+}
+
+#grid-container {
+	flex-grow: 1;
+	display: grid;
+	padding-left: 20px;
+	gap: 5px;
+	align-content: center;
+	justify-content: center;
+}
+
+.grid-cell {
+	border: 1px solid var(--hack-secondary-color);
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	font-size: 1.5em;
+	cursor: pointer;
+	transition: background-color 0.2s, color 0.2s, border-color 0.2s;
+	background-color: var(--hack-background-color);
+	color: var(--hack-secondary-color);
+	user-select: none;
+	width: 45px;
+	height: 45px;
+	font-family: 'Courier New', monospace;
+}
+
+.grid-cell:hover {
+	background-color: var(--hack-secondary-color);
+	border-color: var(--hack-primary-color);
+	color: var(--hack-primary-color);
+}
+
+.grid-cell.revealed {
+	background-color: rgba(17, 17, 17, 0.9);
+	color: var(--hack-primary-color);
+	border-color: var(--hack-primary-color);
+	text-shadow: 0 0 5px var(--hack-primary-color);
+}
+
+.grid-cell.correct {
+	background-color: var(--hack-secondary-color);
+	color: var(--hack-highlight-color);
+	border-color: var(--hack-highlight-color);
+}
+
+.grid-cell.incorrect {
+	background-color: var(--hack-error-color);
+	color: var(--hack-background-color);
+	border-color: var(--hack-error-color);
+	animation: flash-error 0.5s ease-out;
+}
+
+#game-screen footer {
+	border-top: 1px dashed var(--hack-primary-color);
+	margin-top: 15px;
+	padding-top: 10px;
+	text-align: right;
+	color: var(--hack-secondary-color);
+	font-style: italic;
+	font-family: 'Courier New', monospace;
+}
+
+#result-overlay {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background: rgba(0, 0, 0, 0.9);
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	text-align: center;
+	z-index: 100;
+}
+
+#result-message {
+	font-size: 2em;
+	padding: 20px;
+	text-shadow: 0 0 10px currentColor;
+	font-family: 'Courier New', monospace;
+}
+
+#result-overlay.success #result-message {
+	color: var(--hack-primary-color);
+}
+
+#result-overlay.failure #result-message {
+	color: var(--hack-error-color);
+}
+
+
+.hidden {
+	display: none !important;
+}
+
+@keyframes blink {
+	0%, 100% { opacity: 1; }
+	50% { opacity: 0; }
+}
+
+@keyframes flash-error {
+	0% { background-color: var(--hack-error-color); border-color: var(--hack-error-color); }
+	100% {
+		background-color: var(--hack-background-color);
+		border-color: var(--hack-secondary-color);
+	}
+}
+
+/* ========== FIREWALL MINIGAME STYLES ========== */
+:root {
+	--firewall-primary-color: #0f0; /* Bright Green */
+	--firewall-secondary-color: #070; /* Darker Green */
+	--firewall-background-color: #000;
+	--firewall-error-color: #f00; /* Bright Red */
+	--firewall-trace-color: #ff0; /* Yellow */
+	--firewall-success-color: #00f; /* Blue for contrast/success */
+	--firewall-disabled-color: #444; /* Grey for inactive/disabled */
+	--firewall-node-base-color: #222;
+	--firewall-node-active-color: var(--firewall-primary-color);
+	--firewall-node-hit-color: var(--firewall-success-color);
+}
+
+.terminal-firewall {
+	width: 95vw;
+	max-width: 800px;
+	height: 90vh;
+	max-height: 650px;
+	border: 2px solid var(--firewall-primary-color);
+	padding: 15px 20px;
+	overflow: hidden;
+	position: relative;
+	background: rgba(0, 15, 0, 0.85);
+	box-shadow: 0 0 20px rgba(0, 255, 0, 0.5);
+	display: flex;
+	flex-direction: column;
+}
+
+/* --- Loading Screen --- */
+#firewall-loading-screen { display: flex; flex-direction: column; justify-content: center; align-items: center; height: 100%; text-align: center; }
+
+#firewall-loading-text { white-space: pre-wrap; margin-bottom: 20px; font-size: 1em; line-height: 1.5; width: 95%; max-height: 60%; overflow-y: auto; border: 1px dashed var(--firewall-secondary-color); padding: 10px; min-height: 100px; color: var(--firewall-primary-color); font-family: 'Share Tech Mono', monospace; }
+
+#firewall-loading-text::after { content: '_'; opacity: 1; animation: blink 1s infinite; }
+
+.progress-bar-container-firewall { width: 80%; height: 18px; border: 1px solid var(--firewall-primary-color); margin-bottom: 10px; background-color: var(--firewall-secondary-color); }
+
+#firewall-progress-bar { width: 0%; height: 100%; background-color: var(--firewall-primary-color); transition: width 0.4s ease-out; }
+
+#firewall-loading-status { margin-top: 10px; font-style: italic; color: var(--firewall-primary-color); opacity: 0.8; font-family: 'Share Tech Mono', monospace; }
+
+/* --- Game Screen --- */
+#firewall-game-screen { display: flex; flex-direction: column; height: 100%; flex-grow: 1; overflow: hidden; opacity: 1; transition: opacity 0.5s ease-in-out; }
+
+#firewall-game-screen header { text-align: center; border-bottom: 1px dashed var(--firewall-primary-color); margin-bottom: 15px; padding-bottom: 10px; }
+
+#firewall-game-screen header h1 { font-size: 1.4em; margin-bottom: 5px; text-shadow: 0 0 5px var(--firewall-primary-color); color: var(--firewall-primary-color); font-family: 'Share Tech Mono', monospace; }
+
+#firewall-game-status { color: var(--firewall-secondary-color); font-size: 1em; min-height: 1.2em; font-family: 'Share Tech Mono', monospace; }
+
+#firewall-game-screen footer { border-top: 1px dashed var(--firewall-primary-color); margin-top: auto; padding-top: 10px; text-align: right; color: var(--firewall-secondary-color); font-style: italic; font-family: 'Share Tech Mono', monospace; }
+
+.game-area-firewall { display: flex; flex-direction: column; flex-grow: 1; overflow: hidden; padding-bottom: 10px; }
+
+/* Firewall Layers & Nodes */
+#firewall-layers {
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+	margin-bottom: 20px;
+	flex-grow: 1;
+	justify-content: center;
+	padding: 0 10px;
+}
+
+.firewall-layer {
+	border: 1px solid var(--firewall-secondary-color);
+	padding: 8px 15px;
+	background-color: rgba(0, 30, 0, 0.3);
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	transition: border-color 0.3s, box-shadow 0.3s, opacity 0.3s;
+	opacity: 0.6;
+}
+
+.firewall-layer.active-layer {
+	border-color: var(--firewall-primary-color);
+	box-shadow: 0 0 8px var(--firewall-primary-color);
+	opacity: 1.0;
+}
+
+.firewall-layer.disabled-layer {
+	border-color: var(--firewall-disabled-color);
+	opacity: 0.4;
+	background-color: rgba(50, 50, 50, 0.2);
+}
+
+.firewall-layer.disabled-layer .layer-label {
+	color: var(--firewall-disabled-color);
+}
+
+.firewall-layer.disabled-layer .firewall-node {
+	background-color: var(--firewall-disabled-color);
+	border-color: #555;
+	cursor: default;
+	box-shadow: none;
+}
+
+.layer-label {
+	font-weight: bold;
+	color: var(--firewall-secondary-color);
+	margin-right: 20px;
+	min-width: 80px;
+	font-family: 'Share Tech Mono', monospace;
+}
+
+.active-layer .layer-label {
+	color: var(--firewall-primary-color);
+}
+
+.nodes-container {
+	display: flex;
+	gap: 15px;
+}
+
+.firewall-node {
+	width: 25px;
+	height: 25px;
+	background-color: var(--firewall-node-base-color);
+	border: 2px solid var(--firewall-secondary-color);
+	border-radius: 50%;
+	cursor: pointer;
+	transition: background-color 0.15s, border-color 0.15s, box-shadow 0.15s;
+	box-shadow: inset 0 0 4px rgba(0,0,0,0.5);
+}
+
+.active-layer .firewall-node:not(.disabled-node):hover {
+	border-color: var(--firewall-primary-color);
+	background-color: var(--firewall-secondary-color);
+}
+
+/* Node States */
+.firewall-node.activating {
+	background-color: var(--firewall-node-active-color);
+	border-color: var(--firewall-node-active-color);
+	box-shadow: 0 0 10px var(--firewall-node-active-color);
+	animation: node-pulse 0.4s ease-in-out;
+}
+
+.firewall-node.hit {
+	background-color: var(--firewall-node-hit-color);
+	border-color: var(--firewall-node-hit-color);
+	box-shadow: 0 0 8px var(--firewall-node-hit-color);
+	cursor: default;
+}
+
+.firewall-node.error {
+	background-color: var(--firewall-error-color);
+	border-color: var(--firewall-error-color);
+	box-shadow: 0 0 10px var(--firewall-error-color);
+	animation: node-flash-error 0.4s ease-out;
+	cursor: default;
+}
+
+/* System Trace */
+.trace-container {
+	margin-top: auto;
+	padding: 10px 10px 5px 10px;
+	border-top: 1px solid var(--firewall-secondary-color);
+}
+
+.trace-container h2 {
+	font-size: 0.9em;
+	color: var(--firewall-trace-color);
+	margin-bottom: 5px;
+	display: inline-block;
+	margin-right: 10px;
+	font-family: 'Share Tech Mono', monospace;
+}
+
+.trace-bar-outer {
+	height: 20px;
+	border: 1px solid var(--firewall-trace-color);
+	background-color: var(--firewall-secondary-color);
+	display: inline-block;
+	width: calc(100% - 160px);
+	vertical-align: middle;
+}
+
+#trace-bar-inner {
+	width: 0%;
+	height: 100%;
+	background-color: var(--firewall-trace-color);
+	box-shadow: 0 0 8px var(--firewall-trace-color);
+	transition: width 0.1s linear;
+}
+
+#trace-percentage {
+	color: var(--firewall-trace-color);
+	font-weight: bold;
+	display: inline-block;
+	margin-left: 10px;
+	vertical-align: middle;
+	width: 40px;
+	text-align: right;
+	font-family: 'Share Tech Mono', monospace;
+}
+
+/* Result Overlay */
+#firewall-result-overlay {
+	position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+	background: rgba(0, 0, 0, 0.95);
+	display: flex; flex-direction: column; justify-content: center; align-items: center;
+	text-align: center; z-index: 100; opacity: 0; transition: opacity 0.5s ease-in-out;
+	pointer-events: none;
+}
+
+#firewall-result-overlay:not(.hidden) { opacity: 1; pointer-events: auto; }
+
+#firewall-result-message { font-size: 1.8em; padding: 20px; margin-bottom: 30px; text-shadow: 0 0 10px currentColor; white-space: pre-wrap; line-height: 1.5; font-family: 'Share Tech Mono', monospace; }
+
+#firewall-result-overlay.success #firewall-result-message { color: var(--firewall-success-color); text-shadow: 0 0 15px var(--firewall-success-color); animation: success-pulse 2s infinite alternate ease-in-out; }
+
+#firewall-result-overlay.failure #firewall-result-message { color: var(--firewall-error-color); text-shadow: 0 0 15px var(--firewall-error-color); }
+
+/* --- Animations --- */
+@keyframes node-pulse {
+	0% { transform: scale(1); box-shadow: 0 0 10px var(--firewall-node-active-color); }
+	50% { transform: scale(1.1); box-shadow: 0 0 15px var(--firewall-node-active-color); }
+	100% { transform: scale(1); box-shadow: 0 0 10px var(--firewall-node-active-color); }
+}
+
+@keyframes node-flash-error {
+	0%, 100% { background-color: var(--firewall-node-base-color); border-color: var(--firewall-secondary-color); box-shadow: inset 0 0 4px rgba(0,0,0,0.5); }
+	50% { background-color: var(--firewall-error-color); border-color: var(--firewall-error-color); box-shadow: 0 0 10px var(--firewall-error-color); }
+}
+
+@keyframes success-pulse {
+	from { text-shadow: 0 0 15px var(--firewall-success-color), 0 0 5px rgba(200, 200, 255, 0.5); }
+	to { text-shadow: 0 0 25px var(--firewall-success-color), 0 0 10px var(--firewall-success-color), 0 0 8px rgba(200, 200, 255, 0.7); }
+}
+

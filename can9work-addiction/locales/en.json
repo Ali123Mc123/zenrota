@@ -1,0 +1,76 @@
+{
+    "addiction": "Addiction",
+    "addiction_status": "Addiction Status",
+    "addiction_reset": "Addiction reset!",
+    "all_addictions_reset": "All addictions reset!",
+    
+    "drug_weed": "Mint",
+    "drug_koko": "Sugar",
+    "drug_meth": "Crystal",
+    "drug_nostress": "NoStress",
+    
+    "using_weed": "Smoking weed...",
+    "using_koko": "Using cocaine...",
+    "using_meth": "Using meth...",
+    "using_nostress": "Using NoStress...",
+    "nostress_effect_started": "NoStress effect started!",
+    "nostress_effect_ended": "NoStress effect ended!",
+    "nostress_requirement": "You must have at least 25%% cocaine addiction to use NoStress!",
+    "canceled": "Canceled!",
+    
+    "level_none": "Clean",
+    "level_low": "Low",
+    "level_medium": "Medium",
+    "level_high": "High",
+    "level_critical": "Critical",
+    
+    "addiction_level": "%s addiction: %d%% (%s)",
+    
+    "weed_craving_low": "You feel like smoking some weed...",
+    "koko_craving_low": "You feel like using some cocaine...",
+    "meth_craving_low": "You feel like using some meth...",
+    
+    "weed_craving_medium": "Your need for weed is increasing...",
+    "koko_craving_medium": "Your need for cocaine is increasing...",
+    "meth_craving_medium": "Your need for meth is increasing...",
+    
+    "weed_craving_high": "It's so hard without weed...",
+    "koko_craving_high": "It's so hard without cocaine!",
+    "meth_craving_high": "It's so hard without meth!",
+    
+    "weed_craving_critical": "You NEED weed! You can't take it anymore!",
+    "koko_craving_critical": "You NEED cocaine! You're losing it!",
+    "meth_craving_critical": "You NEED meth! Your body is failing!",
+    
+    "new_level_low": "Warning! %s addiction is starting...",
+    "new_level_medium": "Danger! Your %s addiction is increasing!",
+    "new_level_high": "ALERT! Your %s addiction is at dangerous levels!",
+    "new_level_critical": "EMERGENCY! Your %s addiction is critical! Treatment required!",
+    
+    "balance_lost": "You lost your balance!",
+    "body_failing": "Your body can't take it!",
+    "hands_shaking": "Your hands are shaking, you can't hold the weapon!",
+    "weapon_dropped": "You dropped your weapon!",
+    
+    "koko_effect_started": "Cocaine effect started - Recoil disabled!",
+    "koko_effect_ended": "Cocaine effect ended - Recoil back to normal!",
+    
+    "no_permission": "You don't have permission to use this command!",
+    "player_not_found": "Player not found!",
+    "invalid_drug": "Invalid drug type!",
+    
+    "cooldown_active": "You must wait %d minutes %d seconds to use this again!",
+    "cooldown_active_seconds": "You must wait %d seconds to use this again!",
+    
+    "using_antidote_weed": "Using weed antidote...",
+    "using_antidote_koko": "Using cocaine antidote...",
+    "using_antidote_meth": "Using meth antidote...",
+    "using_antidote_nostress": "Using NoStress antidote...",
+    
+    "antidote_used_weed": "Weed antidote worked! Addiction is completely cured!",
+    "antidote_used_koko": "Cocaine antidote worked! Addiction is completely cured!",
+    "antidote_used_meth": "Meth antidote worked! Addiction is completely cured!",
+    "antidote_used_nostress": "NoStress antidote worked! Addiction is completely cured!",
+    "effect_remaining": "%d seconds remaining until the effect ends."
+}
+

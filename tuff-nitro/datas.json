@@ -1,0 +1,13 @@
+{
+    "88OTO338": {
+        "exhaustBackfireSound": "backfire_1",
+        "exhaustColor": "mix2",
+        "exhaustId": "exhaust_mix2",
+        "exhaustBrightness": 1,
+        "hasExhaust": true
+    },
+    "REVOCAN ": {
+        "hasExhaust": false,
+        "exhaustBackfireSound": "backfire_5"
+    }
+}

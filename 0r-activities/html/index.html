@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="skart_race.css">
+    <link rel="stylesheet" href="formula1.css">
+    <link rel="stylesheet" href="gokart.css">
+    <link rel="stylesheet" href="sonar.css">
+    <title data-i18n="activities_title"></title>
+</head>
+<body>
+    <section id="cablecar" class="cablecar-hud" aria-hidden="true">
+        <div class="hud-copy">
+            <div class="hud-head">
+                <span class="hud-title" data-i18n="cable_car"></span>
+                <span class="hud-indicator"></span>
+            </div>
+            <div class="hud-info">
+                <span id="status" class="hud-status" data-i18n="cable_car_en_route"></span>
+                <span id="detail" class="hud-detail" data-i18n="getting_arrival_information"></span>
+            </div>
+        </div>
+    </section>
+    <section id="controls" class="controls" aria-hidden="true">
+        <span id="controls-title" class="controls-title"></span>
+        <div id="controls-list" class="controls-list"></div>
+    </section>
+    <section id="queue-hud" class="queue-hud" aria-hidden="true">
+        <div class="queue-copy">
+            <kbd id="queue-seconds" class="queue-seconds" hidden></kbd>
+            <span id="queue-title" class="queue-title" data-i18n="roller_coaster_queue"></span>
+            <div class="queue-values">
+                <strong id="queue-position" data-i18n="position_1"></strong>
+                <span class="queue-separator"></span>
+                <span id="queue-countdown" data-i18n="starts_in_15_seconds"></span>
+            </div>
+            <div id="queue-standings" class="queue-standings" hidden></div>
+        </div>
+        <div class="queue-action">
+            <kbd id="queue-key">F</kbd>
+            <span id="queue-action" data-i18n="leave_queue_2"></span>
+        </div>
+    </section>
+    <section id="lobby" class="sg-modal" aria-hidden="true">
+        <header class="activity-identity">
+            <h1 id="lobby-title" data-i18n="activity_2"></h1>
+            <span id="lobby-subtitle" data-i18n="activity"></span>
+        </header>
+        <aside class="activity-menu" data-i18n-aria-label="activity_options">
+            <div id="lobby-main-view" class="lobby-view lobby-main-view">
+                <div class="activity-options">
+                    <button id="lobby-primary" class="activity-option" type="button"></button>
+                    <button id="lobby-secondary" class="activity-option" type="button" hidden></button>
+                    <div id="lobby-extra-options" class="activity-extra-options"></div>
+                    <button id="lobby-back" class="activity-option" type="button" data-i18n="back_option"></button>
+                </div>
+                <div id="lobby-players-label" class="player-section" hidden><span data-i18n="players_in_group"></span></div>
+                <ul id="lobby-players" class="lobby-players" data-i18n-aria-label="players_in_group"></ul>
+            </div>
+            <div id="lobby-multiplayer-view" class="lobby-view lobby-multiplayer-view" aria-hidden="true">
+                <button id="multiplayer-primary" class="activity-option multiplayer-primary" type="button" hidden></button>
+                <button id="multiplayer-back" class="activity-option multiplayer-back" type="button" data-i18n="back_option"></button>
+                <div id="multiplayer-group-label" class="player-section" hidden><span data-i18n="players_in_group"></span></div>
+                <ul id="multiplayer-group" class="lobby-players multiplayer-group" data-i18n-aria-label="players_in_group" hidden></ul>
+                <div id="multiplayer-nearby-label" class="player-section" hidden><span data-i18n="nearby_players"></span></div>
+                <div id="multiplayer-list" class="multiplayer-list"></div>
+            </div>
+        </aside>
+        <footer class="activity-footer">
+            <div class="activity-copy">
+                <p id="lobby-description"></p>
+                <div class="lobby-status-row">
+                    <div id="lobby-status" class="lobby-status"></div>
+                    <strong id="lobby-countdown" class="lobby-countdown" hidden></strong>
+                </div>
+                <div id="lobby-progress" class="lobby-progress" hidden><i></i></div>
+            </div>
+            <div class="activity-keycaps" data-i18n-aria-label="controls">
+                <span data-i18n-suffix="move"><kbd class="keycap-move" data-i18n-aria-label="up_and_down">↕</kbd></span>
+                <i>/</i>
+                <span data-i18n-suffix="select"><kbd class="keycap-select" aria-label="Enter">↵</kbd></span>
+                <i>/</i>
+                <span data-i18n-suffix="back"><kbd>ESC</kbd></span>
+            </div>
+        </footer>
+        <button id="lobby-close" type="button" data-i18n-aria-label="close" tabindex="-1">×</button>
+    </section>
+    <section id="invitation" class="invitation-modal" role="dialog" aria-modal="true" aria-hidden="true"
+        aria-labelledby="invitation-title" aria-describedby="invitation-message">
+        <header class="invitation-identity">
+            <h2 id="invitation-title" data-i18n="activity_invitation"></h2>
+            <span data-i18n="lobby_invitation"></span>
+        </header>
+        <aside class="invitation-menu">
+            <span class="invitation-kicker" data-i18n="a_player_is_inviting_you_to_their_group"></span>
+            <p id="invitation-message"></p>
+            <div class="invitation-timer" aria-live="polite">
+                <span data-i18n="time_to_respond"></span>
+                <strong id="invitation-time">00:20</strong>
+            </div>
+            <div class="invitation-progress" aria-hidden="true"><i id="invitation-progress"></i></div>
+            <div class="invitation-actions">
+                <button id="invitation-accept" class="activity-option selected" type="button" data-i18n="accept"></button>
+                <button id="invitation-reject" class="activity-option" type="button" data-i18n="decline_2"></button>
+            </div>
+        </aside>
+        <footer class="invitation-footer">
+            <span data-i18n-suffix="choose"><kbd>↔</kbd></span><i>/</i>
+            <span data-i18n-suffix="confirm"><kbd>↵</kbd></span><i>/</i>
+            <span data-i18n-suffix="decline"><kbd>ESC</kbd></span>
+        </footer>
+    </section>
+    <script src="i18n.js"></script>
+    <script src="app.js"></script>
+    <script src="skart_race.js"></script>
+    <script src="formula1.js"></script>
+    <script src="gokart.js"></script>
+    <script src="sonar.js"></script>
+</body>
+</html>

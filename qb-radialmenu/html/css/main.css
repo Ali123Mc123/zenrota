@@ -1,0 +1,168 @@
+@import url('https://fonts.googleapis.com/css2?family=Kanit&display=swap');
+
+* {
+    box-sizing: border-box;
+}
+
+h1 {
+    font-weight: normal;
+    color: white;
+}
+
+div.info {
+    margin: 12px 0;
+}
+
+div.info * {
+    color: white;
+}
+
+#icons {
+    display: none;
+    filter: url(#drop-shadow);
+}
+
+.container {
+    position: absolute;
+    left: 1000px;
+}
+
+#vehicle {
+    fill: white;
+}
+
+div.menuHolder {
+    user-select: none;
+    -moz-user-select: none;
+    position: fixed;
+    left: 0;
+    right: 0;
+    margin-left: auto;
+    margin-right: auto;
+    top: 50%;
+    transform: translateY(-50%);
+    animation: slide-up 0.35s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+@keyframes slide-up {
+    from {
+        transform: translateY(-65%);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateY(-50%);
+        opacity: 1;
+    }
+}
+
+svg.icons {
+    display: none;
+}
+
+svg.menu {
+    position: absolute;
+    overflow: visible;
+    transition: transform 0.15s ease-out;
+    pointer-events: all;
+}
+
+svg.menu.inner {
+    transform: scale(0.7) rotate(-6deg);
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+}
+
+svg.menu.outer {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+}
+
+svg.menu>g>path {
+    fill: rgb(0 0 0 / 55%);
+    transition: fill 0.2s ease, stroke 0.2s ease, filter 0.2s ease;
+}
+
+svg.menu>g.sector>path {
+    cursor: pointer;
+}
+
+svg.menu>g.sector>text,
+svg.menu>g.sector>use {
+    font-family: "Kanit", sans-serif;
+    margin-top: 5px;
+    font-size: 3.8px;
+    letter-spacing: 0.25px;
+    text-transform: uppercase;
+    cursor: pointer;
+    fill: white;
+}
+
+svg.menu>g.sector:hover>path {
+    fill: rgba(204, 41, 41, 0.7);
+    stroke: rgba(204, 41, 41, 0.7);
+    stroke-width: 1px;
+    filter: drop-shadow(0 0 3px rgba(243, 124, 124, 0.55));
+}
+
+svg.menu>g.center:hover>circle {
+    fill: rgba(204, 41, 41, 0.7);
+    stroke: rgba(204, 41, 41, 0.7);
+    stroke-width: 1px;
+    filter: drop-shadow(0 0 3px rgba(243, 124, 124, 0.55));
+}
+
+svg.menu>g.center {
+    cursor: pointer;
+    fill: rgb(0 0 0 / 55%);
+    transition: fill 0.2s ease, stroke 0.2s ease, transform 0.12s ease;
+}
+
+svg.menu>g.center:hover {
+    transform: scale(1.04);
+}
+
+svg.menu>g.center>circle {
+    cursor: pointer;
+    fill: rgb(0 0 0 / 55%);
+    transition: fill 0.2s ease, stroke 0.2s ease;
+}
+
+svg.menu>g.center>text,
+svg.menu>g.center>use {
+    margin-top: 5px;
+    font-size: 2.5px;
+    cursor: pointer;
+    fill: white;
+}
+
+@keyframes change-fill {
+    0% {
+        fill: #ff6b6b;
+    }
+
+    50% {
+        fill: #ff3f3f;
+    }
+
+    100% {
+        fill: #ff6b6b;
+    }
+}
+
+svg.menu>g.outer>path {
+    animation: change-fill 6s ease-in-out infinite;
+}
+
+svg.menu>g.sector {
+    transform: scale(1);
+    opacity: 0.92;
+    transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+svg.menu>g.sector:hover {
+    transform: scale(1.06);
+    opacity: 1;
+}

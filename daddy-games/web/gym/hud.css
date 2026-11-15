@@ -1,0 +1,773 @@
+/* =========================================================================
+   daddy-games :: gym :: hud.css
+   Antrenman bandi — yayin alt bandi (lower third).
+
+   ODAK ALMAZ: tum katman pointer-events:none'dir, tuslar Lua tarafinda
+   okunur. Bu sayede animasyon sirasinda oyun kontrolu gitmez.
+
+   Tek panel: nefes sutunu | ritim rayi | set izi. Goz ekranin bir ucundan
+   digerine gitmez.
+   ========================================================================= */
+
+#gym-hud {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  font-family: var(--font-body);
+  color: var(--n8);
+  z-index: 900;
+}
+
+/* =========================================================================
+   PANEL
+   ========================================================================= */
+.gh {
+  position: absolute;
+  bottom: 54px;
+  left: 50%;
+  width: 792px;
+  transform: translate(-50%, 18px);
+  opacity: 0;
+  background: rgba(11, 13, 17, 0.93);
+  border-radius: var(--r2);
+  box-shadow: 0 18px 60px rgba(0, 0, 0, 0.66), inset 0 0 0 1px var(--rule-strong);
+  transition: opacity 260ms var(--ease), transform 260ms var(--ease);
+  overflow: hidden;
+}
+
+#gym-hud.is-open .gh { opacity: 1; transform: translate(-50%, 0); }
+#gym-hud.is-result .gh { opacity: 0; transform: translate(-50%, 14px); }
+
+/* Ust kenarda letterman cift cizgi — tek dekoratif oge, 2px */
+.gh::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg,
+    var(--acc) 0%, var(--acc) 46%,
+    var(--brass) 46%, var(--brass) 54%,
+    var(--acc) 54%, var(--acc) 100%);
+}
+
+/* ---- Ust serit ---------------------------------------------------- */
+.gh-head {
+  display: flex;
+  align-items: center;
+  gap: var(--s3);
+  padding: 11px 16px 10px;
+  border-bottom: 1px solid var(--rule);
+}
+
+.gh-head__icon { color: var(--acc-hi); }
+
+.gh-head__name {
+  font-family: var(--font-display);
+  font-size: 17px;
+  font-weight: 800;
+  letter-spacing: -0.008em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.gh-head__tags { display: flex; gap: 6px; align-items: center; }
+.gh-head__spacer { flex: 1; }
+
+/* Yorgunluk gostergesi — oyuncu NEDEN zorlandigini gormeli */
+.gh-fatigue {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.gh-fatigue__label {
+  font-size: 9.5px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--n6);
+}
+
+.gh-fatigue__pips { display: flex; gap: 2px; }
+
+.gh-fatigue__pip {
+  width: 12px;
+  height: 5px;
+  border-radius: 1px;
+  background: var(--n4);
+}
+
+.gh-fatigue__pip.is-on   { background: var(--warn); }
+.gh-fatigue__pip.is-high { background: var(--bad); }
+
+.gh-energy {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-family: var(--font-data);
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--acc-hi);
+}
+
+/* =========================================================================
+   GOVDE: nefes | ray | set izi
+   ========================================================================= */
+.gh-body {
+  display: grid;
+  grid-template-columns: 62px 1fr 156px;
+  align-items: stretch;
+  min-height: 104px;
+}
+
+/* ---- Nefes sutunu (dikey) ------------------------------------------ */
+.gh-breath {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 6px;
+  padding: 12px 0 10px;
+  border-right: 1px solid var(--rule);
+}
+
+.gh-breath__tube {
+  position: relative;
+  width: 18px;
+  flex: 1;
+  min-height: 54px;
+  border-radius: 2px;
+  background: var(--n0);
+  box-shadow: inset 0 0 0 1px var(--rule-strong);
+  overflow: hidden;
+}
+
+.gh-breath__fill {
+  position: absolute;
+  left: 0; right: 0; bottom: 0;
+  height: 100%;
+  background: var(--ok);
+  transition: height 110ms linear, background-color 300ms linear;
+}
+
+.gh-breath__fill.is-low  { background: var(--warn); }
+.gh-breath__fill.is-crit { background: var(--bad); animation: gh-pulse 620ms ease-in-out infinite; }
+
+@keyframes gh-pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.45; } }
+
+/* Olcek cizgileri — tup bir alet gibi okunsun */
+/* Dortte birlik olcek cizgileri */
+.gh-breath__ticks {
+  position: absolute;
+  inset: 0;
+  background-image: repeating-linear-gradient(
+    to top, transparent 0, transparent 24.6%,
+    rgba(255,255,255,.16) 24.6%, rgba(255,255,255,.16) 25%);
+}
+
+.gh-breath__cap { color: var(--n6); }
+
+.gh-breath__pct {
+  font-family: var(--font-data);
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--n8);
+  line-height: 1;
+}
+
+.gh-breath__lbl {
+  font-size: 8.5px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--n6);
+}
+
+/* ---- Ritim rayi ---------------------------------------------------- */
+.gh-rail-wrap {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 9px;
+  padding: 12px 16px;
+  min-width: 0;
+}
+
+.gh-rail {
+  position: relative;
+  height: 52px;
+  border-radius: var(--r1);
+  background: linear-gradient(180deg, #06080B, #0C0F14);
+  box-shadow: inset 0 0 0 1px var(--rule-strong);
+  overflow: hidden;
+}
+
+/* Plaka kertikleri: buyuk + kucuk tick, gercek bir olcek gibi */
+/* Plaka kertikleri: her %2'de kucuk, her %10'da buyuk tick */
+.gh-rail__ticks {
+  position: absolute;
+  inset: 0;
+}
+
+.gh-rail__ticks::before,
+.gh-rail__ticks::after {
+  content: '';
+  position: absolute;
+  left: 0; right: 0;
+}
+
+.gh-rail__ticks::before {
+  top: 0; bottom: 0;
+  background-image: repeating-linear-gradient(90deg,
+    rgba(255,255,255,.055) 0, rgba(255,255,255,.055) 1px,
+    transparent 1px, transparent 2%);
+}
+
+.gh-rail__ticks::after {
+  top: 0; height: 10px;
+  background-image: repeating-linear-gradient(90deg,
+    rgba(255,255,255,.20) 0, rgba(255,255,255,.20) 1px,
+    transparent 1px, transparent 10%);
+  box-shadow: 0 42px 0 -32px rgba(255,255,255,.20);
+}
+
+/* Kabul bantlari: genis = IYI, dar (islenmis centik) = PERFECT */
+.gh-zone {
+  position: absolute;
+  top: 0; bottom: 0;
+  transform: translateX(-50%);
+  transition: width 180ms var(--ease), left 180ms var(--ease);
+}
+
+.gh-zone--good {
+  background: rgba(200, 32, 46, 0.20);
+  box-shadow: inset 1px 0 0 var(--acc-line), inset -1px 0 0 var(--acc-line);
+}
+
+.gh-zone--perfect {
+  background: var(--brass-wash);
+  box-shadow: inset 2px 0 0 var(--brass), inset -2px 0 0 var(--brass);
+}
+
+/* Centik merkez cizgisi */
+.gh-zone--perfect::after {
+  content: '';
+  position: absolute;
+  top: 9px; bottom: 9px; left: 50%;
+  width: 1px;
+  margin-left: -0.5px;
+  background: var(--brass);
+  opacity: 0.5;
+}
+
+/* 'hold' modunda iki centik arasinda gerilim dolgusu */
+/* 'hold' modunda iki centik arasi gerilim — INCE bir cizgi, dolgu degil.
+   Kalin tarama rayi okunmaz hale getiriyordu. */
+.gh-tension {
+  position: absolute;
+  top: 50%;
+  height: 3px;
+  margin-top: -1.5px;
+  border-radius: 2px;
+  background: var(--brass);
+  opacity: 0;
+  transition: opacity 120ms linear;
+}
+
+.gh-rail.is-holding .gh-tension {
+  opacity: 0.75;
+  animation: gh-tense 900ms ease-in-out infinite;
+}
+
+@keyframes gh-tense { 0%, 100% { opacity: 0.75; } 50% { opacity: 0.35; } }
+
+/* Kayan imlec */
+.gh-marker {
+  position: absolute;
+  top: 3px; bottom: 3px;
+  left: 0;
+  width: 3px;
+  margin-left: -1.5px;
+  border-radius: 1px;
+  background: #fff;
+  box-shadow: 0 0 12px rgba(255, 255, 255, 0.75);
+  will-change: transform;
+}
+
+.gh-rail.is-hit .gh-marker { background: var(--brass-hi); }
+
+/* ---- Combo dizisi -------------------------------------------------- */
+.gh-combo {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  pointer-events: none;
+}
+
+.gh-combo__key {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 30px;
+  border-radius: var(--r1);
+  background: rgba(11, 13, 17, 0.86);
+  box-shadow: inset 0 0 0 1px var(--rule-strong);
+  font-family: var(--font-data);
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--n6);
+  transition: all 140ms var(--ease);
+}
+
+.gh-combo__key.is-active {
+  color: var(--brass-hi);
+  box-shadow: inset 0 0 0 1.5px var(--brass);
+  background: var(--brass-wash);
+  transform: scale(1.1);
+}
+
+.gh-combo__key.is-done { color: var(--ok); box-shadow: inset 0 0 0 1px rgba(63,164,94,.5); }
+
+/* ---- Tus ipucu ------------------------------------------------------ */
+.gh-hint {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+  font-size: 11.5px;
+  color: var(--n6);
+}
+
+.gh-key {
+  display: inline-block;
+  min-width: 20px;
+  padding: 1px 6px;
+  margin-right: 5px;
+  border-radius: 3px;
+  background: var(--n3);
+  box-shadow: inset 0 0 0 1px var(--rule-strong), 0 1px 0 var(--n0);
+  font-family: var(--font-data);
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--n8);
+  text-align: center;
+}
+
+/* ---- Sag sutun: sayac + set izi ------------------------------------- */
+.gh-side {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 16px;
+  border-left: 1px solid var(--rule);
+}
+
+.gh-count {
+  display: flex;
+  align-items: baseline;
+  gap: 5px;
+}
+
+.gh-count__v {
+  font-family: var(--font-data);
+  font-size: 36px;
+  font-weight: 700;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+  color: var(--n8);
+  transition: color 180ms linear, transform 110ms var(--ease);
+}
+
+.gh-count__v.is-pop { color: var(--brass-hi); transform: scale(1.08); }
+
+.gh-count__t {
+  font-family: var(--font-data);
+  font-size: 13px;
+  color: var(--n6);
+}
+
+/* Set izi: her tekrar bir cubuk. Tum seti bir bakista gorursun. */
+.gh-track {
+  display: flex;
+  align-items: flex-end;
+  gap: 2px;
+  height: 28px;
+}
+
+.gh-track__b {
+  flex: 1;
+  min-width: 2px;
+  max-width: 5px;
+  border-radius: 1px;
+  background: var(--n4);
+  transition: height 140ms var(--ease), background-color 140ms linear;
+}
+
+.gh-track__b.g-perfect { height: 100%; background: var(--brass); }
+.gh-track__b.g-good    { height: 66%;  background: var(--ok); }
+.gh-track__b.g-miss    { height: 32%;  background: var(--bad); }
+
+.gh-judge {
+  font-family: var(--font-display);
+  font-size: 15px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  min-height: 18px;
+  opacity: 0;
+}
+
+.gh-judge.is-show { animation: gh-judge 620ms var(--ease) forwards; }
+.gh-judge--perfect { color: var(--brass-hi); }
+.gh-judge--good    { color: var(--ok); }
+.gh-judge--miss    { color: var(--bad); }
+
+@keyframes gh-judge {
+  0%   { opacity: 0; transform: translateY(4px); }
+  16%  { opacity: 1; transform: none; }
+  74%  { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+.gh-combo-badge {
+  font-family: var(--font-data);
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--brass);
+  opacity: 0;
+  transition: opacity 160ms linear;
+}
+
+.gh-combo-badge.is-show { opacity: 1; }
+
+/* =========================================================================
+   KURULUM SERIDI — agirlik kademesi secimi
+   Menu degil: ayni bandin govdesi kademe secicisine donusur.
+   ========================================================================= */
+.gh-setup { padding: 14px 16px 12px; }
+
+.gh-setup__levels {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 6px;
+  margin-bottom: 12px;
+}
+
+.gh-lv {
+  position: relative;
+  padding: 9px 8px 10px;
+  border-radius: var(--r1);
+  background: var(--n1);
+  box-shadow: inset 0 0 0 1px var(--rule);
+  text-align: center;
+  transition: background-color 160ms var(--ease), box-shadow 160ms var(--ease),
+              transform 160ms var(--ease), opacity 160ms linear;
+}
+
+.gh-lv__name {
+  font-family: var(--font-display);
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: var(--n7);
+  margin-bottom: 5px;
+}
+
+.gh-lv__stats {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  font-family: var(--font-data);
+  font-size: 10.5px;
+  color: var(--n6);
+}
+
+.gh-lv__stats b { color: var(--n7); font-weight: 700; }
+
+/* Secili kademe */
+.gh-lv.is-pick {
+  background: var(--acc-wash);
+  box-shadow: inset 0 0 0 1.5px var(--acc);
+  transform: translateY(-2px);
+}
+
+.gh-lv.is-pick .gh-lv__name    { color: var(--n8); }
+.gh-lv.is-pick .gh-lv__stats   { color: var(--n7); }
+.gh-lv.is-pick .gh-lv__stats b { color: var(--acc-hi); }
+
+/* Kilitli kademe — gereken kondisyonu yazar */
+.gh-lv.is-locked { opacity: 0.42; }
+
+.gh-lv__lock {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  font-family: var(--font-data);
+  font-size: 10px;
+  color: var(--n6);
+}
+
+/* Enerjisi yetmeyen kademe */
+.gh-lv.is-poor:not(.is-locked) { opacity: 0.55; }
+.gh-lv.is-poor .gh-lv__stats b { color: var(--bad); }
+
+.gh-setup.is-deny { animation: gh-shake 320ms ease-in-out; }
+
+@keyframes gh-shake {
+  0%, 100% { transform: translateX(0); }
+  25%      { transform: translateX(-5px); }
+  75%      { transform: translateX(5px); }
+}
+
+.gh-setup__foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s3);
+  padding-top: 10px;
+  border-top: 1px solid var(--rule);
+}
+
+.gh-setup__meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11.5px;
+  color: var(--n6);
+}
+
+/* =========================================================================
+   BILEK GURESI — HALAT CEKME
+   ========================================================================= */
+.gh-grip { padding: 16px; }
+
+.gh-grip__bar {
+  position: relative;
+  height: 30px;
+  border-radius: var(--r1);
+  background: linear-gradient(90deg,
+    var(--bad-wash) 0%, var(--n0) 42%, var(--n0) 58%, var(--ok-wash) 100%);
+  box-shadow: inset 0 0 0 1px var(--rule-strong);
+  overflow: hidden;
+  margin-bottom: 10px;
+}
+
+.gh-grip__center {
+  position: absolute;
+  top: 4px; bottom: 4px; left: 50%;
+  width: 1px;
+  margin-left: -0.5px;
+  background: var(--rule-strong);
+}
+
+/* Bilek gostergesi: 0 = ortada, +1 = tamamen sende */
+.gh-grip__knob {
+  position: absolute;
+  top: 3px; bottom: 3px; left: 50%;
+  width: 46px;
+  margin-left: -23px;
+  border-radius: 2px;
+  background: var(--n5);
+  box-shadow: inset 0 0 0 1px var(--rule-strong);
+  transition: transform 70ms linear, background-color 160ms linear;
+}
+
+.gh-grip__knob.is-pushing { background: var(--acc); }
+
+.gh-grip__ends {
+  display: flex;
+  justify-content: space-between;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--n6);
+  margin-bottom: 12px;
+}
+
+/* =========================================================================
+   GERI SAYIM
+   ========================================================================= */
+.gh-cd {
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0.7);
+  font-family: var(--font-display);
+  font-size: 96px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: var(--brass-hi);
+  text-shadow: 0 6px 34px rgba(0, 0, 0, 0.9);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.gh-cd.is-show { animation: gh-cd-pop 900ms var(--ease) forwards; }
+
+@keyframes gh-cd-pop {
+  0%   { opacity: 0; transform: translate(-50%, -50%) scale(0.62); }
+  20%  { opacity: 1; transform: translate(-50%, -50%) scale(1.06); }
+  74%  { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+  100% { opacity: 0; transform: translate(-50%, -50%) scale(1.02); }
+}
+
+/* =========================================================================
+   DUELLO SKORBORDU
+   ========================================================================= */
+.gh-vs {
+  position: absolute;
+  bottom: 210px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: none;
+  align-items: center;
+  gap: 20px;
+  padding: 9px 18px;
+  border-radius: var(--r2);
+  background: rgba(11, 13, 17, 0.9);
+  box-shadow: inset 0 0 0 1px var(--rule-strong);
+}
+
+.gh-vs.is-show { display: flex; }
+
+.gh-vs__side { text-align: center; min-width: 86px; }
+
+.gh-vs__k {
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--n6);
+  margin-bottom: 2px;
+}
+
+.gh-vs__v {
+  font-family: var(--font-data);
+  font-size: 26px;
+  font-weight: 700;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+
+.gh-vs__side--me .gh-vs__v   { color: var(--ok); }
+.gh-vs__side--them .gh-vs__v { color: var(--acc-hi); }
+
+.gh-vs__name {
+  font-size: 10px;
+  color: var(--n6);
+  margin-top: 3px;
+  max-width: 110px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.gh-vs__mid {
+  font-family: var(--font-display);
+  font-size: 14px;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  color: var(--n5);
+}
+
+.gh-vs__pot {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding-left: 16px;
+  border-left: 1px solid var(--rule);
+  font-family: var(--font-data);
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--brass);
+}
+
+/* =========================================================================
+   SET OZETI
+   ========================================================================= */
+.gh-result {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0.96);
+  width: 448px;
+  padding-bottom: 22px;
+  border-radius: var(--r3);
+  background: var(--n1);
+  box-shadow: 0 26px 80px rgba(0, 0, 0, 0.74), inset 0 0 0 1px var(--rule-strong);
+  opacity: 0;
+  overflow: hidden;
+  transition: opacity 240ms var(--ease), transform 240ms var(--ease);
+}
+
+.gh-result.is-show { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+
+.gh-result::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: linear-gradient(90deg,
+    var(--acc) 0%, var(--acc) 46%,
+    var(--brass) 46%, var(--brass) 54%,
+    var(--acc) 54%, var(--acc) 100%);
+}
+
+.gh-result__head { padding: 22px 24px 0; }
+
+.gh-result__title {
+  font-family: var(--font-display);
+  font-size: 26px;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  text-transform: uppercase;
+  line-height: 1.05;
+}
+
+.gh-result__sub { font-size: 12.5px; color: var(--n6); margin-top: 3px; }
+
+/* Istatistikler: kart izgarasi degil, hizali veri satirlari */
+.gh-result__stats { padding: 18px 24px 4px; }
+
+.gh-rstat {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--s3);
+  padding: 9px 0;
+  border-bottom: 1px solid var(--rule);
+}
+
+.gh-rstat:last-child { border-bottom: 0; }
+
+.gh-rstat__k {
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  color: var(--n6);
+}
+
+.gh-rstat__v {
+  font-family: var(--font-data);
+  font-size: 17px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.gh-rstat__v small { font-size: 11px; font-weight: 500; color: var(--n6); margin-left: 3px; }
+
+.gh-result__notes {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 14px 24px 0;
+}

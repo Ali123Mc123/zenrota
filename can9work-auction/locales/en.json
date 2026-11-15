@@ -1,0 +1,243 @@
+{
+    "ui": {
+        "common": {
+            "confirm": "Confirm",
+            "cancel": "Cancel",
+            "close": "Close",
+            "return_hub": "Return to Hub",
+            "initialize": "Initialize Connection",
+            "verified": "Verified",
+            "id_label": "ID",
+            "currency_symbol": "$",
+            "units": "Units",
+            "current_high": "Current High",
+            "top_bidder": "Top Bidder",
+            "outbid_alert": "Outbid Alert",
+            "unknown": "Unknown",
+            "unnamed_asset": "Unnamed Asset",
+            "low_risk": "LOW",
+            "error_occurred": "An error occurred",
+            "archived": "ARCHIVED",
+            "live_dat": "LIVE_DATA",
+            "ready": "READY"
+        },
+        "intro": {
+            "title_main": "Market",
+            "title_sub": "Intelligence",
+            "title_hub": "Hub",
+            "ready_status": "READY_0x992",
+            "secure_link": "SECURE_LINK",
+            "terminal_id": "TERMINAL_ID",
+            "user_auth": "USER_AUTH",
+            "link_stat": "LINK_STAT",
+            "encrypted": "ENCRYPTED",
+            "legal_disclaimer": "Legal Disclaimer",
+            "disclaimer_text": "All submitted bids are legally binding under city council jurisdiction. Verification of funds occurs at the conclusion of each auction cycle.",
+            "initialize_btn": "Initialize Portal",
+            "protocols": {
+                "asset_registration": {
+                    "title": "Asset Registration",
+                    "desc": "All commercial properties and strategic points are tracked through a centralized ledger. Ownership is legally registered."
+                },
+                "bidding_protocol": {
+                    "title": "Bidding Protocol",
+                    "desc": "Auctions are fully anonymous. Every bid undergoes a balance verification process before being recorded."
+                },
+                "revenue_projection": {
+                    "title": "Revenue Projection",
+                    "desc": "Each business location promises weekly gross income based on location, staff capacity, and risk metrics."
+                },
+                "ownership_transfer": {
+                    "title": "Ownership Transfer",
+                    "desc": "The highest bidder at the end of the duration receives full titles immediately. Licenses are delivered automatically."
+                },
+                "audit_compliance": {
+                    "title": "Audit Compliance",
+                    "desc": "Owned assets are subject to periodic audits by the City Tax Office and local security units for operational integrity."
+                },
+                "security_level": {
+                    "title": "Security Level",
+                    "desc": "All terminal transactions are end-to-end encrypted. Identity data is revealed during final transfer phase."
+                }
+            }
+        },
+        "header": {
+            "central_auction": "CENTRAL AUCTION",
+            "investment_interface": "INTEGRATED INVESTMENT INTERFACE",
+            "available_capital": "AVAILABLE CAPITAL"
+        },
+        "footer": {
+            "secure_env": "SECURE_ENV_TERMINAL",
+            "pwr_stat": "PWR_STATUS: NOMINAL"
+        },
+        "dashboard": {
+            "title_main": "INVESTMENT",
+            "title_sub": "DECK",
+            "hub_subtitle": "CENTRAL INTELLIGENCE HUB",
+            "stat_secured": "SECURED",
+            "city_label": "CITY",
+            "estate_label": "ESTATE",
+            "investment_hub": "Central Investment Hub",
+            "market_opportunities": "Market Opportunities",
+            "sec_level": "SEC_LEVEL",
+            "status_granted": "ACCESS_GRANTED",
+            "network_secured": "NETWORK: SECURED",
+            "system_uptime": "SYSTEM UPTIME: 99.9%",
+            "investor_id": "INVESTOR ID",
+            "live_feed": "Live Feed active",
+            "menu": {
+                "high_value": {
+                    "title1": "STRATEGIC",
+                    "title2": "ASSETS",
+                    "desc": "THE CITY'S MOST PRESTIGIOUS AND LIMITED PRIMARY PROPERTIES.",
+                    "tag": "PREMIUM"
+                },
+                "franchises": {
+                    "title1": "BUSINESS",
+                    "title2": "FRANCHISES",
+                    "desc": "CORPORATE NETWORKS AND BRANCHES THAT ENSURE STEADY PASSIVE REVENUE.",
+                    "tag": "REVENUE"
+                },
+                "live_listings": {
+                    "title1": "LIVE",
+                    "title2": "LISTINGS",
+                    "desc": "ALL ACTIVE FILES CURRENTLY OPEN FOR BIDDING ON THE MARKET.",
+                    "tag": "LIVE DATA"
+                },
+                "portfolio": {
+                    "title1": "INVESTOR",
+                    "title2": "PORTFOLIO",
+                    "desc": "VIEW YOUR ACQUIRED PROPERTIES AND TRACK ACTIVE BIDDING FILES.",
+                    "tag": "WALLET"
+                },
+                "categories": {
+                    "market": "SUPERMARKETS",
+                    "clothing": "CLOTHING STORES",
+                    "barber": "BARBER SHOPS",
+                    "gas": "GAS STATIONS",
+                    "rental": "CAR RENTALS",
+                    "wash": "CAR WASH",
+                    "garage": "PARKING & GARAGES"
+                }
+            }
+        },
+        "auction_list": {
+            "live_auctions": "Live Auctions",
+            "strategic_assets": "Strategic Assets",
+            "return_hub": "Return to Hub",
+            "market_sync": "Market Data Synchronized",
+            "units_available": "{count} Units Available",
+            "archived": "ARCHIVED",
+            "live_dat": "LIVE_DAT",
+            "ready_state": "READY",
+            "final_valuation": "Final Valuation",
+            "current_bid": "Current Bid",
+            "reserve_price": "Reserve",
+            "investors_count": "{count} INVESTORS",
+            "latest_bidder": "LATEST",
+            "open_status": "OPEN",
+            "closed_status": "CLOSED",
+            "time_expired": "TIME EXPIRED"
+        },
+        "asset_detail": {
+            "detailed_spec": "Asset Detailed Specification",
+            "premium_asset": "Premium Asset",
+            "weekly_revenue": "Weekly Revenue",
+            "risk_factor": "Risk Factor",
+            "staff_count": "Staff Count",
+            "description_title": "Asset Description",
+            "bidding_history": "Bidding History",
+            "no_offers": "No Offers Yet",
+            "authorize_bid_msg": "Authorize your bid to join the auction",
+            "place_offer_btn": "Place New Offer",
+            "archived_msg": "Auction Permanently Archived"
+        },
+        "portfolio": {
+            "title_main": "Investor",
+            "title_sub": "Portfolio",
+            "total_capital": "TOTAL CAPITAL INVESTED",
+            "active_asset_count": "ACTIVE ASSET COUNT",
+            "acquired_assets": "Acquired Assets",
+            "stat_secured": "Secured",
+            "registration_verified": "Registration: Verified Portfolio",
+            "purchase_valuation": "Purchase Valuation",
+            "no_properties": "No properties acquired yet",
+            "active_bidding_cycles": "Active Bidding Cycles",
+            "market_live": "Market Live",
+            "your_highest_offer": "Your Highest Offer",
+            "no_active_bids": "No active bidding files"
+        },
+        "registry": {
+            "state_ledger": "Authenticated State Ledger",
+            "asset_archive": "Asset",
+            "archive_sub": "Archive",
+            "exit_archive": "Exit Archive",
+            "verified_files": "Verified Files",
+            "owned_only_desc": "Only your owned properties are listed",
+            "no_assets": "No registered assets found",
+            "request_init": "Request Process Initialization",
+            "official_duplicate": "Official Duplicate",
+            "title_request_desc": "Requesting a legally binding title of possession for",
+            "auth_details": "Authentication Details",
+            "processing_fee": "Processing Fee",
+            "delivery_status": "Delivery Status",
+            "instant_arrival": "Instant Arrival",
+            "legal_notice": "Legal Notice",
+            "legal_text": "This document serves as proof of ownership. Duplicates are logged in the state registry. The fee is non-refundable.",
+            "authorize_transmit": "Authorize & Transmit",
+            "deducted_bank": "DEDUCTS {amount} FROM BANK",
+            "initializing": "Initializing...",
+            "archive_locked": "ARCHIVE_ENCRYPTED",
+            "select_asset_desc": "SELECT AN ASSET FROM THE LEFT PANEL TO BEGIN AUTHENTICATION.",
+            "authenticating": "AUTHENTICATING",
+            "secure_ledger_comm": "SECURE LEDGER COMMUNICATION",
+            "transferring_data": "TRANSFERRING DATA"
+        },
+        "certificate": {
+            "authentic": "AUTHENTIC",
+            "state_instrument": "Authenticated State Instrument",
+            "dept_registry": "Department of Asset Registry",
+            "exec_branch": "Executive Branch of Los Santos",
+            "title_possession": "Title of Possession",
+            "transfer_record": "Official Ownership Transfer Record",
+            "certify_that": "This legal document certifies that",
+            "acquired_rights": "has acquired full commercial rights to",
+            "comm_license": "Commercial Operations License",
+            "contract_valuation": "Contract Valuation",
+            "transfer_date": "Transfer Date",
+            "auth_signature": "Auth Signature",
+            "asset_status": "Asset Status",
+            "verified_deed": "Verified Deed",
+            "city_hall": "CITY HALL",
+            "authenticated": "Authenticated",
+            "return_interface": "Return to Interface",
+            "invalid_owner": "INVALID_OWNER",
+            "unknown_asset": "UNKNOWN_ASSET",
+            "no_date": "NO_DATE"
+        },
+        "bid_modal": {
+            "confirmation": "Bid Confirmation",
+            "investment_amount": "Investment Amount",
+            "input_placeholder": "0"
+        }
+    },
+    "notify": {
+        "win_title": "Auction Won!",
+        "win_msg": "You have won the {asset} property. 2 ownership certificates have been added to your inventory.",
+        "penalty_title": "Auction Cancellation Penalty",
+        "penalty_msg": "5% penalty applied: {amount}",
+        "invalid_bid": "Invalid bid!",
+        "low_balance": "Insufficient bank balance!",
+        "low_balance_registry": "You don't have enough money! (${amount})",
+        "higher_bid": "Place a higher bid!",
+        "already_highest": "You already have the highest bid!",
+        "bid_placed": "Bid placed!",
+        "not_owner": "You do not own this property!",
+        "print_success": "Official copy printed and added to your inventory.",
+        "action_failed": "Action failed!",
+        "auction_expired": "This auction has ended!",
+        "auction_not_found": "Auction not found!",
+        "min_bid": "Your bid must be at least ${amount}!",
+        "registry_office": "[E] - Registery Office"
+    }
+}

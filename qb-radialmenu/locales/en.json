@@ -1,0 +1,61 @@
+{
+    "error": {
+        "no_people_nearby": "Yakınında oyuncu yok.",
+        "no_vehicle_found": "Araç bulunamadı.",
+        "extra_deactivated": "%{extra} özelliği devre dışı bırakıldı.",
+        "extra_not_present": "%{extra} özelliği bu araçta mevcut değil.",
+        "not_driver": "Aracın sürücüsü değilsin!",
+        "vehicle_driving_fast": "Araç çok hızlı gidiyor.",
+        "seat_occupied": "Bu koltuk dolu.",
+        "race_harness_on": "Üzerinde yarış kemeri var, değiştiremezsin.",
+        "obj_not_found": "İstenen nesne oluşturulamadı.",
+        "not_near_ambulance": "Ambulansın yakınında değilsin.",
+        "far_away": "Çok uzaktasın.",
+        "stretcher_in_use": "Bu sedye zaten kullanımda.",
+        "not_kidnapped": "Bu kişiyi kaçırmadın.",
+        "trunk_closed": "Bagaj kapalı.",
+        "cant_enter_trunk": "Bu bagaja giremezsin.",
+        "already_in_trunk": "Zaten bagajdasın.",
+        "someone_in_trunk": "Bagajda zaten biri var.",
+        "stretcher_busy": "Sedye şu anda kullanımda.",
+        "blips_deactivated": "%{label} blipleri kapatıldı!"
+    },
+    "success": {
+        "extra_activated": "%{extra} özelliği aktif edildi.",
+        "entered_trunk": "Bagaja girdin.",
+        "stretcher_removed": "Sedye kaldırıldı.",
+        "closest_location_marked": "En yakın konum işaretlendi.",
+        "blips_activated": "%{label} blipleri açıldı!"
+    },
+    "info": {
+        "no_variants": "Bu özellik için seçenek yok.",
+        "wrong_ped": "Bu ped modeli bu seçeneği desteklemiyor.",
+        "nothing_to_remove": "Çıkarabileceğin bir kıyafet yok.",
+        "already_wearing": "Üzerinde çıkarılacak kıyafet yok.",
+        "switched_seats": "%{seat} koltuğuna geçtin."
+    },
+    "general": {
+        "command_description": "Radial Menü Aç",
+        "push_stretcher_button": "~g~E~w~ - Sedyeyi it",
+        "stop_pushing_stretcher_button": "~g~E~w~ - İtmeyi bırak",
+        "lay_stretcher_button": "~g~G~w~ - Sedyeye uzan",
+        "push_position_drawtext": "Buradan it",
+        "get_off_stretcher_button": "~g~G~w~ - Sedyeden kalk",
+        "get_out_trunk_button": "[~g~E~w~] Bagajdan çık",
+        "close_trunk_button": "[~g~G~w~] Bagajı kapat",
+        "open_trunk_button": "[~g~G~w~] Bagajı aç",
+        "getintrunk_command_desc": "Bagaja gir",
+        "putintrunk_command_desc": "Oyuncuyu bagaja koy"
+    },
+    "options": {
+        "emergency_button": "Acil Durum Butonu",
+        "driver_seat": "Sürücü Koltuğu",
+        "passenger_seat": "Yolcu Koltuğu",
+        "other_seats": "Diğer Koltuklar",
+        "rear_left_seat": "Arka Sol Koltuk",
+        "rear_right_seat": "Arka Sağ Koltuk",
+        "push_stretcher": "Sedyeyi it",
+        "lay_stretcher": "Sedyeye uzan",
+        "remove_stretcher": "Sedyeyi kaldır"
+    }
+}

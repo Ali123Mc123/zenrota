@@ -1,0 +1,282 @@
+{
+    "unlockPrices": {
+        "layers": {
+            "checker_black": 3000,
+            "glitter_silver": 3000,
+            "waves_white": 3000,
+            "glitter_gold": 3500,
+            "ombre_turquoise": 4000,
+            "zebra": 4000,
+            "french_black": 2500,
+            "text_king": 3500,
+            "sakura": 4000,
+            "leopard": 4000,
+            "stripes_candy": 2500,
+            "dots_black": 2500,
+            "daisy": 3000,
+            "text_slay_white": 3500,
+            "confetti": 3500,
+            "butterflies": 4000,
+            "smiley": 3000,
+            "stars_gold": 3000,
+            "stripes_black": 2500,
+            "pinstripes_gold": 3500,
+            "cherries": 3000,
+            "hearts": 2500,
+            "glitter_holo": 5000,
+            "sparkles": 3000,
+            "french_white": 2000,
+            "text_slay": 3500,
+            "text_babe": 3500,
+            "hearts_white": 2500,
+            "text_xoxo": 3500,
+            "chevron_white": 3000,
+            "love": 4000,
+            "text_queen": 3500,
+            "flowers": 4000,
+            "ombre_black": 4000,
+            "ombre_lilac": 4000,
+            "ombre_pink": 4000,
+            "ombre_white": 4000,
+            "glitter_pink": 3000,
+            "text_love": 3500,
+            "dots_white": 2500,
+            "marble": 4000
+        },
+        "shapes": {
+            "almond": 5000,
+            "stiletto": 10000,
+            "coffin": 7500,
+            "square": 0,
+            "round": 2500
+        },
+        "lengths": {
+            "short": 0,
+            "long": 5000,
+            "medium": 2500,
+            "xlong": 8000
+        },
+        "charms": {
+            "butterfly_blue": 3500,
+            "flower_rainbow": 3500,
+            "gem_clear": 0,
+            "butterfly_pink": 3500,
+            "bow_white": 3000,
+            "star": 2500,
+            "bow_blue": 3000,
+            "bow_pink": 3000,
+            "bunny": 4000,
+            "bow_lilac": 3000,
+            "heart_red": 2500,
+            "gem_blue": 2000,
+            "cherry": 3000,
+            "heart_pink": 2500,
+            "crown": 4000,
+            "gem_pink": 2000,
+            "bear": 4000,
+            "daisy": 3000,
+            "strawberry": 3000,
+            "pearl": 0,
+            "gem_lilac": 2000
+        }
+    },
+    "damage": {
+        "cooldown": 7,
+        "chances": {
+            "shot": 35,
+            "crash": 35,
+            "melee": 50,
+            "fall": 35,
+            "other": 35
+        },
+        "crashSpeed": 75,
+        "enabled": true,
+        "wear": {
+            "startHours": 58,
+            "chancePerHour": 7
+        }
+    },
+    "trend": {
+        "orderChance": 60,
+        "enabled": true,
+        "bonus": 20
+    },
+    "happyDay": {
+        "max": 40,
+        "enabled": true,
+        "min": 5
+    },
+    "bills": {
+        "electricity": {
+            "upgrades": [
+                {
+                    "reduce": 20,
+                    "price": 6000
+                },
+                {
+                    "reduce": 40,
+                    "price": 15000
+                }
+            ],
+            "daily": 150
+        },
+        "water": {
+            "upgrades": [
+                {
+                    "reduce": 25,
+                    "price": 4000
+                },
+                {
+                    "reduce": 50,
+                    "price": 10000
+                }
+            ],
+            "daily": 100
+        }
+    },
+    "maxNpcDays": 14,
+    "anger": {
+        "perMess": 150,
+        "wipe": 25,
+        "enabled": true,
+        "tolerance": 3
+    },
+    "npcServiceSeconds": 120,
+    "orders": {
+        "tip": 30,
+        "share": -1,
+        "pay": 50,
+        "account": "cash"
+    },
+    "loyalty": {
+        "max": 30,
+        "enabled": true,
+        "min": 5
+    },
+    "reviews": {
+        "keep": 200,
+        "enabled": true,
+        "chance": 60
+    },
+    "prices": {
+        "service": 250,
+        "catalogFee": 50,
+        "removal": 50,
+        "perNail": 30,
+        "catalogShare": 10,
+        "touchUp": 75,
+        "perFinger": 25
+    },
+    "minigame": {
+        "customer": 10,
+        "order": 10
+    },
+    "ranges": {
+        "service": [],
+        "shapes": [],
+        "layers": [],
+        "charms": [],
+        "lengths": []
+    },
+    "catalog": {
+        "layers": {
+            "checker_black": 60,
+            "glitter_silver": 75,
+            "waves_white": 60,
+            "glitter_gold": 75,
+            "ombre_turquoise": 75,
+            "zebra": 60,
+            "french_black": 50,
+            "text_king": 75,
+            "sakura": 75,
+            "leopard": 60,
+            "stripes_candy": 60,
+            "dots_black": 60,
+            "daisy": 60,
+            "text_slay_white": 75,
+            "confetti": 75,
+            "butterflies": 75,
+            "smiley": 60,
+            "stars_gold": 60,
+            "stripes_black": 60,
+            "pinstripes_gold": 75,
+            "cherries": 60,
+            "hearts": 60,
+            "glitter_holo": 100,
+            "sparkles": 60,
+            "french_white": 50,
+            "text_slay": 75,
+            "text_babe": 75,
+            "hearts_white": 60,
+            "text_xoxo": 75,
+            "chevron_white": 60,
+            "love": 75,
+            "text_queen": 75,
+            "flowers": 75,
+            "ombre_black": 75,
+            "ombre_lilac": 75,
+            "ombre_pink": 75,
+            "ombre_white": 75,
+            "glitter_pink": 75,
+            "text_love": 75,
+            "dots_white": 60,
+            "marble": 60
+        },
+        "shapes": {
+            "almond": 50,
+            "stiletto": 100,
+            "coffin": 50,
+            "square": 0,
+            "round": 0
+        },
+        "lengths": {
+            "short": 0,
+            "long": 100,
+            "medium": 50,
+            "xlong": 150
+        },
+        "charms": {
+            "butterfly_blue": 45,
+            "flower_rainbow": 45,
+            "gem_clear": 30,
+            "butterfly_pink": 45,
+            "bow_white": 40,
+            "star": 35,
+            "bow_blue": 40,
+            "bow_pink": 40,
+            "bunny": 50,
+            "bow_lilac": 40,
+            "heart_red": 35,
+            "gem_blue": 30,
+            "cherry": 40,
+            "heart_pink": 35,
+            "crown": 50,
+            "gem_pink": 30,
+            "bear": 50,
+            "daisy": 40,
+            "strawberry": 40,
+            "pearl": 25,
+            "gem_lilac": 30
+        }
+    },
+    "starter": {
+        "layers": [],
+        "shapes": [
+            "square"
+        ],
+        "lengths": [
+            "short"
+        ],
+        "charms": [
+            "gem_clear",
+            "pearl"
+        ]
+    },
+    "skill": {
+        "orderXpMax": 20,
+        "tipBonus": 5,
+        "playerJobXp": 15,
+        "enabled": true,
+        "orderXpMin": 5
+    }
+}

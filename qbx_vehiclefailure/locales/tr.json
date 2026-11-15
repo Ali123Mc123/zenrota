@@ -1,0 +1,35 @@
+{
+    "error": {
+        "failed_notification": "Başarısız!",
+        "not_near_veh": "Yakınında araç yok!",
+        "out_range_veh": "Araçtan çok uzaktasın!",
+        "inside_veh": "Aracın içindeyken motoru tamir edemezsin!",
+        "healthy_veh": "Araç fazla sağlam, daha iyi aletler gerekiyor!",
+        "inside_veh_req": "Tamir etmek için araçta olmalısın!",
+        "roadside_avail": "Yol yardımı mevcut, telefonundan arayabilirsin!",
+        "no_permission": "Araç tamir etme yetkin yok",
+        "fix_message": "%s, şimdi bir garaja git!",
+        "veh_damaged": "Aracın çok hasarlı!",
+        "nofix_message_1": "Yağ seviyesine baktın, normal görünüyor",
+        "nofix_message_2": "Motoruna baktın, bir sorun görünmüyor",
+        "nofix_message_3": "Yağ hortumundaki bandı kontrol ettin, sağlam görünüyor",
+        "nofix_message_4": "Radyonun sesini açtın. Motordaki tuhaf ses artık duyulmuyor",
+        "nofix_message_5": "Kullandığın pas sökücü hiçbir işe yaramadı",
+        "nofix_message_6": "Bozuk olmayanı tamir etmeye çalışma dedik ama dinlemedin"
+    },
+    "success": {
+        "cleaned_veh": "Araç temizlendi!",
+        "repaired_veh": "Araç tamir edildi!",
+        "fix_message_1": "Yağ seviyesini kontrol ettin",
+        "fix_message_2": "Yağ sızıntısını sakızla kapattın",
+        "fix_message_3": "Yağ hortumunu bantla tamir ettin",
+        "fix_message_4": "Yağ sızıntısını geçici olarak durdurdun",
+        "fix_message_5": "Motora bir tekme attın, yeniden çalışıyor",
+        "fix_message_6": "Biraz pas temizledin",
+        "fix_message_7": "Arabana bağırdın, yeniden çalışıyor"
+    },
+    "progress": {
+        "clean_veh": "Araç temizleniyor...",
+        "repair_veh": "Araç tamir ediliyor.."
+    }
+}

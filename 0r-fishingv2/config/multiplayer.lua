@@ -1,0 +1,65 @@
+return {
+   ---@type MultiplayerTasks[]
+   Jobs = {
+      -- {
+      --    id = 1, -- !! DO NOT CHANGE THE ID !!
+      --    name = 'İlk Balık İlk Aşk', -- Görevin adı (Türkçeleştirildi)
+      --    image = 'first-image.png', -- !! DO NOT CHANGE THE IMAGE NAME !!
+      --    rewards = {
+      --       money = 3000,
+      --       xp = 1000,
+      --    },
+      --    requiredAmount = 5,
+      --    currentAmount = 0,
+      --    requirments = {
+      --       members = 1,
+      --       level = 1
+      --    }
+      -- },
+      -- {
+      --    id = 2,
+      --    name = 'Tekneyle Balıkçılık',
+      --    image = 'second-image.png',
+      --    rewards = {
+      --       money = 3000,
+      --       xp = 1000,
+      --    },
+      --    requiredAmount = 30,
+      --    currentAmount = 0,
+      --    requirments = {
+      --       members = 1,
+      --       level = 1
+      --    }
+      -- },
+      -- {
+      --    id = 3,
+      --    name = 'Sualtı Balıkçılığı',
+      --    image = 'third-image.png',
+      --    rewards = {
+      --       money = 3000,
+      --       xp = 1000,
+      --    },
+      --    requiredAmount = 30,
+      --    currentAmount = 0,
+      --    requirments = {
+      --       members = 1,
+      --       level = 1
+      --    }
+      -- },
+      -- {
+      --    id = 4,
+      --    name = 'Köpekbalığı Saldırısı',
+      --    image = 'fourth-image.png',
+      --    rewards = {
+      --       money = 3000,
+      --       xp = 1000,
+      --    },
+      --    requiredAmount = 30,
+      --    currentAmount = 0,
+      --    requirments = {
+      --       members = 1,
+      --       level = 1
+      --    }
+      -- }
+   }
+}

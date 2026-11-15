@@ -1,0 +1,35 @@
+{
+  "_meta": {
+    "label": "Magyar",
+    "localeTag": "hu-HU",
+    "direction": "ltr"
+  },
+  "translations": {
+    "world.bank": "Bank",
+    "world.bank_help": "Nyomd meg az ~INPUT_CONTEXT~ gombot a bankoláshoz",
+    "world.bank_target": "Bank megnyitása",
+    "world.atm_help": "Nyomd meg az ~INPUT_CONTEXT~ gombot az ATM használatához",
+    "world.atm_target": "ATM használata",
+    "world.atm_key": "ATM {key} gomb",
+    "world.atm_confirm": "ATM megerősítés",
+    "world.atm_back": "ATM vissza",
+    "world.atm_up": "ATM fel",
+    "world.atm_down": "ATM le",
+    "transaction.card_creation_fee": "Kártyalétrehozási díj",
+    "transaction.business_account_fee": "Üzleti számla nyitási díja",
+    "transaction.new_account_fee": "Számlanyitási díj",
+    "transaction.atm_placement": "ATM elhelyezése",
+    "transaction.atm_refund": "ATM-visszatérítés",
+    "transaction.loan_disbursed": "Hitel folyósítva",
+    "transaction.loan_repayment": "Hiteltörlesztés",
+    "bills.default_name": "Számla",
+    "bills.new_title": "Új számla",
+    "bills.added": "{issuer} {amount} összegű számlát adott hozzá",
+    "invoices.notification.new_title": "Új számla",
+    "invoices.notification.received": "{name} {amount} összegű számlát küldött neked",
+    "invoices.notification.paid_title": "Számla kifizetve",
+    "invoices.notification.paid": "{name} kifizette a(z) {amount} összegű számládat",
+    "invoices.notification.declined_title": "Számla elutasítva",
+    "invoices.notification.declined": "{name} elutasította a számládat"
+  }
+}

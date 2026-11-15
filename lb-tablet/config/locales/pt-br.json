@@ -1,0 +1,538 @@
+{
+    "LABEL": "Português",
+    "SEARCH": "Buscar",
+    "CANCEL": "Cancelar",
+    "NOW": "agora",
+    "D": "d",
+    "H": "h",
+    "M": "m",
+    "S": "s",
+    "APP_NAMES": {
+        "Police": "Polícia",
+        "Ambulance": "Ambulância",
+        "Notes": "Notas",
+        "Browser": "Navegador",
+        "Settings": "Configurações",
+        "Photos": "Fotos",
+        "Camera": "Câmera",
+        "Calculator": "Calculadora",
+        "Apps": "Aplicativos",
+        "Clock": "Relógio",
+        "Maps": "Mapas",
+        "Mail": "Email",
+        "Services": "Serviços",
+        "VoiceMemo": "Gravações"
+    },
+    "APPS": {
+        "SETTINGS": {
+            "TITLE": "Configurações",
+            "BACK": "Voltar",
+            "DONE": "Concluído",
+            "EDIT": "Editar",
+            "AIRPLANE_MODE": "Modo Avião",
+            "AIRPLANE_MODE_DESCRIPTION": "Desativa chamadas, dados móveis, etc.",
+            "STREAMER_MODE": "Modo Streamer",
+            "STREAMER_MODE_DESCRIPTION": "Oculta informações sensíveis",
+            "GENERAL": "Geral",
+            "GENERAL_DESCRIPTION": "Configurações gerais do tablet",
+            "ABOUT": "Sobre",
+            "NAME": "Nome",
+            "VERSION": "Versão",
+            "MODEL_NAME": "Modelo",
+            "SERIAL_NUMBER": "Número de Série",
+            "DEVELOPED_BY": "Desenvolvido por",
+            "PURCHASE_AT": "Comprado em",
+            "SONGS": "Músicas",
+            "VIDEOS": "Vídeos",
+            "PHOTOS": "Fotos",
+            "APPLICATIONS": "Aplicativos",
+            "CAPACITY": "Capacidade",
+            "AVAILABLE": "Disponível",
+            "SOFTWARE_UPDATE": "Atualização de Software",
+            "AUTOMATIC_UPDATES": "Atualizações Automáticas",
+            "DATE_TIME": "Data e Hora",
+            "24_HOUR_TIME": "Formato 24 Horas",
+            "SET_AUTOMATICALLY": "Definir Automaticamente",
+            "TIME_ZONE": "Fuso Horário",
+            "LANGUAGE_REGION": "Idioma e Região",
+            "LANGUAGE": "Idioma",
+            "TEMPERATURE": "Temperatura",
+            "CELCIUS": "Celsius",
+            "FAHRENHEIT": "Fahrenheit",
+            "BATTERY": "Bateria",
+            "BATTERY_DESCRIPTION": "Veja a duração e uso da bateria",
+            "SOUND_HAPTICS": "Som e Toques",
+            "SOUND_HAPTICS_DESCRIPTION": "Altere sons e vibrações",
+            "SOUND_HAPTICS_PATTERNS": "Padrões de som e toques",
+            "RINGTONE": "Toque",
+            "RINGTONE_VOLUME": "Volume do Toque",
+            "TEXT_TONE": "Toque de Texto",
+            "DEFAULT": "Padrão",
+            "PHONE_STORAGE": "Armazenamento do Tablet",
+            "STORAGE": "Armazenamento",
+            "USED": "Usado",
+            "OF": "de",
+            "DISPLAY_BRIGHTNESS": "Tela e Brilho",
+            "DISPLAY_BRIGHTNESS_DESCRIPTION": "Ajuste a tela e o brilho",
+            "DARK": "Escuro",
+            "LIGHT": "Claro",
+            "APPEARANCE": "Aparência",
+            "AUTOMATIC": "Automático",
+            "BRIGHTNESS": "Brilho",
+            "FRAME_COLOR": "Cor da Moldura",
+            "WALLPAPER": "Papel de Parede",
+            "WALLPAPER_DESCRIPTION": "Altere o papel de parede e outras configurações de fundo",
+            "WALLPAPERS": "Papéis de Parede",
+            "CHOOSE_NEW_WALLPAPER": "Escolher um Novo Papel de Parede",
+            "NOTIFICATIONS": "Notificações",
+            "NOTIFICATIONS_DESCRIPTION": "Escolha quais apps podem enviar notificações",
+            "ALLOW_NOTIFICATIONS": "Permitir Notificações",
+            "SOUNDS": "Sons",
+            "CLOUD_BACKUP": "Backup na Nuvem",
+            "YOUR_PROFILE": "Seu Perfil",
+            "SUCCESS": "Sucesso",
+            "SUCCESS_TEXT": "O tablet será reiniciado em 5 segundos...",
+            "OK": "OK",
+            "ON": "Ativado",
+            "OFF": "Desativado",
+            "RESET_POPUP": {
+                "TITLE": "Redefinir Tablet",
+                "TEXT": "Tem certeza de que deseja redefinir seu tablet? [ISSO REMOVERÁ TUDO]",
+                "CANCEL": "Cancelar",
+                "CONFIRM": "Redefinir"
+            },
+            "UP_TO_DATE": "Seu tablet está atualizado",
+            "BLUR_HOMESCREEN": "Desfocar Tela Inicial"
+        },
+       "NOTES": {
+            "TITLE": "Notas",
+            "SEARCH_PLACEHOLDER": "Pesquisar",
+            "FOOTER": "{amount} Notas",
+            "NEW_NOTE": "Nova Nota",
+            "LAST_EDITED": "Última edição: {date}",
+            "DELETE_TITLE": "Excluir {title}",
+            "DELETE_TEXT": "Tem certeza de que deseja excluir '{title}'?",
+            "BUTTON_CANCEL": "Cancelar",
+            "BUTTON_DELETE": "Excluir"
+        },
+        "CLOCK": {
+            "WORLDCLOCK": {
+                "TITLE": "Relógio Mundial",
+                "TODAY": "Hoje",
+                "TOMORROW": "Amanhã",
+                "YESTERDAY": "Ontem",
+                "LOCAL_TIME": "Hora Local",
+                "HRS": "{time} hrs"
+            },
+        "ALARM": {
+            "TITLE": "Alarme",
+            "ADD": "Adicionar Alarme",
+            "CANCEL": "Cancelar",
+            "EDIT": "Editar",
+            "DONE": "Concluído",
+            "SAVE": "Salvar",
+            "LABEL": "Etiqueta",
+            "SOUND": "Som",
+            "SNOOZE": "Soneca",
+            "DELETE_TITLE": "Excluir Alarme",
+            "DELETE_TEXT": "Tem certeza de que deseja excluir este alarme?",
+            "BUTTON_CANCEL": "Cancelar",
+            "BUTTON_DELETE": "Excluir",
+            "ALARMS": "Alarmes",
+            "NEW_ALARM": "Novo Alarme",
+            "EDIT_ALARM": "Editar Alarme"
+        },
+            "STOPWATCH": {
+                "TITLE": "Cronômetro",
+                "START": "Iniciar",
+                "STOP": "Parar",
+                "RESET": "Reiniciar",
+                "LAP": "Volta",
+                "TIME": "Tempo",
+                "TOTAL": "Total",
+                "NO_LAPS": "Sem Voltas"
+            },
+            "TIMER": {
+                "TITLE": "Temporizador",
+                "START": "Iniciar",
+                "STOP": "Parar",
+                "CANCEL": "Cancelar",
+                "HOURS": "Horas",
+                "MINUTES": "Minutos",
+                "SECONDS": "Segundos",
+                "NO_RECENTS": "Sem Recentes"
+            },
+            "ALERT": {
+                "STOP": "Parar",
+                "RESTART": "Reiniciar"
+            }
+        },
+        "CAMERA": {
+            "VIDEO": "Vídeo",
+            "PHOTO": "Foto",
+            "LANDSCAPE": "Paisagem",
+            "UPLOADING": "Carregando"
+        },
+        "APPSTORE": {
+            "TITLE": "Apps",
+            "SEARCH": "Pesquisar",
+            "GET": "Obter",
+            "OPEN": "Abrir",
+            "TODAY": "Hoje",
+            "POPULAR_APPS": "Apps Populares",
+            "GAMES": "Jogos",
+            "APPS": "Apps",
+            "WHAT_WE_PLAYING": "O que estamos jogando",
+            "INFORMATION": "Informações",
+            "PROVIDER": "Desenvolvedor",
+            "SIZE": "Tamanho",
+            "COMPATIBILITY": "Compatibilidade",
+            "IN_APP_PURCHASES": "Compras no App",
+            "WORKS_WITH_PHONE": "Funciona neste tablet",
+            "NO": "Não",
+            "YES": "Sim",
+            "PURCHASE_APP_POPUP": {
+                "TITLE": "Comprar App",
+                "DESCRIPTION": "Deseja comprar {app} por {price}?",
+                "CANCEL": "Cancelar",
+                "PROCEED": "Comprar"
+            }
+        },
+        "PHOTOS": {
+            "TITLE": "Fotos",
+            "SELECT": "Selecionar",
+            "CANCEL": "Cancelar",
+            "EDIT": "Editar",
+            "DONE": "Concluído",
+            "DELETE": "Excluir",
+            "SELECT_ITEMS": "Selecionar Itens",
+            "SELECTED_COUNT": "{count} Itens selecionados",
+            "PHOTOS": "Fotos",
+            "ALBUMS": "Álbuns",
+            "LIBRARY": "Biblioteca",
+            "GALLERY": "Galeria",
+            "MY_ALBUMS": "Meus Álbuns",
+            "MEDIA_TYPES": "Tipos de Mídia",
+            "NEW_ALBUM_POPUP": {
+                "TITLE": "Novo Álbum",
+                "DESCRIPTION": "Digite um nome para este álbum",
+                "PLACEHOLDER": "Título",
+                "CANCEL": "Cancelar",
+                "PROCEED": "Salvar"
+            },
+            "REMOVE_ALBUM": {
+                "TITLE": "Remover \"{name}\"",
+                "DESCRIPTION": "Tem certeza de que deseja excluir o álbum \"{name}\"? As fotos não serão excluídas",
+                "CANCEL": "Cancelar",
+                "PROCEED": "Remover"
+            },
+            "RENAME_ALBUM_POPUP": {
+                "TITLE": "Renomear Álbum",
+                "DESCRIPTION": "Digite um novo nome para este álbum",
+                "PLACEHOLDER": "Novo nome do álbum",
+                "CANCEL": "Cancelar",
+                "PROCEED": "Prosseguir"
+            },
+            "DELETE_IMAGE_POPUP": {
+                "TITLE": "Excluir Imagem",
+                "DESCRIPTION": "Tem certeza de que deseja excluir esta imagem?",
+                "CANCEL": "Cancelar",
+                "PROCEED": "Excluir"
+            },
+            "IMPORT_IMAGE_POPUP": {
+                "TITLE": "Importar para Álbum",
+                "DESCRIPTION": "Importar uma imagem para este álbum",
+                "CANCEL": "Cancelar",
+                "PROCEED": "Importar",
+                "PLACEHOLDER": "URL da Imagem"
+            },
+            "NO_PHOTOS": "Sem Fotos ou Vídeos",
+            "NO_PHOTOS_INSTRUCTIONS": "Você pode tirar fotos e vídeos usando a câmera",
+            "PHOTO_COUNT": "{amount} Fotos",
+            "VIDEO_COUNT": "{amount} Vídeos",
+            "DELETE_CONTEXT_TITLE": "Deseja excluir {type} ou removê-los deste álbum",
+            "THESE_PHOTOS": "essas fotos",
+            "THIS_PHOTO": "esta foto",
+            "REMOVE_FROM_ALBUM": "Remover do Álbum",
+            "ADD_TO_ALBUM": "Adicionar ao Álbum",
+            "ADD_TO_FAVOURITES": "Adicionar aos Favoritos",
+            "REMOVE_FROM_FAVOURITES": "Remover dos favoritos",
+            "VIDEOS": "Vídeos",
+            "SELFIES": "Selfies",
+            "SCREENSHOTS": "Capturas de Tela",
+            "IMPORTS": "Importações",
+            "DUPLICATES": "Duplicatas",
+            "YEARS": "Anos",
+            "MONTHS": "Meses",
+            "DAYS": "Dias",
+            "ALL_PHOTOS": "Todas as Fotos",
+            "FAVOURITES": "Favoritos",
+            "RECENTS": "Recentes"
+        },
+        "MAIL": {
+            "TITLE": "E-mail",
+            "YOU": "Você",
+            "UPDATED_NOW": "Atualizado agora",
+            "NEW_MESSAGE": "Nova Mensagem",
+            "INBOX": "Caixa de Entrada",
+            "TO": "Para",
+            "FROM": "De",
+            "SUBJECT": "Assunto",
+            "MESSAGE": "Mensagem",
+            "CANCEL": "Cancelar",
+            "SEND": "Enviar",
+            "EMAIL": "Email",
+            "EMAIL_INVALID": "Endereço de email inválido",
+            "EMAIL_EXISTS": "Email já existe",
+            "PASSWORD": "Senha",
+            "WRONG_PASSWORD": "Senha incorreta",
+            "LOGIN": "Entrar",
+            "NO_EMAIL": "Não tem um endereço de email?",
+            "CREATE_ONE": "Crie um",
+            "UNREAD": "Não Lido",
+            "CREATE_MAIL": "Criar Email",
+            "ALREADY_HAVE": "Já tem um endereço de email?",
+            "ADD_EMAIL": "Adicionar Email",
+            "RE": "Re: {subject}",
+            "CHANGE_ACCOUNT": "Alterar Conta",
+            "CHANGE_PASSWORD": "Alterar Senha",
+            "DELETE_ACCOUNT": "Excluir Conta",
+            "SIGN_OUT_POPUP": {
+                "TITLE": "Sair",
+                "DESCRIPTION": "Tem certeza de que deseja sair?",
+                "CANCEL": "Cancelar",
+                "PROCEED": "Prosseguir"
+            },
+            "DELETE_MAIL_POPUP": {
+                "TITLE": "Excluir Email",
+                "DESCRIPTION": "Tem certeza de que deseja excluir este email?",
+                "CANCEL": "Cancelar",
+                "DELETE": "Excluir"
+            }
+        },
+        "VOICEMEMO": {
+            "TITLE": "Gravação",
+            "VOICE_RECORDINGS": "Gravações de Voz",
+            "SEARCH_RECORDINGS": "Buscar gravações",
+            "DEFAULT_NAME": "Nova Gravação",
+            "DELETE_POPUP": {
+                "TITLE": "Excluir gravação",
+                "DESCRIPTION": "Tem certeza de que deseja excluir esta gravação?",
+                "CANCEL": "Cancelar",
+                "PROCEED": "Prosseguir"
+            },
+            "NO_MICROPHONE_POPUP": {
+                "TITLE": "Nenhum Microfone",
+                "DESCRIPTION": "Não temos acesso ao seu microfone, certifique-se de que um está conectado e aceite o pop-up no canto superior direito da sua tela",
+                "OK": "OK"
+            },
+            "EMPTY_RECORDING_POPUP": {
+                "TITLE": "Gravação Vazia",
+                "DESCRIPTION": "Você não pode salvar uma gravação sem áudio",
+                "OK": "OK"
+            }
+        },
+        "SERVICES": {
+            "ACTIONS": "Ações",
+            "COMPANIES": "Empresas",
+            "MESSAGES": "Mensagens",
+            "SETTINGS": "Configurações",
+            "CLOSED": "Fechado",
+            "YOUR_MESSAGES": "Suas Mensagens",
+            "JOB_MESSAGES": "Mensagens de Trabalho",
+            "DUTY": "Turno",
+            "DUTY_DESCRIPTION": "Alterne seu status de turno",
+            "GO_ON_DUTY": "Entrar no Turno",
+            "GO_OFF_DUTY": "Sair do Turno",
+            "JOB_CALLS": "Chamadas de Trabalho",
+            "JOB_CALLS_DESCRIPTION": "{toggle} recebendo chamadas de clientes.",
+            "ENABLE": "Ativar",
+            "DISABLE": "Desativar",
+            "DISABLE_CALLS": "Desativar Chamadas",
+            "ENABLE_CALLS": "Ativar Chamadas",
+            "BALANCE": "Saldo",
+            "MANAGE_EMPLOYEES": "Gerenciar Funcionários",
+            "HIRE": "Contratar",
+            "SET_GRADE": "Definir Grau",
+            "UNEMPLOYED": "Você está desempregado",
+            "ALL": "Todos",
+            "AVAILABLE": "Disponível",
+            "SEARCH_EMPLOYEES": "Buscar Funcionários",
+            "PERSONAL": "Pessoal",
+            "JOB": "Trabalho",
+            "DEPOSIT_POPUP": {
+                "TITLE": "Depósito",
+                "DESCRIPTION": "Deposite dinheiro na conta da empresa",
+                "AMOUNT": "Valor",
+                "CANCEL": "Cancelar",
+                "PROCEED": "Prosseguir"
+            },
+            "WITHDRAW_POPUP": {
+                "TITLE": "Retirada",
+                "DESCRIPTION": "Retire dinheiro da conta da empresa",
+                "NOT_ENOUGH_MONEY": "Não há dinheiro suficiente na conta da empresa",
+                "AMOUNT": "Valor",
+                "CANCEL": "Cancelar",
+                "PROCEED": "Prosseguir"
+            },
+            "HIRE_POPUP": {
+                "TITLE": "Contratar",
+                "DESCRIPTION": "Contrate um novo funcionário",
+                "PLACEHOLDER": "ID",
+                "CANCEL": "Cancelar",
+                "PROCEED": "Prosseguir"
+            },
+            "FIRE_POPUP": {
+                "TITLE": "Demitir",
+                "DESCRIPTION": "Você tem certeza de que deseja demitir {name}?",
+                "PLACEHOLDER": "ID",
+                "CANCEL": "Cancelar",
+                "PROCEED": "Prosseguir"
+            }
+        },
+        "MDT": {},
+        "BROWSER": {
+            "TITLE": "Navegador",
+            "SEARCH_PLACEHOLDER": "Pesquisar ou digitar URL",
+            "FAILED_LOAD_PAGE": "Falha ao carregar a página, talvez ela não suporte ser exibida em iframe?"
+        }
+    },
+    "COMPONENTS": {
+        "CONTEXT_MENU": {
+            "CANCEL": "Cancelar"
+        },
+        "IMAGE": {
+            "SAVE_TO_GALLERY": "Salvar na Galeria"
+        },
+        "GALLERY": {
+            "CANCEL": "Cancelar",
+            "EXTERNAL_URL": "URL Externa",
+            "EXTERNAL_URL_BLACKLISTED": "Esta URL está na lista negra",
+            "NO_IMAGES": "Sem imagens"
+        },
+        "NOTIFICATIONS": {
+            "SENT_PHOTO": "Enviou uma foto",
+            "SENT_GIF": "Enviou um GIF",
+            "NOW": "agora"
+        },
+        "SHARE": {
+            "COPY_PHOTO": "Copiar Foto",
+            "COPY_VIDEO": "Copiar Vídeo",
+            "USE_WALLPAPER": "Usar como Papel de Parede",
+            "COPY_NUMBER": "Copiar Número",
+            "COPY_LINK": "Copiar Link",
+            "AIRDROP_SENT": "Enviado",
+            "AIRDROP_ACCEPTED": "Aceito",
+            "AIRDROP_DECLINED": "Recusado",
+            "AIRDROP_NO_USERS": "Nenhum telefone por perto",
+            "WALLPAPER_POPUP": {
+                "TITLE": "Usar como Papel de Parede",
+                "TEXT": "Tem certeza de que deseja definir esta imagem como papel de parede?",
+                "CANCEL": "Cancelar",
+                "PROCEED": "Continuar"
+            },
+            "COPY_POPUP": {
+                "TITLE": "Sucesso",
+                "DESCRIPTION": "Copiado com sucesso para a área de transferência",
+                "OK": "OK"
+            }
+        },
+        "AIRDROP": {
+            "TITLE": "Compartilhamento",
+            "TEXT": "{sender} gostaria de compartilhar um(a) {type}",
+            "VIDEO": "vídeo",
+            "PHOTO": "foto",
+            "CONTACT": "contato",
+            "LOCATION": "localização",
+            "NOTE": "nota",
+            "VOICEMEMO": "memorando de voz",
+            "PLAYLIST": "playlist",
+            "DECLINE": "Recusar",
+            "ACCEPT": "Aceitar"
+        },
+        "BATTERY": {
+            "LOW_BATTERY": "Bateria Fraca",
+            "BATTERY_REMAINING": "{percent}% de bateria restante",
+            "LOW_POWER_MODE": "Modo de Baixa Energia",
+            "CLOSE": "Fechar"
+        },
+        "COLOR_PICKER": {
+            "COLOR": "Cor"
+        }
+    },
+    "SETUP": {
+        "HELLO": "Olá",
+        "SELECT_LANGUAGE": "Selecione seu idioma",
+        "NEXT": "Clique para abrir",
+        "APPEARANCE": "Tema",
+        "APPEARANCE_TEXT": "Selecione um tema claro ou escuro para o seu dispositivo",
+        "CONTINUE": "Continuar",
+        "WELCOME_TO": "Bem-vindo(a) ao",
+        "CLICK": "Clique para começar"
+    },
+    "HOMESCREEN": {
+        "DONE": "Concluído",
+        "CLOSE_ALL": "Fechar Tudo",
+        "REMOVE_APP_POPUP": {
+            "TITLE": "Remover '{app}'?",
+            "DESCRIPTION": "Remover este app NÃO excluirá seus dados. O app pode ser reinstalado mais tarde na loja de aplicativos.",
+            "CANCEL": "Cancelar",
+            "PROCEED": "Excluir"
+        }
+    },
+    "LOCKSCREEN": {
+        "DELETE": "Deletar",
+        "FONT_AND_COLOR": "Fonte e Cor"
+    },
+    "MISC": {
+        "AIRPLANE_MODE_POPUP": {
+            "TITLE": "Erro",
+            "DESCRIPTION": "Você está tentando realizar uma ação que requer acesso à internet. Desative o modo avião para continuar.",
+            "OK": "OK"
+        }
+    },
+    "BACKEND": {
+        "CAMERA": {
+            "TAKE_PHOTO": "{key} Capturar",
+            "FLIP_CAMERA": "{key} Inverter",
+            "TOGGLE_FLASH": "{key} Flash",
+            "TOGGLE_CURSOR": "{key} Cursor",
+            "CHANGE_MODE": "{key} {key2} Modo",
+            "ROLL": "{key} {key2} Girar",
+            "FREEZE": "{key} Congelar",
+            "UNFREEZE": "{key} Descongelar",
+            "TOGGLE_TIP": "{key} Ocultar"
+        },
+        "SERVICES": {
+            "NEW_MESSAGE": "Nova Mensagem",
+            "ANONYMOUS": "Anônimo"
+        },
+        "MISC": {
+            "X_TABLET": "Tablet de {firstname}"
+        },
+        "MAIL": {
+            "AUTOMATIC_PASSWORD": {
+                "SENDER": "Sistema",
+                "SUBJECT": "Sua Senha",
+                "MESSAGE": "Olá,\n\nSeu endereço de email automático é {address} e sua senha é {password}"
+            }
+        },
+        "LOGS": {
+            "MAIL_TITLE": "Email",
+            "NEW_MAIL": "{sender} enviou um email para {recipient}",
+            "MESSAGE_TITLE": "Mensagem de texto",
+            "NEW_MESSAGE": "{sender} enviou uma mensagem para {recipient}: {message}",
+            "NEW_SERVICE_TITLE": "Nova mensagem",
+            "NEW_SERVICE_CONTENT": "{sender} enviou uma mensagem para {channel}: {message}",
+            "RECEIVED_TITLE": "Recebeu R${amount}",
+            "PAID_TITLE": "Pagou R${amount}",
+            "TRANSACTION": "{number} realizou uma transação de R${amount} para {company}",
+            "TOOK_PHOTO": "Tirou uma foto",
+            "TOOK_VIDEO": "Gravou um vídeo"
+        },
+        "BASE_DISPATCH": {},
+        "MDT": {},
+        "MDT_NOTIFICATIONS": {}
+    },
+    "MDT": {}
+}

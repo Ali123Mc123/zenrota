@@ -1,0 +1,99 @@
+{
+    "placement": {
+        "title": "Platzierung",
+        "mode_surface": "Fläche",
+        "mode_move": "Bewegen",
+        "mode_rotate": "Drehen",
+        "space_world": "Welt",
+        "space_local": "Lokal",
+        "snap": "Raster",
+        "nudge": "Feinjustierung",
+        "yaw": "Drehen",
+        "ground": "Auf Boden setzen",
+        "reset": "Zurücksetzen",
+        "accept": "Platzieren",
+        "cancel": "Abbrechen",
+        "hint_surface": "Klicken, um den Fernseher abzusetzen",
+        "hint_move": "Pfeile ziehen",
+        "hint_rotate": "Ring ziehen",
+        "hint_wheel": "Mausrad: drehen",
+        "hint_camera": "Rechtsklick: Kamera an / aus",
+        "camera_active": "Kameramodus - Rechtsklick, um zurückzukehren",
+        "hint_snap": "Boden- / Wand-Tasten: einrasten",
+        "hint_toggle": "R: bewegen / drehen",
+        "hint_accept": "Enter: platzieren",
+        "hint_cancel": "X / Backspace / Esc: abbrechen",
+        "tip_floor": "Auf den Boden setzen",
+        "tip_wall": "An die Wand montieren",
+        "tip_move": "Zum Verschieben wechseln",
+        "tip_rotate": "Zum Drehen wechseln"
+    },
+    "header": {
+        "title": "Fernseher & SmartTVs",
+        "admin": "TV-Verwaltung",
+        "subtitle": "Willkommen!"
+    },
+    "search": {
+        "placeholder": "URL eingeben..."
+    },
+    "admin": {
+        "categories": {
+            "player": "Spieler-TVs",
+            "default": "Standard-TVs",
+            "general": "Allgemein",
+            "jobs": "Jobs / Gruppen"
+        },
+        "no_video": "Kein Video wird abgespielt",
+        "create": "TV erstellen",
+        "update": "TV aktualisieren",
+        "cancel": "Abbrechen",
+        "no_result": "Keine Ergebnisse gefunden.",
+        "search": "TV nach Name oder ID suchen",
+        "input": {
+            "model": {
+                "label": "Modell",
+                "placeholder": "TV-Modell auswählen"
+            },
+            "name": {
+                "label": "Name",
+                "placeholder": "Gib deinem TV einen Namen"
+            },
+            "platform": {
+                "label": "Plattform",
+                "placeholder": "YouTube, Kick, usw."
+            },
+            "loop": {
+                "label": "Schleife",
+                "placeholder": "Soll das Video in einer Schleife laufen?",
+                "true": "Ja",
+                "false": "Nein"
+            },
+            "volume": {
+                "label": "Lautstärke",
+                "placeholder": "Standardlautstärke einstellen (0-100)"
+            },
+            "videourl": {
+                "label": "Video- / Stream-URL",
+                "placeholder": "Video- / Stream-URL eingeben"
+            },
+            "controlable": {
+                "label": "Steuerbar",
+                "tooltip": "Benutzern erlauben, den Fernseher zu steuern (Wiedergabe, Pause, usw.)"
+            },
+            "defaultvideo": {
+                "label": "Standardvideo",
+                "tooltip": "Ob ein Standardvideo abgespielt wird oder nicht"
+            },
+            "jobs": {
+                "label": "Jobs / Gruppen",
+                "placeholder": "Jobs/Gruppen, die diesen TV nutzen dürfen (für alle leer lassen)"
+            }
+        }
+    },
+    "stream": "Live",
+    "recently": "Kürzlich",
+    "favorites": "Favoriten",
+    "no_favorites": "Keine Lieblingsvideos.",
+    "no_recently": "Keine kürzlich abgespielten Videos.",
+    "televisions": "Fernseher"
+}

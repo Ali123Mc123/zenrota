@@ -1,0 +1,414 @@
+/* ═══════════════════════════════════════════════════════════
+   BMX TRICK HUD - Riders Republic Style v2
+   ═══════════════════════════════════════════════════════════ */
+
+#bmx-trick-hud {
+    position: fixed;
+    right: 28%;
+    top: 50%;
+    transform: translateY(-50%);
+    display: none;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 6px;
+    z-index: 9999;
+    pointer-events: none;
+}
+#bmx-trick-hud.visible { display: flex; }
+
+/* ═══ Active combo banner (single bar that fills) ═══ */
+#bmx-combo-bar {
+    position: relative;
+    width: 280px;
+    height: 38px;
+    border-radius: 6px;
+    overflow: hidden;
+    background: rgba(200,160,30,0.08);
+    display: none;
+}
+
+#bmx-combo-fill {
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 0%;
+    background: linear-gradient(90deg, rgba(255,170,30,0.25), rgba(255,200,50,0.85));
+    border-radius: 6px;
+    transition: width 0.06s linear;
+}
+
+#bmx-combo-text {
+    position: absolute;
+    left: 0; top: 0; right: 0; bottom: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 14px;
+    font-family: 'Segoe UI', Tahoma, sans-serif;
+    font-weight: 700;
+    font-size: 14px;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    color: #fff;
+    text-shadow: 0 1px 3px rgba(0,0,0,0.5);
+}
+
+#bmx-combo-name { flex: 1; }
+
+#bmx-combo-deg {
+    font-size: 16px;
+    font-weight: 800;
+    color: #ffe066;
+    text-shadow: 0 0 8px rgba(255,220,80,0.4);
+    min-width: 45px;
+    text-align: right;
+}
+
+#bmx-combo-new {
+    background: #e83030;
+    color: #fff;
+    font-size: 9px;
+    font-weight: 800;
+    padding: 2px 6px;
+    border-radius: 8px;
+    letter-spacing: 0.5px;
+    margin-right: 8px;
+    display: none;
+    animation: bmx-pop 0.3s ease-out;
+}
+
+/* ═══ Trick history entries ═══ */
+#bmx-entries {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 4px;
+}
+
+.bmx-entry {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    animation: bmx-slide-in 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.bmx-entry-badge {
+    background: #e83030;
+    color: #fff;
+    font-size: 8px;
+    font-weight: 800;
+    padding: 2px 5px;
+    border-radius: 6px;
+    letter-spacing: 0.3px;
+    font-family: 'Segoe UI', Arial, sans-serif;
+}
+
+.bmx-entry-bar {
+    background: linear-gradient(90deg, transparent 0%, rgba(230,150,20,0.8) 25%, rgba(220,140,10,0.9) 100%);
+    color: #fff;
+    font-family: 'Segoe UI', Tahoma, sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    padding: 6px 16px 6px 20px;
+    border-radius: 4px;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.4);
+    white-space: nowrap;
+}
+
+.bmx-entry-bar .pts {
+    font-size: 11px;
+    opacity: 0.7;
+    margin-left: 5px;
+}
+
+/* Trick entry (gray) */
+.bmx-entry-trick .bmx-entry-bar {
+    background: linear-gradient(90deg, transparent 0%, rgba(120,120,120,0.7) 25%, rgba(100,100,100,0.85) 100%);
+}
+
+/* New trick entry (gold) */
+.bmx-entry-new .bmx-entry-bar {
+    background: linear-gradient(90deg, transparent 0%, rgba(220,170,40,0.8) 25%, rgba(200,150,20,0.9) 100%);
+}
+.bmx-entry-new .bmx-entry-badge {
+    background: #e8a020;
+    color: #fff;
+    font-size: 9px;
+    font-weight: 800;
+    padding: 3px 7px;
+    border-radius: 12px;
+}
+
+/* Chain entry (blue) */
+.bmx-entry-chain .bmx-entry-bar {
+    background: linear-gradient(90deg, transparent 0%, rgba(40,130,200,0.8) 25%, rgba(30,110,180,0.9) 100%);
+}
+.bmx-entry-chain .bmx-entry-badge {
+    background: rgba(255,255,255,0.15);
+    border: 1px solid rgba(255,255,255,0.3);
+    font-size: 13px;
+    padding: 2px 5px;
+    border-radius: 10px;
+}
+
+/* Landing entry (green) */
+.bmx-entry-landing .bmx-entry-bar {
+    background: linear-gradient(90deg, transparent 0%, rgba(50,180,80,0.8) 25%, rgba(40,160,65,0.9) 100%);
+}
+.bmx-entry-landing .bmx-entry-badge {
+    background: rgba(255,255,255,0.15);
+    border: 1px solid rgba(255,255,255,0.3);
+    font-size: 13px;
+    padding: 2px 5px;
+    border-radius: 10px;
+}
+
+/* ═══ Score ═══ */
+#bmx-score {
+    display: none;
+    text-align: right;
+    margin-top: 4px;
+    animation: bmx-score-pulse 0.3s ease-out;
+}
+
+#bmx-score-num {
+    font-family: 'Bebas Neue', 'Impact', 'Arial Black', sans-serif;
+    font-size: 44px;
+    font-weight: 400;
+    letter-spacing: 2px;
+    color: #ffcc00;
+    text-shadow: 0 2px 12px rgba(0,0,0,0.5);
+    line-height: 1;
+}
+
+#bmx-score-num .pts {
+    font-size: 16px;
+    font-family: 'Segoe UI', Arial, sans-serif;
+    font-weight: 600;
+    color: rgba(255,255,255,0.45);
+    margin-left: 3px;
+    vertical-align: middle;
+}
+
+/* ═══ Quality word (Riders Republic 3D text) ═══ */
+#bmx-quality-overlay {
+    display: none;
+    text-align: right;
+    z-index: 10000;
+    pointer-events: none;
+    margin-top: 10px;
+}
+
+#bmx-quality-overlay.visible { display: block; }
+
+/* Main quality word container */
+#bmx-quality-word {
+    font-family: 'Impact', 'Arial Black', sans-serif;
+    font-size: 52px;
+    font-weight: 900;
+    letter-spacing: 5px;
+    text-transform: uppercase;
+    line-height: 1;
+    position: relative;
+    display: inline-block;
+    font-style: italic;
+}
+
+/* 3D offset layers (teal + pink + gold like Riders Republic) */
+#bmx-quality-word::before {
+    content: attr(data-text);
+    position: absolute;
+    left: 2px;
+    top: 2px;
+    z-index: -1;
+    opacity: 0.5;
+}
+
+#bmx-quality-word::after {
+    content: attr(data-text);
+    position: absolute;
+    left: -2px;
+    top: -1px;
+    z-index: -2;
+    opacity: 0.35;
+}
+
+/* ── GOOD: gold text, pink+teal shadows ── */
+#bmx-quality-word.good {
+    color: #e8c840;
+    animation: q-good-in 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+#bmx-quality-word.good::before { color: #d45090; }
+#bmx-quality-word.good::after { color: #40c8b0; }
+
+@keyframes q-good-in {
+    0% { opacity: 0; transform: scale(1.8) translateX(30px); }
+    50% { opacity: 1; transform: scale(0.95) translateX(-3px); }
+    100% { transform: scale(1) translateX(0); }
+}
+
+/* ── GREAT: teal text, pink+gold shadows, bounce ── */
+#bmx-quality-word.great {
+    color: #40c8b0;
+    animation: q-great-in 0.6s cubic-bezier(0.16, 1, 0.3, 1), q-great-breathe 2s ease-in-out 0.6s infinite;
+}
+#bmx-quality-word.great::before { color: #d45090; }
+#bmx-quality-word.great::after { color: #e8c840; }
+
+@keyframes q-great-in {
+    0% { opacity: 0; transform: scale(2.2) rotate(-3deg) translateX(40px); }
+    40% { opacity: 1; transform: scale(0.92) rotate(1deg); }
+    70% { transform: scale(1.06) rotate(-0.5deg); }
+    100% { transform: scale(1) rotate(0deg); }
+}
+@keyframes q-great-breathe {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.03); }
+}
+
+/* ── AWESOME: teal text, gold+pink, glow pulse ── */
+#bmx-quality-word.awesome {
+    color: #40c8b0;
+    animation: q-awesome-in 0.55s cubic-bezier(0.16, 1, 0.3, 1), q-awesome-glow 1.5s ease 0.55s infinite;
+}
+#bmx-quality-word.awesome::before { color: #e8c840; }
+#bmx-quality-word.awesome::after { color: #d45090; }
+
+@keyframes q-awesome-in {
+    0% { opacity: 0; transform: scale(2.8) rotate(4deg); filter: brightness(2); }
+    30% { opacity: 1; transform: scale(0.88) rotate(-2deg); }
+    60% { transform: scale(1.1) rotate(0.5deg); }
+    100% { transform: scale(1) rotate(0deg); filter: brightness(1); }
+}
+@keyframes q-awesome-glow {
+    0%, 100% { filter: brightness(1); text-shadow: 0 0 10px rgba(60,200,170,0.2); }
+    50% { filter: brightness(1.25); text-shadow: 0 0 25px rgba(60,200,170,0.5); }
+}
+
+/* ── EPIC: pink text, teal+gold, shake + glow ── */
+#bmx-quality-word.epic {
+    color: #d45090;
+    animation: q-epic-in 0.6s cubic-bezier(0.16, 1, 0.3, 1), q-epic-pulse 1.2s ease 0.6s infinite;
+}
+#bmx-quality-word.epic::before { color: #40c8b0; }
+#bmx-quality-word.epic::after { color: #e8c840; }
+
+@keyframes q-epic-in {
+    0% { opacity: 0; transform: scale(3) rotate(-6deg); filter: brightness(2.5); }
+    20% { opacity: 1; transform: scale(0.85) rotate(3deg); }
+    40% { transform: scale(1.15) rotate(-1deg); }
+    60% { transform: scale(0.97) rotate(0.5deg); }
+    100% { transform: scale(1) rotate(0deg); filter: brightness(1); }
+}
+@keyframes q-epic-pulse {
+    0%, 100% { filter: brightness(1); text-shadow: 0 0 15px rgba(210,70,140,0.3); }
+    50% { filter: brightness(1.35); text-shadow: 0 0 30px rgba(210,70,140,0.6); }
+}
+
+/* ── LEGENDARY: gold text, pink+teal, intense glow + shake ── */
+#bmx-quality-word.legendary {
+    color: #e8c840;
+    animation: q-legend-in 0.7s cubic-bezier(0.16, 1, 0.3, 1), q-legend-glow 1s ease 0.7s infinite;
+}
+#bmx-quality-word.legendary::before { color: #d45090; left: 3px; top: 3px; opacity: 0.55; }
+#bmx-quality-word.legendary::after { color: #40c8b0; left: -3px; top: -2px; opacity: 0.4; }
+
+@keyframes q-legend-in {
+    0% { opacity: 0; transform: scale(3.5) rotate(8deg); filter: brightness(3); }
+    15% { opacity: 1; transform: scale(0.8) rotate(-4deg); }
+    30% { transform: scale(1.25) rotate(2deg); }
+    50% { transform: scale(0.95) rotate(-1deg); }
+    70% { transform: scale(1.08) rotate(0.3deg); }
+    100% { transform: scale(1) rotate(0deg); filter: brightness(1); }
+}
+@keyframes q-legend-glow {
+    0%, 100% { filter: brightness(1) drop-shadow(0 0 12px rgba(230,200,60,0.3)); }
+    25% { filter: brightness(1.3) drop-shadow(0 0 20px rgba(210,70,140,0.4)); }
+    50% { filter: brightness(1.5) drop-shadow(0 0 30px rgba(230,200,60,0.7)); }
+    75% { filter: brightness(1.3) drop-shadow(0 0 20px rgba(60,200,170,0.4)); }
+}
+
+/* Score below quality word */
+#bmx-quality-score {
+    font-family: 'Impact', 'Arial Black', sans-serif;
+    font-size: 32px;
+    font-weight: 800;
+    color: #fff;
+    text-shadow: 0 3px 10px rgba(0,0,0,0.5);
+    letter-spacing: 2px;
+    margin-top: 2px;
+}
+
+#bmx-quality-score span {
+    font-size: 18px;
+    color: rgba(255,255,255,0.5);
+    margin-left: 3px;
+}
+
+/* Score entry animation */
+#bmx-quality-score.animate {
+    animation: q-score-rise 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes q-score-rise {
+    0% { opacity: 0; transform: translateY(15px) scale(0.8); }
+    100% { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* ═══ Animations ═══ */
+@keyframes bmx-slide-in {
+    from { opacity: 0; transform: translateX(50px); }
+    to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes bmx-pop {
+    0% { transform: scale(0); opacity: 0; }
+    70% { transform: scale(1.15); }
+    100% { transform: scale(1); opacity: 1; }
+}
+
+@keyframes bmx-quality-pop {
+    0% { opacity: 0; transform: scale(1.4) translateX(20px); }
+    50% { opacity: 1; transform: scale(0.95) translateX(-2px); }
+    100% { transform: scale(1) translateX(0); }
+}
+
+@keyframes bmx-score-pulse {
+    0% { transform: scale(1.15); }
+    100% { transform: scale(1); }
+}
+
+@keyframes bmx-shimmer {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+/* Fade-out animations removed — the new combo accumulator just uses
+   the .visible toggle on #bmx-trick-hud for a clean show/hide. No forced
+   translateY/scale disappear effect. */
+
+.bmx-entry-sub {
+    display: flex;
+    justify-content: space-between;
+    padding: 2px 8px 2px 8px;
+    font-size: 11px;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.7);
+    letter-spacing: 0.3px;
+}
+.bmx-entry-sub-pts {
+    color: rgba(255, 220, 120, 0.9);
+    font-weight: 700;
+}
+
+/* Degree milestone flash */
+#bmx-combo-bar.milestone #bmx-combo-fill {
+    background: linear-gradient(90deg, rgba(255,200,50,0.4), rgba(255,220,80,0.95));
+}
+#bmx-combo-bar.milestone #bmx-combo-deg {
+    animation: bmx-pop 0.25s ease-out;
+    color: #fff;
+    text-shadow: 0 0 12px rgba(255,255,200,0.8);
+}

@@ -1,0 +1,193 @@
+{
+   "NUI": {
+      "navigation": {
+         "fishermans": "Balıkçı",
+         "eatery": "Lokanta",
+         "information": "Bilgi",
+         "store": "Mağaza",
+         "sell": "Sat",
+         "crew": "Mürettebat",
+         "multiplayer": "Çok Oyunculu",
+         "tasks": "Görevler"
+      },
+      "player": {
+         "fishing_level": "Balıkçılık Seviyesi",
+         "you": "Sen",
+         "leader": "Lider",
+         "xp": "EXP"
+      },
+      "store": {
+         "basket": "Sepet",
+         "total_price": "Toplam Fiyat",
+         "pay_card": "Kart ile Öde",
+         "pay_cash": "Nakit ile Öde",
+         "rent_boat": "Tekne Kirala",
+         "return_boat": "Tekneyi İade Et",
+         "basket_total": "Sepet Toplamı",
+         "paying": "Ödeniyor...",
+         "add": "Ekle",
+         "level_required": "Seviye Gerekli"
+      },
+      "multiplayer": {
+         "create_your_party": "Ekibini oluştur",
+         "players": "Oyuncu",
+         "leader": "Lider",
+         "kick": "At",
+         "leave": "Ayrıl",
+         "invite": "Davet Et",
+         "you": "Sen",
+         "empty_slot": "Oyuncu için boş yuva",
+         "start_party_task": "Grup görevini başlat",
+         "stop_party_task": "Grup görevini durdur",
+         "crew_members": "Mürettebat üyeleri",
+         "leaderboard": "Lider Tablosu",
+         "leaderboard_description": "Dünyanın en iyi oyuncularını gör.",
+         "multiplayer": "Çok Oyunculu",
+         "multiplayer_description": "Çok oyunculu bir moddur, arkadaşlarınla balıkçılık yapabilirsin.",
+         "multiplayer_tasks": "Çok oyunculu görevler",
+         "members": "Üyeler",
+         "tasks": {
+            "minimum": "minimum",
+            "level": "seviye",
+            "catch": "Yakala",
+            "description": "farklı türde balık yakala ve Bob'un yanındaki Balıkçı Lokantası'nda takas et."
+         }
+      },
+      "tasks": {
+         "daily_tasks": "Günlük Görevler",
+         "multiplayer_tasks": "Çok Oyunculu Görevler",
+         "daily_tasks_description": "Günlük görevler her gün yapabileceğin görevlerdir",
+         "multiplayer_tasks_description": "Çok oyunculu görevler arkadaşlarınla yapabileceğin görevlerdir",
+         "tasks_will_updated": "Görevler yenilenecek:",
+         "track_daily_tasks": "Günlük görevleri takip et",
+         "catch": "Yakala",
+         "and_receive_a_reward": "ve ödül kazan"
+      },
+      "descriptions": {
+         "fishermans_description": "Balıkçılar Birliği başkanı Bob",
+         "leaderboard_description": "Dünyanın en iyi oyuncularını gör."
+      },
+      "general": {
+         "select": "Seç",
+         "select_task": "Görev Seç",
+         "rank": "Sıra",
+         "selected": "Seçildi",
+         "level_required": "Seviye Gerekli",
+         "not_leader": "Lider değilsin",
+         "requirements": "GEREKSİNİMLER",
+         "new": "Yeni",
+         "press": "Bas",
+         "to_set_the_distance_to_drop_the_hook": "olta mesafesini ayarlamak için (iptal için ESC)",
+         "to_try_to_keep_the_fish_in_the_yellow_area": "balığı kırmızı alanda tutmaya çalışmak için (iptal için ESC)",
+         "invite_request": "Davet isteği",
+         "invited_by": "Davet eden",
+         "accept": "Kabul Et",
+         "decline": "Reddet",
+         "you_has_been_invited_to_fishing_party_as_new_sailor_crewmember": "Balıkçılık ekibine yeni bir mürettebat üyesi olarak davet edildin",
+         "rod_level": "Olta Seviyesi",
+         "start_fishing": "Balıkçılığa Başla",
+         "start_fishing_key": "E",
+         "craft_rod": "Olta Yap",
+         "craft_rod_key": "G",
+         "soon": "Çok Yakında..."
+      },
+      "sell": {
+         "sell": "Sat",
+         "lucky_item": "Şanslı Eşya"
+      },
+      "review_screen": {
+         "you_caught_a_fish": "Bir balık yakaladın",
+         "take_it": "Al",
+         "let_them_go": "Bırak"
+      },
+      "rent_boat": {
+         "rent_boat": "Tekne Kirala",
+         "return_boat": "Tekneyi İade Et"
+      },
+      "upgrade_menu": {
+         "upgrade_menu": "Yükseltme Menüsü",
+         "upgrade_menu_description": "Oltanı yükselt",
+         "upgrade": "Yükselt",
+         "lvl": "SEVİYE"
+      },
+      "craft_rod": {
+         "title": "Olta Yap",
+         "fishing_rod": "Balıkçı Oltası",
+         "materials": "Malzemeler",
+         "grip": "Tutacak",
+         "line": "İp",
+         "reel": "Makara",
+         "hook": "Kanca"
+      }
+   },
+   "LUA": {
+      "actions": {
+         "open_fishing_menu": "Balıkçılık Menüsünü Aç",
+         "open_upgrade_menu": "Yükseltme Menüsünü Aç",
+         "open_rent_boat_menu": "Tekne Kiralama Menüsünü Aç",
+         "collect_object": "Objeyi Topla"
+      },
+      "notifications": {
+         "success": {
+            "rod_upgraded": "%s oltanı %s'e yükselttin",
+            "boat_rented": "Tekne kiraladın",
+            "boat_returned": "Tekneyi iade ettin",
+            "joined_room": "Odaya katıldın",
+            "player_joined_room": "%s odaya katıldı",
+            "task_selected": "Bu görevi başarıyla seçtin",
+            "oxygen_cylinder_opened": "Oksijen tüpü açıldı ve kullanıma hazır",
+            "you_caught_a_fish": "%s balığı yakaladın!",
+            "you_started_fishing_on_the_boat": "Tekne balıkçılığına başladın. Tekneyle denize çık ve balıkçılığa başla.",
+            "you_used_anchor": "Demiri kullandın"
+         },
+         "error": {
+            "not_enough_money": "Yeterli paran yok",
+            "not_enough_items": "Yeterli eşyan yok",
+            "no_rod": "Olta yok",
+            "player_not_found": "Oyuncu bulunamadı",
+            "player_already_in_room": "Oyuncu zaten odada",
+            "player_already_invited": "%s zaten davet edilmiş",
+            "you_cant_invite_yourself": "Kendini davet edemezsin",
+            "insufficient_level": "%s bu görevi yapmak için yeterli seviyede değil",
+            "insufficient_members": "%s bu görevi yapmak için minimum oyuncu sayısını karşılamıyor",
+            "task_not_found": "Görev bulunamadı",
+            "task_already_completed": "Bu görev zaten tamamlanmış",
+            "you_dont_have_enough_level": "Bu görevi yapmak için yeterli seviyede değilsin",
+            "oxygen_tank_full": "Oksijen tüpü zaten dolu",
+            "diving_gear_required": "Önce dalış ekipmanını takman gerekiyor.",
+            "diving_cloth_required": "Önce dalış kıyafetini giymen gerekiyor.",
+            "oxygen_level_low": "Oksijen seviyesi düşük, tüpü doldur",
+            "upgrade_failed": "Yükseltme başarısız",
+            "boat_not_found": "Tekne bulunamadı",
+            "player_too_far": "Oyuncu çok uzakta",
+            "you_cant_while_swimming": "Sualtında yapamazsın",
+            "you_cant_while_in_vehicle": "Araçta yapamazsın",
+            "you_cant_fish_in_this_location": "Bu konumda balıkçılık yapamazsın",
+            "you_cant_fish_in_vehicle_or_swimming": "Araçta veya sualtında balıkçılık yapamazsın",
+            "you_need_to_use_a_bait": "Balık tutmak için balık yemi gerekiyor",
+            "attach_rod_parts_to_catch_fish": "Balıkçılık için tüm parçalarınızın olması gerekiyor",
+            "you_cant_kick_while_task_is_started": "Görev başladığında atamazsın",
+            "you_failed_to_catch_the_fish": "Balığı kaçırdın",
+            "you_are_already_using_a_rod": "Elinizde bir olta zaten var",
+            "you_are_already_fishing": "Balık tutmaya çoktan başladınız.",
+            "too_far_from_net": "Balık ağından uzaklaşıp balık tutamazsınız."
+         },
+         "info": {
+            "player_left_room": "%s odadan ayrıldı",
+            "left_room": "Odadan ayrıldın",
+            "declined_invite": "Daveti reddettin",
+            "player_declined_invite": "%s daveti reddetti",
+            "kicked_from_room": "Odadan kovuldun",
+            "player_kicked_from_room": "%s odadan kovuldu",
+            "underwater_task_started": "Sualtı görevin başladı, şimdi tekne kirala ve dalış alanına git",
+            "move_closer_to_area": "Alana biraz daha yaklaş ve demir at",
+            "task_completed": "Görevi başarıyla tamamladın",
+            "press_del_to_stop_fishing": "Balık tutmayı durdurmak için [DEL] tuşuna bas"
+         }
+      },
+      "logs": {
+         "buy_item_log_message": "Oyuncu %s (ID: **%s** | CID: **%s**) ` %s ` ürün satın aldı ve toplam **$%s** ödedi.",
+         "sell_item_log_message": "Oyuncu %s (ID: **%s** | CID: **%s**) ` %s ` ürün sattı ve toplam **$%s** aldı."
+      }
+   }
+}

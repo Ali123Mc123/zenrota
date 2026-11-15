@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Mechanic</title>
+    <script type="module" crossorigin src="./bundle/index-_CqVy-lh.js"></script>
+    <link rel="stylesheet" crossorigin href="./bundle/index-03AVmquy.css">
+    <script>
+      // While a text field has the cursor the game keys stay out (client/main.lua UiFocus); push to talk works otherwise.
+      (function () {
+        var res = typeof GetParentResourceName === 'function' ? GetParentResourceName() : 'daddy_mechanic'
+        var typing = false
+        function field(el) { return !!el && (el.tagName === 'TEXTAREA' || el.isContentEditable || (el.tagName === 'INPUT' && !/^(button|checkbox|radio|range|submit|reset|color|file|image)$/i.test(el.type))) }
+        function tell(on) {
+          if (on === typing) return
+          typing = on
+          fetch('https://' + res + '/uiTyping', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ on: on }) }).catch(function () {})
+        }
+        document.addEventListener('focusin', function (e) { tell(field(e.target)) })
+        document.addEventListener('focusout', function () { setTimeout(function () { tell(field(document.activeElement)) }, 0) })
+      })()
+    </script>
+  </head>
+  <body>
+    <div id="app"></div>
+  </body>
+</html>

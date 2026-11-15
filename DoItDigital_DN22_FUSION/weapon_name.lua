@@ -1,0 +1,1 @@
+AddTextEntry("WEAPON_DN22_FUSION", "DN22_FUSION")

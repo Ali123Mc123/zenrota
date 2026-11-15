@@ -1,0 +1,82 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+  html, body { margin: 0; width: 100%; height: 100%; overflow: hidden; background: #0b0d12; font-family: Arial, sans-serif; color: #fff; }
+  #root { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+  #bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity 0.6s; }
+  #bg.on { opacity: 1; }
+  #name { position: relative; font-size: 9vh; font-weight: 800; letter-spacing: 0.04em; text-shadow: 0 0.4vh 2vh rgba(0,0,0,.7); }
+  #bar { position: absolute; left: 0; right: 0; bottom: 0; height: 2vh; background: rgb(var(--accent)); }
+  #queue { position: relative; display: grid; grid-template-columns: 1fr 1fr; gap: 3vh 4vw; width: 88%; margin-top: 3vh; }
+  #queue[hidden] { display: none; }
+  #queue h2 { margin: 0 0 1.5vh; font-size: 4.5vh; text-transform: uppercase; letter-spacing: 0.12em; color: rgba(255,255,255,.6); }
+  .no { display: inline-block; margin: 0 1.2vw 1.2vh 0; padding: 0.6vh 1.6vw; border-radius: 1.2vh; font-size: 7vh; font-weight: 800; background: rgba(255,255,255,.1); }
+  .ready .no { background: rgb(var(--accent)); }
+</style>
+</head>
+<body>
+<div id="root">
+  <img id="bg">
+  <div id="name"></div>
+  <div id="queue" hidden>
+    <div><h2 id="t-prep"></h2><div id="prep"></div></div>
+    <div class="ready"><h2 id="t-ready"></h2><div id="ready"></div></div>
+  </div>
+  <div id="bar"></div>
+</div>
+<script>
+  const $ = (id) => document.getElementById(id)
+  const params = new URLSearchParams(location.search)
+  let urls = [], index = 0, timer = null
+
+  function show() {
+    if (!urls.length) { $('bg').classList.remove('on'); return }
+    const next = urls[index % urls.length]
+    index++
+    const img = new Image()
+    img.onload = () => { $('bg').src = next; $('bg').classList.add('on') }
+    img.src = next
+  }
+
+  function setup(data) {
+    document.documentElement.style.setProperty('--accent', data.accent || '229 36 59')
+    $('name').textContent = data.name || ''
+    const next = (data.urls || []).filter((u) => typeof u === 'string' && u.startsWith('https://'))
+    $('queue').hidden = data.mode !== 'screen'
+    $('t-prep').textContent = data.preparing || 'Hazırlanıyor'
+    $('t-ready').textContent = data.ready || 'Hazır'
+    // the same images again: the slideshow keeps going where it is
+    if (timer !== null && next.join('|') === urls.join('|')) return
+    urls = next
+    clearInterval(timer)
+    timer = null
+    index = 0
+    show()
+    if (urls.length > 1) timer = setInterval(show, 8000)
+  }
+
+  function queue(list) {
+    const fill = (id, status) => {
+      $(id).innerHTML = ''
+      for (const order of list) {
+        if (order.status !== status) continue
+        const el = document.createElement('span')
+        el.className = 'no'
+        el.textContent = order.id
+        $(id).appendChild(el)
+      }
+    }
+    fill('prep', 'preparing')
+    fill('ready', 'ready')
+  }
+
+  window.addEventListener('message', (event) => {
+    const data = event.data
+    if (data && data.type === 'setup') setup(data)
+    if (data && data.type === 'queue') queue(data.orders || [])
+  })
+</script>
+</body>
+</html>

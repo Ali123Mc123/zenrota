@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <script src="../ui/silent-console.js"></script>
+        <style>
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+            }
+
+            body {
+                font-family: "Arial", sans-serif;
+                background: transparent;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                height: 100vh;
+                overflow: hidden;
+            }
+
+            .skill-container {
+                width: 600px;
+                text-align: center;
+                display: none;
+            }
+
+            .skill-container.active {
+                display: block;
+            }
+
+            .skill-bar {
+                position: relative;
+                width: 100%;
+                height: 60px;
+                background: rgba(0, 0, 0, 0.8);
+                border: 3px solid rgba(255, 255, 255, 0.5);
+                border-radius: 10px;
+                overflow: visible;
+                box-shadow: 0 0 30px rgba(255, 100, 0, 0.5);
+            }
+
+            .target-circle {
+                position: absolute;
+                width: 50px;
+                height: 50px;
+                border-radius: 50%;
+                background: rgba(0, 255, 0, 0.2);
+                border: 4px solid rgba(0, 255, 0, 0.6);
+                top: 50%;
+                transform: translateY(-50%);
+                transition: all 0.1s;
+                box-shadow: 0 0 20px rgba(0, 255, 0, 0.4);
+            }
+
+            .moving-circle {
+                position: absolute;
+                width: 50px;
+                height: 50px;
+                border-radius: 50%;
+                background: linear-gradient(135deg, #ff6600, #ff3300);
+                border: 3px solid #ffffff;
+                top: 50%;
+                left: 0;
+                transform: translateY(-50%);
+                box-shadow: 0 0 25px rgba(255, 100, 0, 0.8);
+            }
+
+            .instruction {
+                margin-top: 20px;
+                color: #ffffff;
+                font-size: 20px;
+                font-weight: bold;
+                text-shadow: 0 0 10px rgba(255, 100, 0, 0.8), 2px 2px 4px rgba(0, 0, 0, 0.8);
+                opacity: 1;
+                transition: opacity 0.5s ease-out;
+            }
+
+            .instruction.hide {
+                opacity: 0;
+            }
+
+            .result {
+                display: none !important;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="skill-container">
+            <div class="skill-bar">
+                <div class="target-circle" id="targetCircle"></div>
+                <div class="moving-circle" id="movingCircle"></div>
+            </div>
+            <div class="instruction" id="instruction">SPACE</div>
+            <div class="result" id="result"></div>
+        </div>
+
+        <!-- Howler.js CDN -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/howler/2.2.4/howler.min.js"></script>
+
+        <script>
+            let isActive = false
+            let isStopped = false
+            let movingPosition = 0
+            let movingDirection = 1 // 1 = saga, -1 = sola
+            let animationFrame = null
+            let targetPosition = 0
+
+            // Howler.js ile ses
+            let punchSound = new Howl({
+                src: ["punchSound.ogg"],
+                volume: 0.5,
+            })
+
+            const movingCircle = document.getElementById("movingCircle")
+            const targetCircle = document.getElementById("targetCircle")
+            const instruction = document.getElementById("instruction")
+            const skillContainer = document.querySelector(".skill-container")
+
+            const BAR_WIDTH = 550 // 600 - 50 (circle width)
+            const SPEED = 6 // px per frame
+
+            function GetNuiResourceName() {
+                try {
+                    if (typeof window.GetParentResourceName === "function") {
+                        const r = window.GetParentResourceName()
+                        if (r) return r
+                    }
+                } catch (e) {}
+                return "ak4y-test"
+            }
+
+            // NUI mesajlari (Lua -> SendNUIMessage)
+            window.addEventListener("message", function (event) {
+                const data = event.data || {}
+
+                if (data.action === "showSkillBar") {
+                    showSkillBar()
+                } else if (data.action === "hideSkillBar") {
+                    hideSkillBar()
+                } else if (data.action === "playSound") {
+                    const volume = data.volume || 1.0
+                    if (punchSound) {
+                        punchSound.volume(volume)
+                        punchSound.play()
+                    }
+                }
+            })
+
+            function showSkillBar() {
+                // Reset
+                isActive = true
+                isStopped = false
+                movingPosition = 0
+                movingDirection = 1
+                instruction.classList.remove("hide")
+                skillContainer.classList.add("active")
+
+                // Hedef circle'i rastgele konuma yerlestir (75px - 475px arasi)
+                targetPosition = Math.floor(Math.random() * 400) + 75
+                targetCircle.style.left = targetPosition + "px"
+
+                startMoving()
+            }
+
+            function startMoving() {
+                function animate() {
+                    if (!isActive || isStopped) return
+
+                    movingPosition += SPEED * movingDirection
+
+                    if (movingPosition >= BAR_WIDTH) {
+                        movingPosition = BAR_WIDTH
+                        movingDirection = -1
+                    } else if (movingPosition <= 0) {
+                        movingPosition = 0
+                        movingDirection = 1
+                    }
+
+                    movingCircle.style.left = movingPosition + "px"
+
+                    animationFrame = requestAnimationFrame(animate)
+                }
+
+                animate()
+            }
+
+            function hideSkillBar() {
+                isActive = false
+                skillContainer.classList.remove("active")
+                if (animationFrame) {
+                    cancelAnimationFrame(animationFrame)
+                    animationFrame = null
+                }
+            }
+
+            // SPACE ile durdur
+            document.addEventListener("keydown", function (event) {
+                if (event.code === "Space" && isActive && !isStopped) {
+                    event.preventDefault()
+                    stopAndCalculate()
+                }
+            })
+
+            function stopAndCalculate() {
+                if (isStopped) return
+                isStopped = true
+
+                if (animationFrame) {
+                    cancelAnimationFrame(animationFrame)
+                }
+
+                // Merkezler arasi mesafe
+                const movingCenter = movingPosition + 25
+                const targetCenter = targetPosition + 25
+                const distance = Math.abs(movingCenter - targetCenter)
+
+                // Puan hesabi (0 mesafe = 1200 puan)
+                let score = 0
+
+                if (distance <= 3) {
+                    score = 1200 // Perfect
+                } else if (distance <= 15) {
+                    score = 1150 - Math.floor((distance - 5) * 5)
+                } else if (distance <= 35) {
+                    score = 1050 - Math.floor((distance - 15) * 7)
+                } else if (distance <= 65) {
+                    score = 850 - Math.floor((distance - 35) * 6)
+                } else if (distance <= 110) {
+                    score = 550 - Math.floor((distance - 65) * 4)
+                } else if (distance <= 180) {
+                    score = 300 - Math.floor((distance - 110) * 2)
+                } else {
+                    score = Math.max(0, 150 - Math.floor(distance - 180))
+                }
+
+                score = Math.max(0, Math.min(1200, score))
+
+                // Yaziyi animasyonlu gizle
+                instruction.classList.add("hide")
+
+                // Lua'ya callback gonder
+                fetch(`https://${GetNuiResourceName()}/skillBarResult`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                        score: score,
+                        distance: Math.round(distance),
+                    }),
+                }).catch(() => {})
+
+                // 1 saniye sonra kapat
+                setTimeout(() => {
+                    hideSkillBar()
+                }, 1000)
+            }
+        </script>
+    </body>
+</html>

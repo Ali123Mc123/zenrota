@@ -1,0 +1,22 @@
+{
+  "toggle_front_driver_door": "Sürücü kapısını aç/kapat",
+  "toggle_front_passenger_door": "Ön yolcu kapısını aç/kapat",
+  "toggle_rear_driver_door": "Arka sol kapıyı aç/kapat",
+  "toggle_rear_passenger_door": "Arka sağ kapıyı aç/kapat",
+  "toggle_hood": "Kaputu aç/kapat",
+  "toggle_trunk": "Bagajı aç/kapat",
+  "debug_box": "(Debug) Kutu",
+  "debug_sphere": "(Debug) Küre",
+  "debug_police_car": "Polis aracı",
+  "debug_ped": "(Debug) NPC/Ped",
+  "debug_vehicle": "(Debug) Araç",
+  "debug_object": "(Debug) Obje",
+  "debug_global": "(Debug) Global",
+  "toggle_targeting": "Hedeflemeyi aç/kapat",
+  "go_back": "Geri dön",
+  "interact_key": "Etkileşim tuşu",
+  "interact": "Etkileşim",
+  "nav_select": "Seç",
+  "nav_confirm": "Onayla",
+  "nav_close": "Kapat"
+}

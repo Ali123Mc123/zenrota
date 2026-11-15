@@ -1,0 +1,26 @@
+{
+    "NOTEBOOK_DEFAULT_LABEL": "Defter",
+
+    "page": "SAYFA",
+    "of": "/",
+    "type_here": "Buraya yaz...",
+    "select_page_to_remove": "Kaldırmak istediğin sayfayı seç",
+    "click_page_to_add_text": "Yazı eklemek için bir sayfaya tıkla",
+    "select_page_to_draw": "Çizime başlamak için bir sayfa seç",
+    "select_page_to_add_image": "Görsel eklemek için bir sayfa seç",
+    "enter_image_url": "Görsel URL'si gir",
+    "add_image": "Görsel ekle",
+    "image_style": "Görsel stili",
+    "drawing": "Çizim",
+    "tool": "Araç",
+    "draw_size": "Kalem boyutu",
+    "draw_color": "Kalem rengi",
+    "draw_opacity": "Kalem opaklığı",
+    "options": "Seçenekler",
+    "font": "Yazı tipi",
+    "font_size": "Yazı boyutu",
+    "font_styling": "Yazı stili",
+    "color": "Renk",
+    "book_title": "Defter başlığı",
+    "book_color": "Defter rengi"
+}

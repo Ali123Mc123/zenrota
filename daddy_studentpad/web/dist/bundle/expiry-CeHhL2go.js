@@ -1,0 +1,1 @@
+import{c as e}from"./useNui-BIgvT7L6.js";function t(t,n){let r=Math.ceil((t-n)/86400);return t<=n?{days:0,label:e(`pad.apps.locker.expired`),tint:`red`}:r<=1?{days:r,label:t-n<86400?e(`pad.apps.locker.expires_today`):e(`pad.apps.locker.expires_day`),tint:`orange`}:{days:r,label:e(`pad.apps.locker.expires_days`,r),tint:r<=2?`orange`:`green`}}export{t};

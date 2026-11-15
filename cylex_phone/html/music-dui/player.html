@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Hybrid Music Player</title>
+    <style>
+        body, html { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; background: #000; }
+        video { width: 100%; height: 100%; object-fit: contain; }
+        #player { width: 100%; height: 100%; }
+        #error-display { position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: block; font-size: 24px; color: yellow; background: rgba(0,0,0,0.5); pointer-events: none; z-index: 9999; }
+    </style>
+    <script>
+        // Must be defined BEFORE iframe_api loads. The API injects www-widgetapi.js
+        // as an async script and reads window.onYouTubeIframeAPIReady at the moment
+        // that file executes. With a warm cache it can run before the body script is
+        // parsed, and the callback was silently lost - the song then sat in the queue
+        // below forever, which is the "loads but stays at 0:00 / 0:00" report.
+        var isYtApiReady = false;
+        var pendingVideoId = null;
+        var pendingStartTime = 0;
+        var onYtApiReadyHook = null;
+        function onYouTubeIframeAPIReady() {
+            isYtApiReady = true;
+            if (typeof onYtApiReadyHook === 'function') onYtApiReadyHook();
+        }
+    </script>
+    <script src="https://www.youtube.com/iframe_api"></script>
+</head>
+<body>
+    <!-- Container for Iframe Player -->
+    <div id="iframe-container" style="display:block; width:100%; height:100%;">
+        <div id="player"></div>
+    </div>
+
+    <div id="error-display">Waiting for logs...</div>
+
+<script>
+    const iframeContainer = document.getElementById('iframe-container');
+    const errorDisplay = document.getElementById('error-display');
+    
+    var yPlayer = null;           // For Iframe Mode (Must be var/global for listener.js access)
+    // isYtApiReady / pendingVideoId / pendingStartTime are declared in <head>, above
+    // the API script. Re-declaring them here with let would be a SyntaxError and
+    // would kill this entire script block.
+    let failureReported = false;
+    let readyFired = false;
+    let watchdogsStarted = false;
+    let apiLoadTimer = null;
+
+    // Shared State
+    let audioContext = null;
+    let sourceNode = null;
+    let bassFilter = null, trebleFilter = null, stereoPanner = null, LPFilter = null, gainNode = null;
+    // Speaker cabinet colouring. Neutral by default (20Hz highpass = bypass,
+    // 0dB peak = bypass), so phone and vehicle output sound exactly as before.
+    let speakerHP = null, speakerPeak = null;
+    let targetSpeakerHP = 20;
+    let targetSpeakerPeak = 0;
+    let audioHooked = false;
+    let hookedVideoElement = null; // For Iframe Mode tracking
+
+    let currentVolume = 1.0;
+    let targetBassBoost = 0;
+    let targetTrebleBoost = 0;
+    let targetStereoPan = 0;
+    let targetLPF = 0;
+    let currentVideoId = null;
+    let playerId = null;
+
+    // --- Logger ---
+    function logToScreen(msg) {
+        console.log(msg);
+        if (window.parent) window.parent.postMessage({ type: 'log', message: msg }, '*');
+        const line = document.createElement('div');
+        line.innerText = `[${new Date().toLocaleTimeString()}] ${msg}`;
+        errorDisplay.prepend(line);
+    }
+
+    function getQueryParams() {
+        let qs = window.location.search;
+        qs = qs.split('+').join(' ');
+        let params = {}, tokens, re = /[?&]?([^=]+)=([^&]*)/g;
+        while (tokens = re.exec(qs)) {
+            params[decodeURIComponent(tokens[1])] = decodeURIComponent(tokens[2]);
+        }
+        return params;
+    }
+
+    const initialParams = getQueryParams();
+    if (initialParams.volume !== undefined) currentVolume = parseFloat(initialParams.volume);
+    if (initialParams.bass !== undefined) targetBassBoost = parseFloat(initialParams.bass);
+    if (initialParams.treble !== undefined) targetTrebleBoost = parseFloat(initialParams.treble);
+    playerId = initialParams.playerId;
+
+    // =========================================================================================
+    // AUDIO ENGINE (Shared)
+    // =========================================================================================
+    function initAudioContext(mediaElement) {
+        if (audioHooked && audioContext && sourceNode) return; 
+
+        try {
+            logToScreen("Initializing Audio Context...");
+            if (!audioContext) audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            if (audioContext.state === 'suspended') audioContext.resume();
+
+            // Create new source for the specific element
+            sourceNode = audioContext.createMediaElementSource(mediaElement);
+
+            if (!bassFilter) {
+                // Cabinet highpass: a small speaker box cannot reproduce sub bass.
+                // This is the strongest cue that the sound comes out of a box.
+                speakerHP = audioContext.createBiquadFilter(); speakerHP.type = 'highpass'; speakerHP.frequency.value = 20;
+                bassFilter = audioContext.createBiquadFilter(); bassFilter.type = 'lowshelf'; bassFilter.frequency.value = 60;
+                // Midrange honk: cheap plastic cabinets and PA horns resonate here.
+                speakerPeak = audioContext.createBiquadFilter(); speakerPeak.type = 'peaking';
+                speakerPeak.frequency.value = 2000; speakerPeak.Q.value = 1.0; speakerPeak.gain.value = 0;
+                trebleFilter = audioContext.createBiquadFilter(); trebleFilter.type = 'highshelf'; trebleFilter.frequency.value = 10000;
+                stereoPanner = audioContext.createStereoPanner();
+                LPFilter = audioContext.createBiquadFilter(); LPFilter.type = 'lowpass'; LPFilter.frequency.value = 20000;
+                gainNode = audioContext.createGain();
+            }
+
+            sourceNode.disconnect();
+            sourceNode.connect(speakerHP);
+            speakerHP.disconnect(); speakerHP.connect(bassFilter);
+            bassFilter.disconnect(); bassFilter.connect(speakerPeak);
+            speakerPeak.disconnect(); speakerPeak.connect(trebleFilter);
+            trebleFilter.disconnect(); trebleFilter.connect(stereoPanner);
+            stereoPanner.disconnect(); stereoPanner.connect(LPFilter);
+            LPFilter.disconnect(); LPFilter.connect(gainNode);
+            gainNode.disconnect(); gainNode.connect(audioContext.destination);
+
+            applySettings();
+            
+            // Unmute element just in case
+            mediaElement.muted = false;
+            mediaElement.volume = 1.0; 
+
+            audioHooked = true;
+            hookedVideoElement = mediaElement;
+            logToScreen('Audio Chain Hooked Successfully');
+        } catch (e) {
+            logToScreen(`Audio Context Error: ${e.message}`);
+        }
+    }
+
+    function applySettings() {
+        if (!audioContext) return;
+        if (bassFilter) bassFilter.gain.value = targetBassBoost;
+        if (trebleFilter) trebleFilter.gain.value = targetTrebleBoost;
+        if (speakerHP) speakerHP.frequency.value = targetSpeakerHP;
+        if (speakerPeak) speakerPeak.gain.value = targetSpeakerPeak;
+        if (stereoPanner) stereoPanner.pan.value = targetStereoPan;
+        if (gainNode) gainNode.gain.value = currentVolume;
+        if (LPFilter) {
+             const freq = targetLPF > 0 ? Math.min(20000 / (((targetLPF * 100) / 0.5) / 70), 20000) : 20000;
+             LPFilter.frequency.value = freq;
+        }
+        
+        if (yPlayer && typeof yPlayer.setVolume === 'function') {
+             // For iframe, we also control internal volume to be safe
+             yPlayer.setVolume(100);
+             yPlayer.unMute();
+        }
+    }
+
+    // =========================================================================================
+    // MODE 2: IFRAME PLAYER (YouTube API)
+    // =========================================================================================
+    function setupIframePlayer() {
+        // videoContainer.style.display = 'none'; // Deleted
+        iframeContainer.style.display = 'block';
+        logToScreen("Mode: Iframe Player (Legacy)");
+    }
+
+    // How long we give a player before declaring it dead. Generous on purpose: a
+    // slow connection must never be mistaken for a hang.
+    // Declared before the hook below: loadIframeVideo reads it, so the hook must
+    // not be able to run while it is still in the temporal dead zone.
+    const FAILURE_TIMEOUT = 12000;
+
+    // Video-level YouTube errors that will never succeed no matter how often we
+    // retry: removed video, embedding disabled, region blocked. Reported as
+    // permanent so Lua does not churn the DUI for nothing.
+    const PERMANENT_YT_ERRORS = [100, 101, 150];
+
+    // The <head> stub calls this once the API is up. Assigning it here rather than
+    // declaring onYouTubeIframeAPIReady means the callback can never arrive before
+    // it exists.
+    onYtApiReadyHook = function () {
+        if (apiLoadTimer) { clearTimeout(apiLoadTimer); apiLoadTimer = null; }
+        if (pendingVideoId) {
+            const id = pendingVideoId;
+            pendingVideoId = null;
+            loadIframeVideo(id, pendingStartTime);
+        }
+    };
+
+    // The API may already have been ready before this script ran, in which case the
+    // stub fired against a null hook. Closes the other direction of the same race.
+    if (isYtApiReady) onYtApiReadyHook();
+
+    // Tells the parent listener the player is dead. Without this the whole chain
+    // simply sat there: nothing sent duration, so the UI stayed at 0:00 / 0:00 and
+    // the only way out was a relog.
+    function reportPlayerFailure(reason, permanent) {
+        if (failureReported) return;
+        failureReported = true;
+        logToScreen(`Player failed: ${reason}${permanent ? ' (permanent)' : ''}`);
+        if (window.parent) {
+            window.parent.postMessage({
+                type: 'playerFailed',
+                playerId: playerId,
+                reason: reason,
+                permanent: !!permanent
+            }, '*');
+        }
+    }
+
+    function loadIframeVideo(videoId, startTime) {
+        if (typeof YT === 'undefined' || typeof YT.Player === 'undefined') {
+             // API not ready yet, queue it. onYtApiReadyHook drains the queue; the
+             // timer covers the case where the API script never loads at all
+             // (network blip, YouTube throttling), which used to hang forever.
+             pendingVideoId = videoId;
+             pendingStartTime = startTime;
+             logToScreen("YouTube API not ready. Queued...");
+             if (!apiLoadTimer) {
+                 apiLoadTimer = setTimeout(() => {
+                     apiLoadTimer = null;
+                     if (typeof YT === 'undefined' || typeof YT.Player === 'undefined') {
+                         reportPlayerFailure('yt-api-load-timeout', false);
+                     }
+                 }, FAILURE_TIMEOUT);
+             }
+             return;
+        }
+
+        if (yPlayer) {
+            yPlayer.loadVideoById({videoId: videoId, startSeconds: startTime});
+        } else {
+            yPlayer = new YT.Player('player', {
+                height: '100%',
+                width: '100%',
+                videoId: videoId,
+                playerVars: {
+                    'autoplay': 1,
+                    'controls': 0,
+                    'mute': 1,
+                    'origin': 'https://www.youtube.com'
+                },
+                events: {
+                    'onReady': (event) => {
+                        readyFired = true;
+                        event.target.mute();
+                        event.target.setVolume(100);
+                        event.target.playVideo();
+                        if (startTime) event.target.seekTo(startTime);
+                        startIframeWatchdogs();
+                    },
+                    'onStateChange': (event) => {
+                         if (event.data === YT.PlayerState.PLAYING) {
+                             tryHookIframeAudio();
+                         }
+                         if (event.data === YT.PlayerState.ENDED) {
+                             sendPostMsg('ended');
+                         }
+                    },
+                    // Was never registered: a blocked or unplayable video failed
+                    // completely silently, and getDuration() staying at 0 is
+                    // filtered out by the duration watchdog below.
+                    'onError': (event) => {
+                        const code = event && event.data;
+                        reportPlayerFailure(`yt-error-${code}`, PERMANENT_YT_ERRORS.indexOf(code) !== -1);
+                    }
+                }
+            });
+
+            // Ready watchdog. onReady is what starts everything else, so if it never
+            // arrives nothing at all happens - that is the hang we are fixing.
+            setTimeout(() => {
+                if (!readyFired) reportPlayerFailure('ready-timeout', false);
+            }, FAILURE_TIMEOUT);
+        }
+    }
+
+    // Smart Hook Logic for Iframe
+    function tryHookIframeAudio() {
+        // Find best video element
+        const candidates = Array.from(document.querySelectorAll('video'))
+                           .concat(Array.from(document.querySelectorAll('iframe')).reduce((acc, ifr) => {
+                               try { return acc.concat(Array.from(ifr.contentDocument.querySelectorAll('video'))); } catch(e) { return acc; }
+                           }, []));
+
+        let bestCandidate = null;
+        let bestScore = -1;
+
+        candidates.forEach(v => {
+            let score = 0;
+            if (v.isConnected) score += 10;
+            if (v.readyState > 2) score += 3;
+            if (!v.paused) score += 5;
+            if (v.currentTime > 0) score += 2;
+            if (v.src && v.src.length > 5) score += 1;
+            if (v.videoWidth > 100) score += 1;
+            if (score > bestScore) { bestScore = score; bestCandidate = v; }
+        });
+
+        if (bestCandidate) {
+             if (bestCandidate !== hookedVideoElement) {
+                 logToScreen("New Iframe Video detected. Hooking...");
+                 audioHooked = false; // Reset to force re-hook
+                 initAudioContext(bestCandidate);
+             } else if (!audioHooked) {
+                 initAudioContext(bestCandidate);
+             }
+        }
+    }
+
+    let lastDuration = -1;
+    function startIframeWatchdogs() {
+        // onReady can fire more than once (e.g. after loadVideoById); without this
+        // guard every extra call added another pair of intervals, doubling the
+        // postMessage and NUI callback rate each time.
+        if (watchdogsStarted) return;
+        watchdogsStarted = true;
+
+        // Ready fired but no duration ever arrived. Only treated as a failure when
+        // the player is not actually working: BUFFERING and PLAYING mean it is just
+        // slow, and killing those would break players on poor connections.
+        setTimeout(() => {
+            if (lastDuration > 0) return;
+            let st = null;
+            try { st = yPlayer && yPlayer.getPlayerState(); } catch (e) { st = null; }
+            if (st === YT.PlayerState.PLAYING || st === YT.PlayerState.BUFFERING) return;
+            reportPlayerFailure('no-duration', false);
+        }, FAILURE_TIMEOUT);
+
+        setInterval(() => {
+            if (yPlayer && yPlayer.getCurrentTime) {
+                sendPostMsg('currentTime', yPlayer.getCurrentTime());
+                
+                const dur = yPlayer.getDuration();
+                if (dur && dur !== lastDuration) {
+                    lastDuration = dur;
+                    sendPostMsg('duration', dur);
+                }
+            }
+        }, 500);
+        
+        // Hook Watchdog
+        setInterval(() => {
+            if (yPlayer && yPlayer.getPlayerState() === YT.PlayerState.PLAYING) {
+                tryHookIframeAudio();
+            }
+        }, 1000);
+    }
+
+
+    // =========================================================================================
+    // MAIN CONTROLLER
+    // =========================================================================================
+    
+    function sendPostMsg(type, value) {
+        if (window.parent) {
+            let msg = { type: type, playerId: playerId };
+            if (type === 'currentTime') msg.currentTime = value;
+            if (type === 'duration') msg.duration = value;
+            window.parent.postMessage(msg, '*');
+        }
+        if (window.parent && type === 'ended' && window.parent.onPlayerEnded) {
+            try { window.parent.onPlayerEnded(playerId); } catch(e){}
+        }
+    }
+
+    // Initialize based on Config
+    setupIframePlayer();
+
+    // Initial Load
+    if (initialParams.videoId) {
+         loadIframeVideo(initialParams.videoId, parseFloat(initialParams.startTime));
+    }
+
+    // Message Listener
+    window.addEventListener('message', (event) => {
+        const data = event.data;
+        if (!data || !data.cmd) return;
+        
+        if (audioContext && audioContext.state === 'suspended') audioContext.resume();
+
+        switch (data.cmd) {
+            case 'playSong':
+                if (data.value?.videoId) {
+                    loadIframeVideo(data.value.videoId);
+                }
+                break;
+            case 'setVolume':
+                currentVolume = data.value;
+                if (gainNode) gainNode.gain.value = currentVolume;
+                if (yPlayer && typeof yPlayer.setVolume === 'function') yPlayer.setVolume(100);
+                break;
+            case 'setBassBoost': targetBassBoost = data.value; if(bassFilter) bassFilter.gain.value = data.value; break;
+            case 'setTrebleBoost': targetTrebleBoost = data.value; if(trebleFilter) trebleFilter.gain.value = data.value; break;
+            case 'setStereoPan': targetStereoPan = data.value; if(stereoPanner) stereoPanner.pan.value = Math.max(-1, Math.min(1, data.value)); break;
+            case 'setLPF': targetLPF = data.value; applySettings(); break;
+            // Hoparlör kabini renklendirmesi. Eski Lua bunu hiç göndermez,
+            // o zaman değerler nötr kalır ve ses bugünküyle birebir aynı olur.
+            case 'setSpeakerColor':
+                if (data.value) {
+                    targetSpeakerHP = data.value.highpass;
+                    targetSpeakerPeak = data.value.peak;
+                    if (speakerHP) speakerHP.frequency.value = targetSpeakerHP;
+                    if (speakerPeak) speakerPeak.gain.value = targetSpeakerPeak;
+                }
+                break;
+        }
+    });
+    
+    window.clearMe = function() {
+        if (yPlayer && yPlayer.destroy) yPlayer.destroy();
+        yPlayer = null;
+        if (audioContext) audioContext.close();
+        audioContext = null;
+        audioHooked = false;
+    };
+
+</script>
+</body>
+</html>

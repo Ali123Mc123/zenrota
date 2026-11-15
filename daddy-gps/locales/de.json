@@ -1,0 +1,148 @@
+{
+    "login":  {
+                  "system_access":  "SYSTEMZUGRIFF",
+                  "identity_label":  "IDENTITÄT",
+                  "officer_name_placeholder":  "Beamtenname",
+                  "callsign_label":  "FUNKRUFNAME",
+                  "callsign_placeholder":  "000",
+                  "department_label":  "ABTEILUNG",
+                  "initialize_system":  "SYSTEM INITIALISIEREN",
+                  "title":  "AUTHENTICATION",
+                  "tap_to_connect":  "TAP TO CONNECT",
+                  "connecting":  "AUTHENTICATING...",
+                  "subtitle":  "ENTER CREDENTIALS TO ACCESS SYSTEM"
+              },
+    "dashboard":  {
+                      "tactical_view":  "TAKTIKANSICHT",
+                      "tactical_view_desc":  "Aktiviert die visuelle Kegelprojektion für verbündete Einheiten auf der Taktikkarte.",
+                      "active_units":  "AKTIVE EINHEITEN",
+                      "no_active_units":  "Keine aktiven Einheiten in diesem Kanal",
+                      "mark_location":  "Standort markieren",
+                      "follow_unit":  "Einheit folgen",
+                      "secure_networks":  "SICHERE NETZWERKE",
+                      "unit_settings":  "EINHEITENEINSTELLUNGEN",
+                      "callsign_label":  "FUNKRUFNAME",
+                      "update":  "AKTUALISIEREN",
+                      "ui_scale":  "UI-SKALIERUNG",
+                      "reset":  "ZURÜCKSETZEN",
+                      "move_ui":  "UI VERSCHIEBEN",
+                      "dragging":  "ZIEHEN...",
+                      "enable_drag":  "ZIEHEN AKTIVIEREN",
+                      "system_theme":  "SYSTEMDESIGN",
+                      "tabs":  {
+                                   "home":  "Home",
+                                   "channels":  "Kanäle",
+                                   "private":  "Privat",
+                                   "settings":  "Einstellungen",
+                                   "profile":  "Profil"
+                               },
+                      "position":  "GERAETEPOSITION",
+                      "finish_move":  "VERSCHIEBEN BEENDEN",
+                      "system_control":  "SYSTEMSTEUERUNG",
+                      "display_scale":  "ANZEIGESKALIERUNG",
+                      "search_unit":  "Einheit / Rufzeichen suchen...",
+                      "theme_color":  "DESIGNFARBE",
+                      "disconnect":  "TRENNEN",
+                      "move_desc":  "GPS-Geraet frei auf dem Bildschirm verschieben.",
+                      "identity":  "IDENTITAET",
+                      "reset_default":  "AUF STANDARD ZURUECKSETZEN",
+                      "reset_position":  "POSITION ZURUECKSETZEN",
+                      "you":  "DU",
+                      "officer_name_label":  "BEAMTENNAME",
+                      "officer_name_placeholder":  "Beamtenname",
+                      "identity_settings":  "IDENTITAT",
+                      "self_blip":  "EIGENER BLIP",
+                      "self_blip_desc":  "Eigenen Einheiten-Blip auf der Karte anzeigen"
+                  },
+    "broken":  {
+                   "system_failure":  "SYSTEMFEHLER",
+                   "repairing":  "REPARIEREN...",
+                   "critical_error":  "KRITISCHER FEHLER",
+                   "water_intrusion":  "WASSEREINBRUCH ERKANNT",
+                   "err_code_h2o":  "FEHLERCODE: H2O_FATAL",
+                   "system_restore":  "SYSTEMWIEDERHERSTELLUNG",
+                   "verifying_integrity":  "INTEGRITÄT PRÜFEN...",
+                   "restoring_kernel":  "KERNEL WIEDERHERSTELLEN...",
+                   "rebooting_modules":  "MODULE NEU STARTEN...",
+                   "system_online":  "SYSTEM ONLINE",
+                   "system_halted":  "SYSTEM ANGEHALTEN",
+                   "hardware_integrity":  "HARDWARE-INTEGRITÄT BEEINTRÄCHTIGT",
+                   "initiate_manual_repair":  "MANUELLE REPARATUR STARTEN",
+                   "repair":  "REPARIEREN",
+                   "close":  "SCHLIEßEN",
+                   "footer_text":  "DADDY_GPS_OS v2.4.1 // CORE_DUMP_ERKANNT"
+               },
+    "controls":  {
+                     "connect":  "Verbinden",
+                     "leave":  "Verlassen"
+                 },
+    "department_select":  {
+                              "label":  "Abteilung",
+                              "select_placeholder":  "Auswählen..."
+                          },
+    "gps_frame":  {
+                      "officer_name_label":  "Beamtenname",
+                      "officer_name_placeholder":  "z.B. Max Mustermann",
+                      "callsign_label":  "Funkrufname",
+                      "callsign_placeholder":  "z.B. 215"
+                  },
+    "app":  {
+                "drag_to_move":  "ZUM VERSCHIEBEN ZIEHEN",
+                "save_position":  "POSITION SPEICHERN",
+                "press_esc":  "ESC ZUM SCHLIESSEN",
+                "drag_hint":  "HALTEN ZUM ZIEHEN"
+            },
+    "settings":  {
+                     "language":  "SPRACHE",
+                     "language_desc":  "Wählen Sie die Anzeigesprache für die GPS-Oberfläche.",
+                     "language_changed":  "Sprache geändert. GPS erneut öffnen um anzuwenden.",
+                     "hard_reset":  "HARD RESET",
+                     "reset_clearing":  "DATEN LÖSCHEN...",
+                     "reset_resetting":  "SYSTEM ZURÜCKSETZEN...",
+                     "reset_rebooting":  "NEUSTART...",
+                     "reset_complete":  "ZURÜCKSETZUNG ABGESCHLOSSEN"
+                 },
+    "notify":  {
+                   "no_permission":  "Du hast keine Berechtigung, dieses System zu verwenden.",
+                   "gps_disconnected":  "GPS getrennt.",
+                   "gps_connected":  "GPS verbunden.",
+                   "no_gps_item":  "Du hast kein GPS-Geraet.",
+                   "follow_cancelled":  "Verfolgung abgebrochen.",
+                   "gps_repaired":  "GPS-Geraet erfolgreich repariert!",
+                   "tracking_activated":  "GPS-Verfolgung aktiviert.",
+                   "gps_reconnected":  "GPS nach Reparatur wiederverbunden.",
+                   "gps_connecting":  "GPS verbindet...",
+                   "gps_disconnecting":  "GPS trennt...",
+                   "invalid_name":  "Ungueltiger Name.",
+                   "tracking_disabled":  "GPS-Verfolgung deaktiviert.",
+                   "callsign_range":  "Rufzeichen muss eine Zahl zwischen %s und %s sein.",
+                   "select_department":  "Du musst eine Abteilung auswaehlen.",
+                   "invalid_department":  "Ungueltige Abteilung.",
+                   "waypoint_set":  "Wegpunkt gesetzt.",
+                   "name_empty":  "Beamtenname darf nicht leer sein."
+               },
+    "units":  {
+                  "you":  "DU",
+                  "filter_department":  "ABTEILUNGSFILTER",
+                  "filter_all":  "ALLE",
+                  "start_tracking":  "Einheit verfolgen",
+                  "stop_tracking":  "Verfolgung stoppen",
+                  "set_waypoint":  "Wegpunkt setzen"
+              },
+    "profile":  {
+                    "radar_sizes":  "RADARGROESSEN",
+                    "motorcycle":  "MOTORRAD",
+                    "reset":  "ZURUECKSETZEN",
+                    "vehicle":  "FAHRZEUG",
+                    "plane":  "FLUGZEUG",
+                    "helicopter":  "HUBSCHRAUBER",
+                    "on_foot":  "ZU FUSS",
+                    "boat":  "BOOT"
+                },
+    "channels":  {
+                     "active_unit":  "AKTIVE EINHEIT",
+                     "global_desc":  "Alle Abteilungen kommunizieren auf demselben Kanal",
+                     "global_network":  "GLOBALES NETZWERK",
+                     "global_channel":  "GLOBALER KANAL"
+                 }
+}

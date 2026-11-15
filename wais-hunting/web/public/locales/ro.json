@@ -1,0 +1,43 @@
+{
+    "xp": "XP",
+    "name": "Numele jucătorului",
+    "level": "Nivel",
+    "start": "Începe jobul",
+    "accept": "Acceptă",
+    "cancel": "Anulează",
+    "awards": "Premii:",
+    "invite": "Invită jucător [ID]",
+    "hunting": "Vânătoare",
+    "hunting_desc": "%s te-a invitat într-un grup. Dacă dorești, poți accepta și vâna împreună.",
+    "unknowns": {
+        "label": "Necunoscut",
+        "level": "Necunoscut",
+        "description": "Nicio descriere disponibilă."
+    },
+    "progress": {
+        "title": "Progresul nivelului",
+        "description": "Îmbunătățirea abilităților tale de vânătoare"
+    },
+    "cancel_job": "Anulează jobul",
+
+    "header": {
+        "title": "Jobul de vânătoare",
+        "description": "Bine ai venit la vânătoare, poți începe o vânătoare de aici și verifica misiunile. Succes!"
+    },
+    "sections": {
+        "profile": "Profil",
+        "mission": "Misiuni",
+        "player_list": "Lista jucătorilor",
+        "job_details": "Detalii job"
+    },
+
+    "steps": {
+        "progress": "Progres",
+        "information": "Apasă tasta indicată pentru a afla ce trebuie să faci. Apasă pentru mai multe detalii.",
+        "details": {
+            "step1": "Du-te în zona de vânătoare și ia-ți armele din vehicul. Folosește tasta [Target],",
+            "step2": "Omoară animalele și jupuiește animalele cu [TARGET] (dacă există o misiune, va progresa),",
+            "step3": "Du-te în zona unde ți-ai început profesia, uită-te la NPC cu [TARGET] și dă click pe opțiunea 'Vinde părți de animale' pentru a le vinde."
+        }
+    }
+}

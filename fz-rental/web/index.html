@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="tr">
+    <head>
+        <meta charset="utf-8">
+        <title>fz-rental</title>
+        <link rel="stylesheet" href="style.css">
+    </head>
+    <body>
+        <div class="stage" id="stage">
+            <div class="shade"></div>
+
+            <div class="win">
+                <header class="head">
+                    <div class="titles">
+                        <div class="kicker" id="kicker"></div>
+                        <div class="display title" id="title"></div>
+                    </div>
+                    <button class="esc" id="close"><span class="key">ESC</span><span id="t-close"></span></button>
+                </header>
+
+                <div class="body">
+                    <section class="list">
+                        <div class="label" id="t-vehicles"></div>
+                        <ul id="vehicles" lang="en"></ul>
+                    </section>
+
+                    <section class="detail" id="detail">
+                        <div class="photo">
+                            <img id="photo" alt="">
+                            <svg class="car" id="car" viewBox="0 0 120 48"><path d="M8 34h104M14 34l6-12 18-8h34l18 10 16 4 4 6M30 34a7 7 0 1 0 14 0M78 34a7 7 0 1 0 14 0M40 15l-6 9h50l-14-9" /></svg>
+                        </div>
+                        <div class="name">
+                            <div class="display big" id="name" lang="en"></div>
+                            <div class="desc" id="desc"></div>
+                        </div>
+
+                        <div class="hours">
+                            <div class="label" id="t-hours"></div>
+                            <div class="stepper">
+                                <button class="step" id="minus">−</button>
+                                <div class="count"><b class="display" id="hours">1</b><span id="t-hour"></span></div>
+                                <button class="step" id="plus">+</button>
+                            </div>
+                            <input type="range" id="range" min="1" max="24" value="1">
+                        </div>
+
+                        <div class="buy">
+                            <div class="total">
+                                <div class="label" id="t-total"></div>
+                                <div class="display price" id="total"></div>
+                                <div class="pay" id="pay"></div>
+                            </div>
+                            <button class="go" id="rent"><span class="display" id="t-rent"></span><span class="chev">›››</span><span class="key">ENTER</span></button>
+                        </div>
+                    </section>
+                </div>
+
+                <footer class="foot">
+                    <button class="minor" id="recover">
+                        <svg viewBox="0 0 24 24"><path d="M4 12a8 8 0 1 0 3-6.2M4 4v5h5" /></svg>
+                        <span><b id="t-recover"></b><small id="t-recover-d"></small></span>
+                    </button>
+                    <button class="minor" id="return">
+                        <svg viewBox="0 0 24 24"><path d="M20 12H6M11 6l-6 6 6 6" /></svg>
+                        <span><b id="t-return"></b><small id="t-return-d"></small></span>
+                    </button>
+                    <p class="info" id="info"></p>
+                </footer>
+            </div>
+        </div>
+        <script src="app.js"></script>
+    </body>
+</html>

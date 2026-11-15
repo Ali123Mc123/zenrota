@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="utf-8">
+    <title>Radio Anim Selector</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="radio-ui" class="hidden">
+        <div id="panel" class="panel">
+            <div class="head">
+                <div>
+                    <span class="lbl">Telsiz</span>
+                    <b class="display">Animasyon Seç</b>
+                </div>
+                <span id="close-x" class="x" title="Kapat">
+                    <svg viewBox="0 0 24 24" width="14" height="14"><path d="M5 5l14 14M19 5L5 19"/></svg>
+                </span>
+            </div>
+            <ul id="anim-list" class="list"></ul>
+            <div class="foot">
+                <span id="close-btn" class="hint"><span class="key">ESC</span>İptal</span>
+                <span class="lbl cmd">/radioanim</span>
+            </div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>

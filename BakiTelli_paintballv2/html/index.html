@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Debux Paintball V2</title>
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
+    <div class="gameInsideUI" style="display: none">
+      <div class="Timer" style="display: none">3</div>
+      <div class="winner-text" style="display: none">
+        <t data-locale="winner">WINNER</t>
+        <t2 data-locale="winner">WINNER</t2>
+        <t3 data-locale="winner">WINNER</t3>
+        <t4 data-locale="winner">WINNER</t4>
+      </div>
+      <div class="lose-text" style="display: none">
+        <t data-locale="lose">LOSE</t>
+        <t2 data-locale="lose">LOSE</t2>
+        <t3 data-locale="lose">LOSE</t3>
+        <t4 data-locale="lose">LOSE</t4>
+      </div>
+      <div class="scoreboardSide">
+        <div class="blueScoreboard">
+          <t data-locale="blue">Blue</t>
+          <p>24</p>
+        </div>
+        <div class="scoreboardTime">
+          <div class="InsidescoreboardTime">
+            <img src="./img/time_icon.svg" />
+            <t>17:40</t>
+          </div>
+        </div>
+        <div class="redScoreboard">
+          <t data-locale="red">Red</t>
+          <p>13</p>
+        </div>
+      </div>
+      <div class="bigScoreboard" style="display: none">
+        <div class="bigScoreboardSide">
+          <div class="bigScoreboardTitle">
+            <t data-locale="paintball">PAINTBALL</t>
+            <p data-locale="scoreboard">Scoreboard</p>
+          </div>
+          <div class="bigScoreboardTopSide">
+            <div class="bigScoreboardVersus">
+              <t class="blueBigScoreboardVersus">32</t>
+              <t class="bigScoreboardVersusText" data-locale="versus">VS</t>
+              <t class="redBigScoreboardVersus">15</t>
+            </div>
+            <div class="BigScoreboardTimeBG">
+              <img src="./img/time_icon.svg" />
+              <t>17:40</t>
+            </div>
+          </div>
+          <div class="bigScoreboardScoreSide">
+            <div class="bigScoreboardBluePlayers"></div>
+            <t data-locale="versus">VS</t>
+            <div class="bigScoreboardRedPlayers"></div>
+          </div>
+        </div>
+      </div>
+      <div class="killboardMessages"></div>
+      <div class="Keys"></div>
+    </div>
+    <div class="LobbyBG" style="display: none">
+      <div class="lobbyPlaySettingsDetail">
+        <div>
+          <img src="./img/lobby-list-icon.svg" />
+          <t id="lobbyin_LobbyName">LobbyName#123123</t>
+        </div>
+        <div>
+          <div>
+            <img src="./img/gamemode_icon.svg" /><t id="lobbyin_GameMode"
+              >Death Match</t
+            >
+          </div>
+          <div>
+            <img src="./img/weapon_photo.svg" /><t id="lobbyin_GameWeapon"
+              >Death Match</t
+            >
+          </div>
+        </div>
+        <div>
+          <div>
+            <img src="./img/player_icon.svg" />
+            <t id="lobbyin_TotalPlayer">12/20</t>
+          </div>
+          <div>
+            <img src="./img/time_icon.svg" /> <t id="lobbyin_Time">15M</t>
+          </div>
+        </div>
+        <div>
+          <div id="lobbyin_Setting" onclick="clickAction('lobbySettings')">
+            <img src="./img/setting-big.svg" /><t data-locale="lobby_settings"
+              >Lobby Settings</t
+            >
+          </div>
+          <div id="lobbyin_Quit" onclick="clickAction('quitLobby')">
+            <img src="./img/exit-big.svg" /><t data-locale="quit_lobby"
+              >Quit Lobby</t
+            >
+          </div>
+        </div>
+      </div>
+      <div class="joinBlue" onclick="clickAction('joinTeam', 'blue')">
+        <img src="./img/blue-join.svg" />
+        <t data-locale="blue_team">BLUE TEAM</t>
+      </div>
+      <div class="joinRed" onclick="clickAction('joinTeam', 'red')">
+        <img src="./img/red-join.svg" />
+        <t data-locale="red_team">RED TEAM</t>
+      </div>
+      <div class="playMatchButton" onclick="clickAction('playMatch')">
+        <img src="./img/play.svg" /> <t data-locale="play_match">PLAY MATCH</t>
+      </div>
+    </div>
+    <div class="container" style="display: none">
+      <div class="containerPopupBG" style="display: none">
+        <div class="containerPopup">
+          <t>LobbyName#1231</t>
+          <p data-locale="password">Password</p>
+          <input
+            type="password"
+            data-locale="enter_password"
+            placeholder="enter password..."
+          />
+          <div
+            class="JoinLobbyButton"
+            onclick="clickAction('joinLobbyPassword')"
+          >
+            <t data-locale="join_lobby"></t>Join Lobby</t>
+          </div>
+        </div>
+      </div>
+      <div class="container-topside">
+        <div class="container-topside-topborder"></div>
+        <div class="container-topside-container">
+          <div class="container-topside-left">
+            <t data-locale="information">Information</t>
+            <p data-locale="information_description">
+              Experience competition and fun to the fullest with advanced
+              paintball!
+            </p>
+          </div>
+          <div class="container-topside-logo">
+            <div class="container-topside-logo-bg">
+              <img src="./img/logo.png" />
+            </div>
+            <div class="container-topside-logo-text">
+              <div class="logoTextShadow"></div>
+              <t data-locale="logo_text">Daddy</t>
+              <p data-locale="paintball">Paintball</p>
+            </div>
+          </div>
+          <div class="container-topside-profileside">
+            <img src="./img/default-profile.png" />
+            <div class="container-topside-profileside-text">
+              <t>Brenden Randall</t>
+              <p>$6990</p>
+            </div>
+          </div>
+        </div>
+        <div class="container-topside-bottomborder"></div>
+      </div>
+      <div class="container-container">
+        <div class="container-c-leftside">
+          <div class="container-c-l-title">
+            <img src="./img/category.svg" />
+            <t data-locale="category_list">Category List</t>
+          </div>
+          <div
+            class="categoryMenu"
+            id="categoryMenu-1"
+            onclick="clickAction('categoryMenu', 1)"
+          >
+            <div class="categoryMenuIcon">
+              <img src="./img/lobby-chose.svg" />
+            </div>
+            <div class="categoryMenuText">
+              <t data-locale="lobby">LOBBY</t>
+              <p data-locale="choose">Choose</p>
+            </div>
+            <div
+              class="categoryMenuIconShadow"
+              style="background-image: url(./img/lobby-chose.svg)"
+            ></div>
+          </div>
+          <div
+            class="categoryMenu"
+            id="categoryMenu-2"
+            onclick="clickAction('categoryMenu', 2)"
+          >
+            <div class="categoryMenuIcon">
+              <img src="./img/market-icon.svg" />
+            </div>
+            <div class="categoryMenuText">
+              <t data-locale="market">MARKET</t>
+              <p data-locale="choose">Choose</p>
+            </div>
+            <div
+              class="categoryMenuIconShadow"
+              style="background-image: url(./img/market-icon.svg)"
+            ></div>
+          </div>
+          <div class="createLobbyMenu" onclick="clickAction('createLobbyMenu')">
+            <div class="createLobbyTop">
+              <div class="createLobbyTopIcon">
+                <img src="./img/create-lobby-icon.svg" />
+              </div>
+              <div class="createLobbyTopText">
+                <t data-locale="create_lobby">Create Lobby</t>
+                <p data-locale="new_lobby">New a Lobby</p>
+              </div>
+            </div>
+            <div class="createLobbyIcon">
+              <img src="./img/create-lobby-icon-big.svg" />
+            </div>
+            <t data-locale="create">CREATE</t>
+            <p data-locale="lobby">LOBBY</p>
+            <div class="createLobbyLorem">
+              <img src="./img/info.svg" />
+              <t data-locale="create_lobby_description">Create a lobby through this place.</t>
+            </div>
+          </div>
+        </div>
+        <div class="container-c-c">
+          <div class="LobbyListMenu sectionOne" style="display: none">
+            <div class="container-c-c-Text">
+              <img src="./img/lobby-list-icon.svg" />
+              <t data-locale="lobby_list">Lobby List</t>
+              <div class="lobbySearch">
+                <img src="./img/search.svg" />
+                <input
+                  onkeyup="clickAction('searchLobby', this.value)"
+                  data-locale="lobby_name_placeholder"
+                  placeholder="lobby name..."
+                  type="text"
+                />
+              </div>
+            </div>
+            <div class="container-c-c-Lobbys"></div>
+          </div>
+          <div class="productList sectionOne" style="display: none">
+            <div class="container-c-c-Text">
+              <img src="./img/productlist_icon.svg" />
+              <t data-locale="products_list">Products List</t>
+              <div class="lobbySearch">
+                <img src="./img/search.svg" />
+                <input
+                  onkeyup="clickAction('searchProduct', this.value)"
+                  data-locale="search_products_placeholder"
+                  placeholder="search products..."
+                  type="text"
+                />
+              </div>
+            </div>
+            <div class="container-c-c-products">
+            </div>
+          </div>
+          <div class="LobbyCreate sectionOne" style="display: none">
+            <div class="container-c-c-Text">
+              <img src="./img/lobby-list-icon.svg" />
+              <t data-locale="create_lobby">Create Lobby</t>
+            </div>
+            <div class="container-c-c-CreateLobby">
+              <div class="createLobbyMapText" data-locale="select_map">Select the Map;</div>
+              <div class="createLobbyMaps"></div>
+              <div class="createLobbySettings">
+                <div class="createLobbyName">
+                  <div class="createSettingName">
+                    <img src="./img/lobbyname.svg" />
+                    <t data-locale="lobby_name">Lobby Name</t>
+                  </div>
+                  <input
+                    disabled
+                    type="text"
+                    data-locale="lobby_name_placeholder"
+                    placeholder="lobby name..."
+                    id="lobbyName"
+                  />
+                </div>
+                <div class="createLobbyPassword">
+                  <div class="createSettingName">
+                    <img src="./img/password_icon.svg" />
+                    <t data-locale="lobby_password">Lobby Password</t>
+                  </div>
+                  <input type="password" data-locale="lobby_password_placeholder" placeholder="lobby password..." />
+                </div>
+                <div class="createLobbyTime">
+                  <div class="createSettingName">
+                    <img src="./img/time.svg" />
+                    <t data-locale="lobby_time">Lobby Time</t>
+                  </div>
+                  <div class="createLobbyContainer LobbyTime">
+                    <div
+                      class="createLobbyTimeButton"
+                      onclick="clickAction('selectTime', 1)"
+                    >
+                      <img src="./img/remove.svg" />
+                    </div>
+                    <t>5</t>
+                    <div
+                      class="createLobbyTimeButton"
+                      onclick="clickAction('selectTime', 2)"
+                    >
+                      <img src="./img/add.svg" />
+                    </div>
+                  </div>
+                </div>
+                <div class="createLobbyPlayer">
+                  <div class="createSettingName">
+                    <img src="./img/maxplayer.svg" />
+                    <t data-locale="lobby_max_players">Lobby Max Players</t>
+                  </div>
+                  <div class="createLobbyContainer LobbyPlayer">
+                    <div
+                      class="createLobbyTimeButton"
+                      onclick="clickAction('selectPlayer', 1)"
+                    >
+                      <img src="./img/remove.svg" />
+                    </div>
+                    <t>8</t>
+                    <div
+                      class="createLobbyTimeButton"
+                      onclick="clickAction('selectPlayer', 2)"
+                    >
+                      <img src="./img/add.svg" />
+                    </div>
+                  </div>
+                </div>
+                <div class="createLobbyGameMode gameMode">
+                  <div class="createSettingName">
+                    <img src="./img/gamemode.svg" />
+                    <t data-locale="game_mode">Game Mode</t>
+                  </div>
+                  <select></select>
+                </div>
+                <div class="createLobbyGameMode gameWeapon">
+                  <div class="createSettingName">
+                    <img src="./img/gamemode.svg" />
+                    <t data-locale="weapon">Weapon</t>
+                  </div>
+                  <select></select>
+                </div>
+                <div
+                  class="createLobbyButtonCL"
+                  onclick="clickAction('createLobby')"
+                >
+                  <img src="./img/createlobbyCL.svg" />
+                  <t data-locale="create_lobby_button">Create a Lobby</t>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="nui://game/ui/jquery.js" type="text/javascript"></script>
+    <script src="js/script.js"></script>
+  </body>
+</html>

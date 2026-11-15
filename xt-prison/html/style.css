@@ -1,0 +1,431 @@
+/* xt-prison HUD in the Daddy look: one dark plate on the left with the top right corner cut and a red top line, the
+   time left in Archivo narrow italic, a thin progress line, the three jobs as plain rows, a white G keycap. When G
+   folds it away a small tab stays on the left edge. FiveM's browser is Chromium 103. */
+
+@font-face {
+  font-family: 'Archivo';
+  font-style: normal;
+  font-weight: 100 900;
+  font-stretch: 62% 125%;
+  src: url('fonts/archivo-latin-ext-wdth-normal.woff2') format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+
+@font-face {
+  font-family: 'Archivo';
+  font-style: normal;
+  font-weight: 100 900;
+  font-stretch: 62% 125%;
+  src: url('fonts/archivo-latin-wdth-normal.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: 'Archivo';
+  font-style: italic;
+  font-weight: 100 900;
+  font-stretch: 62% 125%;
+  src: url('fonts/archivo-latin-ext-wdth-italic.woff2') format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+
+@font-face {
+  font-family: 'Archivo';
+  font-style: italic;
+  font-weight: 100 900;
+  font-stretch: 62% 125%;
+  src: url('fonts/archivo-latin-wdth-italic.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+:root {
+  --ac: #c8102e;
+  --ac-500: #e23a50;
+  --plate: linear-gradient(180deg, rgba(20, 21, 26, 0.9), rgba(12, 13, 16, 0.93));
+  --edge: inset 0 0 0 1px rgba(255, 255, 255, 0.07), inset 0 3px 0 #c8102e;
+  --line: rgba(255, 255, 255, 0.08);
+  --mute: rgba(255, 255, 255, 0.62);
+  --faint: rgba(255, 255, 255, 0.38);
+  --green: #3bd67f;
+  --amber: #e0a42e;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Archivo', system-ui, sans-serif;
+  user-select: none;
+}
+
+body {
+  background: transparent;
+  overflow: hidden;
+  width: 100vw;
+  height: 100vh;
+  color: #f3f2f2;
+  -webkit-font-smoothing: antialiased;
+}
+
+.hud-container {
+  pointer-events: none;
+  z-index: 9999;
+}
+
+.hud-container.hidden {
+  display: none !important;
+}
+
+/* ---------- Card ---------- */
+
+.hud-card {
+  position: fixed;
+  left: 28px;
+  top: 50%;
+  transform: translateY(-50%) translateX(0);
+  width: 280px;
+  background: var(--plate);
+  clip-path: polygon(0 0, calc(100% - 18px) 0, 100% 18px, 100% 100%, 0 100%);
+  box-shadow: var(--edge);
+  opacity: 1;
+  pointer-events: all;
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.2s ease;
+}
+
+.hud-container.collapsed .hud-card {
+  transform: translateY(-50%) translateX(-320px);
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Header: a small path line and the title, the job count on the right. */
+.hud-header {
+  display: flex;
+  align-items: flex-end;
+  gap: 10px;
+  padding: 18px 18px 14px;
+  box-shadow: inset 0 -1px 0 var(--line);
+}
+
+.hud-icon-box {
+  display: none;
+}
+
+.hud-header-text {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column-reverse;
+}
+
+.hud-title {
+  margin-top: 4px;
+  font-style: italic;
+  font-weight: 900;
+  font-stretch: 62%;
+  font-size: 26px;
+  line-height: 0.95;
+  padding-top: 0.1em;
+  text-transform: uppercase;
+  letter-spacing: 0.01em;
+}
+
+.hud-subtitle {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ac-500);
+}
+
+.hud-task-badge {
+  flex: none;
+  padding: 4px 9px 5px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--mute);
+  background: rgba(255, 255, 255, 0.07);
+  border-radius: 2px;
+}
+
+.hud-task-badge span {
+  font-style: italic;
+  font-weight: 900;
+  font-stretch: 62%;
+  font-size: 15px;
+  letter-spacing: 0;
+  color: #fff;
+}
+
+/* Body: the time left large, a thin line under it, the prison's name. */
+.hud-body {
+  padding: 14px 18px 16px;
+  box-shadow: inset 0 -1px 0 var(--line);
+}
+
+.time-wrapper {
+  position: relative;
+}
+
+.time-text {
+  font-style: italic;
+  font-weight: 900;
+  font-stretch: 62%;
+  font-size: 58px;
+  line-height: 0.9;
+  padding-top: 0.08em;
+  text-transform: uppercase;
+  color: #fff;
+}
+
+.float-container {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  top: 4px;
+  right: 0;
+  pointer-events: none;
+}
+
+.float-badge {
+  padding: 3px 8px 4px;
+  font-style: italic;
+  font-weight: 900;
+  font-stretch: 62%;
+  font-size: 18px;
+  color: #fff;
+  background: rgba(59, 214, 127, 0.22);
+  box-shadow: inset 3px 0 0 var(--green);
+  animation: floatUp 1.6s ease-out forwards;
+}
+
+@keyframes floatUp {
+  0% {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  20% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  80% {
+    opacity: 1;
+    transform: translateY(-8px);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-18px);
+  }
+}
+
+.progress-track {
+  position: relative;
+  width: 100%;
+  height: 4px;
+  margin-top: 14px;
+  background: rgba(255, 255, 255, 0.1);
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  width: 0%;
+  background: var(--ac);
+  transition: width 0.6s ease, background 0.3s ease;
+}
+
+.progress-fill.green {
+  background: var(--green);
+}
+
+.hud-location-text {
+  margin-top: 10px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--faint);
+}
+
+/* Jobs: plain rows, the count on the right as a small tag. */
+.hud-tasks-section {
+  display: flex;
+  flex-direction: column;
+}
+
+.task-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 10px 18px;
+  box-shadow: inset 0 -1px 0 var(--line);
+}
+
+.task-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+}
+
+.task-icon {
+  flex: none;
+  width: 15px;
+  height: 15px;
+  stroke: var(--mute);
+}
+
+.task-name {
+  font-size: 14px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.86);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.task-badge {
+  flex: none;
+  min-width: 42px;
+  padding: 3px 8px 4px;
+  text-align: center;
+  font-style: italic;
+  font-weight: 900;
+  font-stretch: 62%;
+  font-size: 15px;
+  color: #fff;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 2px;
+}
+
+.task-badge.done {
+  color: var(--green);
+  background: rgba(59, 214, 127, 0.14);
+}
+
+.task-badge.cooldown {
+  color: var(--amber);
+  background: rgba(224, 164, 46, 0.14);
+}
+
+/* Key hint. */
+.hud-helper {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 18px 14px;
+  font-size: 12px;
+  font-weight: 700;
+  font-style: italic;
+  font-stretch: 75%;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  color: var(--mute);
+}
+
+.key-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 20px;
+  height: 20px;
+  margin-bottom: 2px;
+  padding: 0 6px;
+  border-radius: 3px;
+  background: linear-gradient(180deg, #ffffff, #d6d8e0);
+  box-shadow: 0 2px 0 #7d808c;
+  color: #111;
+  font-style: normal;
+  font-weight: 800;
+  font-size: 10px;
+}
+
+/* ---------- Folded tab ---------- */
+
+.collapsed-tab {
+  position: fixed;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%) translateX(-120%);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 14px 10px 16px;
+  background: var(--plate);
+  clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 12px, 100% 100%, 0 100%);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.07), inset 3px 0 0 var(--ac);
+  opacity: 0;
+  pointer-events: none;
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.2s ease;
+  cursor: pointer;
+}
+
+.hud-container.collapsed .collapsed-tab {
+  transform: translateY(-50%) translateX(0);
+  opacity: 1;
+  pointer-events: all;
+}
+
+.tab-icon-box {
+  display: none;
+}
+
+.tab-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.tab-label {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  color: var(--ac-500);
+  line-height: 1;
+}
+
+.tab-time {
+  margin-top: 3px;
+  font-style: italic;
+  font-weight: 900;
+  font-stretch: 62%;
+  font-size: 24px;
+  line-height: 0.95;
+  text-transform: uppercase;
+  color: #fff;
+}
+
+.tab-arrow-container {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding-left: 10px;
+  box-shadow: inset 1px 0 0 var(--line);
+}
+
+.tab-key {
+  min-width: 18px;
+  height: 18px;
+  font-size: 9px;
+}
+
+.tab-arrow {
+  width: 14px;
+  height: 14px;
+  stroke: #fff;
+  animation: arrowPulse 1.3s ease-in-out infinite;
+}
+
+@keyframes arrowPulse {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+
+  50% {
+    transform: translateX(3px);
+  }
+}

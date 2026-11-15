@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        html, body {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background: #000000; /* Siyah arka plan */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        #scoreDisplay {
+            font-family: 'Arial Black', sans-serif;
+            font-size: 400px; /* Daha buyuk font */
+            font-weight: bold;
+            color: #ff0000; /* Kirmizi LED tarzi */
+            text-shadow: 
+                0 0 20px rgba(255, 0, 0, 0.8),
+                0 0 40px rgba(255, 0, 0, 0.6);
+            text-align: center;
+            transform: rotate(90deg);
+        }
+    </style>
+</head>
+<body>
+    <div id="scoreDisplay">0</div>
+    
+    <script>
+        let currentScore = 0;
+        
+        window.addEventListener('message', function(event) {
+            const item = event.data;
+            
+            if (item.action === 'updateScore') {
+                currentScore = item.score;
+                document.getElementById('scoreDisplay').innerText = currentScore;
+            } else if (item.action === 'reset') {
+                currentScore = 0;
+                document.getElementById('scoreDisplay').innerText = "0";
+            }
+        });
+    </script>
+</body>
+</html>

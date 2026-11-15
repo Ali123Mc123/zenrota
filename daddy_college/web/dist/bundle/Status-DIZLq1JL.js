@@ -1,0 +1,1 @@
+import{I as e,V as t,Y as n,Z as r,o as i,ut as a}from"./index-pUufUVbJ.js";var o=i(t({__name:`Status`,props:{tone:{}},setup(t){return(i,o)=>(n(),e(`span`,{class:a([`dc-status`,t.tone??`grey`])},[r(i.$slots,`default`,{},void 0,!0)],2))}}),[[`__scopeId`,`data-v-a2687807`]]);export{o as t};

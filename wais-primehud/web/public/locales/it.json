@@ -1,0 +1,610 @@
+{
+    "rightCorner": {
+        "job": "Lavoro",
+        "gang": "Banda",
+        "bank": "Banca",
+        "cash": "Contanti",
+        "weapon": "Arma",
+        "blackMoney": "Soldi neri"
+    },
+    "weaponHud": {
+        "melee": "Mischia"
+    },
+    "carhud": {
+        "kmh": "km/h",
+        "mph": "mph",
+        "bpm": "BPM",
+        "rpmUnit": "RPM ×1000",
+        "meter": "m",
+        "feet": "ft"
+    },
+    "quickMenu": {
+        "markText": "Clicca per segnare",
+        "categories": {
+            "nearby": "Vicino",
+            "music": "Musica",
+            "car": "Auto"
+        },
+        "nearby": {
+            "bank": "Banca",
+            "shop": "Negozio",
+            "clothing": "Negozio di Abbigliamento",
+            "garage": "Garage",
+            "mechanic": "Meccanico",
+            "gunshop": "Armeria"
+        },
+        "music": {
+            "placeholder": "Inserisci l'URL della canzone",
+            "play": "Riproduci",
+            "errorTitle": "Errore Musica",
+            "errorMessages": {
+                "invalidUrl": "URL non valido. Inserisci un URL valido della canzone.",
+                "invalidVideoData": "Dati video non validi. Controlla l'URL e riprova.",
+                "apiError": "Errore API. Riprova più tardi."
+            }
+        },
+        "car": {
+            "allDoors": "Apri o chiudi tutte le porte",
+            "bonnet": "Cofano",
+            "boot": "Bagagliaio",
+            "engine": "Motore",
+            "doorHint": "Clic sinistro: porta · Clic destro: finestrino",
+            "seat": "Sedile",
+            "seatTaken": "Sedile occupato",
+            "seatCurrent": "Il tuo sedile",
+            "scroll": "Scorri"
+        }
+    },
+    "location": {
+        "nearPostal": "Vicino al CAP"
+    },
+    "settingsMenu": {
+        "title": "Hud",
+        "subtitle": "Impostazioni",
+        "reset": "Ripristina impostazioni",
+        "confirm": "Conferma",
+        "cancel": "Annulla",
+        "categories": {
+            "general": "Generale",
+            "carhud": "Hud Auto",
+            "status": "Hud Stato",
+            "corner": "Angolo Destro"
+        },
+        "fuel": {
+            "title": "Tipo di Carburante",
+            "description": "Seleziona il tipo di carburante utilizzato dal veicolo. Litri o Galloni. * Le modifiche verranno salvate.",
+            "litres": "Litri 100L",
+            "gallons": "Galloni 100G"
+        },
+        "map": {
+            "title": "Mappa",
+            "description": "Seleziona il formato in cui vuoi vedere la mappa.",
+            "square": "Quadrato",
+            "circle": "Cerchio"
+        },
+        "cinematic": {
+            "title": "Modalità Cinematografica",
+            "description": "Abilita o disabilita la modalità cinematografica.",
+            "enabled": "Abilitato",
+            "disabled": "Disabilitato"
+        },
+        "carhuds": {
+            "horizon": "Horizon",
+            "apex": "Apex",
+            "velocity": "Velocity",
+            "minimal": "Minimal",
+            "pulse": "Pulse",
+            "orbit": "Orbit",
+            "heritage": "Heritage",
+            "gauge": "Gauge",
+            "halo": "Halo",
+            "duo": "Duo",
+            "changes": "*Le modifiche verranno salvate",
+            "description": "A destra puoi modificare la palette colori dell'hud auto e trovare il tuo colore ideale."
+        },
+        "status": {
+            "circle": "Cerchio",
+            "circlev2": "Cerchio V2",
+            "circlev3": "Cerchio V3",
+            "circlev4": "Cerchio V4",
+            "square": "Quadrato",
+            "squarev2": "Quadrato V2",
+            "hexagon": "Esagono",
+            "wave": "Onda",
+            "simple": "Semplice",
+            "simplev2": "Semplice V2",
+            "regular": "Standard",
+            "changes": "*Le modifiche verranno salvate",
+            "description": "A destra puoi modificare la palette colori dell'hud stato e trovare il tuo colore ideale."
+        },
+        "rightCorner": {
+            "color": {
+                "title": "Seleziona Colori",
+                "description": "Seleziona i colori per gli elementi dell'angolo destro. Puoi scegliere un colore diverso per ogni icona e testo."
+            },
+            "classic": {
+                "title": "Classic",
+                "description": "Contiene informazioni vecchio stile disposte in riga."
+            },
+            "boxed": {
+                "title": "Boxed",
+                "description": "Aspetto dinamico del box. I colori cambiano in base al ciclo giorno/notte."
+            },
+            "sleek": {
+                "title": "Sleek",
+                "description": "Stile box moderno. Altamente raccomandato."
+            },
+            "simple": {
+                "title": "Semplice",
+                "description": "Design pulito senza box. Ideale per chi ama la semplicità."
+            },
+            "slim": {
+                "title": "Slim",
+                "description": "Un layout compatto con blocco identità, riga di stato e righe denaro con gradiente. Guadagni e perdite sostituiscono l'importo sul posto."
+            },
+            "pill": {
+                "title": "Pillola",
+                "description": "Etichette arrotondate con icone su tre righe allineate a destra. Guadagni e perdite di denaro sostituiscono l'importo sul posto."
+            }
+        },
+        "mapRadius": {
+            "title": "Morbidezza Bordi Mappa",
+            "description": "Puoi selezionare la morbidezza dei bordi della mappa quadrata qui.",
+            "enabled": "Abilitato",
+            "disabled": "Disabilitato"
+        },
+        "performance": {
+            "title": "Modalità prestazioni",
+            "description": "Puoi selezionare la modalità prestazioni qui. Cambierà le prestazioni dell'HUD. Si consiglia di utilizzare questa modalità se si dispone di un PC di fascia bassa.",
+            "balanced": "Bilanciato",
+            "performance": "Prestazioni"
+        },
+        "speed": {
+            "title": "Tipo di velocità",
+            "description": "Seleziona il tipo di velocità che vuoi vedere nell'HUD dell'auto.",
+            "kmh": "KM/H",
+            "mph": "MP/H"
+        },
+        "theme_data": {
+            "title": "Esporta Tema",
+            "export": "Esporta",
+            "description": "Puoi esportare il tuo tema attuale. Sostituisci i dati copiati con i dati in Config.json"
+        },
+        "editor": {
+            "title": "Modalità Personalizzazione",
+            "description": "Organizza le posizioni degli elementi HUD. Ottieni l'aspetto desiderato.",
+            "button": "Personalizzazione"
+        },
+        "minimap": {
+            "title": "Minimappa",
+            "description": "Qui puoi nascondere o mostrare la minimappa.",
+            "show": "Mostra",
+            "hide": "Nascondi"
+        },
+        "scale": {
+            "title": "Scala",
+            "description": "Qui puoi modificare la scala dell'HUD. Questo cambierà la dimensione degli elementi dell'HUD."
+        }
+    },
+    "settings": {
+        "brand": {
+            "title": "Impostazioni HUD"
+        },
+        "nav": {
+            "main": "Generale",
+            "status": "Stato",
+            "carhud": "HUD veicolo",
+            "map": "Mappa",
+            "corner": "Angolo destro",
+            "location": "Posizione",
+            "voice": "Voce",
+            "weapon": "Arma",
+            "customization": "Personalizzazione",
+            "damage": "Danni",
+            "waypoint": "Waypoint"
+        },
+        "pages": {
+            "main": {
+                "title": "Generale",
+                "subtitle": "Unità, colori giorno e notte e quando appare l’HUD"
+            },
+            "status": {
+                "title": "Stato",
+                "subtitle": "Scegli lo stile, quali stati mostrare e quando nasconderli"
+            },
+            "carhud": {
+                "title": "HUD veicolo",
+                "subtitle": "Stile, colori e unità di ogni HUD veicolo"
+            },
+            "map": {
+                "title": "Mappa",
+                "subtitle": "Forma e quando appare la minimappa"
+            },
+            "corner": {
+                "title": "Angolo destro",
+                "subtitle": "Scegli uno stile e cosa mostrare in alto a destra"
+            },
+            "location": {
+                "title": "Posizione",
+                "subtitle": "Info sulla strada e widget bussola"
+            },
+            "voice": {
+                "title": "Voce",
+                "subtitle": "Stile e colori dell’indicatore del microfono"
+            },
+            "weapon": {
+                "title": "Arma",
+                "subtitle": "Stile e colori del riquadro arma"
+            },
+            "customization": {
+                "title": "Personalizzazione",
+                "subtitle": "Condividi la tua configurazione o carica quella di un altro"
+            },
+            "damage": {
+                "title": "Danni",
+                "subtitle": "Indicatore di direzione del colpo ed effetto sangue"
+            },
+            "waypoint": {
+                "title": "Waypoint",
+                "subtitle": "Indicatore del tuo waypoint: stile, distanza, altezza e bordi dello schermo"
+            }
+        },
+        "actions": {
+            "editLayout": "Modifica layout",
+            "close": "ESC",
+            "copyCode": "Copia codice",
+            "import": "Importa",
+            "resetDefault": "Ripristina predefiniti",
+            "resetNight": "Ripristina colori notte",
+            "resetPosition": "Ripristina posizione mappa",
+            "startPreview": "Anteprima di questo HUD",
+            "stopPreview": "Ferma anteprima",
+            "applyAll": "Applica a tutti",
+            "applyAllConfirm": "Premi di nuovo per confermare",
+            "previewHit": "Anteprima del colpo"
+        },
+        "editing": {
+            "label": "Modifica colori per",
+            "day": "Giorno",
+            "night": "Notte"
+        },
+        "cards": {
+            "general": "Generale",
+            "dayNight": "Colori giorno e notte",
+            "behaviour": "Comportamento",
+            "performance": "Prestazioni",
+            "style": "Stile",
+            "showStatuses": "Stati da mostrare",
+            "colours": "Colori",
+            "nightHint": "I colori notte usano quelli del giorno finché non li cambi",
+            "options": "Opzioni",
+            "hideWhenFull": "Nascondi quando pieno",
+            "position": "Posizione",
+            "units": "Unità",
+            "display": "Visualizzazione",
+            "shape": "Forma",
+            "showOnScreen": "Mostra a schermo",
+            "moneyChanges": "Variazioni di denaro",
+            "locationWidget": "Widget posizione",
+            "compassWidget": "Bussola",
+            "visibility": "Visibilità",
+            "look": "Aspetto",
+            "mapView": "Vista mappa",
+            "waypoint": "Indicatore waypoint",
+            "hudParts": "Elementi HUD",
+            "damage": "Effetti dei danni",
+            "waypointStyle": "Stile dell’indicatore"
+        },
+        "hints": {
+            "dayNight": "I colori notte si attivano alle 20:00 e si spengono alle 06:00, ora del server",
+            "performance": "Bilanciato aggiorna l’HUD meno spesso e usa meno CPU",
+            "statusStyle": "Le modifiche si applicano subito",
+            "hideWhenFull": "Uno stato svanisce sopra questo valore e torna quando scende",
+            "oxygen": "Solo sott’acqua",
+            "previewLive": "Sei in un veicolo, l’HUD reale è già visibile",
+            "carStyle": "Lo stile usato in auto e negli altri veicoli terrestri",
+            "mapPosition": "Trascina la mappa in Modifica layout per spostarla",
+            "cornerStyle": "Il blocco informazioni in alto a destra",
+            "moneyChanges": "L’importo +/- accanto a contanti, banca e denaro sporco",
+            "hiddenWidget": "Questo widget è nascosto. Scegli uno stile sopra per mostrarlo di nuovo.",
+            "location": "Strada, zona e codice postale vicino",
+            "compass": "Nastro di direzione in alto sullo schermo, segue la telecamera",
+            "voice": "Portata della voce e indicatore di parlato",
+            "weapon": "Arma corrente e munizioni",
+            "code": "Copialo per condividere il tuo HUD, oppure incolla un codice qui e premi Importa",
+            "applyAll": "Questo salva le tue impostazioni come predefinite del server per tutti. I giocatori le ricevono dopo il riavvio dello script e le loro impostazioni vengono reimpostate. Premi di nuovo il pulsante per confermare.",
+            "mapView": "Quale texture della mappa mostrare. Auto alterna giorno e notte.",
+            "waypoint": "Mostra il tuo waypoint nel mondo con la distanza e se si trova sopra o sotto di te",
+            "gangEmpty": "Nascosta finché non hai una gang",
+            "hudParts": "Nascondi gli elementi che non ti servono. Restano visibili mentre modifichi il layout.",
+            "damage": "Mostra da dove arriva un colpo e il sangue quando subisci danni"
+        },
+        "fields": {
+            "language": "Lingua",
+            "speedUnit": "Unità di velocità",
+            "fuelUnit": "Unità carburante",
+            "clock": "Orologio",
+            "hideAbove": "Nascondi sopra",
+            "fadeAfter": "Dissolvi dopo",
+            "anchor": "Ancoraggio",
+            "layout": "Disposizione",
+            "showFor": "Mostra per",
+            "animation": "Animazione",
+            "depthUnit": "Unità di profondità",
+            "altitudeUnit": "Unità di altitudine"
+        },
+        "units": {
+            "litres": "Litri",
+            "gallons": "Galloni",
+            "metres": "Metri",
+            "feet": "Piedi",
+            "clock24": "24 ore",
+            "clock12": "12 ore",
+            "km": "Chilometri",
+            "mi": "Miglia"
+        },
+        "dayNight": {
+            "auto": "Automatico",
+            "day": "Sempre giorno",
+            "night": "Sempre notte"
+        },
+        "behaviour": {
+            "hideInPause": "Nascondi l’HUD nel menu di pausa",
+            "hideAiming": "Nascondi l’HUD mentre miri",
+            "firstPerson": "Mostra l’HUD in prima persona",
+            "cinematic": "Bande nere cinematografiche",
+            "hideAll": "Nascondi tutti gli elementi HUD",
+            "beltSound": "Suoni cintura"
+        },
+        "performance": {
+            "balanced": "Bilanciato",
+            "performance": "Prestazioni"
+        },
+        "serverDefault": "Predefinito del server",
+        "auto": "Auto",
+        "seconds": "{n} secondi",
+        "styles": {
+            "none": "Nascosto"
+        },
+        "status": {
+            "health": "Salute",
+            "armour": "Armatura",
+            "hunger": "Fame",
+            "thirst": "Sete",
+            "stamina": "Resistenza",
+            "stress": "Stress",
+            "oxygen": "Ossigeno",
+            "autoHide": "Nascondi gli stati pieni",
+            "alwaysInVehicle": "Mostra sempre in veicolo"
+        },
+        "layout": {
+            "row": "Riga",
+            "column": "Colonna"
+        },
+        "anchors": {
+            "map": "In basso a sinistra, accanto alla mappa",
+            "bottomCenter": "In basso al centro",
+            "bottomRight": "In basso a destra",
+            "topLeft": "In alto a sinistra"
+        },
+        "vehicles": {
+            "car": "Auto",
+            "boat": "Barca",
+            "aircraft": "Aeromobile",
+            "bike": "Bicicletta",
+            "motorcycle": "Moto"
+        },
+        "map": {
+            "square": "Quadrata",
+            "circle": "Cerchio",
+            "vehicleOnly": "Mostra solo nei veicoli",
+            "rotate": "Ruota con la telecamera",
+            "border": "Mostra il bordo",
+            "softCorners": "Angoli morbidi",
+            "hexagon": "Esagono",
+            "pentagon": "Pentagono",
+            "pill": "Pillola"
+        },
+        "corner": {
+            "playerId": "ID giocatore",
+            "playerCount": "Giocatori online",
+            "clock": "Orologio",
+            "date": "Data",
+            "logo": "Logo del server",
+            "job": "Lavoro",
+            "gang": "Gang",
+            "money": "Contanti",
+            "bank": "Banca",
+            "blackMoney": "Denaro sporco",
+            "name": "Nome giocatore"
+        },
+        "animations": {
+            "slide": "Scorrimento",
+            "fade": "Dissolvenza",
+            "none": "Nessuna"
+        },
+        "weapon": {
+            "show": "Mostra il riquadro arma"
+        },
+        "share": {
+            "copied": "Codice copiato negli appunti",
+            "invalid": "Impossibile leggere questo codice",
+            "imported": "Impostazioni importate",
+            "reset": "Impostazioni ripristinate",
+            "applied": "Le tue impostazioni sono state inviate al server"
+        },
+        "colors": {
+            "text": "Testo",
+            "icons": "Icone",
+            "icon": "Icona",
+            "speed": "Velocità",
+            "fuel": "Carburante",
+            "rpm": "Giri",
+            "warning": "Avviso",
+            "orange": "Attenzione",
+            "indicator": "Indicatore",
+            "arrow": "Freccia di direzione",
+            "symbol": "Simbolo",
+            "sky": "Cielo",
+            "ground": "Terreno",
+            "gear": "Marcia",
+            "red": "Zona rossa",
+            "heart": "Cuore",
+            "stamina": "Resistenza",
+            "engine": "Motore",
+            "trail": "Barra",
+            "live": "Parla",
+            "muted": "Muto",
+            "background": "Sfondo",
+            "tick": "Trattini piccoli",
+            "tickMajor": "Trattini lunghi",
+            "active": "Direzione attiva",
+            "pointer": "Puntatore",
+            "north": "Nord",
+            "street": "Nome della strada",
+            "subStreet": "Seconda strada",
+            "postal": "Codice postale",
+            "pill": "Capsula direzione",
+            "pillBorder": "Bordo capsula",
+            "dim": "Direzioni laterali",
+            "reserve": "Munizioni di riserva",
+            "electric": "Carburante elettrico",
+            "accent": "Accento",
+            "line": "Contorno",
+            "above": "Meta sopra",
+            "below": "Meta sotto",
+            "arrived": "Arrivato"
+        },
+        "options": {
+            "showDepth": "Mostra profondità",
+            "showLetters": "Mostra lettere bussola",
+            "showAltitude": "Mostra altitudine",
+            "showLanding": "Mostra carrello",
+            "showHeart": "Mostra battito",
+            "showStamina": "Mostra resistenza",
+            "showFuel": "Mostra carburante",
+            "showSub": "Mostra seconda strada",
+            "showPostal": "Mostra codice postale",
+            "showDegrees": "Mostra gradi",
+            "width": "Larghezza",
+            "ppd": "Spaziatura",
+            "radius": "Raggio della curva",
+            "tickShort": "Altezza trattini corti",
+            "tickLong": "Altezza trattini lunghi",
+            "textSize": "Dimensione testo",
+            "gap": "Spazio",
+            "bgOpacity": "Opacità sfondo",
+            "minorOpacity": "Opacità trattini piccoli",
+            "degreeOpacity": "Opacità dei gradi",
+            "lift": "Solleva",
+            "lineMax": "Nome strada più lungo",
+            "indicator": "Direzione del colpo",
+            "blood": "Effetto sangue",
+            "critical": "Sangue a vita bassa",
+            "indicatorOpacity": "Opacità indicatore",
+            "bloodOpacity": "Opacità sangue",
+            "size": "Dimensione indicatore",
+            "showDistance": "Mostra la distanza",
+            "showHeight": "Mostra l’indizio di altezza",
+            "showPole": "Mostra l’asta",
+            "shrink": "Riduci con la distanza",
+            "fadeFar": "Sfuma in lontananza",
+            "hideOffscreen": "Nascondi fuori schermo",
+            "arriveRadius": "Distanza di arrivo",
+            "edgeMargin": "Margine del bordo",
+            "markerSize": "Dimensione indicatore"
+        },
+        "mapStyles": {
+            "default": "Predefinita",
+            "postal": "Postal",
+            "auto": "Giorno e notte",
+            "gta6": "GTA 6"
+        },
+        "waypoint": {
+            "show": "Mostra l’indicatore"
+        },
+        "parts": {
+            "status": "Stati",
+            "carhud": "HUD veicolo",
+            "rightCorner": "Angolo in alto a destra",
+            "weapon": "Arma",
+            "location": "Posizione",
+            "compass": "Bussola",
+            "microphone": "Microfono",
+            "map": "Minimappa"
+        },
+        "presets": {
+            "title": "Layout salvati",
+            "hint": "Dai un nome al layout attuale e ripristinalo quando vuoi",
+            "placeholder": "Nome del layout",
+            "save": "Salva",
+            "apply": "Applica",
+            "delete": "Elimina",
+            "empty": "Nessun layout salvato",
+            "saved": "Layout salvato",
+            "applied": "Layout applicato",
+            "deleted": "Layout eliminato",
+            "full": "Puoi tenere fino a {max} layout",
+            "needName": "Scrivi prima un nome",
+            "savedOn": "Salvato il {date}"
+        },
+        "damage": {
+            "show": "Mostra gli effetti dei danni"
+        }
+    },
+    "editor": {
+        "mode": "Modalità editor",
+        "hint": {
+            "idle": "Trascina per spostare · trascina un angolo per ridimensionare · trascina fuori da un angolo per ruotare · doppio clic per ripristinare",
+            "moving": "Spostamento: {name}",
+            "overlaps": "si sovrappone a {name}",
+            "snapped": "agganciato a {edge}"
+        },
+        "edges": {
+            "left": "bordo sinistro",
+            "right": "bordo destro",
+            "top": "bordo superiore",
+            "bottom": "bordo inferiore",
+            "centerX": "centro orizzontale",
+            "centerY": "centro verticale"
+        },
+        "toolbar": {
+            "snap": "Aggancia",
+            "grid": "Griglia",
+            "guides": "Guide",
+            "showHidden": "Mostra nascosti",
+            "undo": "Annulla",
+            "redo": "Ripeti",
+            "reset": "Ripristina",
+            "cancel": "Annulla",
+            "save": "Salva"
+        },
+        "grids": {
+            "small": "Piccola",
+            "medium": "Media",
+            "large": "Grande"
+        },
+        "names": {
+            "server_infos": "Info server",
+            "time_date": "Ora e data",
+            "boat": "HUD barca",
+            "air": "HUD aereo",
+            "bike": "HUD bici",
+            "moto": "HUD moto",
+            "waypoint": "Waypoint",
+            "health_armour": "Salute e armatura",
+            "hunger_thirst": "Fame e sete",
+            "quickMenu": "Menu rapido"
+        },
+        "dock": {
+            "rotateLeft": "Ruota a sinistra",
+            "rotateRight": "Ruota a destra",
+            "rotation": "Rotazione (gradi)",
+            "scale": "Scala (percentuale)",
+            "reset": "Ripristina dimensione e rotazione"
+        }
+    },
+    "waypoint": {
+        "arrived": "ARRIVATO"
+    }
+}

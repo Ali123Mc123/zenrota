@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daddy Games UI</title>
+
+    <!-- Zar / sans oyunlari 3D rozet overlay'i -->
+    <link rel="stylesheet" href="style.css">
+
+    <!-- Gym: tasarim sistemi + iki ekran -->
+    <link rel="stylesheet" href="gym/tokens.css">
+    <link rel="stylesheet" href="gym/hud.css">
+    <link rel="stylesheet" href="gym/hub.css">
+</head>
+<body>
+    <!-- Bas ustu zar/kart rozetleri (pointer-events: none) -->
+    <div id="badge-container"></div>
+
+    <!-- Antrenman HUD'u: ODAK ALMAZ, yalnizca gorsel -->
+    <div id="gym-hud"></div>
+
+    <!-- Koc merkezi: odakli panel -->
+    <div id="gym-hub"></div>
+
+    <script src="gym/icons.js"></script>
+    <script src="app.js"></script>
+    <script src="gym/hud.js"></script>
+    <script src="gym/hub.js"></script>
+</body>
+</html>

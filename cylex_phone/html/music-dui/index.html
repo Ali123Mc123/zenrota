@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Cylex Music DUI</title>
+</head>
+<body>
+    <!-- No YouTube API here on purpose: this page never touches YT, every player
+         lives in its own player.html iframe which loads the API itself. Loading it
+         here too was one extra request per DUI for nothing. -->
+    <div id="players"></div>
+    <script src="./listener.js"></script>
+</body>
+</html>

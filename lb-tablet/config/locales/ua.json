@@ -1,0 +1,700 @@
+{
+    "LABEL": "Українська",
+    "SEARCH": "Пошук",
+    "CANCEL": "Закрити",
+    "NOW": "Зараз",
+    "D": "д",
+    "H": "г",
+    "M": "хв",
+    "S": "сек",
+    "APP_NAMES": {
+        "Police": "Поліція",
+        "Ambulance": "Швидка Допомога",
+        "Registration": "Реєстрація",
+        "Notes": "Нотатки",
+        "Browser": "Браузер",
+        "Settings": "Налаштування",
+        "Photos": "Галерея",
+        "Camera": "Камера",
+        "Calculator": "Калькулятор",
+        "Apps": "Додатки",
+        "Clock": "Годинник",
+        "Maps": "Карти",
+        "Mail": "Пошта",
+        "Services": "Послуги",
+        "VoiceMemo": "Диктофон"
+    },
+    "APPS": {
+        "SETTINGS": {
+            "TITLE": "Налаштування",
+            "BACK": "Назад",
+            "DONE": "Готово",
+            "EDIT": "Редагувати",
+            "AIRPLANE_MODE": "Режим польоту",
+            "AIRPLANE_MODE_DESCRIPTION": "Вимикає дзвінки, передачу даних.",
+            "STREAMER_MODE": "Режим стримера",
+            "STREAMER_MODE_DESCRIPTION": "Розмиває конфіденційну інформацію",
+            "GENERAL": "Загальні",
+            "GENERAL_DESCRIPTION": "Загальні налаштування планшету",
+            "ABOUT": "Про пристрій",
+            "NAME": "Назва",
+            "VERSION": "Версія",
+            "MODEL_NAME": "Назва моделі",
+            "SERIAL_NUMBER": "Серійний номер",
+            "DEVELOPED_BY": "Розроблено",
+            "PURCHASE_AT": "Придбано у",
+            "SONGS": "Музика",
+            "VIDEOS": "Відео",
+            "PHOTOS": "Фотографії",
+            "APPLICATIONS": "Додатки",
+            "CAPACITY": "Ємність",
+            "AVAILABLE": "Доступно",
+            "SOFTWARE_UPDATE": "Оновлення програмного забезпечення",
+            "AUTOMATIC_UPDATES": "Автоматичне оновлення",
+            "DATE_TIME": "Дата & Час",
+            "24_HOUR_TIME": "24 Годинний формат",
+            "SET_AUTOMATICALLY": "Встановити автоматично",
+            "TIME_ZONE": "Часовий пояс",
+            "LANGUAGE_REGION": "Мова & Регіон",
+            "LANGUAGE": "Мова",
+            "TEMPERATURE": "Температура",
+            "CELCIUS": "Цельсій",
+            "FAHRENHEIT": "Фаренгейт",
+            "BATTERY": "Батарея",
+            "BATTERY_DESCRIPTION": "Перегляд заряду та використання акумулятора",
+            "SOUND_HAPTICS": "Звук і тактильні ефекти",
+            "SOUND_HAPTICS_DESCRIPTION": "Змінити звуки та вібрації",
+            "SOUND_HAPTICS_PATTERNS": "Шаблони звуку та ефектів",
+            "RINGTONE": "Рінгтон",
+            "RINGTONE_VOLUME": "Гучність рінгтону",
+            "TEXT_TONE": "Тон повідомлень",
+            "DEFAULT": "За замовчуванням",
+            "PHONE_STORAGE": "Память планшету",
+            "STORAGE": "Сховище",
+            "USED": "Використано",
+            "OF": "з",
+            "DISPLAY_BRIGHTNESS": "Дисплей & Яскравість",
+            "DISPLAY_BRIGHTNESS_DESCRIPTION": "Налаштувати дисплей & яскравість",
+            "DARK": "Темний",
+            "LIGHT": "Світлий",
+            "APPEARANCE": "Зовнішній вигляд",
+            "AUTOMATIC": "Автоматично",
+            "BRIGHTNESS": "Яскравість",
+            "FRAME_COLOR": "Колір рамки",
+            "TABLET_SCALE": "Маштаб планшета",
+            "WALLPAPER": "Шпалери",
+            "WALLPAPER_DESCRIPTION": "Змінити шпалери",
+            "WALLPAPERS": "Шпалери",
+            "CHOOSE_NEW_WALLPAPER": "Вибрати нові шпалери",
+            "NOTIFICATIONS": "Сповіщення",
+            "NOTIFICATIONS_DESCRIPTION": "Виберіть які додатки пожуть надсилати сповіщення",
+            "ALLOW_NOTIFICATIONS": "Дозволити сповіщення",
+            "SOUNDS": "Звуки",
+            "CLOUD_BACKUP": "Резервне копіювання",
+            "YOUR_PROFILE": "Ваш профіль",
+            "SUCCESS": "Успішно",
+            "SUCCESS_TEXT": "Планшет перезавантажиться через 5секунд...",
+            "OK": "Ок",
+            "ON": "Увімк.",
+            "OFF": "Вимк.",
+            "RESET_POPUP": {
+                "TITLE": "Скинути налаштування",
+                "TEXT": "Ви впевнені, що хочете скинути налаштування планшета? [УСІ ДАНІ БУДУТЬ ВИДАЛЕНІ]",
+                "CANCEL": "Скасувати",
+                "CONFIRM": "Скинути"
+            },
+            "UP_TO_DATE": "Ваш планшет оновлений",
+            "BLUR_HOMESCREEN": "Розмиття головного екрану"
+        },
+        "NOTES": {
+            "TITLE": "Нотатки",
+            "SEARCH_PLACEHOLDER": "Пошук",
+            "FOOTER": "{amount} нотаток",
+            "NEW_NOTE": "Новий запис",
+            "LAST_EDITED": "Останнє редагування: {date}",
+            "DELETE_TITLE": "Видалити {title}",
+            "DELETE_TEXT": "Ви впевненні що хочете видалити '{title}'?",
+            "BUTTON_CANCEL": "Скасувати",
+            "BUTTON_DELETE": "Видалити",
+            "PHONE": "Телефон",
+            "TABLET": "Планшет"
+        },
+        "CLOCK": {
+            "WORLDCLOCK": {
+                "TITLE": "Світовий годинник",
+                "TODAY": "Сьогодні",
+                "TOMORROW": "Завтра",
+                "YESTERDAY": "Вчора",
+                "LOCAL_TIME": "Місцевий час",
+                "HRS": "{time} год"
+            },
+            "ALARM": {
+                "TITLE": "Будильник",
+                "ADD": "Додати будильник",
+                "CANCEL": "Скасувати",
+                "EDIT": "Редагувати",
+                "DONE": "Готово",
+                "SAVE": "Зберегти",
+                "LABEL": "Мітка",
+                "SOUND": "Звук",
+                "SNOOZE": "Відкласти",
+                "DELETE_TITLE": "Видалити будильник",
+                "DELETE_TEXT": "Ви впевнені, що хочете видалити цей будильник?",
+                "BUTTON_CANCEL": "Скасувати",
+                "BUTTON_DELETE": "Видалити",
+                "ALARMS": "Будильники",
+                "NEW_ALARM": "Новий будильник",
+                "EDIT_ALARM": "Редагувати будильник"
+            },
+            "STOPWATCH": {
+                "TITLE": "Секундомір",
+                "START": "Старт",
+                "STOP": "Стоп",
+                "RESET": "Скинути",
+                "LAP": "Коло",
+                "TIME": "Час",
+                "TOTAL": "Загалом",
+                "NO_LAPS": "Немає кіл"
+            },
+            "TIMER": {
+                "TITLE": "Таймер",
+                "START": "Старт",
+                "STOP": "Стоп",
+                "CANCEL": "Скасувати",
+                "HOURS": "Години",
+                "MINUTES": "Хвилини",
+                "SECONDS": "Секунди",
+                "NO_RECENTS": "Немає недавніх"
+            },
+            "ALERT": {
+                "STOP": "Стоп",
+                "RESTART": "Перезапустити"
+            }
+        },
+        "CAMERA": {
+            "VIDEO": "Відео",
+            "PHOTO": "Фото",
+            "LANDSCAPE": "Альбомна орієнтація",
+            "UPLOADING": "Завантаження"
+        },
+        "APPSTORE": {
+            "TITLE": "Додатки",
+            "SEARCH": "Пошук",
+            "GET": "Отримати",
+            "OPEN": "Відкрити",
+            "TODAY": "Сьогодні",
+            "POPULAR_APPS": "Популярні додатки",
+            "GAMES": "Ігри",
+            "APPS": "Додатки",
+            "WHAT_WE_PLAYING": "У що ми граємо",
+            "INFORMATION": "Інформація",
+            "PROVIDER": "Розробник",
+            "SIZE": "Розмір",
+            "COMPATIBILITY": "Сумісність",
+            "IN_APP_PURCHASES": "Вбудовані покупки",
+            "WORKS_WITH_PHONE": "Працює на цьому планшеті",
+            "NO": "Ні",
+            "YES": "Так",
+            "PURCHASE_APP_POPUP": {
+                "TITLE": "Купівля додатку",
+                "DESCRIPTION": "Ви хочете придбати {app} за {price}?",
+                "CANCEL": "Скасувати",
+                "PROCEED": "Купити"
+            }
+        },
+        "PHOTOS": {
+            "TITLE": "Фотографії",
+            "SELECT": "Вибрати",
+            "CANCEL": "Скасувати",
+            "EDIT": "Редагувати",
+            "DONE": "Готово",
+            "DELETE": "Видалити",
+            "SELECT_ITEMS": "Вибрати елемент",
+            "SELECTED_COUNT": "Вибрано {count} елементів",
+            "PHOTOS": "Фотографії",
+            "ALBUMS": "Альбоми",
+            "LIBRARY": "Бібліотека",
+            "GALLERY": "Галерея",
+            "MY_ALBUMS": "Мої альбоми",
+            "MEDIA_TYPES": "Медіа",
+            "FROM_MY_PHONE": "З мого телефону",
+            "NEW_ALBUM_POPUP": {
+                "TITLE": "Новий альбом",
+                "DESCRIPTION": "Введіть назву для цього альбому",
+                "PLACEHOLDER": "Назва",
+                "CANCEL": "Скасувати",
+                "PROCEED": "Зберегти"
+            },
+            "REMOVE_ALBUM": {
+                "TITLE": "Видалити \"{name}\"",
+                "DESCRIPTION": "Ви впевненні що хочете видалити альбом\"{name}\"? Фотографії не будуть видалені",
+                "CANCEL": "Скасувати",
+                "PROCEED": "Видалити"
+            },
+            "RENAME_ALBUM_POPUP": {
+                "TITLE": "Перейменувати альбом",
+                "DESCRIPTION": "Введіть нову назву для цього альбому",
+                "PLACEHOLDER": "Нова назва альбому",
+                "CANCEL": "Скасувати",
+                "PROCEED": "Продовжити"
+            },
+            "DELETE_IMAGE_POPUP": {
+                "TITLE": "Видалити зображення",
+                "DESCRIPTION": "Ви впевненні що хочете видалити зображення?",
+                "CANCEL": "Скасувати",
+                "PROCEED": "Видалити"
+            },
+            "IMPORT_IMAGE_POPUP": {
+                "TITLE": "Імпорт до альбому",
+                "DESCRIPTION": "Імпортувати зображення до цього альбому",
+                "CANCEL": "Скасувати",
+                "PROCEED": "Імпорт",
+                "PLACEHOLDER": "URL Зображення"
+            },
+            "NO_PHOTOS": "Немає фото чи відео",
+            "NO_PHOTOS_INSTRUCTIONS": "Ви можете зробити фото та відео за допомогою камери",
+            "PHOTO_COUNT": "{amount} Фото",
+            "VIDEO_COUNT": "{amount} Відео",
+            "DELETE_CONTEXT_TITLE": "Ви хочете видалити {type} або просто прибрати їх з цього альбому?",
+            "THESE_PHOTOS": "ці фотографії",
+            "THIS_PHOTO": "цю фотографію",
+            "REMOVE_FROM_ALBUM": "Прибрати з альбому",
+            "ADD_TO_ALBUM": "Додати до альбому",
+            "ADD_TO_FAVOURITES": "Додати до улюблених",
+            "REMOVE_FROM_FAVOURITES": "Прибрати з улюблених",
+            "VIDEOS": "Відео",
+            "SELFIES": "Селфі",
+            "SCREENSHOTS": "Знімки екрана",
+            "IMPORTS": "Імпорт",
+            "DUPLICATES": "Дублікати",
+            "YEARS": "Роки",
+            "MONTHS": "Місяці",
+            "DAYS": "Дні",
+            "ALL_PHOTOS": "Усі фотографії",
+            "FAVOURITES": "Улюблені",
+            "RECENTS": "Останні"
+        },
+        "MAIL": {
+            "TITLE": "Пошта",
+            "YOU": "Ви",
+            "UPDATED_NOW": "Оновлено щойно",
+            "NEW_MESSAGE": "Нове повідомлення",
+            "INBOX": "Вхідні",
+            "TO": "Кому",
+            "FROM": "Від",
+            "SUBJECT": "Тема",
+            "MESSAGE": "Повідомлення",
+            "CANCEL": "Скасувати",
+            "SEND": "Надіслати",
+            "EMAIL": "Електронна пошта",
+            "EMAIL_INVALID": "Недійсна електронна адреса",
+            "EMAIL_EXISTS": "Ця електронна адреса вже існує",
+            "PASSWORD": "Пароль",
+            "WRONG_PASSWORD": "Неправильний пароль",
+            "LOGIN": "Увійти",
+            "NO_EMAIL": "Немає електронної адреси?",
+            "CREATE_ONE": "Створити",
+            "UNREAD": "Непрочитані",
+            "CREATE_MAIL": "Створити електронну пошту",
+            "ALREADY_HAVE": "Вже маєте електронну адресу?",
+            "ADD_EMAIL": "Додати електронну адресу",
+            "RE": "Re: {subject}",
+            "CHANGE_ACCOUNT": "Змінити акаунт",
+            "CHANGE_PASSWORD": "Змінити пароль",
+            "DELETE_ACCOUNT": "Видалити акаунт",
+            "SIGN_OUT_POPUP": {
+                "TITLE": "Вийти",
+                "DESCRIPTION": "Ви впевнені, що хочете вийти?",
+                "CANCEL": "Скасувати",
+                "PROCEED": "Продовжити"
+            },
+            "DELETE_MAIL_POPUP": {
+                "TITLE": "Видалити електронну пошту",
+                "DESCRIPTION": "Ви впевнені, що хочете видалити цей лист?",
+                "CANCEL": "Скасувати",
+                "DELETE": "Видалити"
+            }
+        },
+        "VOICEMEMO": {
+            "TITLE": "Диктофон",
+            "VOICE_RECORDINGS": "Голосовий запис",
+            "SEARCH_RECORDINGS": "Знайти записи",
+            "DEFAULT_NAME": "Новий запис",
+            "DELETE_POPUP": {
+                "TITLE": "Видалити запис",
+                "DESCRIPTION": "Ви впевненні що хочете видалити запис?",
+                "CANCEL": "Скасувати",
+                "PROCEED": "Продовжити"
+            },
+            "NO_MICROPHONE_POPUP": {
+                "TITLE": "Немає мікрофону",
+                "DESCRIPTION": "У нас немає доступу до вашого мікрофона. Переконайтеся, що мікрофон підключений, і прийміть спливаюче повідомлення у верхньому правому куті екрану",
+                "OK": "ОК"
+            },
+            "EMPTY_RECORDING_POPUP": {
+                "TITLE": "Порожній запис",
+                "DESCRIPTION": "Ви не можете зберегти запис без звуку",
+                "OK": "OK"
+            }
+        },
+        "SERVICES": {
+            "ACTIONS": "Дії",
+            "COMPANIES": "Компанії",
+            "MESSAGES": "Повідомлення",
+            "SETTINGS": "Налаштування",
+            "CLOSED": "Закрито",
+            "YOUR_MESSAGES": "Ваші повідомлення",
+            "JOB_MESSAGES": "Робочі повідомлення",
+            "DUTY": "Зміна",
+            "DUTY_DESCRIPTION": "Перемкнути статус зміни",
+            "GO_ON_DUTY": "Заступити на зміну",
+            "GO_OFF_DUTY": "Знятись зі зміни",
+            "JOB_CALLS": "Робочі виклики",
+            "JOB_CALLS_DESCRIPTION": "{toggle} прийом викликів.",
+            "ENABLE": "Увімкнути",
+            "DISABLE": "Вимкнути",
+            "DISABLE_CALLS": "Вимкнути виклики",
+            "ENABLE_CALLS": "Увімкнути виклики",
+            "BALANCE": "Баланс",
+            "CURRENT_BALANCE": "Поточний баланс компанії",
+            "MANAGE_EMPLOYEES": "Керування співробітниками",
+            "HIRE": "Найняти",
+            "SET_GRADE": "Встановити ранг",
+            "UNEMPLOYED": "Ви безробітній",
+            "ALL": "Усі",
+            "AVAILABLE": "Доступні",
+            "SEARCH_EMPLOYEES": "Пошук співробітників",
+            "PERSONAL": "Особисте",
+            "JOB": "Робота",
+            "PLACEHOLDER": "Текстове повідомлення",
+            "NOT_DELIVERED": "Не доставлено",
+            "SENT_LOCATION": "Поділився своєю локацією, натисніть, щоб відкрити на мапі",
+            "SENT_LOCATION_SHORT": "Поділився своєю локацією",
+            "SEND_LOCATION_POPUP": {
+                "TITLE": "Поділитись локацією",
+                "TEXT": "Ви хочете поділитись локацією?",
+                "CANCEL": "Скасувати",
+                "SEND": "Відправити"
+            },
+            "DELETE_CONVERSATION": {
+                "TITLE": "Видалити розмову",
+                "DESCRIPTION": "Ви впевненні що хочете видалити розмову?",
+                "CANCEL": "Скасувати",
+                "DELETE": "Видалити"
+            },
+            "DEPOSIT_POPUP": {
+                "TITLE": "Депозит",
+                "DESCRIPTION": "Внести гроші на рахунок компанії",
+                "AMOUNT": "Сума",
+                "CANCEL": "Скасувати",
+                "PROCEED": "Продовжити"
+            },
+            "WITHDRAW_POPUP": {
+                "TITLE": "Зняття коштів",
+                "DESCRIPTION": "Зняття коштів з рахунку компанії",
+                "NOT_ENOUGH_MONEY": "На рахунку компанії недостатньо коштів",
+                "AMOUNT": "Сума",
+                "CANCEL": "Скасувати",
+                "PROCEED": "Продовжити"
+            },
+            "HIRE_POPUP": {
+                "TITLE": "Найняти",
+                "DESCRIPTION": "Найняти нового співробітника",
+                "PLACEHOLDER": "ID",
+                "CANCEL": "Скасувати",
+                "PROCEED": "Продовжити"
+            },
+            "FIRE_POPUP": {
+                "TITLE": "Звільнити",
+                "DESCRIPTION": "Ви впевненні що хочете звільнити {name}?",
+                "PLACEHOLDER": "ID",
+                "CANCEL": "Скасувати",
+                "PROCEED": "Продовжити"
+            }
+        },
+        "MDT": {},
+        "BROWSER": {
+            "TITLE": "Браузер",
+            "SEARCH_PLACEHOLDER": "Шукайте або введіть URL",
+            "FAILED_LOAD_PAGE": "Не вдалося завантажити сторінку, можливо вона не підтримую вбудовування?"
+        },
+        "REGISTRATION": {
+            "TITLE": "Реєстрація",
+            "SELECT_CHARACTER": " Виберіть Персонажа",
+            "PLEASE_SELECT_CHARACTER": "Будь ласка, виберіть персонажа",
+            "CREATE_NEW": "Створити нового",
+            "EDIT": "Редагувати",
+            "SAVE": "Зберегти",
+            "DELETE": "Видалити",
+            "CANCEL": "Скасувати",
+            "DELETE_CHARACTER": "Видалити персонажа",
+            "DESCRIPTION": "Опис",
+            "DESCRIPTION_PLACEHOLDER": "Введіть опис...",
+            "ADD": "Додати",
+            "CHARACTER_INFO": "Інформація про персонажа",
+            "REMOVE_AVATAR": "Видалити аватар",
+            "FIRSTNAME": "Ім'я",
+            "LASTNAME": "Прізвище",
+            "DOB": "Дата народження",
+            "PHONE_NUMBER": "Номер телефону",
+            "GENDER": "Стать",
+            "MALE": "Чоловік",
+            "FEMALE": "Жінка",
+            "JOB": "Робота",
+            "HEIGHT": "Вага",
+            "FORMATTED_HEIGHT": "{height}см",
+            "VEHICLES": "Транспорт",
+            "VEHICLE": "Транспорт",
+            "REMOVE_PICTURE": "Видалити фото",
+            "SEARCH_VEHICLES": "Знайти фото",
+            "MODEL": "Модель",
+            "PLATE": "Номерний знак",
+            "COLOR": "Колір",
+            "CREATE": "Створити",
+            "DELETE_VEHICLE": "Видалити транспорт",
+            "DELETE_VEHICLE_POPUP": {
+                "TITLE": "Видалити транспорт",
+                "DESCRIPTION": "Ви впевненні, що хочете видалити транспорт?"
+            },
+            "LICENSES": "Ліцензії",
+            "ADD_LICENSE": "Додати ліцензію",
+            "DELETE_LICENSE_POPUP": {
+                "TITLE": "Видалити ліцензію",
+                "DESCRIPTION": "Ви впевненні, що хочете видалити цю ліцензію?"
+            },
+            "PROPERTIES": "Нерухомість",
+            "ADD_PROPERTY_POPUP": {
+                "TITLE": "Нова нерухомість",
+                "DESCRIPTION": "Створити нову нерухомість",
+                "LABEL": "Назва нерухомості",
+                "ADDRESS": "Адреса"
+            },
+            "DELETE_PROPERTY_POPUP": {
+                "TITLE": "Видалити нерухомість",
+                "DESCRIPTION": "Ви впевненні, що хочете видалити цю нерухомість?"
+            },
+            "ERROR": {
+                "TITLE": "Помилка",
+                "MISSING_FIELDS": "Ви не заповнили наступні поля: {fields}",
+                "OK": "OK"
+            }
+        },
+        "MAPS": {
+            "GO": "Go"
+        }
+    },
+    "COMPONENTS": {
+        "CONTEXT_MENU": {
+            "CANCEL": "Скасувати"
+        },
+        "IMAGE": {
+            "SAVE_TO_GALLERY": "Зберегти в галерею"
+        },
+        "GALLERY": {
+            "CANCEL": "Скасувати",
+            "EXTERNAL_URL": "Зовнішній URL",
+            "EXTERNAL_URL_BLACKLISTED": "Цей URL в чорному списку",
+            "NO_IMAGES": "Немає зображень"
+        },
+        "NOTIFICATIONS": {
+            "SENT_PHOTO": "Надіслати фото",
+            "SENT_GIF": "Надіслати GIF",
+            "NOW": "зараз"
+        },
+        "SHARE": {
+            "COPY_PHOTO": "Копіювати фото",
+            "COPY_VIDEO": "Копіювати відео",
+            "USE_WALLPAPER": "Встановити як шпалери",
+            "COPY_NUMBER": "Копіювати номер",
+            "COPY_LINK": "Копіювати посилання",
+            "AIRDROP_SENT": "Надіслано",
+            "AIRDROP_ACCEPTED": "Прийнято",
+            "AIRDROP_DECLINED": "Відхилено",
+            "AIRDROP_NO_USERS": "Немає телефонів поруч",
+            "WALLPAPER_POPUP": {
+                "TITLE": "Встановити як шпалери",
+                "TEXT": "Ви впевнені, що хочете встановити це зображення як шпалери?",
+                "CANCEL": "Скасувати",
+                "PROCEED": "Продовжити"
+            },
+            "COPY_POPUP": {
+                "TITLE": "Успіх",
+                "DESCRIPTION": "Успішно скопійовано до буферу обміну",
+                "OK": "OK"
+            }
+        },
+        "AIRDROP": {
+            "TITLE": "AirShare",
+            "TEXT": "{sender} хоче поділитися {type}",
+            "VIDEO": "Відео",
+            "PHOTO": "Фото",
+            "CONTACT": "Контактом",
+            "LOCATION": "Місцезнаходженням",
+            "NOTE": "Нотатком",
+            "VOICEMEMO": "Голосовим повідомленням",
+            "PLAYLIST": "плейлістом",
+            "DECLINE": "Відхилити",
+            "ACCEPT": "Прийняти"
+        },
+        "BATTERY": {
+            "LOW_BATTERY": "Низький рівень заряду",
+            "BATTERY_REMAINING": "{percent}% Залишилось",
+            "LOW_POWER_MODE": "Режим низького енергоспоживання",
+            "CLOSE": "Закрити"
+        },
+        "COLOR_PICKER": {
+            "COLOR": "Колір"
+        }
+    },
+    "SETUP": {
+        "HELLO": "Приві",
+        "SELECT_LANGUAGE": "Оберіть мову",
+        "NEXT": "Натисніть, щоб відкрити",
+        "APPEARANCE": "Тема",
+        "APPEARANCE_TEXT": "Виберіть світлу або темну тему для пристрою",
+        "CONTINUE": "Продовжити",
+        "WELCOME_TO": "Ласкаво просимо до",
+        "CLICK": "Натисніть, щоб розпочати"
+    },
+    "HOMESCREEN": {
+        "DONE": "Готово",
+        "CLOSE_ALL": "Закрити всі",
+        "REMOVE_APP_POPUP": {
+            "TITLE": "Видалити '{app}'?",
+            "DESCRIPTION": "Видалення цього додатка НЕ призведе до видалення його даних. Додаток можна буде перевстановити з App Store.",
+            "CANCEL": "Скасувати",
+            "PROCEED": "Видалити"
+        }
+    },
+    "LOCKSCREEN": {
+        "DELETE": "Видалити",
+        "FONT_AND_COLOR": "Шрифт & Колір"
+    },
+    "MISC": {
+        "GENDERS": {
+            "MALE": "Чоловік",
+            "FEMALE": "Жінка"
+        },
+        "AIRPLANE_MODE_POPUP": {
+            "TITLE": "Помилка",
+            "DESCRIPTION": "Ви намагаєтесь виконати дію, яка потребує доступу до інтернету. Вимкніть режим польоту, щоб продовжити.",
+            "OK": "OK"
+        }
+    },
+    "BACKEND": {
+        "CAMERA": {
+            "TAKE_PHOTO": "{key} Зробити фото",
+            "FLIP_CAMERA": "{key} Перевернути",
+            "TOGGLE_FLASH": "{key} Спалах",
+            "TOGGLE_CURSOR": "{key} Курсор",
+            "CHANGE_MODE": "{key} {key2} Режим",
+            "ROLL": "{key} {key2} Поворот",
+            "FREEZE": "{key} Заморозити",
+            "UNFREEZE": "{key} Разморозити",
+            "TOGGLE_TIP": "{key} Приховати"
+        },
+        "SERVICES": {
+            "NEW_MESSAGE": "Нове повідомлення",
+            "ANONYMOUS": "Анонімно"
+        },
+        "MISC": {
+            "X_TABLET": "Планшет {firstname}"
+        },
+        "MAIL": {
+            "AUTOMATIC_PASSWORD": {
+                "SENDER": "Система",
+                "SUBJECT": "Ваш пароль",
+                "MESSAGE": "Привіт,\n\nВаша автоматична електронна адреса: {address}, а ваш пароль: {password}"
+            }
+        },
+        "LOGS": {
+            "TOOK_PHOTO": "Зроблено фото",
+            "TOOK_VIDEO": "Знято відео",
+            "NEW_DISPATCH": "Нове сповіщення: {title}"
+        },
+        "BASE_DISPATCH": {
+            "VEHICLE_CLASSES": {
+                "0": "компакт",
+                "1": "седан",
+                "2": "SUV",
+                "3": "купе",
+                "4": "маслкар",
+                "5": "класичний спорткар",
+                "6": "спорткар",
+                "7": "суперкар",
+                "8": "мотоцикл",
+                "9": "позашляховик",
+                "10": "промисловий транспорт",
+                "11": "технічний транспорт",
+                "12": "фургон",
+                "13": "велосипед",
+                "14": "човен",
+                "15": "гелікоптер",
+                "16": "літак",
+                "17": "сервісний транспорт",
+                "18": "екстрений транспорт",
+                "19": "військовий транспорт",
+                "20": "комерційний транспорт",
+                "21": "потяг",
+                "22": "болід"
+            },
+            "VEHICLE_DATA": {
+                "BODY_TYPE": "Тип кузова",
+                "MANUFACTURER": "Виробник",
+                "MODEL": "Модель",
+                "COLOR": "Колір",
+                "PLATE": "Номерний знак"
+            },
+            "VEHICLE_THEFT": {
+                "CODE": "10-31",
+                "TITLE": "Крадіжка транспорту - {plate}",
+                "DESCRIPTION": "{gender_lower} був(-ла) помічений(-а) під час крадіжки {color_lower} {class} {manufacturer} {model} з номером {plate}."
+            },
+            "VEHICLE_JACKING": {
+                "CODE": "10-31",
+                "TITLE": "Угон автомобіля - {plate}",
+                "DESCRIPTION": "{gender_lower} був(-ла) помічений(-а) під час угону {color_lower} {class} {manufacturer} {model} з номером {plate}."
+            },
+            "WEAPON_TYPES": {
+                "DIGISCANNER": "Дигісканер",
+                "FIREEXTINGUISHER": "Вогнегасник",
+                "HACKINGDEVICE": "Хакерський пристрій",
+                "HEAVY": "Важка зброя",
+                "MELEE": "Холодна зброя",
+                "METALDETECTOR": "Металошукач",
+                "MG": "Кулемет",
+                "NIGHTVISION": "Прилад нічного бачення",
+                "PARACHUTE": "Парашут",
+                "PETROLCAN": "Каністра з пальним",
+                "PISTOL": "Пістолет",
+                "RIFLE": "Гвинтівка",
+                "SHOTGUN": "Дробовик",
+                "SMG": "ПП (пістолет-кулемет)",
+                "SNIPER": "Снайперська гвинтівка",
+                "STUNGUN": "Електрошокер",
+                "THROWN": "Метальна зброя",
+                "TRANQILIZER": "Транквілізатор",
+                "UNARMED": "Без зброї",
+                "UNKNOWN": "Вогнепальна зброя"
+            },
+            "GUNSHOT": {
+                "CODE": "10-31",
+                "TITLE": "Постріли - {location}",
+                "DESCRIPTION": "{gender_lower} був(-ла) помічений(-а) під час стрільби з {weapon_type_lower} у {location}."
+            },
+            "EXPLOSION": {
+                "TITLE": "Вибух",
+                "DESCRIPTION": "Було чутно вибух у {location}.",
+                "CODE": "10-31"
+            },
+            "ARMED": {
+                "TITLE": "Озброєний(-а) {gender}",
+                "DESCRIPTION": "{gender_lower} був(-ла) помічений(-а) з {weapon_type_lower} у {location}.",
+                "CODE": "10-31"
+            }
+        },
+        "MDT": {},
+        "MDT_NOTIFICATIONS": {}
+    },
+    "MDT": {}
+}

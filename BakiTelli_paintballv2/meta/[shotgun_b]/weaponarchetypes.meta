@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF - 8"?>
+
+<CWeaponModelInfo__InitDataList>
+	<InitDatas>
+		<Item>
+			<modelName>weapon_pb_smg_g</modelName>
+			<txdName>weapon_pb_smg_g</txdName>
+			<ptfxAssetName>NULL</ptfxAssetName>
+			<lodDist value="500"/>
+		</Item>
+		<Item>
+			<modelName>weapon_pb_smg_b</modelName>
+			<txdName>weapon_pb_smg_b</txdName>
+			<ptfxAssetName>NULL</ptfxAssetName>
+			<lodDist value="500"/>
+		</Item>
+		<Item>
+			<modelName>weapon_pb_smg</modelName>
+			<txdName>weapon_pb_smg</txdName>
+			<ptfxAssetName>NULL</ptfxAssetName>
+			<lodDist value="500"/>
+		</Item>
+		<Item>
+			<modelName>weapon_pb_shotgun_g</modelName>
+			<txdName>weapon_pb_shotgun_g</txdName>
+			<ptfxAssetName>NULL</ptfxAssetName>
+			<lodDist value="500"/>
+		</Item>
+		<Item>
+			<modelName>weapon_pb_shotgun_b</modelName>
+			<txdName>weapon_pb_shotgun_b</txdName>
+			<ptfxAssetName>NULL</ptfxAssetName>
+			<lodDist value="500"/>
+		</Item>
+		<Item>
+			<modelName>weapon_pb_shotgun</modelName>
+			<txdName>weapon_pb_shotgun</txdName>
+			<ptfxAssetName>NULL</ptfxAssetName>
+			<lodDist value="500"/>
+		</Item>
+		<Item>
+			<modelName>weapon_pb_rifle_g</modelName>
+			<txdName>weapon_pb_rifle_g</txdName>
+			<ptfxAssetName>NULL</ptfxAssetName>
+			<lodDist value="500"/>
+		</Item>
+		<Item>
+			<modelName>weapon_pb_rifle_b</modelName>
+			<txdName>weapon_pb_rifle_b</txdName>
+			<ptfxAssetName>NULL</ptfxAssetName>
+			<lodDist value="500"/>
+		</Item>
+		<Item>
+			<modelName>weapon_pb_rifle</modelName>
+			<txdName>weapon_pb_rifle</txdName>
+			<ptfxAssetName>NULL</ptfxAssetName>
+			<lodDist value="500"/>
+		</Item>
+		<Item>
+			<modelName>weapon_pb_pistol_g</modelName>
+			<txdName>weapon_pb_pistol_g</txdName>
+			<ptfxAssetName>NULL</ptfxAssetName>
+			<lodDist value="500"/>
+		</Item>
+		<Item>
+			<modelName>weapon_pb_pistol_b</modelName>
+			<txdName>weapon_pb_pistol_b</txdName>
+			<ptfxAssetName>NULL</ptfxAssetName>
+			<lodDist value="500"/>
+		</Item>
+		<Item>
+			<modelName>weapon_pb_pistol</modelName>
+			<txdName>weapon_pb_pistol</txdName>
+			<ptfxAssetName>NULL</ptfxAssetName>
+			<lodDist value="500"/>
+		</Item>
+	</InitDatas>
+</CWeaponModelInfo__InitDataList>
+

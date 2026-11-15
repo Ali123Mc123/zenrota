@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<CVehicleModelInfoVariation>
+  <variationData>
+    <!-- ONX EMS Pack Start -->
+    <!-- Aircraft & Misc Start -->
+    <!-- Yankee C130 Type 1 (0013-NX) -->
+    <Item>
+      <modelName>onx_ambkee2</modelName>
+      <colors>
+        <Item>
+          <indices content="char_array">
+            112
+            88
+            0
+            0
+            111
+            111
+          </indices>
+          <liveries />
+        </Item>
+      </colors>
+      <kits>
+        <Item>5513_onx_ambkee2_modkit</Item>
+      </kits>
+      <windowsWithExposedEdges />
+      <plateProbabilities>
+        <Probabilities>
+          <Item>
+            <Name>Police guv plate</Name>
+            <Value value="100" />
+          </Item>
+        </Probabilities>
+      </plateProbabilities>
+      <lightSettings value="0" />
+      <sirenSettings value="5500" />
+    </Item>
+    <!-- Sandstorm D205 Type 1 (0014-NX) -->
+    <Item>
+      <modelName>onx_ambstorm</modelName>
+      <colors>
+        <Item>
+          <indices content="char_array">
+            112
+            88
+            0
+            0
+            111
+            111
+          </indices>
+          <liveries />
+        </Item>
+      </colors>
+      <kits>
+        <Item>5514_onx_ambstorm_modkit</Item>
+      </kits>
+      <windowsWithExposedEdges />
+      <plateProbabilities>
+        <Probabilities>
+          <Item>
+            <Name>Police guv plate</Name>
+            <Value value="100" />
+          </Item>
+        </Probabilities>
+      </plateProbabilities>
+      <lightSettings value="247" />
+      <sirenSettings value="5500" />
+    </Item>
+    <!-- Type 1 Ambulances (Truck Box) End -->
+    <!-- Type 2 Ambulances (Van) Start -->
+    <!-- Type 2 Ambulances (Van) End -->
+    <!-- Type 3 Ambulances (Van Box) Start -->
+    <!-- Jogger Type 3 (0030-NX) -->
+    <!-- Type 3 Ambulances (Van Box) End -->
+    <!-- Pickups Start -->
+    <!-- Pickups End -->
+    <!-- Motorcycles Start -->
+    <!-- Motorcycles End -->
+    <!-- Type 1 Ambulances (Truck Box) 2 Start -->
+    <!-- Type 1 Ambulances (Truck Box) 2 End -->
+    <!-- Type 2 Ambulances (Van) 2 Start -->
+    <!-- Type 2 Ambulances (Van) 2 End -->
+    <!-- Type 3 Ambulances (Van Box) 2 Start -->
+    <!-- Type 3 Ambulances (Van Box) 2 End -->
+    <!-- Pickups 2 Start -->
+    <!-- Pickups 2 End -->
+    <!-- ONX EMS Pack End -->
+    <!-- Emergency Lightbars Start -->
+    <!-- Emergency Lightbars End -->
+  </variationData>
+</CVehicleModelInfoVariation>

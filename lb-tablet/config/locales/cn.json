@@ -1,0 +1,610 @@
+{
+    "LABEL": "简体中文",
+    "SEARCH": "搜索",
+    "CANCEL": "取消",
+    "NOW": "now",
+    "D": "d",
+    "H": "h",
+    "M": "m",
+    "S": "s",
+    "APP_NAMES": {
+        "Police": "警察",
+        "Ambulance": "救护车",
+        "Registration": "注册",
+        "Notes": "笔记",
+        "Browser": "浏览器",
+        "Settings": "设置",
+        "Photos": "照片",
+        "Camera": "相机",
+        "Calculator": "计算器",
+        "Apps": "应用",
+        "Clock": "时钟",
+        "Maps": "地图",
+        "Mail": "邮件",
+        "Services": "服务",
+        "VoiceMemo": "语音备忘录"
+    },
+    "APPS": {
+        "SETTINGS": {
+            "TITLE": "设置",
+            "BACK": "返回",
+            "DONE": "完成",
+            "EDIT": "编辑",
+            "AIRPLANE_MODE": "飞行模式",
+            "AIRPLANE_MODE_DESCRIPTION": "禁用通话、蜂窝数据等。",
+            "STREAMER_MODE": "直播模式",
+            "STREAMER_MODE_DESCRIPTION": "模糊敏感信息",
+            "GENERAL": "通用",
+            "GENERAL_DESCRIPTION": "平板的常规设置",
+            "ABOUT": "关于",
+            "NAME": "名称",
+            "VERSION": "版本",
+            "MODEL_NAME": "型号",
+            "SERIAL_NUMBER": "序列号",
+            "DEVELOPED_BY": "开发者",
+            "PURCHASE_AT": "购买于",
+            "SONGS": "歌曲",
+            "VIDEOS": "视频",
+            "PHOTOS": "照片",
+            "APPLICATIONS": "应用",
+            "CAPACITY": "容量",
+            "AVAILABLE": "可用",
+            "SOFTWARE_UPDATE": "软件更新",
+            "AUTOMATIC_UPDATES": "自动更新",
+            "DATE_TIME": "日期和时间",
+            "24_HOUR_TIME": "24小时制",
+            "SET_AUTOMATICALLY": "自动设置",
+            "TIME_ZONE": "时区",
+            "LANGUAGE_REGION": "语言与地区",
+            "LANGUAGE": "语言",
+            "TEMPERATURE": "温度",
+            "CELCIUS": "摄氏度",
+            "FAHRENHEIT": "华氏度",
+            "BATTERY": "电池",
+            "BATTERY_DESCRIPTION": "查看电池使用情况和电量",
+            "SOUND_HAPTICS": "声音与触觉",
+            "SOUND_HAPTICS_DESCRIPTION": "更改声音和振动",
+            "SOUND_HAPTICS_PATTERNS": "声音和触觉模式",
+            "RINGTONE": "铃声",
+            "RINGTONE_VOLUME": "铃声音量",
+            "TEXT_TONE": "短信音",
+            "DEFAULT": "默认",
+            "PHONE_STORAGE": "平板存储",
+            "STORAGE": "存储",
+            "USED": "已用",
+            "OF": "的",
+            "DISPLAY_BRIGHTNESS": "显示与亮度",
+            "DISPLAY_BRIGHTNESS_DESCRIPTION": "调整显示亮度",
+            "DARK": "暗色",
+            "LIGHT": "亮色",
+            "APPEARANCE": "外观",
+            "AUTOMATIC": "自动",
+            "BRIGHTNESS": "亮度",
+            "FRAME_COLOR": "框架颜色",
+            "TABLET_SCALE": "平板缩放",
+            "WALLPAPER": "壁纸",
+            "WALLPAPER_DESCRIPTION": "更改壁纸和背景设置",
+            "WALLPAPERS": "壁纸",
+            "CHOOSE_NEW_WALLPAPER": "选择新壁纸",
+            "NOTIFICATIONS": "通知",
+            "NOTIFICATIONS_DESCRIPTION": "选择哪些应用可以发送通知",
+            "ALLOW_NOTIFICATIONS": "允许通知",
+            "SOUNDS": "声音",
+            "CLOUD_BACKUP": "云备份",
+            "YOUR_PROFILE": "您的个人资料",
+            "SUCCESS": "成功",
+            "SUCCESS_TEXT": "平板将在5秒钟内重启...",
+            "OK": "确定",
+            "ON": "开",
+            "OFF": "关",
+            "RESET_POPUP": {
+                "TITLE": "重置平板",
+                "TEXT": "您确定要重置平板吗？[这将删除所有内容]",
+                "CANCEL": "取消",
+                "CONFIRM": "重置"
+            },
+            "UP_TO_DATE": "您的平板已是最新",
+            "BLUR_HOMESCREEN": "模糊主屏幕"
+        },
+        "NOTES": {
+            "TITLE": "笔记",
+            "SEARCH_PLACEHOLDER": "搜索",
+            "FOOTER": "{amount} 条笔记",
+            "NEW_NOTE": "新建笔记",
+            "LAST_EDITED": "最后编辑时间: {date}",
+            "DELETE_TITLE": "删除 {title}",
+            "DELETE_TEXT": "您确定要删除 '{title}' 吗？",
+            "BUTTON_CANCEL": "取消",
+            "BUTTON_DELETE": "删除"
+        },    
+        "CLOCK": {
+            "WORLDCLOCK": {
+                "TITLE": "世界时钟",
+                "TODAY": "今天",
+                "TOMORROW": "明天",
+                "YESTERDAY": "昨天",
+                "LOCAL_TIME": "本地时间",
+                "HRS": "{time} 小时"
+            },
+            "ALARM": {
+                "TITLE": "闹钟",
+                "ADD": "添加闹钟",
+                "CANCEL": "取消",
+                "EDIT": "编辑",
+                "DONE": "完成",
+                "SAVE": "保存",
+                "LABEL": "标签",
+                "SOUND": "声音",
+                "SNOOZE": "稍后再响",
+                "DELETE_TITLE": "删除闹钟",
+                "DELETE_TEXT": "您确定要删除此闹钟吗？",
+                "BUTTON_CANCEL": "取消",
+                "BUTTON_DELETE": "删除",
+                "ALARMS": "闹钟",
+                "NEW_ALARM": "新建闹钟",
+                "EDIT_ALARM": "编辑闹钟"
+            },
+            "STOPWATCH": {
+                "TITLE": "秒表",
+                "START": "开始",
+                "STOP": "停止",
+                "RESET": "重置",
+                "LAP": "圈",
+                "TIME": "时间",
+                "TOTAL": "总计",
+                "NO_LAPS": "没有圈数"
+            },
+            "TIMER": {
+                "TITLE": "计时器",
+                "START": "开始",
+                "STOP": "停止",
+                "CANCEL": "取消",
+                "HOURS": "小时",
+                "MINUTES": "分钟",
+                "SECONDS": "秒",
+                "NO_RECENTS": "没有最近使用"
+            },
+            "ALERT": {
+                "STOP": "停止",
+                "RESTART": "重启"
+            }
+        },
+        "CAMERA": {
+            "VIDEO": "视频",
+            "PHOTO": "照片",
+            "LANDSCAPE": "横屏",
+            "UPLOADING": "上传中"
+        },
+        "APPSTORE": {
+            "TITLE": "应用",
+            "SEARCH": "搜索",
+            "GET": "获取",
+            "OPEN": "打开",
+            "TODAY": "今日",
+            "POPULAR_APPS": "热门应用",
+            "GAMES": "游戏",
+            "APPS": "应用",
+            "WHAT_WE_PLAYING": "我们正在玩的",
+            "INFORMATION": "信息",
+            "PROVIDER": "提供商",
+            "SIZE": "大小",
+            "COMPATIBILITY": "兼容性",
+            "IN_APP_PURCHASES": "应用内购买",
+            "WORKS_WITH_PHONE": "支持此平板",
+            "NO": "否",
+            "YES": "是",
+            "PURCHASE_APP_POPUP": {
+                "TITLE": "购买应用",
+                "DESCRIPTION": "您要以 {price} 购买 {app} 吗？",
+                "CANCEL": "取消",
+                "PROCEED": "购买"
+            }
+        },
+        "PHOTOS": {
+            "TITLE": "照片",
+            "SELECT": "选择",
+            "CANCEL": "取消",
+            "EDIT": "编辑",
+            "DONE": "完成",
+            "DELETE": "删除",
+            "SELECT_ITEMS": "选择项目",
+            "SELECTED_COUNT": "已选择 {count} 项",
+            "PHOTOS": "照片",
+            "ALBUMS": "相册",
+            "LIBRARY": "图库",
+            "GALLERY": "画廊",
+            "MY_ALBUMS": "我的相册",
+            "MEDIA_TYPES": "媒体类型",
+            "NEW_ALBUM_POPUP": {
+                "TITLE": "新建相册",
+                "DESCRIPTION": "输入此相册的名称",
+                "PLACEHOLDER": "标题",
+                "CANCEL": "取消",
+                "PROCEED": "保存"
+            },
+            "REMOVE_ALBUM": {
+                "TITLE": "移除 \"{name}\"",
+                "DESCRIPTION": "您确定要删除相册 \"{name}\" 吗？照片将不会被删除",
+                "CANCEL": "取消",
+                "PROCEED": "移除"
+            },
+            "RENAME_ALBUM_POPUP": {
+                "TITLE": "重命名相册",
+                "DESCRIPTION": "输入新名称",
+                "PLACEHOLDER": "新相册名称",
+                "CANCEL": "取消",
+                "PROCEED": "继续"
+            },
+            "DELETE_IMAGE_POPUP": {
+                "TITLE": "删除图片",
+                "DESCRIPTION": "您确定要删除这张图片吗？",
+                "CANCEL": "取消",
+                "PROCEED": "删除"
+            },
+            "IMPORT_IMAGE_POPUP": {
+                "TITLE": "导入到相册",
+                "DESCRIPTION": "将图片导入到此相册",
+                "CANCEL": "取消",
+                "PROCEED": "导入",
+                "PLACEHOLDER": "图片网址"
+            },
+            "NO_PHOTOS": "没有照片或视频",
+            "NO_PHOTOS_INSTRUCTIONS": "您可以使用相机拍摄照片和视频",
+            "PHOTO_COUNT": "{amount} 张照片",
+            "VIDEO_COUNT": "{amount} 个视频",
+            "DELETE_CONTEXT_TITLE": "您想删除 {type} 还是将其从此相册中移除",
+            "THESE_PHOTOS": "这些照片",
+            "THIS_PHOTO": "这张照片",
+            "REMOVE_FROM_ALBUM": "从相册中移除",
+            "ADD_TO_ALBUM": "添加到相册",
+            "ADD_TO_FAVOURITES": "添加到收藏",
+            "REMOVE_FROM_FAVOURITES": "从收藏中移除",
+            "VIDEOS": "视频",
+            "SELFIES": "自拍",
+            "SCREENSHOTS": "截图",
+            "IMPORTS": "导入",
+            "DUPLICATES": "重复项",
+            "YEARS": "年",
+            "MONTHS": "月",
+            "DAYS": "天",
+            "ALL_PHOTOS": "所有照片",
+            "FAVOURITES": "收藏",
+            "RECENTS": "最近"
+        },      
+        "MAIL": {
+            "TITLE": "邮件",
+            "YOU": "你",
+            "UPDATED_NOW": "刚刚更新",
+            "NEW_MESSAGE": "新消息",
+            "INBOX": "收件箱",
+            "TO": "收件人",
+            "FROM": "发件人",
+            "SUBJECT": "主题",
+            "MESSAGE": "信息",
+            "CANCEL": "取消",
+            "SEND": "发送",
+            "EMAIL": "邮箱",
+            "EMAIL_INVALID": "无效的邮箱地址",
+            "EMAIL_EXISTS": "邮箱已存在",
+            "PASSWORD": "密码",
+            "WRONG_PASSWORD": "密码错误",
+            "LOGIN": "登录",
+            "NO_EMAIL": "没有邮箱地址？",
+            "CREATE_ONE": "创建一个",
+            "UNREAD": "未读",
+            "CREATE_MAIL": "创建邮件",
+            "ALREADY_HAVE": "已经有邮箱地址？",
+            "ADD_EMAIL": "添加邮箱",
+            "RE": "回复: {subject}",
+            "CHANGE_ACCOUNT": "更改账户",
+            "CHANGE_PASSWORD": "更改密码",
+            "DELETE_ACCOUNT": "删除账户",
+            "SIGN_OUT_POPUP": {
+                "TITLE": "退出登录",
+                "DESCRIPTION": "您确定要退出登录吗？",
+                "CANCEL": "取消",
+                "PROCEED": "继续"
+            },
+            "DELETE_MAIL_POPUP": {
+                "TITLE": "删除邮件",
+                "DESCRIPTION": "您确定要删除此邮件吗？",
+                "CANCEL": "取消",
+                "DELETE": "删除"
+            }
+        },
+        "VOICEMEMO": {
+            "TITLE": "语音备忘录",
+            "VOICE_RECORDINGS": "语音录音",
+            "SEARCH_RECORDINGS": "搜索录音",
+            "DEFAULT_NAME": "新录音",
+            "DELETE_POPUP": {
+                "TITLE": "删除语音备忘录",
+                "DESCRIPTION": "您确定要删除这个语音备忘录吗？",
+                "CANCEL": "取消",
+                "PROCEED": "继续"
+            },
+            "NO_MICROPHONE_POPUP": {
+                "TITLE": "没有麦克风",
+                "DESCRIPTION": "我们无法访问您的麦克风，请确保连接了麦克风并接受屏幕右上角的弹窗提示",
+                "OK": "确定"
+            },
+            "EMPTY_RECORDING_POPUP": {
+                "TITLE": "空的录音",
+                "DESCRIPTION": "您不能保存没有声音的录音",
+                "OK": "确定"
+            }
+        },
+        "SERVICES": {
+            "ACTIONS": "操作",
+            "COMPANIES": "公司",
+            "MESSAGES": "消息",
+            "SETTINGS": "设置",
+            "CLOSED": "已关闭",
+            "YOUR_MESSAGES": "您的消息",
+            "JOB_MESSAGES": "工作消息",
+            "DUTY": "值班",
+            "DUTY_DESCRIPTION": "切换您的值班状态",
+            "GO_ON_DUTY": "开始值班",
+            "GO_OFF_DUTY": "下班",
+            "JOB_CALLS": "工作电话",
+            "JOB_CALLS_DESCRIPTION": "{toggle} 接受来自客户的电话。",
+            "ENABLE": "启用",
+            "DISABLE": "禁用",
+            "DISABLE_CALLS": "禁用电话",
+            "ENABLE_CALLS": "启用电话",
+            "BALANCE": "余额",
+            "CURRENT_BALANCE": "公司当前余额",
+            "MANAGE_EMPLOYEES": "管理员工",
+            "HIRE": "雇佣",
+            "SET_GRADE": "设置等级",
+            "UNEMPLOYED": "您是无业人员",
+            "ALL": "所有",
+            "AVAILABLE": "可用",
+            "SEARCH_EMPLOYEES": "搜索员工",
+            "PERSONAL": "个人",
+            "JOB": "工作",
+            "PLACEHOLDER": "文本信息",
+            "NOT_DELIVERED": "未送达",
+            "SENT_LOCATION": "共享了他们的位置，点击打开地图",
+            "SENT_LOCATION_SHORT": "共享了他们的位置",
+            "SEND_LOCATION_POPUP": {
+                "TITLE": "共享位置",
+                "TEXT": "您要共享您的位置吗？",
+                "CANCEL": "取消",
+                "SEND": "发送"
+            },
+            "DELETE_CONVERSATION": {
+                "TITLE": "删除对话",
+                "DESCRIPTION": "您确定要删除此对话吗？",
+                "CANCEL": "取消",
+                "DELETE": "删除"
+            },
+            "DEPOSIT_POPUP": {
+                "TITLE": "存款",
+                "DESCRIPTION": "向公司账户存款",
+                "AMOUNT": "金额",
+                "CANCEL": "取消",
+                "PROCEED": "继续"
+            },
+            "WITHDRAW_POPUP": {
+                "TITLE": "取款",
+                "DESCRIPTION": "从公司账户取款",
+                "NOT_ENOUGH_MONEY": "公司账户余额不足",
+                "AMOUNT": "金额",
+                "CANCEL": "取消",
+                "PROCEED": "继续"
+            },
+            "HIRE_POPUP": {
+                "TITLE": "雇佣",
+                "DESCRIPTION": "雇佣新员工",
+                "PLACEHOLDER": "ID",
+                "CANCEL": "取消",
+                "PROCEED": "继续"
+            },
+            "FIRE_POPUP": {
+                "TITLE": "解雇",
+                "DESCRIPTION": "您确定要解雇 {name} 吗？",
+                "PLACEHOLDER": "ID",
+                "CANCEL": "取消",
+                "PROCEED": "继续"
+            }
+        },
+        "MDT": {},
+        "BROWSER": {
+            "TITLE": "浏览器",
+            "SEARCH_PLACEHOLDER": "搜索或输入URL",
+            "FAILED_LOAD_PAGE": "加载页面失败，可能不支持内嵌？"
+        },
+        "REGISTRATION": {
+            "TITLE": "注册",
+            "SELECT_CHARACTER": "选择角色",
+            "PLEASE_SELECT_CHARACTER": "请选择一个角色",
+            "CREATE_NEW": "创建新角色",
+            "EDIT": "编辑",
+            "SAVE": "保存",
+            "DELETE": "删除",
+            "CANCEL": "取消",
+            "DELETE_CHARACTER": "删除角色",
+            "DESCRIPTION": "描述",
+            "DESCRIPTION_PLACEHOLDER": "这是一个描述...",
+            "ADD": "添加",
+            "CHARACTER_INFO": "角色信息",
+            "REMOVE_AVATAR": "删除头像",
+            "FIRSTNAME": "名字",
+            "LASTNAME": "姓氏",
+            "DOB": "出生日期",
+            "PHONE_NUMBER": "电话号码",
+            "GENDER": "性别",
+            "MALE": "男性",
+            "FEMALE": "女性",
+            "JOB": "职位",
+            "HEIGHT": "身高",
+            "FORMATTED_HEIGHT": "{height}cm",
+            "VEHICLES": "车辆",
+            "VEHICLE": "车辆",
+            "REMOVE_PICTURE": "删除照片",
+            "SEARCH_VEHICLES": "搜索车辆",
+            "MODEL": "车型",
+            "PLATE": "车牌",
+            "COLOR": "颜色",
+            "CREATE": "创建",
+            "DELETE_VEHICLE": "删除车辆",
+            "DELETE_VEHICLE_POPUP": {
+                "TITLE": "删除车辆",
+                "DESCRIPTION": "您确定要删除此车辆吗？"
+            },
+            "LICENSES": "许可证",
+            "ADD_LICENSE": "添加许可证",
+            "DELETE_LICENSE_POPUP": {
+                "TITLE": "删除许可证",
+                "DESCRIPTION": "您确定要删除此许可证吗？"
+            },
+            "PROPERTIES": "房产",
+            "ADD_PROPERTY_POPUP": {
+                "TITLE": "新房产",
+                "DESCRIPTION": "创建新房产",
+                "LABEL": "房产标签",
+                "ADDRESS": "房产地址"
+            },
+            "DELETE_PROPERTY_POPUP": {
+                "TITLE": "删除房产",
+                "DESCRIPTION": "您确定要删除此房产吗？"
+            },
+            "ERROR": {
+                "TITLE": "错误",
+                "MISSING_FIELDS": "缺少以下字段: {fields}",
+                "OK": "确定"
+            }
+        }    
+    },
+    "COMPONENTS": {
+        "CONTEXT_MENU": {
+            "CANCEL": "取消"
+        },
+        "IMAGE": {
+            "SAVE_TO_GALLERY": "保存到图库"
+        },
+        "GALLERY": {
+            "CANCEL": "取消",
+            "EXTERNAL_URL": "外部URL",
+            "EXTERNAL_URL_BLACKLISTED": "此URL被列入黑名单",
+            "NO_IMAGES": "没有图片"
+        },
+        "NOTIFICATIONS": {
+            "SENT_PHOTO": "发送了照片",
+            "SENT_GIF": "发送了GIF",
+            "NOW": "现在"
+        },
+        "SHARE": {
+            "COPY_PHOTO": "复制照片",
+            "COPY_VIDEO": "复制视频",
+            "USE_WALLPAPER": "设置为壁纸",
+            "COPY_NUMBER": "复制号码",
+            "COPY_LINK": "复制链接",
+            "AIRDROP_SENT": "已发送",
+            "AIRDROP_ACCEPTED": "已接受",
+            "AIRDROP_DECLINED": "已拒绝",
+            "AIRDROP_NO_USERS": "附近没有手机",
+            "WALLPAPER_POPUP": {
+                "TITLE": "设置为壁纸",
+                "TEXT": "您确定要将此图像设置为壁纸吗？",
+                "CANCEL": "取消",
+                "PROCEED": "继续"
+            },
+            "COPY_POPUP": {
+                "TITLE": "成功",
+                "DESCRIPTION": "成功复制到剪贴板",
+                "OK": "确定"
+            }
+        },        
+        "AIRDROP": {
+            "TITLE": "AirShare",
+            "TEXT": "{sender} 想要分享一个 {type}",
+            "VIDEO": "视频",
+            "PHOTO": "照片",
+            "CONTACT": "联系人",
+            "LOCATION": "位置",
+            "NOTE": "备注",
+            "VOICEMEMO": "语音备忘",
+            "PLAYLIST": "播放列表",
+            "DECLINE": "拒绝",
+            "ACCEPT": "接受"
+        },
+        "BATTERY": {
+            "LOW_BATTERY": "电池低",
+            "BATTERY_REMAINING": "剩余电量: {percent}%",
+            "LOW_POWER_MODE": "低电量模式",
+            "CLOSE": "关闭"
+        },
+        "COLOR_PICKER": {
+            "COLOR": "颜色"
+        }
+    },
+    "SETUP": {
+        "HELLO": "你好",
+        "SELECT_LANGUAGE": "选择你的语言",
+        "NEXT": "点击打开",
+        "APPEARANCE": "主题",
+        "APPEARANCE_TEXT": "选择你的设备的深色或浅色主题",
+        "CONTINUE": "继续",
+        "WELCOME_TO": "欢迎来到",
+        "CLICK": "点击开始"
+    },
+    "HOMESCREEN": {
+        "DONE": "完成",
+        "CLOSE_ALL": "关闭全部",
+        "REMOVE_APP_POPUP": {
+            "TITLE": "删除 '{app}'?",
+            "DESCRIPTION": "删除此应用将不会删除其数据。应用可以稍后从应用商店重新安装。",
+            "CANCEL": "取消",
+            "PROCEED": "删除"
+        }
+    },
+    "LOCKSCREEN": {
+        "DELETE": "删除",
+        "FONT_AND_COLOR": "字体和颜色"
+    },
+    "MISC": {
+        "AIRPLANE_MODE_POPUP": {
+            "TITLE": "错误",
+            "DESCRIPTION": "你正在尝试执行需要互联网访问的操作，请关闭飞行模式以继续。",
+            "OK": "确定"
+        }
+    },
+    "BACKEND": {
+        "CAMERA": {
+            "TAKE_PHOTO": "{key} 拍照",
+            "FLIP_CAMERA": "{key} 翻转",
+            "TOGGLE_FLASH": "{key} 闪光灯",
+            "TOGGLE_CURSOR": "{key} 光标",
+            "CHANGE_MODE": "{key} {key2} 模式",
+            "ROLL": "{key} {key2} 滚动",
+            "FREEZE": "{key} 冻结",
+            "UNFREEZE": "{key} 解冻",
+            "TOGGLE_TIP": "{key} 隐藏"
+        },
+        "SERVICES": {
+            "NEW_MESSAGE": "新消息",
+            "ANONYMOUS": "匿名"
+        },
+        "MISC": {
+            "X_TABLET": "{firstname} 的平板"
+        },
+        "MAIL": {
+            "AUTOMATIC_PASSWORD": {
+                "SENDER": "系统",
+                "SUBJECT": "你的密码",
+                "MESSAGE": "你好，\n\n你的自动邮件地址是 {address}，你的密码是 {password}"
+            }
+        },
+        "LOGS": {
+            "TOOK_PHOTO": "拍了张照片",
+            "TOOK_VIDEO": "拍了个视频",
+            "NEW_DISPATCH": "新派遣: {title}"
+        },
+        "BASE_DISPATCH": {},
+        "MDT": {},
+        "MDT_NOTIFICATIONS": {}
+    },
+    "MDT": {}
+}

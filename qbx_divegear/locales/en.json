@@ -1,0 +1,16 @@
+{
+    "error": {
+        "not_standing_up": "Bunu giymek için sağlam zeminde olmalısın...",
+        "need_otube": "Oksijenini doldurman gerekiyor! Yedek hava tüpü al!",
+        "underwater": "Bunu su altındayken yapamazsın..."
+    },
+    "success": {
+        "took_out": "Dalış ekipmanını çıkardın!",
+        "tube_filled": "Hava tüpünü başarıyla doldurdun!"
+    },
+    "info": {
+        "put_suit": "Dalış kıyafeti giyiliyor...",
+        "pullout_suit": "Dalış kıyafeti çıkarılıyor...",
+        "filling_air": "Hava dolduruluyor..."
+    }
+}

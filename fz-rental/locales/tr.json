@@ -1,0 +1,64 @@
+{
+    "currency": {
+        "symbol": " $ "
+    },
+    "error": {
+        "not_enough_cash": "Bu aracı kiralamak için yeterli nakit paran yok.",
+        "not_enough_money": "Bu aracı kiralamak için bankanda yeterli para yok.",
+        "invalid_money_type": "Geçersiz ödeme türü. Lütfen 'cash' veya 'bank' kullan.",
+        "not_enough_inventory_space": "Kiralama evrakları için envanterinde yeterli alan yok.",
+        "rental_expired": "Araç kiralama süren doldu.",
+        "vehicle_already_spawned": "Zaten dışarıda bir aracın var.",
+        "vehicle_not_found": "Geri alınacak bir aracın bulunmuyor.",
+        "vehicle_already_rented": "Zaten bir araç kiralamış durumdasın.",
+        "vehicle_too_far_to_return": "Aracı iade etmek için araca daha yakın olmalısın.",
+        "player_ped_not_found": "Oyuncu karakteri bulunamadı, tekrar dene.",
+        "rental_paper_item_missing": "ox_inventory içinde rental_papers eşya tanımı bulunamadı."
+    },
+    "success": {
+        "item_recieved": "Kiralama evrakların teslim edildi.",
+        "vehicle_recovered": "Kiraladığın araç başarıyla geri getirildi.",
+        "vehicle_returned": "Kiralık araç başarıyla iade edildi."
+    },
+    "info": {
+        "remove_money": "Araç Kiralama: ",
+        "open_rental_target": "Araç Kiralama Hizmetini Aç",
+        "open_rental_textui": "[E] tuşuna basarak Araç Kiralama Hizmetini aç"
+    },
+    "rental_menu": {
+        "title": "Araç Kiralama Hizmeti",
+        "subtitle_vehicles_for_rent": "Kiralık Araçlar",
+        "description_vehicles_for_rent": "Kiralayabileceğin araçları incele",
+        "subtitle_information": "Bilgilendirme",
+        "description_information": "Üzerine gelerek görüntüle",
+        "subtitle_recover_vehicle": "Aracı Geri Getir",
+        "description_recover_vehicle": "Kiraladığın aracı geri getir",
+        "subtitle_return_vehicle": "Aracı İade Et",
+        "description_return_vehicle": "Dışarıdaki kiralık aracı iade et",
+        "information_label": "Bilgi",
+        "information": "Bir araç mı kiralamak istiyorsun? Kiralık Araçlar menüsünden aracını seç, kiralama evrakları ve belirlenen süreyle birlikte teslim edilsin. Aracı kaybettin mi? Aracı Geri Getir seçeneği ile tekrar teslim alabilirsin. Kullanımın bittiğinde Aracı İade Et seçeneği ile kiralamayı sonlandırabilirsin."
+    },
+    "vehicle_menu": {
+        "title": "Mevcut Araçlar",
+        "per_hour": " / Saat"
+    },
+    "rental_time_menu": {
+        "title": "Kiralama Süresi",
+        "label": "Kiralama Süresini Saat Olarak Seç"
+    },
+    "ui": {
+        "kicker": "Kiralık Araçlar",
+        "close": "Kapat",
+        "hour": "Saat",
+        "total": "Toplam",
+        "rent": "Kirala",
+        "pay_bank": "Banka hesabından ödenir",
+        "pay_cash": "Nakit ödenir"
+    },
+    "item_metadata": {
+        "vehicle_name": "Araç Adı",
+        "plate_number": "Plaka",
+        "owner": "Kiracı",
+        "expires": "Bitiş Tarihi"
+    }
+}

@@ -1,0 +1,43 @@
+{
+    "xp": "XP",
+    "name": "Nom du joueur",
+    "level": "Niveau",
+    "start": "Commencer le travail",
+    "accept": "Accepter",
+    "cancel": "Annuler",
+    "awards": "Récompenses:",
+    "invite": "Inviter un joueur [ID]",
+    "hunting": "Chasse",
+    "hunting_desc": "%s vous a invité dans un groupe. Si vous le souhaitez, vous pouvez accepter et chasser ensemble.",
+    "unknowns": {
+        "label": "Inconnu",
+        "level": "Inconnu",
+        "description": "Aucune description disponible."
+    },
+    "progress": {
+        "title": "Progression de niveau",
+        "description": "Amélioration de vos compétences de chasse"
+    },
+    "cancel_job": "Annuler le travail",
+
+    "header": {
+        "title": "Métier de chasseur",
+        "description": "Bienvenue à la chasse, vous pouvez commencer une chasse ici et consulter les missions. Bonne chance!"
+    },
+    "sections": {
+        "profile": "Profil",
+        "mission": "Missions",
+        "player_list": "Liste des joueurs",
+        "job_details": "Détails du travail"
+    },
+
+    "steps": {
+        "progress": "Progression",
+        "information": "Appuyez sur la touche indiquée pour savoir ce que vous devez faire. Appuyez pour plus de détails.",
+        "details": {
+            "step1": "Allez dans la zone de chasse et prenez vos armes du véhicule. Utilisez la touche [Target],",
+            "step2": "Tuez les animaux et dépecer les animaux avec [TARGET] (s'il y a une mission, elle progressera),",
+            "step3": "Allez dans la zone où vous avez commencé votre profession, regardez le PNJ avec [TARGET], et cliquez sur l'option 'Vendre les parties d'animaux' pour les vendre."
+        }
+    }
+}

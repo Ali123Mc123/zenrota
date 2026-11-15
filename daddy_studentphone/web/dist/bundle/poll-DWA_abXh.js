@@ -1,0 +1,1 @@
+import{Gn as e,Kn as t,Un as n,Wn as r,ar as i,fr as a,pn as o}from"./api-Dx2fosVJ.js";function s(s,c){let{visible:l}=o(),u=a(!0),d=0,f=!1;function p(){let e=u.value&&l.value;e&&!d?(f&&s(),d=window.setInterval(s,c)):!e&&d&&(window.clearInterval(d),d=0),f=!e}t(p),n(()=>(u.value=!0,p())),e(()=>(u.value=!1,p())),i(l,p),r(()=>window.clearInterval(d))}export{s as t};

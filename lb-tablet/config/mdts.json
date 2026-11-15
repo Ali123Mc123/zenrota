@@ -1,0 +1,1567 @@
+{
+    "$schema": "../.vscode/mdts.schema.json",
+    "Police": {
+        "name": "Police",
+        "department": "Los Santos Polis Departmanı",
+        "deviceName": "Mobil Veritabanı Terminali",
+        "appIcon": "./assets/img/icons/apps/Police.png",
+        "icon": "./assets/img/icons/mdt/police.webp",
+        "colorTheme": "#348de9",
+        "callsign": {
+            "enabled": false,
+            "format": "[11-11]",
+            "requireTemplate": false,
+            "allowChange": false,
+            "autoGenerate": false
+        },
+        "options": {
+            "dutyBlips": false,
+            "stackCriminalCharges": true
+        },
+        "defaultPermissions": {
+            "police": {
+                "view": 0,
+                "create": 1,
+                "edit": 1,
+                "delete": 3,
+                "stash": 3,
+                "fine": 1,
+                "pin": 3,
+                "kick": 3,
+                "invite": 2,
+                "private": 3,
+                "triangulate": 2,
+                "unlock": 2,
+                "callHistory": 1,
+                "createWiretap": 2,
+                "listenWiretap": 1,
+                "messageWiretap": 1,
+                "removeWiretap": 2
+            },
+            "sapr": {
+                "view": 0,
+                "create": 1,
+                "edit": 1,
+                "delete": 3,
+                "stash": 3,
+                "fine": 1,
+                "pin": 3,
+                "kick": 3,
+                "invite": 2,
+                "private": 3,
+                "triangulate": 2,
+                "unlock": 2,
+                "callHistory": 1,
+                "createWiretap": 2,
+                "listenWiretap": 1,
+                "messageWiretap": 1,
+                "removeWiretap": 2
+            },
+            "pbsd": {
+                "view": 0,
+                "create": 1,
+                "edit": 1,
+                "delete": 3,
+                "stash": 3,
+                "fine": 1,
+                "pin": 3,
+                "kick": 3,
+                "invite": 2,
+                "private": 3,
+                "triangulate": 2,
+                "unlock": 2,
+                "callHistory": 1,
+                "createWiretap": 2,
+                "listenWiretap": 1,
+                "messageWiretap": 1,
+                "removeWiretap": 2
+            },
+            "cppd": {
+                "view": 0,
+                "create": 1,
+                "edit": 1,
+                "delete": 3,
+                "stash": 3,
+                "fine": 1,
+                "pin": 3,
+                "kick": 3,
+                "invite": 2,
+                "private": 3,
+                "triangulate": 2,
+                "unlock": 2,
+                "callHistory": 1,
+                "createWiretap": 2,
+                "listenWiretap": 1,
+                "messageWiretap": 1,
+                "removeWiretap": 2
+            },
+            "bcso": {
+                "view": 0,
+                "create": 1,
+                "edit": 1,
+                "delete": 3,
+                "stash": 3,
+                "fine": 1,
+                "pin": 3,
+                "kick": 3,
+                "invite": 2,
+                "private": 3,
+                "triangulate": 2,
+                "unlock": 2,
+                "callHistory": 1,
+                "createWiretap": 2,
+                "listenWiretap": 1,
+                "messageWiretap": 1,
+                "removeWiretap": 2
+            },
+            "doj": {
+                "view": 0,
+                "create": 1,
+                "edit": 1,
+                "delete": 3,
+                "stash": 3,
+                "fine": 1,
+                "pin": 3,
+                "kick": 3,
+                "invite": 2,
+                "private": 3,
+                "triangulate": 2,
+                "unlock": 2,
+                "callHistory": 1,
+                "createWiretap": 2,
+                "listenWiretap": 1,
+                "messageWiretap": 1,
+                "removeWiretap": 2
+            },
+            "sasp": {
+                "view": 0,
+                "create": 1,
+                "edit": 1,
+                "delete": 3,
+                "stash": 3,
+                "fine": 1,
+                "pin": 3,
+                "kick": 3,
+                "invite": 2,
+                "private": 3,
+                "triangulate": 2,
+                "unlock": 2,
+                "callHistory": 1,
+                "createWiretap": 2,
+                "listenWiretap": 1,
+                "messageWiretap": 1,
+                "removeWiretap": 2
+            }
+        },
+        "tabs": [
+            {
+                "type": "home",
+                "icon": "IoHome",
+                "label": "Ana Sayfa",
+                "content": ["reports", "cases", "units", "bulletin", "warrants"]
+            },
+            {
+                "type": "bulletin",
+                "label": "Duyurular",
+                "icon": "IoBookmark"
+            },
+            {
+                "type": "dispatch",
+                "label": "Merkez",
+                "icon": "IoRadio"
+            },
+            {
+                "type": "units",
+                "label": "Ekipler",
+                "icon": "IoGrid",
+                "default": {
+                    "status": "available",
+                    "units": []
+                },
+                "statuses": {
+                    "available": {
+                        "label": "Müsait",
+                        "color": "green"
+                    },
+                    "busy": {
+                        "label": "Meşgul",
+                        "color": "red"
+                    }
+                }
+            },
+            {
+                "type": "users",
+                "label": "Profiller",
+                "icon": "IoPerson",
+                "canFine": true,
+                "canJail": true,
+                "fields": [
+                    {
+                        "id": "profile",
+                        "type": "entity",
+                        "label": "Profil Bilgileri",
+                        "subtitle": "job",
+                        "entityFields": [
+                            {
+                                "id": "dob",
+                                "label": "Doğum Tarihi",
+                                "value": "dob"
+                            },
+                            {
+                                "id": "phoneNumber",
+                                "label": "Telefon Numarası",
+                                "value": "phoneNumber",
+                                "copyable": true
+                            },
+                            {
+                                "id": "gender",
+                                "label": "Cinsiyet",
+                                "value": "gender"
+                            },
+                            {
+                                "id": "job",
+                                "label": "Meslek",
+                                "value": "job"
+                            },
+                            {
+                                "id": "identifier",
+                                "label": "Kimlik No",
+                                "value": "id",
+                                "copyable": true
+                            },
+                            {
+                                "id": "fingerprint",
+                                "label": "Parmak İzi",
+                                "value": "fingerprint",
+                                "copyable": true
+                            },
+                            {
+                                "id": "activeWarrant",
+                                "label": "Aktif Arama Emri",
+                                "type": "boolean",
+                                "labels": {
+                                    "true": {
+                                        "label": "Evet",
+                                        "color": "red"
+                                    },
+                                    "false": {
+                                        "label": "Hayır",
+                                        "color": "green"
+                                    }
+                                },
+                                "check": {
+                                    "tabType": "reports",
+                                    "id": "warrants",
+                                    "type": "field",
+                                    "field": "status",
+                                    "value": "active",
+                                    "involvement": "target"
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "id": "notes",
+                        "type": "text",
+                        "label": "Notlar"
+                    },
+                    {
+                        "id": "gallery",
+                        "type": "photo",
+                        "label": "Galeri",
+                        "multiple": true
+                    },
+                    {
+                        "id": "tags",
+                        "type": "tag",
+                        "label": "Etiketler",
+                        "multiple": true
+                    },
+                    {
+                        "id": "licenses",
+                        "type": "licenses",
+                        "label": "Lisanslar"
+                    },
+                    {
+                        "id": "vehicles",
+                        "type": "vehicles",
+                        "label": "Araçlar"
+                    },
+                    {
+                        "id": "properties",
+                        "type": "properties",
+                        "label": "Mülkler"
+                    },
+                    {
+                        "id": "reports",
+                        "type": "linked",
+                        "label": "Raporlar",
+                        "linkType": "reports",
+                        "linkId": "reports"
+                    },
+                    {
+                        "id": "cases",
+                        "type": "linked",
+                        "label": "Vakalar",
+                        "linkType": "reports",
+                        "linkId": "cases"
+                    },
+                    {
+                        "id": "warrants",
+                        "type": "linked",
+                        "label": "Emirler",
+                        "linkType": "reports",
+                        "linkId": "warrants"
+                    },
+                    {
+                        "id": "charges",
+                        "type": "charges",
+                        "label": "Suçlamalar"
+                    }
+                ]
+            },
+            {
+                "type": "vehicles",
+                "label": "Araçlar",
+                "icon": "IoCarSport",
+                "fields": [
+                    {
+                        "id": "vehicle",
+                        "type": "entity",
+                        "label": "Araç Bilgileri",
+                        "entityFields": [
+                            {
+                                "id": "model",
+                                "label": "Model",
+                                "value": "model"
+                            },
+                            {
+                                "id": "plate",
+                                "label": "Plaka",
+                                "value": "plate",
+                                "copyable": true
+                            },
+                            {
+                                "id": "color",
+                                "label": "Renk",
+                                "value": "color.label"
+                            },
+                            {
+                                "id": "owner",
+                                "label": "Sahibi",
+                                "value": "owner.name",
+                                "clickable": true,
+                                "linkType": "profile",
+                                "linkId": "owner.identifier"
+                            },
+                            {
+                                "id": "activeWarrant",
+                                "label": "Aktif Arama Emri",
+                                "type": "boolean",
+                                "labels": {
+                                    "true": {
+                                        "label": "Evet",
+                                        "color": "red"
+                                    },
+                                    "false": {
+                                        "label": "Hayır",
+                                        "color": "green"
+                                    }
+                                },
+                                "check": {
+                                    "tabType": "reports",
+                                    "id": "warrants",
+                                    "type": "field",
+                                    "field": "status",
+                                    "value": "active",
+                                    "involvement": "target"
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "id": "notes",
+                        "type": "text",
+                        "label": "Notlar"
+                    },
+                    {
+                        "id": "tags",
+                        "type": "tag",
+                        "label": "Etiketler",
+                        "multiple": true
+                    },
+                    {
+                        "id": "warrants",
+                        "type": "linked",
+                        "label": "Emirler",
+                        "linkType": "reports",
+                        "linkId": "warrants",
+                        "multiple": true
+                    },
+                    {
+                        "id": "cases",
+                        "type": "linked",
+                        "label": "Vakalar",
+                        "linkType": "reports",
+                        "linkId": "cases",
+                        "multiple": true
+                    }
+                ]
+            },
+            {
+                "type": "properties",
+                "label": "Mülkler",
+                "icon": "IoBusiness",
+                "fields": [
+                    {
+                        "id": "property",
+                        "type": "entity",
+                        "label": "Mülk Bilgileri",
+                        "entityFields": [
+                            {
+                                "id": "label",
+                                "label": "Etiket",
+                                "value": "label"
+                            },
+                            {
+                                "id": "owner",
+                                "label": "Sahibi",
+                                "value": "owner.name",
+                                "clickable": true,
+                                "linkType": "profile",
+                                "linkId": "owner.identifier"
+                            },
+                            {
+                                "id": "address",
+                                "label": "Adres",
+                                "value": "address"
+                            }
+                        ]
+                    },
+                    {
+                        "id": "notes",
+                        "type": "text",
+                        "label": "Notlar"
+                    },
+                    {
+                        "id": "tags",
+                        "type": "tag",
+                        "label": "Etiketler",
+                        "multiple": true
+                    },
+                    {
+                        "id": "location",
+                        "type": "location",
+                        "label": "Konum"
+                    }
+                ]
+            },
+            {
+                "type": "reports",
+                "id": "reports",
+                "label": "Raporlar",
+                "name": "report",
+                "icon": "IoFolder",
+                "fields": [
+                    {
+                        "id": "private",
+                        "type": "visibility",
+                        "label": "APPS.MDT.REPORTS.VISIBILITY.TITLE"
+                    },
+                    {
+                        "id": "sharedUsers",
+                        "type": "sharedUsers",
+                        "label": "APPS.MDT.REPORTS.SHARED_WITH"
+                    },
+                    {
+                        "id": "type",
+                        "type": "dropdown",
+                        "label": "Tür",
+                        "options": [
+                            "Assault",
+                            "Robbery",
+                            "Burglary",
+                            "Theft",
+                            "Fraud",
+                            "Homicide",
+                            "Kidnapping",
+                            "Arson",
+                            "Vandalism",
+                            "Drug Offense",
+                            "Traffic Violation",
+                            "Domestic Violence",
+                            "Cybercrime",
+                            "Weapons Violation",
+                            "Public Disturbance",
+                            "Trespassing",
+                            "Harassment",
+                            "Missing Person",
+                            "Extortion",
+                            "Identity Theft",
+                            "Interrogation",
+                            "Other"
+                        ]
+                    },
+                    {
+                        "id": "tags",
+                        "type": "tag",
+                        "label": "Etiketler",
+                        "multiple": true
+                    },
+                    {
+                        "id": "gallery",
+                        "type": "photo",
+                        "label": "Galeri",
+                        "multiple": true
+                    },
+                    {
+                        "id": "weapons",
+                        "type": "weapon",
+                        "label": "Dahil Olan Silahlar",
+                        "multiple": true
+                    },
+                    {
+                        "id": "description",
+                        "type": "text",
+                        "label": "Açıklama",
+                        "template": "# Rapor şablonu\n\n**Tarih:**\n**Raporlayan:** (Ad & Çağrı Kodu / Rozet No)\n\n**Olay Detayları:**\n**Toplanan Deliller:**\n**Yapılan İşlemler:**\n\n**Ek Notlar:**"
+                    },
+                    {
+                        "id": "officers",
+                        "label": "Dahil Olan Memurlar",
+                        "type": "employee",
+                        "multiple": true
+                    },
+                    {
+                        "id": "civilians",
+                        "label": "Dahil Olan Siviller",
+                        "type": "person",
+                        "multiple": true
+                    },
+                    {
+                        "id": "suspects",
+                        "label": "Dahil Olan Şüpheliler",
+                        "type": "person",
+                        "multiple": true
+                    },
+                    {
+                        "id": "linked_warrants",
+                        "type": "linked",
+                        "label": "Bağlı Emirler",
+                        "multiple": true,
+                        "linkType": "reports",
+                        "linkId": "warrants",
+                        "editable": false
+                    }
+                ]
+            },
+            {
+                "type": "reports",
+                "id": "cases",
+                "label": "Vakalar",
+                "name": "case",
+                "icon": "IoReceipt",
+                "fields": [
+                    {
+                        "id": "private",
+                        "type": "visibility",
+                        "label": "APPS.MDT.REPORTS.VISIBILITY.TITLE"
+                    },
+                    {
+                        "id": "sharedUsers",
+                        "type": "sharedUsers",
+                        "label": "APPS.MDT.REPORTS.SHARED_WITH"
+                    },
+                    {
+                        "id": "evidence",
+                        "type": "photo",
+                        "label": "Deliller",
+                        "multiple": true
+                    },
+                    {
+                        "id": "stash",
+                        "type": "stash",
+                        "label": "Depo"
+                    },
+                    {
+                        "id": "tags",
+                        "type": "tag",
+                        "label": "Etiketler",
+                        "multiple": true
+                    },
+                    {
+                        "id": "reports",
+                        "type": "linked",
+                        "label": "Bağlı Raporlar",
+                        "multiple": true,
+                        "linkType": "reports",
+                        "linkId": "reports"
+                    },
+                    {
+                        "id": "weapons",
+                        "type": "weapon",
+                        "label": "Dahil Olan Silahlar",
+                        "multiple": true
+                    },
+                    {
+                        "id": "vehicles",
+                        "label": "Dahil Olan Araçlar",
+                        "type": "vehicle",
+                        "multiple": true
+                    },
+                    {
+                        "id": "description",
+                        "type": "text",
+                        "label": "Açıklama",
+                        "template": "# Vaka şablonu\n\n**Açılış Tarihi:**\n**Dosyalayan:** (Ad & Çağrı Kodu / Rozet No)\n\n**Olay Detayları:**\n**Önemli Deliller:**\n**Soruşturma Durumu:**\n\n**Ek Notlar:**"
+                    },
+                    {
+                        "id": "officers",
+                        "label": "Dahil Olan Memurlar",
+                        "type": "employee",
+                        "multiple": true
+                    },
+                    {
+                        "id": "civilians",
+                        "label": "Dahil Olan Siviller",
+                        "type": "person",
+                        "color": "green",
+                        "multiple": true
+                    },
+                    {
+                        "id": "criminals",
+                        "label": "Dahil Olan Suçlular",
+                        "type": "person",
+                        "multiple": true,
+                        "catalog": true
+                    }
+                ]
+            },
+            {
+                "type": "reports",
+                "id": "warrants",
+                "label": "Emirler",
+                "name": "warrant",
+                "icon": "IoDocumentAttach",
+                "fields": [
+                    {
+                        "id": "private",
+                        "type": "visibility",
+                        "label": "APPS.MDT.REPORTS.VISIBILITY.TITLE"
+                    },
+                    {
+                        "id": "sharedUsers",
+                        "type": "sharedUsers",
+                        "label": "APPS.MDT.REPORTS.SHARED_WITH"
+                    },
+                    {
+                        "id": "target",
+                        "type": "target",
+                        "vehicle": true,
+                        "person": true,
+                        "label": "Hedef",
+                        "subtitle": "dob"
+                    },
+                    {
+                        "id": "type",
+                        "type": "dropdown",
+                        "label": "Tür",
+                        "options": [
+                            "Arrest Warrant",
+                            "Search Warrant",
+                            "Bench Warrant",
+                            "Extradition Warrant",
+                            "Probation Violation Warrant",
+                            "Material Witness Warrant",
+                            "Execution Warrant",
+                            "Parole Violation Warrant",
+                            "Other"
+                        ]
+                    },
+                    {
+                        "id": "status",
+                        "type": "dropdown",
+                        "label": "Durum",
+                        "showInList": true,
+                        "options": [
+                            {
+                                "id": "active",
+                                "label": "Aktif",
+                                "color": "green",
+                                "default": true
+                            },
+                            {
+                                "id": "served",
+                                "label": "Uygulandı",
+                                "color": "orange"
+                            },
+                            {
+                                "id": "expired",
+                                "label": "Süresi Doldu",
+                                "color": "blue"
+                            },
+                            {
+                                "id": "cancelled",
+                                "label": "İptal Edildi",
+                                "color": "red"
+                            }
+                        ]
+                    },
+                    {
+                        "id": "gallery",
+                        "type": "photo",
+                        "label": "Galeri",
+                        "multiple": true
+                    },
+                    {
+                        "id": "priority",
+                        "type": "dropdown",
+                        "label": "Öncelik",
+                        "showInList": true,
+                        "options": [
+                            {
+                                "id": "low",
+                                "label": "Düşük",
+                                "color": "green"
+                            },
+                            {
+                                "id": "medium",
+                                "label": "Orta",
+                                "color": "orange",
+                                "default": true
+                            },
+                            {
+                                "id": "high",
+                                "label": "Yüksek",
+                                "color": "red"
+                            }
+                        ]
+                    },
+                    {
+                        "id": "description",
+                        "type": "text",
+                        "label": "Açıklama",
+                        "template": "# Emir şablonu\n\n**Çıkarılma Tarihi:**\n**Talep Eden:** (Ad & Çağrı Kodu / Rozet No)\n\n**Gerekçe:**\n**Konum / Hedef:**\n**Uygulama Detayları:**\n\n**Ek Notlar:**"
+                    },
+                    {
+                        "id": "linked_reports",
+                        "type": "linked",
+                        "label": "Bağlı Raporlar",
+                        "multiple": true,
+                        "linkType": "reports",
+                        "linkId": "reports",
+                        "editable": true
+                    },
+                    {
+                        "id": "tags",
+                        "type": "tag",
+                        "label": "Etiketler",
+                        "multiple": true
+                    }
+                ]
+            },
+            {
+                "type": "catalog",
+                "label": "Suçlar",
+                "name": "offence",
+                "icon": "IoBook",
+                "fine": true,
+                "jail": true,
+                "severities": [
+                    {
+                        "id": "Infraction",
+                        "color": "green"
+                    },
+                    {
+                        "id": "Misdemeanor",
+                        "color": "orange"
+                    },
+                    {
+                        "id": "Felony",
+                        "color": "red"
+                    }
+                ]
+            },
+            {
+                "type": "employees",
+                "label": "Personel",
+                "icon": "IoPeople"
+            },
+            {
+                "type": "chat",
+                "label": "Sohbet",
+                "icon": "IoChatbubbleEllipses"
+            },
+            {
+                "type": "phone",
+                "label": "Telefon",
+                "icon": "IoPhonePortrait",
+                "triangulation": {
+                    "requireCall": false,
+                    "cellTowerTime": 500,
+                    "successRate": 50,
+                    "rangeMultiplier": 1.0
+                },
+                "unlock": {
+                    "time": [120, 240],
+                    "chance": 50,
+                    "attempts": 2
+                },
+                "wiretap": {
+                    "minCallDuration": 0
+                }
+            },
+            {
+                "type": "jail",
+                "label": "Hapishane",
+                "icon": "IoHandRight",
+                "fields": [
+                    {
+                        "id": "description",
+                        "type": "text",
+                        "label": "Açıklama",
+                        "template": "# Hapis Gerekçesi\n\nBu kişinin hapsedilme gerekçesini açıklayın..."
+                    },
+                    {
+                        "id": "case",
+                        "type": "linked",
+                        "label": "Bağlı Vaka",
+                        "linkType": "reports",
+                        "linkId": "cases"
+                    }
+                ]
+            },
+            {
+                "type": "logs",
+                "label": "Kayıtlar",
+                "icon": "IoPrint"
+            }
+        ]
+    },
+    "Ambulance": {
+        "name": "Ambulance",
+        "department": "Los Santos Ambulans Servisi",
+        "deviceName": "Mobil Veritabanı Terminali",
+        "appIcon": "./assets/img/icons/apps/Ambulance.png",
+        "icon": "./assets/img/icons/mdt/ambulance.webp",
+        "colorTheme": "#ff0000",
+        "callsign": {
+            "enabled": true,
+            "format": "[11-1111]",
+            "requireTemplate": true,
+            "allowChange": true,
+            "autoGenerate": true
+        },
+        "options": {
+            "dutyBlips": true,
+            "stackCriminalCharges": true
+        },
+        "defaultPermissions": {
+            "ambulance": {
+                "view": 0,
+                "create": 1,
+                "edit": 1,
+                "delete": 1,
+                "pin": 1,
+                "kick": 1
+            }
+        },
+        "tabs": [
+            {
+                "type": "home",
+                "icon": "IoHome",
+                "label": "Ana Sayfa",
+                "content": ["reports", "bulletin", "units"]
+            },
+            {
+                "type": "bulletin",
+                "label": "Duyurular",
+                "icon": "IoBookmark"
+            },
+            {
+                "type": "dispatch",
+                "label": "Merkez",
+                "icon": "IoRadio"
+            },
+            {
+                "type": "units",
+                "label": "Ekipler",
+                "icon": "IoGrid",
+                "default": {
+                    "status": "available",
+                    "units": []
+                },
+                "statuses": {
+                    "available": {
+                        "label": "Müsait",
+                        "color": "green"
+                    },
+                    "busy": {
+                        "label": "Meşgul",
+                        "color": "red"
+                    },
+                    "at_station": {
+                        "label": "İstasyonda",
+                        "color": "blue"
+                    },
+                    "on_call": {
+                        "label": "Çağrıda",
+                        "color": "yellow"
+                    }
+                }
+            },
+            {
+                "type": "users",
+                "label": "Hasta Kayıtları",
+                "icon": "IoPerson",
+                "canFine": true,
+                "fineLabel": "Fatura",
+                "fineCatalog": false,
+                "fields": [
+                    {
+                        "id": "profile",
+                        "type": "entity",
+                        "label": "Hasta Bilgileri",
+                        "subtitle": "dob",
+                        "entityFields": [
+                            {
+                                "id": "dob",
+                                "label": "Doğum Tarihi",
+                                "value": "dob"
+                            },
+                            {
+                                "id": "phoneNumber",
+                                "label": "Telefon Numarası",
+                                "value": "phoneNumber",
+                                "copyable": true
+                            },
+                            {
+                                "id": "gender",
+                                "label": "Cinsiyet",
+                                "value": "gender"
+                            },
+                            {
+                                "id": "height",
+                                "label": "Boy",
+                                "value": "height"
+                            },
+                            {
+                                "id": "bloodType",
+                                "label": "Kan Grubu",
+                                "value": "bloodType"
+                            }
+                        ]
+                    },
+                    {
+                        "id": "tags",
+                        "type": "tag",
+                        "label": "Etiketler",
+                        "multiple": true
+                    },
+                    {
+                        "id": "diagnoses_conditions",
+                        "type": "charges",
+                        "label": "Teşhisler / Rahatsızlıklar",
+                        "editable": true
+                    },
+                    {
+                        "id": "notes",
+                        "type": "text",
+                        "label": "Notlar"
+                    },
+                    {
+                        "id": "reports",
+                        "type": "linked",
+                        "label": "Tıbbi Raporlar",
+                        "linkType": "reports",
+                        "linkId": "reports",
+                        "multiple": true
+                    }
+                ]
+            },
+            {
+                "type": "reports",
+                "id": "reports",
+                "label": "Raporlar",
+                "icon": "IoFolder",
+                "fields": [
+                    {
+                        "id": "private",
+                        "type": "visibility",
+                        "label": "APPS.MDT.REPORTS.VISIBILITY.TITLE"
+                    },
+                    {
+                        "id": "sharedUsers",
+                        "type": "sharedUsers",
+                        "label": "APPS.MDT.REPORTS.SHARED_WITH"
+                    },
+                    {
+                        "id": "target",
+                        "type": "target",
+                        "person": true,
+                        "label": "Hasta",
+                        "subtitle": "dob",
+                        "catalog": true
+                    },
+                    {
+                        "id": "type",
+                        "type": "dropdown",
+                        "label": "Tür",
+                        "options": [
+                            "Injury",
+                            "Illness",
+                            "Vehicle Accident",
+                            "Overdose",
+                            "Cardiac Arrest",
+                            "Stroke",
+                            "Respiratory Distress",
+                            "Burn Injury",
+                            "Fall Injury",
+                            "Drowning",
+                            "Poisoning",
+                            "Seizure",
+                            "Trauma",
+                            "Allergic Reaction",
+                            "Shock",
+                            "Heatstroke",
+                            "Hypothermia",
+                            "Labor and Delivery",
+                            "Mental Health Crisis",
+                            "Other"
+                        ]
+                    },
+                    {
+                        "id": "tags",
+                        "type": "tag",
+                        "label": "Etiketler",
+                        "multiple": true
+                    },
+                    {
+                        "id": "description",
+                        "type": "text",
+                        "label": "Rapor Detayları",
+                        "template": "# Tıbbi Rapor\n\n**Tarih:**\n**Raporlayan:** (Ad & Çağrı Kodu)\n\n**Hasta Bilgileri:**\n**Ana Şikayet:**\n**Değerlendirme:**\n**Uygulanan Tedavi:**\n**Yaşamsal Bulgular:**\n**Verilen İlaçlar:**\n**Nakil:**\n\n**Ek Notlar:**"
+                    },
+                    {
+                        "id": "gallery",
+                        "type": "photo",
+                        "label": "Galeri",
+                        "multiple": true
+                    },
+                    {
+                        "id": "doctors",
+                        "label": "Dahil Olan Doktorlar",
+                        "type": "employee",
+                        "multiple": true
+                    }
+                ]
+            },
+            {
+                "type": "catalog",
+                "label": "Rahatsızlıklar",
+                "name": "condition",
+                "icon": "IoMedical",
+                "severities": [
+                    {
+                        "id": "Minor",
+                        "color": "green"
+                    },
+                    {
+                        "id": "Moderate",
+                        "color": "orange"
+                    },
+                    {
+                        "id": "Severe",
+                        "color": "red"
+                    },
+                    {
+                        "id": "Critical",
+                        "color": "red"
+                    }
+                ]
+            },
+            {
+                "type": "employees",
+                "label": "Personel",
+                "icon": "IoPeople"
+            },
+            {
+                "type": "chat",
+                "label": "Sohbet",
+                "icon": "IoChatbubbleEllipses"
+            },
+            {
+                "type": "logs",
+                "label": "Kayıtlar",
+                "icon": "IoPrint"
+            }
+        ]
+    },
+    "Fire": {
+        "name": "Fire Department",
+        "department": "Los Santos İtfaiye Departmanı",
+        "deviceName": "Mobil Veri Terminali",
+        "appIcon": "./assets/img/icons/apps/Fire.png",
+        "icon": "./assets/img/icons/mdt/fire.png",
+        "colorTheme": "#d32f2f",
+        "callsign": {
+            "enabled": true,
+            "format": "[E-111]",
+            "requireTemplate": true,
+            "allowChange": true,
+            "autoGenerate": true
+        },
+        "options": {
+            "dutyBlips": true
+        },
+        "defaultPermissions": {
+            "fire": {
+                "view": 0,
+                "create": 2,
+                "edit": 2,
+                "delete": 3,
+                "pin": 3,
+                "kick": 3
+            }
+        },
+        "tabs": [
+            {
+                "type": "home",
+                "icon": "IoHome",
+                "label": "Ana Sayfa",
+                "content": ["reports", "bulletin", "units"]
+            },
+            {
+                "type": "bulletin",
+                "label": "Duyurular",
+                "icon": "IoBookmark"
+            },
+            {
+                "type": "dispatch",
+                "label": "Merkez",
+                "icon": "IoRadio"
+            },
+            {
+                "type": "units",
+                "label": "Ekipler",
+                "icon": "IoGrid",
+                "default": {
+                    "status": "in_station",
+                    "units": []
+                },
+                "statuses": {
+                    "in_station": {
+                        "label": "İstasyonda",
+                        "color": "green"
+                    },
+                    "responding": {
+                        "label": "Yolda",
+                        "color": "orange"
+                    },
+                    "on_scene": {
+                        "label": "Olay Yerinde",
+                        "color": "red"
+                    },
+                    "returning": {
+                        "label": "Dönüyor",
+                        "color": "blue"
+                    },
+                    "out_of_service": {
+                        "label": "Hizmet Dışı",
+                        "color": "gray"
+                    }
+                }
+            },
+            {
+                "type": "reports",
+                "id": "reports",
+                "label": "Raporlar",
+                "name": "report",
+                "icon": "IoFolder",
+                "fields": [
+                    {
+                        "id": "private",
+                        "type": "visibility",
+                        "label": "APPS.MDT.REPORTS.VISIBILITY.TITLE"
+                    },
+                    {
+                        "id": "sharedUsers",
+                        "type": "sharedUsers",
+                        "label": "APPS.MDT.REPORTS.SHARED_WITH"
+                    },
+                    {
+                        "id": "type",
+                        "type": "dropdown",
+                        "label": "Olay Türü",
+                        "options": [
+                            "Structure Fire",
+                            "Vehicle Fire",
+                            "Wildfire/Brush Fire",
+                            "Medical Emergency",
+                            "Hazmat Incident",
+                            "Gas Leak",
+                            "Carbon Monoxide Alarm",
+                            "Vehicle Accident",
+                            "Water Rescue",
+                            "False Alarm",
+                            "Public Assist",
+                            "Other"
+                        ]
+                    },
+                    {
+                        "id": "location",
+                        "type": "location",
+                        "label": "Konum"
+                    },
+                    {
+                        "id": "tags",
+                        "type": "tag",
+                        "label": "Etiketler",
+                        "multiple": true
+                    },
+                    {
+                        "id": "gallery",
+                        "type": "photo",
+                        "label": "Olay Yeri Fotoğrafları",
+                        "multiple": true
+                    },
+                    {
+                        "id": "description",
+                        "type": "text",
+                        "label": "Olay Raporu",
+                        "template": "# Olay Raporu\n\n**Tarih/Saat:**\n**Ekip:** (Çağrı Kodu)\n**Konum:**\n\n**Çağrı Türü:**\n**Yönlendirme Saati:**\n**Varış Saati:**\n**Tamamlanma Saati:**\n\n**Durum:**\n\n**Yapılan İşlemler:**\n\n**Hasta/Mağdur Bilgileri:**\n\n**Maddi Hasar:**\n\n**Ek Notlar:**"
+                    },
+                    {
+                        "id": "firefighters",
+                        "label": "Müdahale Eden İtfaiyeciler",
+                        "type": "employee",
+                        "multiple": true
+                    },
+                    {
+                        "id": "civilians",
+                        "label": "Dahil Olan Siviller/Hastalar",
+                        "type": "person",
+                        "multiple": true
+                    }
+                ]
+            },
+            {
+                "type": "employees",
+                "label": "Personel",
+                "icon": "IoPeople"
+            },
+            {
+                "type": "chat",
+                "label": "Sohbet",
+                "icon": "IoChatbubbleEllipses"
+            },
+            {
+                "type": "logs",
+                "label": "Kayıtlar",
+                "icon": "IoPrint"
+            }
+        ]
+    },
+    "Mechanic": {
+        "name": "Mechanic",
+        "department": "Los Santos Oto Servis",
+        "deviceName": "Mobil Veri Terminali",
+        "appIcon": "./assets/img/icons/apps/Mechanic.png",
+        "icon": "./assets/img/icons/mdt/mechanic.png",
+        "colorTheme": "#eb8934",
+        "callsign": {
+            "enabled": true,
+            "format": "[M-111]",
+            "requireTemplate": true,
+            "allowChange": true,
+            "autoGenerate": true
+        },
+        "options": {
+            "dutyBlips": true
+        },
+        "defaultPermissions": {
+            "mechanic": {
+                "view": 0,
+                "create": 0,
+                "edit": 2,
+                "delete": 3,
+                "pin": 3,
+                "kick": 2
+            }
+        },
+        "tabs": [
+            {
+                "type": "home",
+                "icon": "IoHome",
+                "label": "Ana Sayfa",
+                "content": ["serviceReports", "bulletin", "units"]
+            },
+            {
+                "type": "bulletin",
+                "label": "Duyurular",
+                "icon": "IoBookmark"
+            },
+            {
+                "type": "dispatch",
+                "label": "Merkez",
+                "icon": "IoRadio"
+            },
+            {
+                "type": "units",
+                "label": "Ekipler",
+                "icon": "IoGrid",
+                "default": {
+                    "status": "available",
+                    "units": []
+                },
+                "statuses": {
+                    "available": {
+                        "label": "Müsait",
+                        "color": "green"
+                    },
+                    "busy": {
+                        "label": "Meşgul",
+                        "color": "orange"
+                    },
+                    "on_call": {
+                        "label": "Çağrıda",
+                        "color": "yellow"
+                    },
+                    "at_shop": {
+                        "label": "Serviste",
+                        "color": "blue"
+                    },
+                    "out_of_service": {
+                        "label": "Hizmet Dışı",
+                        "color": "gray"
+                    }
+                }
+            },
+            {
+                "type": "vehicles",
+                "label": "Araçlar",
+                "icon": "IoCarSport",
+                "fields": [
+                    {
+                        "id": "vehicle",
+                        "type": "entity",
+                        "label": "Araç Bilgileri",
+                        "entityFields": [
+                            {
+                                "id": "model",
+                                "label": "Model",
+                                "value": "model"
+                            },
+                            {
+                                "id": "plate",
+                                "label": "Plaka",
+                                "value": "plate",
+                                "copyable": true
+                            },
+                            {
+                                "id": "color",
+                                "label": "Renk",
+                                "value": "color.label"
+                            },
+                            {
+                                "id": "owner",
+                                "label": "Sahibi",
+                                "value": "owner.name",
+                                "clickable": true,
+                                "linkType": "profile",
+                                "linkId": "owner.identifier"
+                            },
+                            {
+                                "id": "location",
+                                "label": "Son Bilinen Konum",
+                                "value": "location.label"
+                            }
+                        ]
+                    },
+                    {
+                        "id": "notes",
+                        "type": "text",
+                        "label": "Araç Notları",
+                        "template": "# Araç Notları\n\n**Servis Geçmişi:**\n**Bilinen Sorunlar:**\n**Modifikasyonlar:**\n**Özel Talimatlar:**\n\n**Ek Notlar:**"
+                    },
+                    {
+                        "id": "tags",
+                        "type": "tag",
+                        "label": "Etiketler",
+                        "multiple": true
+                    },
+                    {
+                        "id": "serviceReports",
+                        "type": "linked",
+                        "label": "Servis Geçmişi",
+                        "linkType": "reports",
+                        "linkId": "serviceReports",
+                        "multiple": true
+                    }
+                ]
+            },
+            {
+                "type": "reports",
+                "id": "serviceReports",
+                "label": "Servis Raporları",
+                "icon": "IoConstruct",
+                "canFine": true,
+                "fineLabel": "Fatura",
+                "fineCatalog": true,
+                "fields": [
+                    {
+                        "id": "private",
+                        "type": "visibility",
+                        "label": "APPS.MDT.REPORTS.VISIBILITY.TITLE"
+                    },
+                    {
+                        "id": "sharedUsers",
+                        "type": "sharedUsers",
+                        "label": "APPS.MDT.REPORTS.SHARED_WITH"
+                    },
+                    {
+                        "id": "target",
+                        "type": "target",
+                        "vehicle": true,
+                        "person": false,
+                        "label": "Araç",
+                        "subtitle": "plate"
+                    },
+                    {
+                        "id": "customer",
+                        "type": "target",
+                        "vehicle": false,
+                        "person": true,
+                        "label": "Müşteri",
+                        "details": false
+                    },
+                    {
+                        "id": "services",
+                        "type": "charges",
+                        "label": "Hizmetler",
+                        "editable": true
+                    },
+                    {
+                        "id": "status",
+                        "type": "dropdown",
+                        "label": "Durum",
+                        "showInList": true,
+                        "options": [
+                            {
+                                "id": "in_progress",
+                                "label": "Devam Ediyor",
+                                "color": "yellow"
+                            },
+                            {
+                                "id": "completed",
+                                "label": "Tamamlandı",
+                                "color": "green"
+                            },
+                            {
+                                "id": "waiting_parts",
+                                "label": "Parça Bekleniyor",
+                                "color": "orange"
+                            },
+                            {
+                                "id": "cancelled",
+                                "label": "İptal Edildi",
+                                "color": "red"
+                            }
+                        ]
+                    },
+                    {
+                        "id": "priority",
+                        "type": "dropdown",
+                        "label": "Öncelik",
+                        "showInList": true,
+                        "options": [
+                            {
+                                "id": "low",
+                                "label": "Düşük",
+                                "color": "green"
+                            },
+                            {
+                                "id": "normal",
+                                "label": "Normal",
+                                "color": "orange",
+                                "default": true
+                            },
+                            {
+                                "id": "high",
+                                "label": "Yüksek",
+                                "color": "red"
+                            },
+                            {
+                                "id": "urgent",
+                                "label": "Acil",
+                                "color": "purple"
+                            }
+                        ]
+                    },
+                    {
+                        "id": "tags",
+                        "type": "tag",
+                        "label": "Etiketler",
+                        "multiple": true
+                    },
+                    {
+                        "id": "gallery",
+                        "type": "photo",
+                        "label": "Fotoğraflar",
+                        "multiple": true
+                    },
+                    {
+                        "id": "description",
+                        "type": "text",
+                        "label": "Servis Raporu",
+                        "template": "# Servis Raporu\n\n**Tarih/Saat:**\n**Tamirci:** (Ad & Çağrı Kodu)\n**Araç:** {plate}\n\n**Servis Türü:**\n**Müşteri Talebi:**\n\n**Teşhis:**\n**Yapılan İşlem:**\n**Kullanılan Parçalar:**\n**İşçilik Saati:**\n**Toplam Tutar:**\n\n**Notlar:**\n**Öneriler:**\n\n**Ek Bilgiler:**"
+                    },
+                    {
+                        "id": "mechanics",
+                        "label": "Dahil Olan Tamirciler",
+                        "type": "employee",
+                        "multiple": true
+                    }
+                ]
+            },
+            {
+                "type": "catalog",
+                "label": "Katalog",
+                "name": "service",
+                "icon": "IoPricetags",
+                "fine": true,
+                "fineLabel": "Fatura",
+                "jail": false,
+                "severities": [
+                    {
+                        "id": "Parts",
+                        "color": "blue"
+                    },
+                    {
+                        "id": "Labor",
+                        "color": "orange"
+                    },
+                    {
+                        "id": "Service",
+                        "color": "green"
+                    }
+                ]
+            },
+            {
+                "type": "employees",
+                "label": "Personel",
+                "icon": "IoPeople"
+            },
+            {
+                "type": "chat",
+                "label": "Sohbet",
+                "icon": "IoChatbubbleEllipses"
+            },
+            {
+                "type": "logs",
+                "label": "Kayıtlar",
+                "icon": "IoPrint"
+            }
+        ]
+    }
+}

@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<CVehicleModelInfoVariation>
+  <variationData>
+    <Item>
+    <modelName>BMXBDX</modelName>
+    <colors>
+      <Item> <!-- Red -->
+        <indices content="char_array">
+          1
+          147
+          3
+          134
+          42
+          44
+        </indices>
+        <liveries>
+          <Item>bmxbdx_sign_1</Item>
+        </liveries>
+      </Item>
+      <Item> <!-- Green -->
+        <indices content="char_array">
+          1
+          147
+          3
+          134
+          53
+          55
+        </indices>
+        <liveries>
+          <Item>bmxbdx_sign_1</Item>
+        </liveries>
+      </Item>
+      <Item> <!-- Blue -->
+        <indices content="char_array">
+          1
+          147
+          3
+          134
+          83
+          70
+        </indices>
+        <liveries>
+          <Item>bmxbdx_sign_1</Item>
+        </liveries>
+      </Item>
+      <Item> <!-- Orange -->
+        <indices content="char_array">
+          1
+          147
+          3
+          134
+          41
+          138
+        </indices>
+        <liveries>
+          <Item>bmxbdx_sign_1</Item>
+        </liveries>
+      </Item>
+      <Item> <!-- Yellow -->
+        <indices content="char_array">
+          1
+          147
+          3
+          134
+          42
+          89
+        </indices>
+        <liveries>
+          <Item>bmxbdx_sign_1</Item>
+        </liveries>
+      </Item>
+      <Item> <!-- Purple -->
+        <indices content="char_array">
+          1
+          147
+          3
+          134
+          71
+          145
+        </indices>
+        <liveries>
+          <Item>bmxbdx_sign_1</Item>
+        </liveries>
+      </Item>
+    </colors>
+    <kits>
+      <Item>bmxbdx_modkit</Item>
+    </kits>
+    <windowsWithExposedEdges />
+    <plateProbabilities>
+      <Probabilities itemType="LicensePlateProbabilityNamed" />
+    </plateProbabilities>
+    <lightSettings value="5" />
+    <sirenSettings value="0" />
+    </Item>
+  </variationData>
+</CVehicleModelInfoVariation>

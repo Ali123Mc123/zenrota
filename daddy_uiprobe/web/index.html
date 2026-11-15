@@ -1,0 +1,42 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>html, body { margin: 0; background: transparent; }</style>
+</head>
+<body>
+<script>
+// Every page shares one UI process: when it dies all pages load again, so a second "boot" in one session is a crash.
+// The heartbeat sends the process' JS heap (Chromium rounds it) and how late a 1 s timer ran (UI busy / starved).
+const res = typeof GetParentResourceName === 'function' ? GetParentResourceName() : 'daddy_uiprobe'
+const post = (name, data) => fetch(`https://${res}/${name}`, {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json; charset=UTF-8' },
+  body: JSON.stringify(data || {}),
+}).then((r) => r.text())
+
+const frames = () => { try { return window.parent.frames.length } catch (e) { return -1 } }
+
+// Lua may not listen yet while the game loads: ask until it answers.
+function boot() {
+  post('boot', { frames: frames() })
+    .then((t) => { if (t.indexOf('ok') < 0) throw new Error('no') })
+    .catch(() => setTimeout(boot, 2000))
+}
+boot()
+
+let last = performance.now(), worst = 0
+setInterval(() => {
+  const now = performance.now()
+  worst = Math.max(worst, now - last - 1000)
+  last = now
+}, 1000)
+
+setInterval(() => {
+  const m = performance.memory || {}
+  post('beat', { used: m.usedJSHeapSize, total: m.totalJSHeapSize, limit: m.jsHeapSizeLimit, lag: Math.round(worst), frames: frames() }).catch(() => {})
+  worst = 0
+}, 15000)
+</script>
+</body>
+</html>

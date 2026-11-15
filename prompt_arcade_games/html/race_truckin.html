@@ -1,0 +1,1381 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <style>
+    html, body { margin: 0; width: 100%; height: 100%; overflow: hidden; background: #000; }
+    #c { position: absolute; inset: 0; width: 100%; height: 100%; display: block;
+         image-rendering: auto; background: #0b0814; }
+  </style>
+</head>
+<body>
+  <canvas id="c" width="1280" height="720"></canvas>
+  <script>
+  'use strict';
+  // ===========================================================================
+  // RACE AND CHASE — GET TRUCKIN'
+  // A self-contained pseudo-3D big-rig arcade racer for a FiveM DUI screen.
+  // Procedural art + WebAudio only. No frameworks, no CDNs, no external assets.
+  //
+  // SOLO is fully playable (player 1 vs AI). A later Lua split-screen layer can
+  // drive player 2 and compose two views via renderView()/serializeState().
+  //
+  // Lua drives via window 'message' events:
+  //   {action:'config', mode:'solo'|'host'|'guest', seed:<int>, players:1|2}
+  //   {action:'input', player:1|2, keys:{accel,brake,left,right,special}}
+  //   {action:'start'} {action:'stop'} {action:'reset'}
+  // POSTs back: truckinReady{}, truckinOver{score,position,timeMs}, truckinLog.
+  // ===========================================================================
+  const RES = (location.host || '').replace(/^cfx-nui-/, '') || 'prompt_arcade_games';
+
+  function flog(msg) {
+    try {
+      fetch(`https://${RES}/truckinLog`, {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ msg: String(msg) })
+      }).catch(() => {});
+    } catch (e) {}
+  }
+  window.onerror = (m, src, ln, col) => { flog('JS ERROR: ' + m + ' @' + ln + ':' + col); };
+  flog('script start · host=' + location.host + ' · res=' + RES);
+
+  const W = 1280, H = 720;
+  const canvas = document.getElementById('c');
+  const ctx = canvas.getContext('2d', { alpha: false });
+
+  // ---- seeded PRNG (mulberry32) — ALL gameplay RNG flows through this --------
+  function makeRng(seed) {
+    let a = (seed >>> 0) || 1;
+    return function () {
+      a |= 0; a = (a + 0x6D2B79F5) | 0;
+      let t = Math.imul(a ^ (a >>> 15), 1 | a);
+      t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+      return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+    };
+  }
+  let RNG = makeRng(1);                  // replaced on config/start with config.seed
+  const rnd = () => RNG();               // 0..1
+  const rndC = () => RNG() * 2 - 1;      // -1..1
+
+  // ---- config (from Lua) ----------------------------------------------------
+  const CFG = { mode: 'solo', seed: 1, players: 1, split: false };
+
+  // ---- PEER 2P (the shipping model) --------------------------------------------------------
+  // Each client runs the FULL run locally with players[0] = MY rig (instant controls) and
+  // players[1] = the partner's GHOST dead-reckoned from a ~10Hz statebag packet. mySlot only
+  // decides which half of the split shows which rig (seat 1 = left screen). No gameplay
+  // traffic through server events (the old snapshot relay overflowed + crashed).
+  let mySlot = 1;
+  const peer = { have: false, at: 0, ps: 0, ln: 0, sp: 0, ck: 0, cg: 100, fin: 0 };
+  function isPeerMode() { return CFG.mode === 'peer'; }
+  function ghostStep(p, dt) {
+    if (!peer.have) { p.speed = 0; return; }
+    const age = Math.min((performance.now() - peer.at) / 1000, 0.5);
+    const tp = peer.ps + peer.sp * age;
+    p.speed += (peer.sp - p.speed) * Math.min(1, dt * 6);
+    p.pos += p.speed * dt;
+    p.pos += (tp - p.pos) * Math.min(1, dt * 4);
+    p.lane += (peer.ln - p.lane) * Math.min(1, dt * 8);
+    p.checks = peer.ck; p.cargo = peer.cg;
+    if (peer.fin && !p.finished) p.finished = true;
+  }
+  function buildPeerPacket() {
+    const m = players[0];
+    return { q: (buildPeerPacket._q = (buildPeerPacket._q || 0) + 1),
+      ps: Math.round(m.pos), ln: +m.lane.toFixed(3), sp: Math.round(m.speed),
+      ck: m.checks | 0, cg: Math.round(m.cargo), fin: m.finished ? 1 : 0 };
+  }
+  function applyPeerPacket(d) {
+    if (!d || !isPeerMode()) return;
+    if (typeof d.q === 'number' && d.q <= (applyPeerPacket._q || 0)) return;
+    applyPeerPacket._q = d.q || 0;
+    peer.have = true; peer.at = performance.now();
+    peer.ps = d.ps || 0; peer.ln = d.ln || 0; peer.sp = d.sp || 0;
+    peer.ck = d.ck || 0; peer.cg = (d.cg != null) ? d.cg : 100; peer.fin = d.fin || 0;
+  }
+
+  // ---- road model (classic pseudo-3D segment projection) --------------------
+  const ROAD = {
+    segLen: 200, rumbleLen: 3, roadW: 2200, drawDist: 150,
+    fov: 100, cameraHeight: 1100, laneCount: 3
+  };
+  const cameraDepth = 1 / Math.tan((ROAD.fov / 2) * Math.PI / 180);
+
+  let segments = [];
+  let trackLen = 0;
+  function lastY() { return segments.length === 0 ? 0 : segments[segments.length - 1].p2.world.y; }
+  function addSegment(curve, y) {
+    const n = segments.length;
+    const prevY = lastY();
+    segments.push({
+      index: n, curve: curve,
+      p1: { world: { x: 0, y: prevY, z: n * ROAD.segLen }, screen: {}, scale: 0, camera: {} },
+      p2: { world: { x: 0, y: y, z: (n + 1) * ROAD.segLen }, screen: {}, scale: 0, camera: {} },
+      color: Math.floor(n / ROAD.rumbleLen) % 2,
+      checkpoint: 0
+    });
+  }
+  function addRoad(enter, hold, leave, curve, y) {
+    const startY = lastY();
+    const endY = startY + (y || 0) * ROAD.segLen;
+    const total = enter + hold + leave;
+    const ease = (a, b, p) => a + (b - a) * (-Math.cos(p * Math.PI) / 2 + 0.5);
+    for (let n = 0; n < enter; n++) addSegment(ease(0, curve, n / enter), ease(startY, endY, n / total));
+    for (let n = 0; n < hold; n++)  addSegment(curve, ease(startY, endY, (enter + n) / total));
+    for (let n = 0; n < leave; n++) addSegment(ease(curve, 0, n / leave), ease(startY, endY, (enter + hold + n) / total));
+  }
+
+  // checkpoints get filled in by placeCheckpoints() after the track is built
+  const checkpoints = [];   // {z, idx, hit:false}
+
+  function buildTrack() {
+    segments = [];
+    addRoad(40, 40, 40, 0, 0);                       // intro straight
+    for (let i = 0; i < 120; i++) {
+      const curve = (rnd() < 0.5 ? 0 : rndC() * 4.0);
+      const hill  = (rnd() < 0.5 ? 0 : rndC() * 48);
+      const len   = 30 + Math.floor(rnd() * 60);
+      addRoad(len * 0.4 | 0, len, len * 0.4 | 0, curve, hill);
+    }
+    trackLen = segments.length * ROAD.segLen;
+    placeCheckpoints();
+  }
+
+  function placeCheckpoints() {
+    checkpoints.length = 0;
+    const count = 6;
+    // Distance-based so the delivery is ACHIEVABLE: a full-speed rig covers ~PHYS.maxSpeed
+    // units/sec, so spacing ~maxSpeed*6.5 means each leg takes ~6-7s — inside the clock
+    // budget (start 30s, +~9s per drop). Spread across the (huge) procedural track.
+    const spacing = PHYS.maxSpeed * 6.5;
+    const first = PHYS.maxSpeed * 7.0;
+    for (let i = 0; i < count; i++) {
+      const z = first + i * spacing;
+      const idx = Math.floor(z / ROAD.segLen) % segments.length;
+      const s = segments[idx];
+      if (s) { s.checkpoint = 1; checkpoints.push({ z: z, idx: idx, hit: false, order: i + 1 }); }
+    }
+  }
+
+  function findSeg(z) {
+    let zz = z % trackLen; if (zz < 0) zz += trackLen;
+    return segments[Math.floor(zz / ROAD.segLen) % segments.length];
+  }
+
+  function project(p, camX, camY, camZ, w, h, roadW) {
+    p.camera.x = (p.world.x || 0) - camX;
+    p.camera.y = (p.world.y || 0) - camY;
+    p.camera.z = (p.world.z || 0) - camZ;
+    if (p.camera.z <= 0.0001) p.camera.z = 0.0001;
+    p.scale = cameraDepth / p.camera.z;
+    p.screen.x = (w / 2) + (p.scale * p.camera.x * w / 2);
+    p.screen.y = (h / 2) - (p.scale * p.camera.y * h / 2);
+    p.screen.w = (p.scale * roadW * w / 2);
+  }
+
+  // ===========================================================================
+  // PLAYERS + RIVALS
+  // Players[0] = human P1. Players[1] = human P2 (driven by Lua sync later).
+  // In solo, only P1 + AI rivals simulate; P2 stays inert.
+  // ===========================================================================
+  function makePlayer(i) {
+    return {
+      idx: i,
+      pos: 0,            // world Z along track
+      lane: 0,           // -1..1 across road (continuous)
+      speed: 0,          // world units / sec
+      heading: 0,        // visual yaw (for jackknife/lean)
+      alive: true,
+      finished: false,
+      // mechanic state
+      cargo: 100,        // stability/cargo meter 0..100; jackknife drains it
+      jackknife: 0,      // 0..1 spin severity
+      stagger: 0,        // got-rammed stun timer
+      ramCd: 0,          // ram cooldown
+      flash: 0, shake: 0,
+      // perks
+      perk: { turbo: 0, bumper: 0 },   // active timers (sec remaining)
+      hornCd: 0,
+      score: 0,
+      checks: 0,         // checkpoints delivered
+      keys: { accel: false, brake: false, left: false, right: false, special: false },
+      prevSpecial: false,
+      active: i === 0    // P1 active in solo
+    };
+  }
+  const players = [makePlayer(0), makePlayer(1)];
+
+  // AI rivals: a mix of rival rigs (rammable but stagger you) + lighter traffic
+  const rivals = [];   // {z, lane, speed, kind:'rig'|'car'|'cone', color, alive, w}
+  const RIG_COLORS = ['#d6453a', '#e8a020', '#3a78c0', '#46b06a', '#b06ad0'];
+  const CAR_COLORS = ['#ff5d6d', '#ffd23f', '#48d1ff', '#9b8cff', '#7CFC00', '#ff9a3c'];
+
+  // physics tuning — HEAVY RIG feel (slow accel, slow brake, wide turns)
+  const PHYS = {
+    maxSpeed: ROAD.segLen * 58,
+    accel: ROAD.segLen * 18,        // weak — heavy
+    brake: ROAD.segLen * 30,        // weak — long stops
+    engBrake: ROAD.segLen * 10,
+    offBrake: ROAD.segLen * 30,
+    steer: 1.35,                    // base steer rate (wide turns)
+    centrifugal: 0.40,
+    turboMul: 1.55
+  };
+
+  // ===========================================================================
+  // GAME STATE
+  // ===========================================================================
+  const G = {
+    state: 'attract',     // 'attract' | 'count' | 'race' | 'over'
+    running: false,       // IDLE-SILENCE: false at boot/reset -> no audio, no sim
+    countT: 0,
+    raceT: 0,             // elapsed race seconds
+    deliverT: 0,          // delivery countdown (seconds) — miss = run ends
+    sentOver: false,
+    finishPos: 1,
+    perkPickups: []       // {z, lane, kind} along the road
+  };
+
+  function seedAll(seed) {
+    CFG.seed = (seed >>> 0) || 1;
+    RNG = makeRng(CFG.seed);
+  }
+
+  // The reachable "delivery corridor": start -> a margin past the final checkpoint.
+  // Rivals + perks live here so the populated road matches where the rig actually drives.
+  let corridorEnd = 0;
+  function buildWorld() {
+    buildTrack();
+    corridorEnd = (checkpoints.length ? checkpoints[checkpoints.length - 1].z : trackLen) + PHYS.maxSpeed * 8;
+    corridorEnd = Math.min(corridorEnd, trackLen - 2000);
+    spawnRivals();
+    spawnPerks();
+  }
+
+  function spawnRivals() {
+    rivals.length = 0;
+    for (let i = 0; i < 46; i++) {
+      const r = rnd();
+      const kind = r < 0.30 ? 'rig' : (r < 0.82 ? 'car' : 'cone');
+      rivals.push({
+        z: 2500 + rnd() * (corridorEnd - 2500),
+        lane: rndC() * 0.8,
+        kind: kind,
+        color: kind === 'rig' ? RIG_COLORS[(rnd() * RIG_COLORS.length) | 0]
+                              : CAR_COLORS[(rnd() * CAR_COLORS.length) | 0],
+        speed: kind === 'cone' ? 0 : (kind === 'rig' ? 0.30 + rnd() * 0.16 : 0.22 + rnd() * 0.22) * PHYS.maxSpeed,
+        alive: true,
+        scatter: 0   // air-horn scatter push
+      });
+    }
+  }
+
+  function spawnPerks() {
+    G.perkPickups.length = 0;
+    const kinds = ['turbo', 'horn', 'bumper', 'clock'];
+    for (let i = 0; i < 14; i++) {
+      G.perkPickups.push({
+        z: 4000 + rnd() * (corridorEnd - 5000),
+        lane: rndC() * 0.7,
+        kind: kinds[(rnd() * kinds.length) | 0],
+        taken: false
+      });
+    }
+  }
+
+  function resetPlayer(p, active) {
+    p.pos = 0; p.lane = 0; p.speed = 0; p.heading = 0;
+    p.alive = true; p.finished = false;
+    p.cargo = 100; p.jackknife = 0; p.stagger = 0; p.ramCd = 0;
+    p.flash = 0; p.shake = 0;
+    p.perk.turbo = 0; p.perk.bumper = 0; p.hornCd = 0;
+    p.score = 0; p.checks = 0;
+    p.keys = { accel: false, brake: false, left: false, right: false, special: false };
+    p.prevSpecial = false;
+    p.active = active;
+  }
+
+  function resetGame() {
+    seedAll(CFG.seed);
+    buildWorld();
+    resetPlayer(players[0], true);
+    resetPlayer(players[1], CFG.players >= 2);
+    G.state = 'attract'; G.running = false;
+    G.countT = 0; G.raceT = 0; G.deliverT = 0;
+    G.sentOver = false; G.finishPos = 1;
+    audio.stop();
+  }
+
+  function startGame() {
+    seedAll(CFG.seed);
+    buildWorld();
+    resetPlayer(players[0], true);
+    resetPlayer(players[1], CFG.players >= 2);
+    G.state = 'count'; G.running = true;
+    G.countT = 3.0; G.raceT = 0;
+    G.deliverT = 30.0;          // starting delivery clock
+    G.sentOver = false; G.finishPos = 1;
+    audio.start();
+    flog('game START · mode=' + CFG.mode + ' seed=' + CFG.seed + ' players=' + CFG.players);
+  }
+
+  function endRace(reasonWin) {
+    if (G.state === 'over') return;
+    G.state = 'over';
+    audio.stop();
+    audio.fanfare(reasonWin);
+    if (!G.sentOver) {
+      G.sentOver = true;
+      const p = players[0];
+      const score = Math.max(0, Math.floor(p.score));
+      const pos = G.finishPos;
+      const timeMs = Math.floor(G.raceT * 1000);
+      flog('game OVER score=' + score + ' pos=' + pos + ' timeMs=' + timeMs + ' win=' + reasonWin);
+      try {
+        fetch(`https://${RES}/truckinOver`, {
+          method: 'POST', headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ score: score, position: pos, timeMs: timeMs })
+        }).catch(() => {});
+      } catch (e) {}
+    }
+  }
+
+  // ===========================================================================
+  // WEBAUDIO — diesel engine drone + thuds + horn + blips (idle-silent)
+  // ===========================================================================
+  // master VOLUME (0..1). Lua drives it via {action:'volume', level}; default 50%.
+  let masterVol = 0.5;
+  const audio = {
+    ctx: null, on: false, master: null, eng1: null, eng2: null, lp: null, engGain: null,
+    init() {
+      if (this.ctx) return;
+      try {
+        const AC = window.AudioContext || window.webkitAudioContext;
+        this.ctx = new AC();
+        // single master gain — EVERY voice routes through this before destination
+        this.master = this.ctx.createGain(); this.master.gain.value = masterVol;
+        this.master.connect(this.ctx.destination);
+        this.eng1 = this.ctx.createOscillator(); this.eng1.type = 'sawtooth';
+        this.eng2 = this.ctx.createOscillator(); this.eng2.type = 'square'; this.eng2.detune.value = -12;
+        this.lp = this.ctx.createBiquadFilter(); this.lp.type = 'lowpass'; this.lp.frequency.value = 520;
+        this.engGain = this.ctx.createGain(); this.engGain.gain.value = 0.0;
+        this.eng1.connect(this.lp); this.eng2.connect(this.lp);
+        this.lp.connect(this.engGain); this.engGain.connect(this.master);
+        this.eng1.start(); this.eng2.start();
+      } catch (e) { flog('audio init fail: ' + e); }
+    },
+    resume() { if (this.ctx && this.ctx.state === 'suspended') this.ctx.resume().catch(() => {}); },
+    setVolume(v) {
+      masterVol = Math.max(0, Math.min(1, v));
+      if (this.master && this.ctx) this.master.gain.setTargetAtTime(masterVol, this.ctx.currentTime, 0.02);
+    },
+    start() { this.on = true; this.init(); this.resume(); },
+    stop() {
+      this.on = false;
+      if (this.engGain && this.ctx) this.engGain.gain.setTargetAtTime(0.0, this.ctx.currentTime, 0.06);
+    },
+    update(speed01, load) {
+      if (!this.ctx || !this.on) return;
+      const t = this.ctx.currentTime;
+      const base = 34 + speed01 * 120;                 // low diesel rumble
+      this.eng1.frequency.setTargetAtTime(base, t, 0.05);
+      this.eng2.frequency.setTargetAtTime(base * 0.5, t, 0.05);
+      this.lp.frequency.setTargetAtTime(380 + speed01 * 1900, t, 0.07);
+      this.engGain.gain.setTargetAtTime(0.12 + speed01 * 0.14 + (load || 0) * 0.04, t, 0.09);
+    },
+    noiseThud(freq, dur, vol) {
+      if (!this.ctx || !this.on) return;
+      try {
+        const len = Math.floor(this.ctx.sampleRate * dur);
+        const buf = this.ctx.createBuffer(1, len, this.ctx.sampleRate);
+        const d = buf.getChannelData(0);
+        for (let i = 0; i < len; i++) d[i] = (rnd() * 2 - 1) * Math.pow(1 - i / len, 2.0);
+        const src = this.ctx.createBufferSource(); src.buffer = buf;
+        const bp = this.ctx.createBiquadFilter(); bp.type = 'bandpass'; bp.frequency.value = freq; bp.Q.value = 0.7;
+        const g = this.ctx.createGain(); g.gain.value = vol || 0.8;
+        src.connect(bp); bp.connect(g); g.connect(this.master); src.start();
+      } catch (e) {}
+    },
+    crash() { this.noiseThud(180, 0.35, 0.9); },
+    ram() { this.noiseThud(120, 0.22, 0.7); },
+    blip(freq, dur, type) {
+      if (!this.ctx || !this.on) return;
+      try {
+        const t = this.ctx.currentTime;
+        const o = this.ctx.createOscillator(); o.type = type || 'square'; o.frequency.value = freq;
+        const g = this.ctx.createGain(); g.gain.value = 0.0;
+        g.gain.setValueAtTime(0.0, t); g.gain.linearRampToValueAtTime(0.22, t + 0.01);
+        g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+        o.connect(g); g.connect(this.master); o.start(); o.stop(t + dur + 0.02);
+      } catch (e) {}
+    },
+    horn() {
+      if (!this.ctx || !this.on) return;
+      try {
+        const t = this.ctx.currentTime;
+        [220, 277].forEach((f, i) => {
+          const o = this.ctx.createOscillator(); o.type = 'sawtooth'; o.frequency.value = f;
+          const g = this.ctx.createGain(); g.gain.value = 0.0;
+          g.gain.setValueAtTime(0.0, t); g.gain.linearRampToValueAtTime(0.16, t + 0.02);
+          g.gain.setValueAtTime(0.16, t + 0.32);
+          g.gain.exponentialRampToValueAtTime(0.0001, t + 0.55);
+          o.connect(g); g.connect(this.master); o.start(); o.stop(t + 0.6);
+        });
+      } catch (e) {}
+    },
+    fanfare(win) {
+      if (!this.ctx) { this.init(); this.resume(); }
+      const seq = win ? [523, 659, 784, 1046] : [392, 311, 262];
+      seq.forEach((f, i) => setTimeout(() => this.blip(f, 0.22, 'triangle'), i * 150));
+    }
+  };
+
+  // ===========================================================================
+  // UPDATE  (solo: sim P1 + rivals; guest: no sim — render from snapshot)
+  // ===========================================================================
+  function update(dt) {
+    if (!G.running) return;
+    if (CFG.mode === 'guest') return;   // guest renders applied snapshots only
+
+    if (G.state === 'count') {
+      G.countT -= dt;
+      if (G.countT <= 0) { G.state = 'race'; audio.blip(880, 0.18, 'square'); }
+      return;
+    }
+    if (G.state !== 'race') return;
+
+    G.raceT += dt;
+
+    // delivery clock ticks down; running out ends the run
+    G.deliverT -= dt;
+    if (G.deliverT <= 0) { G.deliverT = 0; G.finishPos = computePosition(0); endRace(false); return; }
+
+    simPlayer(players[0], dt, true);
+    if (players[1].active) {
+      if (isPeerMode()) ghostStep(players[1], dt);            // partner ghost: packet-driven
+      else simPlayer(players[1], dt, true);                   // legacy host-sims-both path
+    }
+    simRivals(dt);
+
+    // finish: P1 delivered all checkpoints
+    if (players[0].checks >= checkpoints.length && !players[0].finished) {
+      players[0].finished = true;
+      G.finishPos = computePosition(0);
+      endRace(true);
+    }
+  }
+
+  // standings by checkpoints delivered then track distance
+  function computePosition(myIdx) {
+    const me = players[myIdx];
+    let ahead = 0;
+    // count rivals ahead by progress (rough — rivals don't deliver, use distance)
+    for (const r of rivals) { if (r.kind === 'rig' && r.alive && r.z > me.pos) ahead++; }
+    if (players[1].active && myIdx === 0) {
+      const o = players[1];
+      if (o.checks > me.checks || (o.checks === me.checks && o.pos > me.pos)) ahead++;
+    }
+    return 1 + Math.min(ahead, 7);
+  }
+
+  function simPlayer(p, dt, isHuman) {
+    const seg = findSeg(p.pos + ROAD.cameraHeight);
+    const k = p.keys;
+    const speed01 = p.speed / PHYS.maxSpeed;
+
+    // perk + cooldown timers
+    p.perk.turbo = Math.max(0, p.perk.turbo - dt);
+    p.perk.bumper = Math.max(0, p.perk.bumper - dt);
+    p.ramCd = Math.max(0, p.ramCd - dt);
+    p.hornCd = Math.max(0, p.hornCd - dt);
+    p.stagger = Math.max(0, p.stagger - dt);
+
+    // cargo weight: more cargo = more momentum (slower accel, slower brake)
+    const weight = 0.6 + (p.cargo / 100) * 0.6;   // 0.6..1.2
+    const turbo = p.perk.turbo > 0 ? PHYS.turboMul : 1;
+    const top = PHYS.maxSpeed * (p.perk.turbo > 0 ? 1.12 : 1);
+
+    // throttle / brake — staggered = no throttle
+    if (p.stagger > 0) {
+      p.speed -= PHYS.engBrake / weight * dt;
+    } else if (k.accel) {
+      p.speed += (PHYS.accel * turbo / weight) * dt;
+    } else if (k.brake) {
+      p.speed -= (PHYS.brake / weight) * dt;
+    } else {
+      p.speed -= (PHYS.engBrake / weight) * dt;   // engine braking
+    }
+    p.speed = Math.max(0, Math.min(top, p.speed));
+
+    // steering — heavier load + higher speed = wider, laggier turns
+    const steerRate = PHYS.steer * (0.5 + 0.5 * speed01) / weight;
+    let steerIn = (k.left ? -1 : 0) + (k.right ? 1 : 0);
+    if (p.stagger > 0) steerIn += p.jackknife * (p.heading > 0 ? 1 : -1) * 0.5;
+    p.lane += steerIn * steerRate * dt;
+
+    // centrifugal: corner pushes you out
+    p.lane -= steerRate * dt * speed01 * (seg ? seg.curve : 0) * PHYS.centrifugal;
+
+    // JACKKNIFE: hard steer at high speed with cargo destabilises the trailer
+    const steerStress = Math.abs(steerIn) * speed01 * (p.cargo / 100);
+    if (steerStress > 0.72) {
+      p.jackknife = Math.min(1, p.jackknife + dt * 1.6);
+      // dumps points + cargo while jackknifed
+      const dump = dt * 22 * p.jackknife;
+      p.cargo = Math.max(0, p.cargo - dump);
+      p.score = Math.max(0, p.score - dump * 1.5);
+      p.speed *= (1 - dt * 0.6);
+      if (p.jackknife > 0.4 && p.flash <= 0) { p.shake = Math.max(p.shake, 0.3); }
+    } else {
+      p.jackknife = Math.max(0, p.jackknife - dt * 1.2);
+    }
+    p.heading = steerIn * 0.5 + p.jackknife * (steerIn || (p.heading > 0 ? 1 : -1)) * 0.6;
+
+    // off-road grass drag
+    if (Math.abs(p.lane) > 1.0 && p.speed > top * 0.3) {
+      p.speed -= PHYS.offBrake / weight * dt;
+      if (p.flash <= 0) p.shake = Math.max(p.shake, 0.1);
+    }
+    p.lane = Math.max(-1.6, Math.min(1.6, p.lane));
+
+    // advance along track (remember prevPos for tunneling-proof crossing tests)
+    const prevPos = p.pos;
+    p.pos += p.speed * dt;
+    let wrapped = false;
+    while (p.pos >= trackLen) { p.pos -= trackLen; wrapped = true; }
+
+    // checkpoints — DELIVERED by CROSSING the gate's z this frame (not a proximity
+    // window), so even a flat-out rig can't tunnel past one between frames.
+    for (const c of checkpoints) {
+      if (c.hit) continue;
+      const crossed = wrapped
+        ? (c.z >= prevPos || c.z <= p.pos)       // lap rolled over this frame
+        : (c.z > prevPos && c.z <= p.pos);
+      if (isHuman && crossed) {
+        c.hit = true; p.checks++;
+        const bonus = 8 + Math.floor(4 * (p.cargo / 100));
+        G.deliverT += bonus;                       // each checkpoint extends the clock
+        p.score += 500 + Math.floor(p.cargo) * 2;  // cargo intact = more points
+        audio.blip(740, 0.1, 'square'); setTimeout(() => audio.blip(990, 0.12, 'square'), 90);
+      }
+    }
+
+    // perk pickups
+    for (const pk of G.perkPickups) {
+      if (pk.taken) continue;
+      const crossed = wrapped ? (pk.z >= prevPos || pk.z <= p.pos) : (pk.z > prevPos && pk.z <= p.pos);
+      if (isHuman && crossed && Math.abs(p.lane - pk.lane) < 0.45) {
+        pk.taken = true;
+        applyPerk(p, pk.kind);
+        audio.blip(1180, 0.12, 'triangle');
+      }
+    }
+
+    // special key (rising edge) = RAM lunge / use bumper context
+    if (isHuman) {
+      if (k.special && !p.prevSpecial) tryRam(p);
+      p.prevSpecial = k.special;
+    }
+
+    // collisions with rivals (ram lighter ones, get staggered by rigs)
+    collideRivals(p, dt);
+
+    // distance score + cargo-haul bonus
+    p.score += p.speed * dt / 90;
+    p.flash = Math.max(0, p.flash - dt);
+    p.shake = Math.max(0, p.shake - dt * 1.5);
+
+    if (isHuman) audio.update(speed01, p.cargo / 100);
+  }
+
+  function applyPerk(p, kind) {
+    if (kind === 'turbo')  { p.perk.turbo = 3.2; flog('perk TURBO'); }
+    else if (kind === 'bumper') { p.perk.bumper = 5.0; flog('perk BUMPER'); }
+    else if (kind === 'clock')  { G.deliverT += 6; audio.blip(660, 0.16, 'sine'); flog('perk CLOCK+'); }
+    else if (kind === 'horn')   { airHorn(p); flog('perk HORN (instant)'); }
+  }
+
+  // AIR-HORN: scatters lighter traffic ahead off the road
+  function airHorn(p) {
+    if (p.hornCd > 0) return;
+    p.hornCd = 6;
+    audio.horn();
+    for (const r of rivals) {
+      if (r.kind === 'rig' || !r.alive) continue;
+      let rel = r.z - p.pos; if (rel < 0) rel += trackLen;
+      if (rel > 0 && rel < ROAD.segLen * 60) {
+        r.scatter = 1;
+        r.lane += (r.lane >= 0 ? 1 : -1) * (0.8 + rnd() * 0.6);
+      }
+    }
+  }
+
+  function tryRam(p) {
+    // air-horn is the special's instant fallback when no ram target; but special is RAM lunge.
+    if (p.ramCd > 0) return;
+    p.ramCd = 1.6;
+    // lunge: brief forward shove + slight lane snap toward nearest target lane
+    let best = null, bestRel = 1e9;
+    for (const r of rivals) {
+      if (!r.alive) continue;
+      let rel = r.z - p.pos; if (rel < 0) rel += trackLen;
+      if (rel < ROAD.segLen * 6 && Math.abs(r.lane - p.lane) < 0.6 && rel < bestRel) { best = r; bestRel = rel; }
+    }
+    if (best) {
+      if (best.kind === 'rig') {
+        // ramming a rig: you both stagger unless bumper active
+        if (p.perk.bumper <= 0) { p.stagger = 0.5; p.shake = Math.max(p.shake, 0.25); }
+        best.lane += (best.lane >= p.lane ? 1 : -1) * 0.5;
+        audio.ram();
+      } else {
+        // shove lighter traffic off the road
+        best.alive = false; best.scatter = 1;
+        p.score += 120;
+        p.shake = Math.max(p.shake, 0.15);
+        audio.ram();
+      }
+    } else {
+      // no target -> air-horn scatter as the special's secondary use
+      airHorn(p);
+    }
+  }
+
+  function collideRivals(p, dt) {
+    const playerW = 0.34;
+    const CLOSE = PHYS.maxSpeed * 0.03;   // min closing speed to count as the player driving INTO a car
+    const HARD  = PHYS.maxSpeed * 0.32;   // closing above this = hard wipeout, else glancing
+    for (const r of rivals) {
+      if (!r.alive) continue;
+      let rel = r.z - p.pos; if (rel < -trackLen / 2) rel += trackLen;
+      // FAIR CRASH: collide ONLY when the car is just AHEAD (small +gap), laterally
+      // overlaps, AND the player is CLOSING on it (driving into it). A car behind or
+      // beside, or a faster rival overtaking THROUGH the player, never hits us — only
+      // rear-ends the player causes themselves.
+      const closing = p.speed - r.speed;
+      const CONTACT = ROAD.segLen * 0.20;             // contact length (~touching); was 1.1 (too far)
+      const prevRel = rel + closing * dt;             // gap one frame ago — swept, so no tunneling
+      if (rel < CONTACT && prevRel >= CONTACT && closing > CLOSE) {
+        const rw = r.kind === 'rig' ? 0.4 : (r.kind === 'car' ? 0.32 : 0.18);
+        if (Math.abs(p.lane - r.lane) < playerW + rw) {
+          if (r.kind === 'rig') {
+            if (closing > HARD && p.perk.bumper <= 0) {
+              // hard rear-end into a rig = wipeout: stagger + flash + crash
+              p.stagger = Math.max(p.stagger, 0.45); p.speed *= 0.7;
+              p.flash = Math.max(p.flash, 0.4); p.shake = Math.max(p.shake, 0.3);
+              audio.crash();
+            } else {
+              // glancing: bleed off to ~the rig's pace + get nudged toward an open lane
+              p.speed = Math.min(p.speed, r.speed) * 0.9;
+              p.lane += (p.lane >= r.lane ? 1 : -1) * 0.18;
+              p.shake = Math.max(p.shake, 0.12);
+              audio.ram();
+            }
+            r.z -= ROAD.segLen * 2.0; if (r.z < 0) r.z += trackLen;
+          } else {
+            // bulldoze lighter traffic (mass advantage) — small speed cost
+            r.alive = false; r.scatter = 1;
+            p.speed *= 0.94; p.score += 60;
+            p.shake = Math.max(p.shake, 0.12);
+            audio.ram();
+          }
+        }
+      }
+    }
+  }
+
+  function simRivals(dt) {
+    for (const r of rivals) {
+      if (r.scatter > 0) { r.scatter = Math.max(0, r.scatter - dt); r.lane += (r.lane >= 0 ? 1 : -1) * dt * 0.8; }
+      if (r.speed) {
+        r.z += r.speed * dt;
+        if (r.z > trackLen) r.z -= trackLen;
+        // gentle lane drift to feel alive
+        r.lane += Math.sin((r.z * 0.001) + r.color.length) * dt * 0.05;
+        r.lane = Math.max(-1.4, Math.min(1.4, r.lane));
+      }
+      // respawn bulldozed traffic far ahead so the road stays populated
+      if (!r.alive && r.kind !== 'rig') {
+        let rel = r.z - players[0].pos; if (rel < 0) rel += trackLen;
+        if (rel < ROAD.segLen * 4 || rel > ROAD.segLen * 120) {
+          r.alive = true; r.z = players[0].pos + ROAD.segLen * (90 + rnd() * 40);
+          if (r.z > trackLen) r.z -= trackLen; r.lane = rndC() * 0.8; r.scatter = 0;
+        }
+      }
+    }
+  }
+
+  // ===========================================================================
+  // RENDER  — renderView(playerIndex, x, y, w, h) draws ONE player's POV.
+  // Solo calls it once full-screen. 2-player (Lua) calls it twice.
+  // ===========================================================================
+  function render() {
+    ctx.fillStyle = '#0b0814'; ctx.fillRect(0, 0, W, H);
+    if (CFG.split !== false) {   // default to split on-glass; only /dbg sends split=false for full-canvas
+      // On-glass: cabinet UV maps LEFT canvas half -> seat 1's physical screen, RIGHT -> seat 2's.
+      // Locally players[0] is ALWAYS my rig, so which half it lands in depends on MY seat.
+      const leftIdx  = (mySlot === 1) ? 0 : 1;
+      const rightIdx = (mySlot === 1) ? 1 : 0;
+      renderView(leftIdx, 0, 0, W / 2, H);
+      if (CFG.players >= 2) {
+        renderView(rightIdx, W / 2, 0, W / 2, H);
+      } else {
+        ctx.fillStyle = '#000'; ctx.fillRect(W / 2, 0, W / 2, H);   // solo: right half black
+      }
+      // 2px vertical divider
+      ctx.fillStyle = '#000'; ctx.fillRect(W / 2 - 1, 0, 2, H);
+    } else {
+      // /dbg fullscreen: P1 fills the canvas.
+      renderView(0, 0, 0, W, H);
+    }
+  }
+
+  // a tiny per-view scratch so projection writes don't collide between views
+  function renderView(pi, vx, vy, vw, vh) {
+    const p = players[pi] || players[0];
+    ctx.save();
+    ctx.beginPath(); ctx.rect(vx, vy, vw, vh); ctx.clip();
+    ctx.translate(vx, vy);
+
+    const t = performance.now() / 1000;
+    drawBackground(t, p, vw, vh);
+    drawRoadAndSprites(t, p, pi, vw, vh);
+    drawTruck(t, p, vw, vh, true);
+    drawOverlayFx(t, p, vw, vh);
+    drawHUD(t, p, pi, vw, vh);
+
+    if (G.state === 'attract') drawAttract(t, vw, vh);
+    else if (G.state === 'count') drawCountdown(t, vw, vh);
+    else if (G.state === 'over') drawResults(t, p, vw, vh);
+
+    ctx.restore();
+  }
+
+  function drawBackground(t, p, vw, vh) {
+    // dusk sky
+    const sky = ctx.createLinearGradient(0, 0, 0, vh * 0.6);
+    sky.addColorStop(0, '#1b1033'); sky.addColorStop(0.5, '#4a2350'); sky.addColorStop(1, '#ff7a4d');
+    ctx.fillStyle = sky; ctx.fillRect(0, 0, vw, vh * 0.6);
+    // setting sun
+    const sunY = vh * 0.46;
+    const sg = ctx.createRadialGradient(vw / 2, sunY, 8, vw / 2, sunY, vh * 0.22);
+    sg.addColorStop(0, '#ffe27a'); sg.addColorStop(0.5, '#ff944d'); sg.addColorStop(1, 'rgba(255,120,77,0)');
+    ctx.fillStyle = sg; ctx.beginPath(); ctx.arc(vw / 2, sunY, vh * 0.22, 0, Math.PI * 2); ctx.fill();
+    // city skyline silhouette, parallax-scrolled by player pos
+    ctx.fillStyle = '#170a26';
+    const sc = vw / 1280;
+    for (let i = 0; i < 30; i++) {
+      const bx = (i * 50 * sc) - ((p.pos * 0.015) % (50 * sc));
+      const bh = (26 + ((i * 71) % 78)) * (vh / 720);
+      ctx.fillRect(bx, vh * 0.6 - bh, 38 * sc, bh);
+      // a few lit windows
+      ctx.fillStyle = 'rgba(255,220,120,0.10)';
+      for (let wY = vh * 0.6 - bh + 6; wY < vh * 0.6 - 4; wY += 12) ctx.fillRect(bx + 6, wY, 5, 5);
+      ctx.fillStyle = '#170a26';
+    }
+    // ground haze base
+    ctx.fillStyle = '#15240f'; ctx.fillRect(0, vh * 0.6, vw, vh * 0.4);
+  }
+
+  function colorFor(s, vh) {
+    if (s.checkpoint) return { road: '#5a6070', rumble: '#ffd23f', grass: '#16280f', lane: '#ffffff', cp: true };
+    if (s.color === 0) return { road: '#33363f', rumble: '#c43a2e', grass: '#14240e', lane: '#41444d' };
+    return { road: '#3a3d47', rumble: '#e8e8e8', grass: '#173011', lane: '#41444d' };
+  }
+
+  function poly(x1, y1, x2, y2, x3, y3, x4, y4, fill) {
+    ctx.fillStyle = fill;
+    ctx.beginPath(); ctx.moveTo(x1, y1); ctx.lineTo(x2, y2); ctx.lineTo(x3, y3); ctx.lineTo(x4, y4);
+    ctx.closePath(); ctx.fill();
+  }
+
+  function drawRoadAndSprites(t, p, pi, vw, vh) {
+    const baseSeg = findSeg(p.pos);
+    if (!baseSeg) return;
+    const basePercent = ((p.pos % ROAD.segLen) / ROAD.segLen);
+    const playerY = baseSeg.p1.world.y + (baseSeg.p2.world.y - baseSeg.p1.world.y) * basePercent;
+    const camY = ROAD.cameraHeight + playerY;
+    const camX = p.lane * ROAD.roadW;
+    let x = 0, dxc = -(baseSeg.curve) * basePercent;
+    let maxY = vh;
+
+    for (let n = 0; n < ROAD.drawDist; n++) {
+      const idx = (baseSeg.index + n) % segments.length;
+      const s = segments[idx];
+      const looped = idx < baseSeg.index;
+      const camZ = p.pos - (looped ? trackLen : 0);
+
+      project(s.p1, camX - x, camY, camZ, vw, vh, ROAD.roadW);
+      project(s.p2, camX - x - dxc, camY, camZ, vw, vh, ROAD.roadW);
+      x += dxc; dxc += s.curve;
+
+      if (s.p1.camera.z <= cameraDepth || s.p2.screen.y >= s.p1.screen.y || s.p2.screen.y >= maxY) continue;
+      drawSegment(s, vw, vh);
+      maxY = s.p2.screen.y;
+    }
+
+    // gather sprites (rivals + perks + checkpoints gates + OTHER player) front-to-back
+    const drawList = [];
+    for (const r of rivals) {
+      if (!r.alive) continue;
+      let rel = r.z - p.pos; if (rel < 0) rel += trackLen;
+      if (rel > 0 && rel < ROAD.drawDist * ROAD.segLen) drawList.push({ t: 'rival', o: r, rel: rel });
+    }
+    for (const pk of G.perkPickups) {
+      if (pk.taken) continue;
+      let rel = pk.z - p.pos; if (rel < 0) rel += trackLen;
+      if (rel > 0 && rel < ROAD.drawDist * ROAD.segLen) drawList.push({ t: 'perk', o: pk, rel: rel });
+    }
+    for (const c of checkpoints) {
+      if (c.hit) continue;
+      let rel = c.z - p.pos; if (rel < 0) rel += trackLen;
+      if (rel > 0 && rel < ROAD.drawDist * ROAD.segLen) drawList.push({ t: 'gate', o: c, rel: rel });
+    }
+    // OTHER human player: only drawn when AHEAD (spatial awareness — the point of 2P)
+    const other = players[pi === 0 ? 1 : 0];
+    if (other && other.active && other !== p) {
+      let rel = other.pos - p.pos; if (rel < 0) rel += trackLen;
+      if (rel > ROAD.segLen * 0.5 && rel < ROAD.drawDist * ROAD.segLen) drawList.push({ t: 'other', o: other, rel: rel });
+    }
+    drawList.sort((a, b) => b.rel - a.rel);
+    for (const d of drawList) {
+      if (d.t === 'rival') drawRival(d.o, d.rel, camX, vw, vh);
+      else if (d.t === 'perk') drawPerk(d.o, d.rel, camX, vw, vh, t);
+      else if (d.t === 'gate') drawGate(d.o, d.rel, camX, vw, vh, t);
+      else if (d.t === 'other') drawOtherTruck(d.o, d.rel, camX, vw, vh);
+    }
+  }
+
+  function drawSegment(s, vw, vh) {
+    const c = colorFor(s, vh);
+    const p1 = s.p1.screen, p2 = s.p2.screen;
+    ctx.fillStyle = c.grass; ctx.fillRect(0, p2.y, vw, p1.y - p2.y);
+    const r1 = p1.w * 1.16, r2 = p2.w * 1.16;
+    poly(p1.x - r1, p1.y, p1.x + r1, p1.y, p2.x + r2, p2.y, p2.x - r2, p2.y, c.rumble);
+    poly(p1.x - p1.w, p1.y, p1.x + p1.w, p1.y, p2.x + p2.w, p2.y, p2.x - p2.w, p2.y, c.road);
+    if (s.color === 1 || c.cp) {
+      const lw1 = p1.w * 0.035, lw2 = p2.w * 0.035;
+      for (let l = 1; l < ROAD.laneCount; l++) {
+        const off = (l / ROAD.laneCount) * 2 - 1;
+        const lx1 = p1.x + p1.w * off, lx2 = p2.x + p2.w * off;
+        poly(lx1 - lw1, p1.y, lx1 + lw1, p1.y, lx2 + lw2, p2.y, lx2 - lw2, p2.y, c.lane);
+      }
+    }
+  }
+
+  // project a point on the road surface at distance rel, lane offset off
+  function projectOnRoad(rel, off, camX, vw, vh) {
+    const seg = findSeg(players[0].pos + rel); // approximate Y from segment
+    const sc = cameraDepth / Math.max(0.0001, rel);
+    const sx = (vw / 2) + (sc * ((off * ROAD.roadW) - camX) * vw / 2);
+    const sy = (vh / 2) + (sc * ROAD.cameraHeight * vh / 2);
+    return { x: sx, y: sy, sc: sc };
+  }
+
+  function drawRival(r, rel, camX, vw, vh) {
+    const pr = projectOnRoad(rel, r.lane, camX, vw, vh);
+    const size = pr.sc * ROAD.roadW * vw * (r.kind === 'rig' ? 0.5 : 0.42);
+    if (size < 2) return;
+    if (r.kind === 'rig') drawRigSprite(pr.x, pr.y, size, r.color);
+    else if (r.kind === 'car') drawCarSprite(pr.x, pr.y, size, r.color);
+    else drawConeSprite(pr.x, pr.y, size);
+  }
+
+  function drawRigSprite(cx, baseY, size, color) {
+    const w = size, h = size * 0.78, x = cx - w / 2, y = baseY - h;
+    ctx.fillStyle = 'rgba(0,0,0,0.4)'; ctx.beginPath();
+    ctx.ellipse(cx, baseY, w * 0.55, h * 0.12, 0, 0, Math.PI * 2); ctx.fill();
+    // trailer box (tall, behind)
+    ctx.fillStyle = '#d9d4c8'; roundRect(x + w * 0.08, y, w * 0.84, h * 0.74, 4); ctx.fill();
+    ctx.strokeStyle = 'rgba(0,0,0,0.25)'; ctx.lineWidth = Math.max(1, w * 0.02);
+    ctx.strokeRect(x + w * 0.08, y, w * 0.84, h * 0.74);
+    // cab roof color strip
+    ctx.fillStyle = color; ctx.fillRect(x + w * 0.08, y, w * 0.84, h * 0.1);
+    // rear doors split
+    ctx.strokeStyle = 'rgba(0,0,0,0.3)'; ctx.beginPath();
+    ctx.moveTo(cx, y + 2); ctx.lineTo(cx, y + h * 0.72); ctx.stroke();
+    // tail lights
+    ctx.fillStyle = '#ff3030';
+    ctx.fillRect(x + w * 0.10, y + h * 0.6, w * 0.12, h * 0.1);
+    ctx.fillRect(x + w * 0.78, y + h * 0.6, w * 0.12, h * 0.1);
+    // wheels
+    ctx.fillStyle = '#0a0a0a';
+    ctx.fillRect(x + w * 0.06, y + h * 0.72, w * 0.16, h * 0.22);
+    ctx.fillRect(x + w * 0.78, y + h * 0.72, w * 0.16, h * 0.22);
+  }
+
+  function drawCarSprite(cx, baseY, size, color) {
+    const w = size, h = size * 0.6, x = cx - w / 2, y = baseY - h;
+    ctx.fillStyle = 'rgba(0,0,0,0.4)'; ctx.beginPath();
+    ctx.ellipse(cx, baseY, w * 0.5, h * 0.16, 0, 0, Math.PI * 2); ctx.fill();
+    ctx.fillStyle = color; roundRect(x + w * 0.08, y + h * 0.1, w * 0.84, h * 0.8, Math.max(2, w * 0.12)); ctx.fill();
+    ctx.fillStyle = 'rgba(10,12,20,0.85)'; roundRect(x + w * 0.2, y + h * 0.16, w * 0.6, h * 0.42, Math.max(1, w * 0.08)); ctx.fill();
+    ctx.fillStyle = '#ff2e2e';
+    ctx.fillRect(x + w * 0.12, y + h * 0.66, w * 0.16, h * 0.18);
+    ctx.fillRect(x + w * 0.72, y + h * 0.66, w * 0.16, h * 0.18);
+  }
+
+  function drawConeSprite(cx, baseY, size) {
+    const w = size * 0.5, h = size * 0.7;
+    ctx.fillStyle = 'rgba(0,0,0,0.35)'; ctx.beginPath();
+    ctx.ellipse(cx, baseY, w * 0.7, h * 0.12, 0, 0, Math.PI * 2); ctx.fill();
+    ctx.fillStyle = '#ff7a1a'; ctx.beginPath();
+    ctx.moveTo(cx, baseY - h); ctx.lineTo(cx - w * 0.5, baseY); ctx.lineTo(cx + w * 0.5, baseY); ctx.closePath(); ctx.fill();
+    ctx.fillStyle = '#fff'; ctx.fillRect(cx - w * 0.34, baseY - h * 0.55, w * 0.68, h * 0.16);
+  }
+
+  function drawPerk(pk, rel, camX, vw, vh, t) {
+    const pr = projectOnRoad(rel, pk.lane, camX, vw, vh);
+    const size = pr.sc * ROAD.roadW * vw * 0.22;
+    if (size < 3) return;
+    const bob = Math.sin(t * 4 + rel) * size * 0.12;
+    const y = pr.y - size * 0.7 + bob;
+    const cols = { turbo: '#ff5d3a', horn: '#ffd23f', bumper: '#48d1ff', clock: '#7CFC00' };
+    const lab = { turbo: 'T', horn: 'H', bumper: 'B', clock: '+' };
+    ctx.fillStyle = cols[pk.kind] || '#fff';
+    ctx.shadowColor = cols[pk.kind]; ctx.shadowBlur = size * 0.4;
+    roundRect(pr.x - size / 2, y - size / 2, size, size, size * 0.2); ctx.fill();
+    ctx.shadowBlur = 0;
+    ctx.fillStyle = '#0b0814'; ctx.font = `900 ${size * 0.7}px Arial`; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+    ctx.fillText(lab[pk.kind] || '?', pr.x, y + 1);
+  }
+
+  function drawGate(c, rel, camX, vw, vh, t) {
+    const left = projectOnRoad(rel, -1.15, camX, vw, vh);
+    const right = projectOnRoad(rel, 1.15, camX, vw, vh);
+    const size = left.sc * ROAD.roadW * vw * 0.5;
+    if (size < 3) return;
+    const pulse = 0.6 + 0.4 * Math.sin(t * 5);
+    ctx.fillStyle = `rgba(255,210,63,${pulse})`;
+    // posts
+    ctx.fillRect(left.x - size * 0.06, left.y - size * 1.2, size * 0.12, size * 1.2);
+    ctx.fillRect(right.x - size * 0.06, right.y - size * 1.2, size * 0.12, size * 1.2);
+    // banner
+    ctx.fillStyle = `rgba(20,20,30,0.85)`;
+    ctx.fillRect(left.x, left.y - size * 1.25, right.x - left.x, size * 0.3);
+    ctx.fillStyle = `rgba(255,210,63,${pulse})`;
+    ctx.font = `900 ${size * 0.22}px Arial`; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+    ctx.fillText('CHECKPOINT', (left.x + right.x) / 2, left.y - size * 1.1);
+  }
+
+  function drawOtherTruck(o, rel, camX, vw, vh) {
+    const pr = projectOnRoad(rel, o.lane, camX, vw, vh);
+    const size = pr.sc * ROAD.roadW * vw * 0.5;
+    if (size < 2) return;
+    drawRigSprite(pr.x, pr.y, size, '#19e6ff');   // P2 rig tinted cyan so it reads as the rival human
+    // name tag
+    if (size > 24) {
+      ctx.fillStyle = '#19e6ff'; ctx.font = `900 ${Math.min(20, size * 0.2)}px Arial`;
+      ctx.textAlign = 'center'; ctx.textBaseline = 'bottom';
+      ctx.fillText('P2', pr.x, pr.y - size * 0.82);
+    }
+  }
+
+  // ---- player's own rig (fixed near bottom, leans + jackknifes) -------------
+  function drawTruck(t, p, vw, vh, isSelf) {
+    const sh = p.shake > 0 ? Math.sin(t * 80) * p.shake * 14 : 0;
+    const cx = vw / 2 + p.lane * 14 + sh;
+    const baseY = vh - vh * 0.10;
+    const lean = p.heading;
+    const bob = Math.sin(t * 16) * (p.speed / PHYS.maxSpeed) * 3;
+    const w = vw * 0.20, h = vh * 0.20, x = cx - w / 2, y = baseY - h + bob;
+
+    // shadow
+    ctx.fillStyle = 'rgba(0,0,0,0.45)';
+    ctx.beginPath(); ctx.ellipse(cx, baseY + 6, w * 0.55, vh * 0.025, 0, 0, Math.PI * 2); ctx.fill();
+
+    ctx.save();
+    ctx.translate(cx, y + h / 2);
+    ctx.rotate(lean * 0.05 + p.jackknife * 0.04 * (lean >= 0 ? 1 : -1));
+    ctx.translate(-cx, -(y + h / 2));
+
+    // trailer (big box behind the cab)
+    ctx.fillStyle = '#e6e0d2';
+    roundRect(x + w * 0.06, y - h * 0.18, w * 0.88, h * 0.5, 6); ctx.fill();
+    ctx.strokeStyle = 'rgba(0,0,0,0.25)'; ctx.lineWidth = 3;
+    ctx.strokeRect(x + w * 0.06, y - h * 0.18, w * 0.88, h * 0.5);
+    ctx.strokeStyle = 'rgba(0,0,0,0.3)'; ctx.beginPath();
+    ctx.moveTo(cx, y - h * 0.16); ctx.lineTo(cx, y + h * 0.3); ctx.stroke();
+
+    // cab body (red rig, viewed from behind)
+    const grad = ctx.createLinearGradient(0, y + h * 0.3, 0, y + h);
+    grad.addColorStop(0, '#e8513f'); grad.addColorStop(1, '#9c2418');
+    ctx.fillStyle = grad;
+    roundRect(x + w * 0.12, y + h * 0.28, w * 0.76, h * 0.62, 10); ctx.fill();
+    // rear window
+    ctx.fillStyle = '#0a1420'; roundRect(x + w * 0.28, y + h * 0.34, w * 0.44, h * 0.26, 6); ctx.fill();
+    // marker/clearance lights on cab roof
+    ctx.fillStyle = '#ffcc44';
+    for (let i = 0; i < 3; i++) ctx.fillRect(x + w * 0.30 + i * w * 0.16, y + h * 0.28, w * 0.06, h * 0.04);
+    // big mud-flap wheels
+    ctx.fillStyle = '#0a0a0a';
+    roundRect(x + w * 0.04, y + h * 0.6, w * 0.16, h * 0.4, 4); ctx.fill();
+    roundRect(x + w * 0.80, y + h * 0.6, w * 0.16, h * 0.4, 4); ctx.fill();
+    // brake glow
+    if (p.keys.brake) {
+      ctx.fillStyle = 'rgba(255,40,40,0.9)';
+      ctx.fillRect(x + w * 0.16, y + h * 0.78, w * 0.2, 6);
+      ctx.fillRect(x + w * 0.64, y + h * 0.78, w * 0.2, 6);
+    }
+    // turbo exhaust glow
+    if (p.perk.turbo > 0) {
+      ctx.fillStyle = 'rgba(120,200,255,0.7)';
+      ctx.beginPath(); ctx.ellipse(x + w * 0.2, y + h * 0.2, w * 0.06, h * 0.1, 0, 0, Math.PI * 2); ctx.fill();
+      ctx.beginPath(); ctx.ellipse(x + w * 0.8, y + h * 0.2, w * 0.06, h * 0.1, 0, 0, Math.PI * 2); ctx.fill();
+    }
+    // bumper shine
+    if (p.perk.bumper > 0) {
+      ctx.strokeStyle = 'rgba(120,230,255,0.9)'; ctx.lineWidth = 4;
+      ctx.strokeRect(x + w * 0.1, y + h * 0.86, w * 0.8, 6);
+    }
+    ctx.restore();
+  }
+
+  function roundRect(x, y, w, h, r) {
+    if (w < 2 * r) r = w / 2; if (h < 2 * r) r = h / 2;
+    ctx.beginPath();
+    ctx.moveTo(x + r, y);
+    ctx.arcTo(x + w, y, x + w, y + h, r);
+    ctx.arcTo(x + w, y + h, x, y + h, r);
+    ctx.arcTo(x, y + h, x, y, r);
+    ctx.arcTo(x, y, x + w, y, r);
+    ctx.closePath();
+  }
+
+  function drawOverlayFx(t, p, vw, vh) {
+    // vignette + scanlines
+    const vg = ctx.createRadialGradient(vw / 2, vh / 2, vh * 0.35, vw / 2, vh / 2, vh * 0.78);
+    vg.addColorStop(0, 'rgba(0,0,0,0)'); vg.addColorStop(1, 'rgba(0,0,0,0.5)');
+    ctx.fillStyle = vg; ctx.fillRect(0, 0, vw, vh);
+    ctx.globalAlpha = 0.05; ctx.fillStyle = '#000';
+    for (let y = 0; y < vh; y += 3) ctx.fillRect(0, y, vw, 1);
+    ctx.globalAlpha = 1;
+    if (p.flash > 0) { ctx.fillStyle = `rgba(255,60,60,${p.flash * 0.5})`; ctx.fillRect(0, 0, vw, vh); }
+    if (p.perk.turbo > 0) {
+      // speed lines
+      ctx.strokeStyle = 'rgba(180,220,255,0.25)'; ctx.lineWidth = 2;
+      for (let i = 0; i < 10; i++) {
+        const a = (i / 10) * Math.PI * 2 + t * 2;
+        const r1 = vh * 0.2, r2 = vh * 0.5;
+        ctx.beginPath();
+        ctx.moveTo(vw / 2 + Math.cos(a) * r1, vh / 2 + Math.sin(a) * r1);
+        ctx.lineTo(vw / 2 + Math.cos(a) * r2, vh / 2 + Math.sin(a) * r2);
+        ctx.stroke();
+      }
+    }
+  }
+
+  // ===========================================================================
+  // HUD + screens  (scale to viewport so split-screen halves still read)
+  // ===========================================================================
+  function neonText(txt, x, y, size, color, align, glow) {
+    ctx.font = `900 ${size}px Arial, Helvetica, sans-serif`;
+    ctx.textAlign = align || 'left'; ctx.textBaseline = 'alphabetic';
+    ctx.shadowColor = color; ctx.shadowBlur = glow == null ? size * 0.5 : glow;
+    ctx.fillStyle = color; ctx.fillText(txt, x, y);
+    ctx.shadowBlur = 0;
+  }
+
+  function drawHUD(t, p, pi, vw, vh) {
+    const S = vw / 1280;          // HUD scale factor for split views
+    const kmh = Math.floor((p.speed / PHYS.maxSpeed) * 110);
+
+    // speed (bottom-left)
+    neonText('SPEED', 28 * S, vh - 70 * S, 22 * S, '#ffb347', 'left', 8);
+    neonText(kmh, 28 * S, vh - 34 * S, 46 * S, '#ffffff', 'left', 12);
+    neonText('MPH', (28 + 90) * S, vh - 34 * S, 20 * S, '#ffb347', 'left', 6);
+
+    // score (top-left)
+    neonText('SCORE', 28 * S, 40 * S, 20 * S, '#ffd23f', 'left', 8);
+    neonText(String(Math.floor(p.score)).padStart(6, '0'), 28 * S, 76 * S, 38 * S, '#ffffff', 'left', 12);
+
+    // delivery timer (top-center) — flashes red when low
+    const low = G.deliverT < 8;
+    const tcol = low ? (Math.sin(t * 10) > 0 ? '#ff3b3b' : '#ffd23f') : '#7CFC00';
+    neonText('DELIVERY', vw / 2, 38 * S, 20 * S, '#9bd0ff', 'center', 8);
+    neonText(G.deliverT.toFixed(1), vw / 2, 78 * S, 44 * S, tcol, 'center', low ? 22 : 12);
+
+    // checkpoints (top-right)
+    neonText('DROPS', vw - 28 * S, 40 * S, 20 * S, '#9b8cff', 'right', 8);
+    neonText(p.checks + ' / ' + checkpoints.length, vw - 28 * S, 76 * S, 32 * S, '#ffffff', 'right', 10);
+
+    // cargo / stability meter (bottom-center bar)
+    const bw = 280 * S, bx = vw / 2 - bw / 2, by = vh - 30 * S;
+    neonText('CARGO', vw / 2, vh - 40 * S, 16 * S, '#ffd23f', 'center', 6);
+    ctx.fillStyle = 'rgba(255,255,255,0.12)'; ctx.fillRect(bx, by, bw, 12 * S);
+    const cargo01 = p.cargo / 100;
+    const cg = ctx.createLinearGradient(bx, 0, bx + bw, 0);
+    cg.addColorStop(0, '#ff3b3b'); cg.addColorStop(0.5, '#ffd23f'); cg.addColorStop(1, '#7CFC00');
+    ctx.fillStyle = cg; ctx.fillRect(bx, by, bw * cargo01, 12 * S);
+    if (p.jackknife > 0.3) neonText('JACKKNIFE!', vw / 2, by - 6 * S, 22 * S, '#ff3b3b', 'center', 14);
+
+    // active perks (bottom-right icons)
+    let px = vw - 28 * S, py = vh - 60 * S;
+    const showPerk = (label, col, on) => {
+      if (!on) return;
+      ctx.fillStyle = col; ctx.globalAlpha = 0.85;
+      roundRect(px - 30 * S, py, 28 * S, 28 * S, 5 * S); ctx.fill(); ctx.globalAlpha = 1;
+      ctx.fillStyle = '#0b0814'; ctx.font = `900 ${18 * S}px Arial`; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+      ctx.fillText(label, px - 16 * S, py + 14 * S);
+      px -= 34 * S;
+    };
+    showPerk('T', '#ff5d3a', p.perk.turbo > 0);
+    showPerk('B', '#48d1ff', p.perk.bumper > 0);
+    showPerk('R', '#ffd23f', p.ramCd <= 0);  // ram ready indicator
+
+    // split-screen tag
+    if (CFG.players >= 2) neonText('P' + (pi + 1), 28 * S, vh - 90 * S, 18 * S, pi === 0 ? '#ff5d3a' : '#19e6ff', 'left', 6);
+  }
+
+  function drawAttract(t, vw, vh) {
+    ctx.fillStyle = 'rgba(8,6,16,0.5)'; ctx.fillRect(0, 0, vw, vh);
+    const S = vw / 1280;
+    neonText('RACE AND CHASE', vw / 2, vh / 2 - 70 * S, 70 * S, '#ffd23f', 'center', 24);
+    neonText("GET TRUCKIN'", vw / 2, vh / 2 - 6 * S, 92 * S, '#ff5d3a', 'center', 30);
+    const pulse = 0.6 + 0.4 * Math.sin(t * 3);
+    ctx.globalAlpha = pulse;
+    neonText('PRESS  ACCEL  TO  HAUL', vw / 2, vh / 2 + 70 * S, 36 * S, '#7CFC00', 'center', 16);
+    ctx.globalAlpha = 1;
+    neonText('STEER  ·  ACCEL / BRAKE  ·  SPECIAL = RAM / HORN', vw / 2, vh / 2 + 124 * S, 22 * S, '#9bd0ff', 'center', 8);
+    neonText('DELIVER ALL CHECKPOINTS BEFORE THE CLOCK RUNS OUT', vw / 2, vh - 40 * S, 22 * S, '#ffb347', 'center', 8);
+  }
+
+  function drawCountdown(t, vw, vh) {
+    ctx.fillStyle = 'rgba(8,6,16,0.4)'; ctx.fillRect(0, 0, vw, vh);
+    const S = vw / 1280;
+    const n = Math.ceil(G.countT);
+    const frac = G.countT - Math.floor(G.countT);
+    const scale = 1 + (1 - frac) * 0.4;
+    ctx.save(); ctx.translate(vw / 2, vh / 2); ctx.scale(scale, scale);
+    neonText(n > 0 ? String(n) : 'GO!', 0, 30 * S, 150 * S, n > 0 ? '#ffd23f' : '#7CFC00', 'center', 30);
+    ctx.restore();
+    neonText('GET READY TO ROLL OUT', vw / 2, vh / 2 + 140 * S, 28 * S, '#9bd0ff', 'center', 10);
+  }
+
+  function drawResults(t, p, vw, vh) {
+    ctx.fillStyle = 'rgba(8,6,16,0.72)'; ctx.fillRect(0, 0, vw, vh);
+    const S = vw / 1280;
+    const win = p.finished;
+    neonText(win ? 'DELIVERED!' : "TIME'S UP", vw / 2, vh / 2 - 90 * S, 84 * S, win ? '#7CFC00' : '#ff3b3b', 'center', 28);
+    neonText('POSITION  ' + ordinal(G.finishPos), vw / 2, vh / 2 - 10 * S, 40 * S, '#ffd23f', 'center', 12);
+    neonText('SCORE  ' + Math.floor(p.score), vw / 2, vh / 2 + 44 * S, 44 * S, '#ffffff', 'center', 14);
+    neonText('TIME  ' + G.raceT.toFixed(1) + 's   ·   DROPS  ' + p.checks + '/' + checkpoints.length,
+             vw / 2, vh / 2 + 92 * S, 26 * S, '#9bd0ff', 'center', 8);
+    const pulse = 0.6 + 0.4 * Math.sin(t * 3);
+    ctx.globalAlpha = pulse;
+    neonText('PRESS  ACCEL  TO  RUN  AGAIN', vw / 2, vh - 50 * S, 30 * S, '#ff5d3a', 'center', 12);
+    ctx.globalAlpha = 1;
+  }
+
+  function ordinal(n) {
+    const s = ['th', 'st', 'nd', 'rd'], v = n % 100;
+    return n + (s[(v - 20) % 10] || s[v] || s[0]);
+  }
+
+  // ===========================================================================
+  // SYNC HOOKS — serializeState / applyState (compact snapshot for Lua)
+  // ===========================================================================
+  window.serializeState = function () {
+    const pk = (p) => ({
+      d: Math.round(p.pos), l: +p.lane.toFixed(3), s: Math.round(p.speed),
+      c: Math.round(p.cargo), ch: p.checks, sc: Math.round(p.score),
+      j: +p.jackknife.toFixed(2), st: +p.stagger.toFixed(2), h: +p.heading.toFixed(2),
+      tb: +p.perk.turbo.toFixed(2), bp: +p.perk.bumper.toFixed(2), a: p.active ? 1 : 0
+    });
+    return {
+      ph: G.state, t: +G.raceT.toFixed(2), dt: +G.deliverT.toFixed(2),
+      seed: CFG.seed, players: CFG.players, fp: G.finishPos,
+      p: [pk(players[0]), pk(players[1])],
+      rv: rivals.map(r => ({ z: Math.round(r.z), l: +r.lane.toFixed(2), k: r.kind, a: r.alive ? 1 : 0 })),
+      cp: checkpoints.map(c => c.hit ? 1 : 0),
+      pp: G.perkPickups.map(x => x.taken ? 1 : 0)
+    };
+  };
+
+  window.applyState = function (s) {
+    if (!s) return;
+    try {
+      if (s.seed != null && s.seed !== CFG.seed) seedAll(s.seed);
+      G.state = s.ph || G.state; G.raceT = s.t || 0; G.deliverT = s.dt || 0;
+      G.finishPos = s.fp || 1;
+      if (s.players != null) CFG.players = s.players;
+      if (s.p) s.p.forEach((d, i) => {
+        const p = players[i]; if (!p || !d) return;
+        p.pos = d.d || 0; p.lane = d.l || 0; p.speed = d.s || 0;
+        p.cargo = d.c != null ? d.c : 100; p.checks = d.ch || 0; p.score = d.sc || 0;
+        p.jackknife = d.j || 0; p.stagger = d.st || 0; p.heading = d.h || 0;
+        p.perk.turbo = d.tb || 0; p.perk.bumper = d.bp || 0; p.active = !!d.a;
+      });
+      if (s.rv) s.rv.forEach((d, i) => {
+        const r = rivals[i]; if (!r || !d) return;
+        r.z = d.z || 0; r.lane = d.l || 0; r.alive = !!d.a;
+      });
+      if (s.cp) s.cp.forEach((v, i) => { if (checkpoints[i]) checkpoints[i].hit = !!v; });
+      if (s.pp) s.pp.forEach((v, i) => { if (G.perkPickups[i]) G.perkPickups[i].taken = !!v; });
+    } catch (e) { flog('applyState err: ' + e); }
+  };
+
+  // expose renderView for any external composition
+  window.renderView = renderView;
+
+  // ===========================================================================
+  // MAIN LOOP
+  // ===========================================================================
+  // DUI SLEEP CONTRACT: after the player leaves, Lua sends {action:'sleep'} and this page STOPS
+  // rendering (the rAF loop parks). A cached CEF page drawing the attract road at 60fps was
+  // silently costing client FPS everywhere (invisible to resmon). config/reset/start wake it.
+  let RAF_LIVE = true;
+  function duiSleep() { RAF_LIVE = false; }
+  function duiWake() { if (!RAF_LIVE) { RAF_LIVE = true; last = performance.now(); requestAnimationFrame(frame); } }
+  let last = performance.now();
+  function frame(now) {
+    if (!RAF_LIVE) return;
+    let dt = (now - last) / 1000; last = now;
+    if (dt > 0.05) dt = 0.05;  // clamp stalls
+
+    // auto-start from attract/over when P1 hits accel (playable with only forwarded keys)
+    if (G.running && (G.state === 'attract' || G.state === 'over') && players[0].keys.accel) startGame();
+
+    update(dt);
+    render();
+    requestAnimationFrame(frame);
+  }
+
+  // ===========================================================================
+  // MESSAGE CONTRACT (from Lua)
+  // ===========================================================================
+  let msgCount = 0;
+  window.addEventListener('message', (e) => {
+    let d;
+    try { d = (typeof e.data === 'string') ? JSON.parse(e.data) : (e.data || {}); }
+    catch (err) { flog('message parse error: ' + err); return; }
+    if (!d || !d.action) return;
+    msgCount++;
+    if (d.action !== 'input' && d.action !== 'state' && msgCount < 200) flog('msg ' + d.action);
+
+    if (d.action === 'sleep') { duiSleep(); return; }
+    if (d.action === 'config' || d.action === 'reset' || d.action === 'start') duiWake();
+    if (d.action === 'input') {
+      // peer mode: MY rig is players[0] locally whatever my seat — route my slot's input there
+      // and ignore anything else (the partner ghost is packet-driven, never input-driven).
+      let pi;
+      if (isPeerMode()) { if (d.player !== mySlot && d.player != null) return; pi = 0; }
+      else pi = (d.player === 2) ? 1 : 0;
+      const p = players[pi];
+      const k = d.keys || {};
+      p.keys.accel = !!k.accel; p.keys.brake = !!k.brake;
+      p.keys.left = !!k.left; p.keys.right = !!k.right; p.keys.special = !!k.special;
+      if (pi === 1) p.active = true;
+      if (k.accel || k.brake || k.left || k.right || k.special) audio.resume();
+    } else if (d.action === 'config') {
+      if (d.mode) CFG.mode = d.mode;
+      if (typeof d.slot === 'number') mySlot = (d.slot === 2) ? 2 : 1;
+      if (d.players != null) CFG.players = d.players | 0;
+      if (d.seed != null) seedAll(d.seed | 0);
+      CFG.split = d.split;
+      players[1].active = CFG.players >= 2;
+      flog('config mode=' + CFG.mode + ' slot=' + mySlot + ' seed=' + CFG.seed + ' players=' + CFG.players);
+    } else if (d.action === 'peer') {
+      applyPeerPacket(d.data);
+    } else if (d.action === 'requestPeer') {
+      try {
+        fetch(`https://${RES}/truckinPeer`, {
+          method: 'POST', headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(buildPeerPacket())
+        }).catch(() => {});
+      } catch (e2) {}
+    } else if (d.action === 'start') {
+      startGame();
+    } else if (d.action === 'stop') {
+      G.running = false; audio.stop();
+    } else if (d.action === 'reset') {
+      resetGame();
+    } else if (d.action === 'volume') {
+      // master VOLUME 0..1 — sets masterVol + live master gain
+      const lvl = Number(d.level);
+      if (isFinite(lvl)) audio.setVolume(lvl);
+    } else if (d.action === 'state') {
+      // optional: Lua pushes a snapshot for guest rendering
+      if (window.applyState) window.applyState(d.state || d.snapshot);
+    } else if (d.action === 'requestState') {
+      // host only: Lua polls ~20x/sec for the authoritative snapshot
+      try {
+        fetch(`https://${RES}/truckinState`, {
+          method: 'POST', headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(window.serializeState())
+        }).catch(() => {});
+      } catch (e) {}
+    }
+  });
+
+  // local keyboard fallback (P1) so the page is testable in a plain browser too
+  function setKey(code, val) {
+    const k = players[0].keys;
+    if (code === 'ArrowUp' || code === 'KeyW') k.accel = val;
+    else if (code === 'ArrowDown' || code === 'KeyS') k.brake = val;
+    else if (code === 'ArrowLeft' || code === 'KeyA') k.left = val;
+    else if (code === 'ArrowRight' || code === 'KeyD') k.right = val;
+    else if (code === 'Space' || code === 'ShiftLeft') k.special = val;
+    else return;
+    if (val) audio.resume();
+  }
+  window.addEventListener('keydown', (e) => { setKey(e.code, true); });
+  window.addEventListener('keyup', (e) => { setKey(e.code, false); });
+
+  // ===========================================================================
+  // BOOT — idle-silent: running=false, only render() draws the title.
+  // ===========================================================================
+  resetGame();
+  requestAnimationFrame(frame);
+
+  window.addEventListener('load', () => {
+    flog('window load — sending truckinReady');
+    fetch(`https://${RES}/truckinReady`, { method: 'POST', body: '{}' })
+      .then(() => flog('truckinReady POST ok'))
+      .catch((e) => flog('truckinReady POST failed: ' + e));
+  });
+  flog('script end · readyState=' + document.readyState);
+  </script>
+<!-- ARCADE HIGH-SCORES overlay (attract screen). Fed by {action:'leaderboard',entries:[{name,score}]}
+     from the cabinet before play. Self-contained + own message listener; shown on 'leaderboard',
+     hidden on 'start'/'reset'. Additive — does not touch the game's own message handler. -->
+<style>
+  #arc-hs{position:fixed;top:50%;right:3.5%;transform:translateY(-50%);width:33%;max-width:440px;
+    display:none;font-family:'Consolas','Menlo','Courier New',monospace;color:#eaf6ff;z-index:99999;
+    background:rgba(6,10,20,.74);border:2px solid rgba(90,200,255,.55);border-radius:10px;
+    box-shadow:0 0 22px rgba(60,180,255,.35),inset 0 0 18px rgba(20,60,120,.4);padding:14px 16px 12px}
+  #arc-hs h3{margin:0 0 9px;text-align:center;font-size:21px;letter-spacing:3px;color:#5fd0ff;
+    text-shadow:0 0 8px rgba(80,200,255,.9);text-transform:uppercase}
+  #arc-hs ol{list-style:none;margin:0;padding:0}
+  #arc-hs li{display:flex;align-items:baseline;gap:9px;padding:3px 4px;font-size:16px;
+    border-bottom:1px solid rgba(90,160,220,.14)}
+  #arc-hs li:nth-child(1){color:#ffd86b;text-shadow:0 0 8px rgba(255,200,70,.7)}
+  #arc-hs li:nth-child(3){color:#e6b98a}
+  #arc-hs .r{width:24px;text-align:right;opacity:.75}
+  #arc-hs .n{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;text-transform:uppercase}
+  #arc-hs .s{font-variant-numeric:tabular-nums;font-weight:bold}
+  #arc-hs .e{opacity:.6;text-align:center;padding:12px 0;font-size:14px;letter-spacing:1px}
+</style>
+<div id="arc-hs"><h3>High Scores</h3><ol id="arc-hs-list"></ol></div>
+<script>
+(function(){
+  var box=document.getElementById('arc-hs'),list=document.getElementById('arc-hs-list'),have=[];
+  function esc(s){return String(s==null?'':s).replace(/[<&>]/g,function(c){return{'<':'&lt;','&':'&amp;','>':'&gt;'}[c];});}
+  function render(){
+    list.innerHTML='';
+    if(!have.length){list.innerHTML='<li class="e">NO SCORES YET — BE THE FIRST</li>';return;}
+    for(var i=0;i<have.length&&i<10;i++){
+      var e=have[i]||{},li=document.createElement('li');
+      li.innerHTML='<span class="r">'+(i+1)+'</span><span class="n">'+esc(e.name||'?')+'</span><span class="s">'+((parseInt(e.score,10)||0).toLocaleString())+'</span>';
+      list.appendChild(li);
+    }
+  }
+  window.addEventListener('message',function(ev){
+    var d;try{d=(typeof ev.data==='string')?JSON.parse(ev.data):(ev.data||{});}catch(x){return;}
+    var a=d.action||d.type;
+    if(a==='leaderboard'){have=Array.isArray(d.entries)?d.entries:[];render();box.style.display='block';}
+    else if(a==='start'||a==='reset'){box.style.display='none';}
+  });
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        html, body {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background: #1a1a1a;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        #scoreDisplay {
+            font-family: 'Arial Black', sans-serif;
+            font-size: 280px;
+            font-weight: bold;
+            color: #FFFFFF;
+            text-shadow: 
+                0 0 80px rgba(255, 136, 0, 0.4),
+                0 0 160px rgba(255, 102, 0, 0.3),
+                0 0 240px rgba(255, 68, 0, 0.15),
+                0 0 320px rgba(255, 34, 0, 0.08),
+                0 0 400px rgba(255, 0, 0, 0.04),
+                0 0 480px rgba(204, 0, 0, 0.02),
+                6px 6px 0px #000000,
+                -4px -4px 0px #000000,
+                4px -4px 0px #000000,
+                -4px 4px 0px #000000;
+            letter-spacing: 20px;
+            text-align: center;
+            -webkit-text-stroke: 6px #000000;
+        }
+    </style>
+</head>
+<body>
+    <div id="scoreDisplay">0</div>
+    
+    <script>
+        let currentScore = 0;
+        let targetScore = 0;
+        let animationRunning = false;
+        // NOT: Auto-reset YOK. Skor, yeni skor gelene kadar / forceReset ile kalir.
+        let animToken = 0; // Animasyonu iptal etmek icin generation
+
+        // Sayi artirma animasyonu
+        function animateScore(resetDuration = 2500, token = 0) {
+            if (animationRunning) return;
+            animationRunning = true;
+            
+            const display = document.getElementById('scoreDisplay');
+            const startScore = currentScore;
+            const diff = targetScore - startScore;
+            const duration = resetDuration;
+            const startTime = Date.now();
+            
+            function update() {
+                // Yeni bir mesaj geldiyse bu animasyonu iptal et
+                if (token !== animToken) {
+                    animationRunning = false;
+                    return;
+                }
+                const elapsed = Date.now() - startTime;
+                const progress = Math.min(elapsed / duration, 1);
+                
+                // Easing (ease-out)
+                const easeProgress = 1 - Math.pow(1 - progress, 3);
+                
+                currentScore = Math.floor(startScore + (diff * easeProgress));
+                display.textContent = currentScore;
+                
+                if (progress < 1) {
+                    requestAnimationFrame(update);
+                } else {
+                    currentScore = targetScore;
+                    display.textContent = currentScore;
+                    animationRunning = false;
+                }
+            }
+            
+            update();
+        }
+        
+        window.addEventListener('message', function(event) {
+            const data = event.data;
+            
+            if (data.action === 'showScore') {
+                targetScore = data.score || 0;
+                const instant = data.instant || false;
+                animToken++; // Her showScore yeni bir generation baslatir
+                const myToken = animToken;
+                
+                if (instant) {
+                    // INSTANT: animasyonsuz direkt goster
+                    animationRunning = false;
+                    currentScore = targetScore;
+                    document.getElementById('scoreDisplay').textContent = currentScore;
+                } else {
+                    // ANIMATED: sayarak yuksel
+                    animateScore(4000, myToken);
+                }
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,148 @@
+{
+    "login":  {
+                  "system_access":  "SYSTEEMTOEGANG",
+                  "identity_label":  "IDENTITEIT",
+                  "officer_name_placeholder":  "Naam Agent",
+                  "callsign_label":  "ROEPNAAM",
+                  "callsign_placeholder":  "000",
+                  "department_label":  "AFDELING",
+                  "initialize_system":  "SYSTEEM INITIALISEREN",
+                  "title":  "AUTHENTICATION",
+                  "tap_to_connect":  "TAP TO CONNECT",
+                  "connecting":  "AUTHENTICATING...",
+                  "subtitle":  "ENTER CREDENTIALS TO ACCESS SYSTEM"
+              },
+    "dashboard":  {
+                      "tactical_view":  "TACTISCHE WEERGAVE",
+                      "tactical_view_desc":  "Schakelt visuele kegelprojectie in voor geallieerde eenheden op de tactische kaart.",
+                      "active_units":  "ACTIEVE EENHEDEN",
+                      "no_active_units":  "Geen actieve eenheden in dit kanaal",
+                      "mark_location":  "Locatie Markeren",
+                      "follow_unit":  "Volg Eenheid",
+                      "secure_networks":  "BEVEILIGDE NETWERKEN",
+                      "unit_settings":  "EENHEIDSINSTELLINGEN",
+                      "callsign_label":  "ROEPNAAM",
+                      "update":  "UPDATEN",
+                      "ui_scale":  "UI SCHAAL",
+                      "reset":  "RESETTEN",
+                      "move_ui":  "UI VERPLAATSEN",
+                      "dragging":  "SLEPEN...",
+                      "enable_drag":  "SLEPEN INSCHAKELEN",
+                      "system_theme":  "SYSTEEMTHEMA",
+                      "tabs":  {
+                                   "home":  "Home",
+                                   "channels":  "Kanalen",
+                                   "private":  "Privé",
+                                   "settings":  "Instellingen",
+                                   "profile":  "Profiel"
+                               },
+                      "position":  "APPARAATPOSITIE",
+                      "finish_move":  "VERPLAATSEN KLAAR",
+                      "system_control":  "SYSTEEM CONTROLE",
+                      "display_scale":  "SCHAALFACTOR",
+                      "search_unit":  "Zoek eenheid / roepnaam...",
+                      "theme_color":  "THEMAKLEUR",
+                      "disconnect":  "VERBINDING VERBREKEN",
+                      "move_desc":  "Sleep het GPS-apparaat vrij over het scherm.",
+                      "identity":  "IDENTITEIT",
+                      "reset_default":  "STANDAARD HERSTELLEN",
+                      "reset_position":  "POSITIE HERSTELLEN",
+                      "you":  "JIJ",
+                      "officer_name_label":  "NAAM OFFICIER",
+                      "officer_name_placeholder":  "Naam Officier",
+                      "identity_settings":  "IDENTITEIT",
+                      "self_blip":  "EIGEN BLIP",
+                      "self_blip_desc":  "Toon je eigen eenheid blip op de kaart"
+                  },
+    "broken":  {
+                   "system_failure":  "SYSTEEMFOUT",
+                   "repairing":  "REPAREREN...",
+                   "critical_error":  "KRITIEKE FOUT",
+                   "water_intrusion":  "WATERINDRINGING GEDETECTEERD",
+                   "err_code_h2o":  "FOUTCODE: H2O_FATAL",
+                   "system_restore":  "SYSTEEMHERSTEL",
+                   "verifying_integrity":  "INTEGRITEIT VERIFIËREN...",
+                   "restoring_kernel":  "KERNEL HERSTELLEN...",
+                   "rebooting_modules":  "MODULES OPNIEUW OPSTARTEN...",
+                   "system_online":  "SYSTEEM ONLINE",
+                   "system_halted":  "SYSTEEM GESTOPT",
+                   "hardware_integrity":  "HARDWARE-INTEGRITEIT AANGETAST",
+                   "initiate_manual_repair":  "HANDMATIGE REPARATIE STARTEN",
+                   "repair":  "REPAREREN",
+                   "close":  "SLUITEN",
+                   "footer_text":  "DADDY_GPS_OS v2.4.1 // CORE_DUMP_GEDETECTEERD"
+               },
+    "controls":  {
+                     "connect":  "Verbinden",
+                     "leave":  "Verlaten"
+                 },
+    "department_select":  {
+                              "label":  "Afdeling",
+                              "select_placeholder":  "Selecteren..."
+                          },
+    "gps_frame":  {
+                      "officer_name_label":  "Naam Agent",
+                      "officer_name_placeholder":  "bijv. Jan Jansen",
+                      "callsign_label":  "Roepnaam",
+                      "callsign_placeholder":  "bijv. 215"
+                  },
+    "app":  {
+                "drag_to_move":  "SLEPEN OM TE VERPLAATSEN",
+                "save_position":  "POSITIE OPSLAAN",
+                "press_esc":  "ESC OM TE SLUITEN",
+                "drag_hint":  "VASTHOUDEN OM TE SLEPEN"
+            },
+    "settings":  {
+                     "language":  "TAAL",
+                     "language_desc":  "Selecteer de weergavetaal voor de GPS-interface.",
+                     "language_changed":  "Taal gewijzigd. Heropen GPS om toe te passen.",
+                     "hard_reset":  "HARD RESET",
+                     "reset_clearing":  "GEGEVENS WISSEN...",
+                     "reset_resetting":  "SYSTEEM RESETTEN...",
+                     "reset_rebooting":  "OPNIEUW OPSTARTEN...",
+                     "reset_complete":  "RESET VOLTOOID"
+                 },
+    "notify":  {
+                   "no_permission":  "Je hebt geen toestemming dit systeem te gebruiken.",
+                   "gps_disconnected":  "GPS verbinding verbroken.",
+                   "gps_connected":  "GPS verbonden.",
+                   "no_gps_item":  "Je hebt geen GPS-apparaat.",
+                   "follow_cancelled":  "Volgen geannuleerd.",
+                   "gps_repaired":  "GPS-apparaat succesvol gerepareerd!",
+                   "tracking_activated":  "GPS volgen geactiveerd.",
+                   "gps_reconnected":  "GPS opnieuw verbonden na reparatie.",
+                   "gps_connecting":  "GPS verbinding maken...",
+                   "gps_disconnecting":  "GPS verbreekt verbinding...",
+                   "invalid_name":  "Ongeldige naam.",
+                   "tracking_disabled":  "GPS volgen uitgeschakeld.",
+                   "callsign_range":  "Roepnaam moet een getal zijn tussen %s en %s.",
+                   "select_department":  "Je moet een afdeling selecteren.",
+                   "invalid_department":  "Ongeldige afdeling.",
+                   "waypoint_set":  "Waypoint ingesteld.",
+                   "name_empty":  "Naam officier mag niet leeg zijn."
+               },
+    "units":  {
+                  "you":  "JIJ",
+                  "filter_department":  "AFDELINGSFILTER",
+                  "filter_all":  "ALLE",
+                  "start_tracking":  "Eenheid volgen",
+                  "stop_tracking":  "Volgen stoppen",
+                  "set_waypoint":  "Waypoint instellen"
+              },
+    "profile":  {
+                    "radar_sizes":  "RADARFORMATEN",
+                    "motorcycle":  "MOTOR",
+                    "reset":  "RESET",
+                    "vehicle":  "VOERTUIG",
+                    "plane":  "VLIEGTUIG",
+                    "helicopter":  "HELIKOPTER",
+                    "on_foot":  "TE VOET",
+                    "boat":  "BOOT"
+                },
+    "channels":  {
+                     "active_unit":  "ACTIEVE EENHEID",
+                     "global_desc":  "Alle afdelingen communiceren op hetzelfde kanaal",
+                     "global_network":  "GLOBAAL NETWERK",
+                     "global_channel":  "GLOBAAL KANAAL"
+                 }
+}

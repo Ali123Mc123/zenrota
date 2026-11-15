@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CWeaponInfoBlob>
+	<SlotNavigateOrder>
+		<Item>
+			<WeaponSlots />
+		</Item>
+	</SlotNavigateOrder>
+	<SlotBestOrder>
+		<WeaponSlots />
+	</SlotBestOrder>
+	<TintSpecValues />
+	<FiringPatternAliases />
+	<UpperBodyFixupExpressionData />
+	<AimingInfos />
+	<Infos>
+	</Infos>
+	<VehicleWeaponInfos />
+	<Name>SPOTLIGHT</Name>
+</CWeaponInfoBlob>

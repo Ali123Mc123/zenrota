@@ -1,0 +1,252 @@
+/* Daddy UI kit (ox_target): kutu yok; her satır ayrı yarı saydam cam şerit, beyaz tuş kutusu, 4px köşe, seçili satır dolu kırmızı.
+   Oyunun arka planı bulanıklaşmadığı için okunurluk yazı gölgesiyle sağlanır. 1px = .0926vh (1080p) */
+
+@font-face {
+  font-family: "Plus Jakarta Sans";
+  font-weight: 500;
+  src: url("fonts/plus-jakarta-sans-latin-500-normal.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: "Plus Jakarta Sans";
+  font-weight: 500;
+  src: url("fonts/plus-jakarta-sans-latin-ext-500-normal.woff2") format("woff2");
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: "Plus Jakarta Sans";
+  font-weight: 600;
+  src: url("fonts/plus-jakarta-sans-latin-600-normal.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: "Plus Jakarta Sans";
+  font-weight: 600;
+  src: url("fonts/plus-jakarta-sans-latin-ext-600-normal.woff2") format("woff2");
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: "Plus Jakarta Sans";
+  font-weight: 700;
+  src: url("fonts/plus-jakarta-sans-latin-700-normal.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: "Plus Jakarta Sans";
+  font-weight: 700;
+  src: url("fonts/plus-jakarta-sans-latin-ext-700-normal.woff2") format("woff2");
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+
+:root {
+  --d-accent: #db1f14;
+  /* cam şerit: üstte biraz daha koyu, altta daha saydam; ince açık kenar */
+  --d-glass: linear-gradient(180deg, rgba(22, 22, 26, 0.56), rgba(22, 22, 26, 0.38));
+  --d-glass-edge: rgba(255, 255, 255, 0.16);
+  --d-glass-top: inset 0 0.0926vh 0 rgba(255, 255, 255, 0.1);
+  --d-line: rgba(255, 255, 255, 0.08);
+  --d-shadow: 0 0.3704vh 1.4815vh rgba(0, 0, 0, 0.16);
+  --d-text-shadow: 0 0.0926vh 0.2778vh rgba(0, 0, 0, 0.65);
+  --d-key-bg: #ffffff;
+  --d-key-text: #141212;
+  --d-text: #f4f2f1;
+  --d-text-2: rgba(244, 242, 241, 0.74);
+  --d-text-3: rgba(244, 242, 241, 0.56);
+  --d-font: "Plus Jakarta Sans", system-ui, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  visibility: hidden;
+  user-select: none;
+  margin: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  font-family: var(--d-font);
+  -webkit-font-smoothing: antialiased;
+}
+
+p {
+  margin: 0;
+}
+
+/* Uzaktan nokta */
+.dot {
+  position: absolute;
+  left: 0;
+  top: 0;
+  will-change: transform;
+  width: 0.926vh;
+  height: 0.926vh;
+  margin: -0.463vh 0 0 -0.463vh;
+  border-radius: 50%;
+  background: rgba(244, 242, 241, 0.92);
+  box-shadow: 0 0 0 0.1852vh rgba(14, 12, 12, 0.55);
+  animation: fadeIn 0.15s ease-out;
+}
+
+/* Tuş ipucu */
+.key {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+  min-width: 2.037vh;
+  height: 2.037vh;
+  padding: 0 0.5556vh;
+  border-radius: 0.1852vh;
+  background: var(--d-key-bg);
+  color: var(--d-key-text);
+  font-size: 1.0185vh;
+  font-weight: 700;
+  line-height: 1;
+  text-shadow: none;
+}
+
+/* Bakınca çıkan uyarı */
+#prompt {
+  position: absolute;
+  display: none;
+  align-items: center;
+  gap: 0.7407vh;
+  padding: 0.5556vh 0.9259vh 0.5556vh 0.5556vh;
+  left: 0;
+  top: 0;
+  will-change: transform;
+  transform: translate(-50%, -50%);
+  background: var(--d-glass);
+  border: 0.0926vh solid var(--d-glass-edge);
+  border-radius: 0.3704vh;
+  box-shadow: var(--d-shadow), var(--d-glass-top);
+  white-space: nowrap;
+  animation: fadeIn 0.15s ease-out;
+}
+
+#prompt.show {
+  display: flex;
+}
+
+#prompt-label {
+  color: var(--d-text);
+  text-shadow: var(--d-text-shadow);
+  font-size: 1.2037vh;
+  font-weight: 600;
+}
+
+#prompt-count {
+  color: var(--d-text-2);
+  text-shadow: var(--d-text-shadow);
+  font-size: 1.1111vh;
+  font-weight: 600;
+}
+
+#prompt-count:empty {
+  display: none;
+}
+
+/* E'ye basınca açılan liste */
+#menu {
+  position: absolute;
+  display: none;
+  min-width: 21.8519vh;
+  max-width: 37vh;
+  animation: fadeIn 0.15s ease-out;
+}
+
+#menu.show {
+  display: block;
+}
+
+#options-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3704vh;
+}
+
+.option-container {
+  display: flex;
+  align-items: center;
+  gap: 0.9259vh;
+  min-height: 3.3333vh;
+  padding: 0.5556vh 0.9259vh;
+  background: var(--d-glass);
+  border: 0.0926vh solid var(--d-glass-edge);
+  border-radius: 0.3704vh;
+  box-shadow: var(--d-shadow), var(--d-glass-top);
+  color: var(--d-text);
+  text-shadow: var(--d-text-shadow);
+  transition: background-color 0.1s, border-color 0.1s;
+}
+
+.option-container.selected {
+  background: var(--d-accent);
+  border-color: rgba(255, 255, 255, 0.22);
+  color: #fff;
+  text-shadow: none;
+}
+
+.option-icon {
+  flex: none;
+  width: 1.4815vh;
+  text-align: center;
+  font-size: 1.2037vh;
+  color: var(--d-text-2);
+}
+
+.option-container.selected .option-icon {
+  color: #fff !important;
+}
+
+.option-label {
+  font-size: 1.2963vh;
+  font-weight: 600;
+  line-height: 1.35;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+#hint {
+  display: flex;
+  gap: 1.2963vh;
+  align-self: flex-start;
+  width: fit-content;
+  margin-top: 0.3704vh;
+  padding: 0.463vh 0.7407vh;
+  background: var(--d-glass);
+  border: 0.0926vh solid var(--d-glass-edge);
+  border-radius: 0.3704vh;
+  box-shadow: var(--d-glass-top);
+  color: var(--d-text-2);
+  text-shadow: var(--d-text-shadow);
+  font-size: 1.0185vh;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+#hint > span {
+  display: flex;
+  align-items: center;
+  gap: 0.5556vh;
+}
+
+#hint .key {
+  min-width: 1.6667vh;
+  height: 1.6667vh;
+  padding: 0 0.463vh;
+  font-size: 0.9259vh;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}

@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF - 8"?>
+
+<CWeaponModelInfo__InitDataList>
+	<InitDatas>
+		<Item>
+			<modelName>did_grd6_blackspire_pd_bm_camo1</modelName>
+			<txdName>did_grd6_blackspire_pd</txdName>
+			<ptfxAssetName>NULL</ptfxAssetName>
+			<lodDist value="300"/>
+		</Item>
+		<Item>
+			<modelName>did_grd6_blackspire_pd_br_camo2</modelName>
+			<txdName>did_grd6_blackspire_pd</txdName>
+			<ptfxAssetName>NULL</ptfxAssetName>
+			<lodDist value="300"/>
+		</Item>
+		<Item>
+			<modelName>did_grd6_blackspire_pd_supp1</modelName>
+			<txdName>did_grd6_blackspire_pd</txdName>
+			<ptfxAssetName>NULL</ptfxAssetName>
+			<lodDist value="300"/>
+		</Item>
+		<Item>
+			<modelName>did_grd6_blackspire_pd_scope2</modelName>
+			<txdName>did_grd6_blackspire_pd</txdName>
+			<ptfxAssetName>NULL</ptfxAssetName>
+			<lodDist value="300"/>
+		</Item>
+		<Item>
+			<modelName>did_grd6_blackspire_pd_scope1</modelName>
+			<txdName>did_grd6_blackspire_pd</txdName>
+			<ptfxAssetName>NULL</ptfxAssetName>
+			<lodDist value="300"/>
+		</Item>
+		<Item>
+			<modelName>did_grd6_blackspire_pd_mag2</modelName>
+			<txdName>did_grd6_blackspire_pd</txdName>
+			<ptfxAssetName>NULL</ptfxAssetName>
+			<lodDist value="300"/>
+		</Item>
+		<Item>
+			<modelName>did_grd6_blackspire_pd_mag1</modelName>
+			<txdName>did_grd6_blackspire_pd</txdName>
+			<ptfxAssetName>NULL</ptfxAssetName>
+			<lodDist value="300"/>
+		</Item>
+		<Item>
+			<modelName>did_grd6_blackspire_pd_flsh</modelName>
+			<txdName>did_grd6_blackspire_pd</txdName>
+			<ptfxAssetName>NULL</ptfxAssetName>
+			<lodDist value="300"/>
+		</Item>
+		<Item>
+			<modelName>did_grd6_blackspire_pd_afgrip</modelName>
+			<txdName>did_grd6_blackspire_pd</txdName>
+			<ptfxAssetName>NULL</ptfxAssetName>
+			<lodDist value="300"/>
+		</Item>
+		<Item>
+			<modelName>did_grd6_blackspire_pd</modelName>
+			<txdName>did_grd6_blackspire_pd</txdName>
+			<ptfxAssetName>NULL</ptfxAssetName>
+			<lodDist value="500"/>
+		</Item>
+	</InitDatas>
+</CWeaponModelInfo__InitDataList>
+

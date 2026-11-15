@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF - 8"?>
+
+<CWeaponModelInfo__InitDataList>
+	<InitDatas>
+		<Item>
+			<modelName>jnp_combat_pistol_supp</modelName>
+			<txdName>jnp_combat_pistol_txd</txdName>
+			<ptfxAssetName>NULL</ptfxAssetName>
+			<lodDist value="300"/>
+		</Item>
+		<Item>
+			<modelName>jnp_combat_pistol_scope</modelName>
+			<txdName>jnp_combat_pistol_txd</txdName>
+			<ptfxAssetName>NULL</ptfxAssetName>
+			<lodDist value="300"/>
+		</Item>
+		<Item>
+			<modelName>jnp_combat_pistol_mag1</modelName>
+			<txdName>jnp_combat_pistol_txd</txdName>
+			<ptfxAssetName>NULL</ptfxAssetName>
+			<lodDist value="300"/>
+		</Item>
+		<Item>
+			<modelName>jnp_combat_pistol_mag0</modelName>
+			<txdName>jnp_combat_pistol_txd</txdName>
+			<ptfxAssetName>NULL</ptfxAssetName>
+			<lodDist value="300"/>
+		</Item>
+		<Item>
+			<modelName>jnp_combat_pistol_flashlight</modelName>
+			<txdName>jnp_combat_pistol_txd</txdName>
+			<ptfxAssetName>NULL</ptfxAssetName>
+			<lodDist value="300"/>
+		</Item>
+		<Item>
+			<modelName>jnp_combat_pistol</modelName>
+			<txdName>jnp_combat_pistol_txd</txdName>
+			<ptfxAssetName>NULL</ptfxAssetName>
+			<lodDist value="300"/>
+		</Item>
+	</InitDatas>
+</CWeaponModelInfo__InitDataList>
+

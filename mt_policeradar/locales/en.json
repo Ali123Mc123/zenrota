@@ -1,0 +1,12 @@
+{
+    "locked": "Radar kilitlendi",
+    "unlocked": "Radar kilidi açıldı",
+    "enabled": "Radar etkinleştirildi",
+    "disabled": "Radar devre dışı bırakıldı",
+    "front": "Ön",
+    "rear": "Arka",
+    "plate": "Plaka",
+    "speed": "Hız",
+    "lockRadarKeybind": "Radarı kilitle/aç",
+    "toggleRadarKeybind": "Radarı etkinleştir/devre dışı bırak"
+}

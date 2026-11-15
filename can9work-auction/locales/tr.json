@@ -1,0 +1,243 @@
+{
+    "ui": {
+        "common": {
+            "confirm": "Onayla",
+            "cancel": "İptal",
+            "close": "Kapat",
+            "return_hub": "Merkeze Dön",
+            "initialize": "Bağlantıyı Başlat",
+            "verified": "Doğrulandı",
+            "id_label": "ID",
+            "currency_symbol": "₺",
+            "units": "Birim",
+            "current_high": "Mevcut En Yüksek",
+            "top_bidder": "En Yüksek Teklif Sahibi",
+            "outbid_alert": "Teklif Geçildi Uyarısı",
+            "unknown": "Bilinmiyor",
+            "unnamed_asset": "İsimsiz Varlık",
+            "low_risk": "DÜŞÜK",
+            "error_occurred": "Hata oluştu",
+            "archived": "ARŞİVLENDİ",
+            "live_dat": "CANLI_VERİ",
+            "ready": "HAZIR"
+        },
+        "intro": {
+            "title_main": "Pazar",
+            "title_sub": "İstihbarat",
+            "title_hub": "Merkezi",
+            "ready_status": "HAZIR_0x992",
+            "secure_link": "GÜVENLİ_BAĞLANTI",
+            "terminal_id": "TERMİNAL_ID",
+            "user_auth": "KULLANICI_YETKİSİ",
+            "link_stat": "BAĞLANTI_DURUMU",
+            "encrypted": "ŞİFRELENDİ",
+            "legal_disclaimer": "ÖNEMLİ BİLGİLENDİRME VE SÖZLEŞME",
+            "disclaimer_text": "DİKKAT: İhaledeki tüm görseller tamamen TEMSİLİDİR. Tüm işletmeler minimap üzerindeki numaralandırma sırasına göre sıralanmaktadır. Gönderilen tüm teklifler yasal olarak bağlayıcıdır.",
+            "initialize_btn": "Okudum, Onaylıyorum ve İhalelere Giriş Yap",
+            "protocols": {
+                "asset_registration": {
+                    "title": "Varlık Kaydı",
+                    "desc": "Tüm ticari mülkler ve stratejik noktalar merkezi bir defter üzerinden izlenir. Sahiplik yasal olarak tescillenir."
+                },
+                "bidding_protocol": {
+                    "title": "Teklif Protokolü",
+                    "desc": "Açık artırmalar tamamen anonimdir. Her teklif kaydedilmeden önce bir bakiye doğrulama sürecinden geçer."
+                },
+                "revenue_projection": {
+                    "title": "Gelir Projeksiyonu",
+                    "desc": "Her işletme konumu konuma, personel kapasitesine ve risk metriklerine göre haftalık brüt gelir vaat eder."
+                },
+                "ownership_transfer": {
+                    "title": "Mülkiyet Transferi",
+                    "desc": "Süre sonundaki en yüksek teklif sahibi, unvanları derhal alır. Lisanslar otomatik olarak teslim edilir."
+                },
+                "audit_compliance": {
+                    "title": "Denetim Uyumluluğu",
+                    "desc": "Sahip olunan varlıklar, operasyonel bütünlük için Şehir Vergi Dairesi ve yerel güvenlik birimleri tarafından periyodik denetimlere tabidir."
+                },
+                "security_level": {
+                    "title": "Güvenlik Seviyesi",
+                    "desc": "Tüm terminal işlemleri uçtan uca şifrelenir. Kimlik verileri final transfer aşamasında açıklanır."
+                }
+            }
+        },
+        "header": {
+            "central_auction": "MERKEZİ MÜZAYEDE",
+            "investment_interface": "ENTEGRE YATIRIM ARAYÜZÜ",
+            "available_capital": "KULLANILABİLİR SERMAYE"
+        },
+        "footer": {
+            "secure_env": "GÜVENLİ_ORTAM_TERMİNALİ",
+            "pwr_stat": "GÜÇ_DURUMU: NOMİNAL"
+        },
+        "dashboard": {
+            "title_main": "YATIRIM",
+            "title_sub": "PANELİ",
+            "hub_subtitle": "MERKEZİ İSTİHBARAT MERKEZİ",
+            "stat_secured": "GÜVENLİ",
+            "city_label": "ŞEHİR",
+            "estate_label": "EMLAK",
+            "investment_hub": "Merkezi Yatırım Merkezi",
+            "market_opportunities": "Pazar Fırsatları",
+            "sec_level": "GÜV_SEVİYESİ",
+            "status_granted": "ERİŞİM_VERİLDİ",
+            "network_secured": "AĞ: GÜVENLİ",
+            "system_uptime": "SİSTEM ÇALIŞMA SÜRESİ: %99.9",
+            "investor_id": "YATIRIMCI ID",
+            "live_feed": "Canlı Yayın aktif",
+            "menu": {
+                "high_value": {
+                    "title1": "STRATEJİK",
+                    "title2": "VARLIKLAR",
+                    "desc": "Şehrin en prestijli ve sınırlı sayıdaki birincil mülkleri.",
+                    "tag": "PREMIUM"
+                },
+                "franchises": {
+                    "title1": "İŞLETME",
+                    "title2": "İMTİYAZLARI",
+                    "desc": "Düzenli pasif gelir sağlayan kuruluş ve şube ağları.",
+                    "tag": "GELİR"
+                },
+                "live_listings": {
+                    "title1": "CANLI",
+                    "title2": "LİSTELER",
+                    "desc": "Şu anda piyasada teklif vermeye açık olan tüm aktif dosyalar.",
+                    "tag": "CANLI VERİ"
+                },
+                "portfolio": {
+                    "title1": "YATIRIMCI",
+                    "title2": "PORTFÖYÜ",
+                    "desc": "Sahip olduğunuz mülkleri görüntüleyin ve aktif teklif dosyalarınızı takip edin.",
+                    "tag": "CÜZDAN"
+                },
+                "categories": {
+                    "market": "SÜPERMARKETLER",
+                    "clothing": "KIYAFET MAĞAZALARI",
+                    "barber": "BERBER SALONLARI",
+                    "gas": "AKARYAKIT İSTASYONU",
+                    "rental": "ARAÇ KİRALAMA",
+                    "wash": "OTO YIKAMA",
+                    "garage": "OTOPARK & GARAJ"
+                }
+            }
+        },
+        "auction_list": {
+            "live_auctions": "Canlı Açık Artırmalar",
+            "strategic_assets": "Stratejik Varlıklar",
+            "return_hub": "Merkeze Dön",
+            "market_sync": "Pazar Verileri Senkronize Edildi",
+            "units_available": "{count} Birim Mevcut",
+            "archived": "ARŞİVLENDİ",
+            "live_dat": "CANLI_VERİ",
+            "ready_state": "HAZIR",
+            "final_valuation": "Final Değerleme",
+            "current_bid": "Mevcut Teklif",
+            "reserve_price": "Taban Fiyat",
+            "investors_count": "{count} YATIRIMCI",
+            "latest_bidder": "SON",
+            "open_status": "AÇIK",
+            "closed_status": "KAPALI",
+            "time_expired": "SÜRE DOLDU"
+        },
+        "asset_detail": {
+            "detailed_spec": "Varlık Detaylı Özellikleri",
+            "premium_asset": "Premium Varlık",
+            "weekly_revenue": "Haftalık Gelir",
+            "risk_factor": "Risk Faktörü",
+            "staff_count": "Personel Sayısı",
+            "description_title": "Varlık Açıklaması",
+            "bidding_history": "Teklif Geçmişi",
+            "no_offers": "Henüz Teklif Yok",
+            "authorize_bid_msg": "Teklifinizi yetkilendirin (Görseller temsilidir; tüm işletmeler minimap'teki numarasına göre sıralanmalıdır)",
+            "place_offer_btn": "Yeni Teklif Ver",
+            "archived_msg": "Açık Artırma Kalıcı Olarak Arşivlendi"
+        },
+        "portfolio": {
+            "title_main": "Yatırımcı",
+            "title_sub": "Portföyü",
+            "total_capital": "TOPLAM YATIRILAN SERMAYE",
+            "active_asset_count": "AKTİF VARLIK SAYISI",
+            "acquired_assets": "Edinilen Varlıklar",
+            "stat_secured": "Güvenli",
+            "registration_verified": "Kayıt: Doğrulanmış Portföy",
+            "purchase_valuation": "Satın Alma Değerlemesi",
+            "no_properties": "Henüz mülk edinilmedi",
+            "active_bidding_cycles": "Aktif Teklif Döngüleri",
+            "market_live": "Pazar Canlı",
+            "your_highest_offer": "En Yüksek Teklifiniz",
+            "no_active_bids": "Aktif teklif dosyası yok"
+        },
+        "registry": {
+            "state_ledger": "Kimliği Doğrulanmış Eyalet Defteri",
+            "asset_archive": "Varlık",
+            "archive_sub": "Arşivi",
+            "exit_archive": "Arşivden Çık",
+            "verified_files": "Doğrulanmış Dosyalar",
+            "owned_only_desc": "Sadece sahip olduğunuz mülkler listelenir",
+            "no_assets": "Kayıtlı varlık bulunamadı",
+            "request_init": "Talep Süreci Başlatma",
+            "official_duplicate": "Resmi Kopya",
+            "title_request_desc": "Şunun için yasal olarak bağlayıcı bir mülkiyet belgesi talep ediliyor:",
+            "auth_details": "Kimlik Doğrulama Detayları",
+            "processing_fee": "İşlem Ücreti",
+            "delivery_status": "Teslimat Durumu",
+            "instant_arrival": "Anında Teslimat",
+            "legal_notice": "Yasal Bildirim",
+            "legal_text": "Bu belge mülkiyet kanıtı olarak hizmet eder. Kopyalar eyalet siciline kaydedilir. Ücret iade edilmez.",
+            "authorize_transmit": "Yetkilendir ve İlet",
+            "deducted_bank": "BANKADAN {amount} DÜŞÜLÜR",
+            "initializing": "Başlatılıyor...",
+            "archive_locked": "ARŞİV_ŞİFRELENDİ",
+            "select_asset_desc": "KİMLİK DOĞRULAMAYA BAŞLAMAK İÇİN SOL PANELDEKİ BİR VARLIĞI SEÇİN.",
+            "authenticating": "KİMLİK DOĞRULANIYOR",
+            "secure_ledger_comm": "GÜVENLİ DEFTER İLETİŞİMİ",
+            "transferring_data": "VERİ AKTARILIYOR"
+        },
+        "certificate": {
+            "authentic": "ORİJİNAL",
+            "state_instrument": "Onaylanmış Devlet Enstrümanı",
+            "dept_registry": "Varlık Kayıt Dairesi",
+            "exec_branch": "Los Santos Yürütme Şubesi",
+            "title_possession": "Mülkiyet Belgesi",
+            "transfer_record": "Resmi Mülkiyet Devir Kaydı",
+            "certify_that": "Bu yasal belge, şunun doğruluğunu onaylar:",
+            "acquired_rights": "tüm ticari haklarını satın almıştır",
+            "comm_license": "Ticari İşletme Lisansı",
+            "contract_valuation": "Sözleşme Değerlemesi",
+            "transfer_date": "Devir Tarihi",
+            "auth_signature": "Yetkili İmza",
+            "asset_status": "Varlık Durumu",
+            "verified_deed": "Doğrulanmış Tapu",
+            "city_hall": "BELEDİYE BİNASI",
+            "authenticated": "Onaylandı",
+            "return_interface": "Arayüze Dön",
+            "invalid_owner": "GEÇERSİZ_SAHİB",
+            "unknown_asset": "BİLİNMEYEN_VARLIK",
+            "no_date": "TARİH_YOK"
+        },
+        "bid_modal": {
+            "confirmation": "Teklif Onayı",
+            "investment_amount": "Yatırım Tutarı",
+            "input_placeholder": "0"
+        }
+    },
+    "notify": {
+        "win_title": "İhale Kazanıldı!",
+        "win_msg": "{asset} mülkünü kazandınız. 2 adet mülkiyet belgesi envanterinize eklendi.",
+        "penalty_title": "İhale İptal Cezası",
+        "penalty_msg": "%5 ceza uygulandı: {amount}",
+        "invalid_bid": "Geçersiz teklif!",
+        "low_balance": "Bankanızda yeterli bakiye yok!",
+        "low_balance_registry": "Yeterli paranız yok! (${amount})",
+        "higher_bid": "Daha yüksek teklif verin!",
+        "already_highest": "Zaten en yüksek teklif size ait!",
+        "bid_placed": "Teklif verildi!",
+        "not_owner": "Bu mülkün sahibi değilsiniz!",
+        "print_success": "Resmi kopya basıldı ve envanterinize eklendi.",
+        "action_failed": "İşlem başarısız!",
+        "auction_expired": "Bu açık artırma sona erdi!",
+        "auction_not_found": "İhale bulunamadı!",
+        "min_bid": "Teklif en az ${amount} olmalı!",
+        "registry_office": "İhale Terminali"
+    }
+}

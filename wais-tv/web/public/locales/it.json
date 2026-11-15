@@ -1,0 +1,99 @@
+{
+    "placement": {
+        "title": "Posizionamento",
+        "mode_surface": "Superficie",
+        "mode_move": "Sposta",
+        "mode_rotate": "Ruota",
+        "space_world": "Mondo",
+        "space_local": "Locale",
+        "snap": "Scatto",
+        "nudge": "Regolazione",
+        "yaw": "Gira",
+        "ground": "Appoggia a terra",
+        "reset": "Ripristina",
+        "accept": "Posiziona",
+        "cancel": "Annulla",
+        "hint_surface": "Clicca per posare la TV",
+        "hint_move": "Trascina le frecce",
+        "hint_rotate": "Trascina un anello",
+        "hint_wheel": "Rotella: gira",
+        "hint_camera": "Tasto destro: camera on / off",
+        "camera_active": "Modalità camera - tasto destro per tornare",
+        "hint_snap": "Pulsanti pavimento / parete: fissa",
+        "hint_toggle": "R: sposta / ruota",
+        "hint_accept": "Invio: posiziona",
+        "hint_cancel": "X / Backspace / Esc: annulla",
+        "tip_floor": "Appoggia a terra",
+        "tip_wall": "Fissa alla parete",
+        "tip_move": "Passa a sposta",
+        "tip_rotate": "Passa a ruota"
+    },
+    "header": {
+        "title": "Televisioni & SmartTV",
+        "admin": "Amministrazione TV",
+        "subtitle": "Benvenuto!"
+    },
+    "search": {
+        "placeholder": "Inserisci un URL..."
+    },
+    "admin": {
+        "categories": {
+            "player": "TV dei giocatori",
+            "default": "TV predefinite",
+            "general": "Generale",
+            "jobs": "Lavori / Gruppi"
+        },
+        "no_video": "Nessun video in riproduzione",
+        "create": "Crea TV",
+        "update": "Aggiorna TV",
+        "cancel": "Annulla",
+        "no_result": "Nessun risultato trovato.",
+        "search": "Cerca TV per nome o ID",
+        "input": {
+            "model": {
+                "label": "Modello",
+                "placeholder": "Seleziona un modello di TV"
+            },
+            "name": {
+                "label": "Nome",
+                "placeholder": "Dai un nome alla tua TV"
+            },
+            "platform": {
+                "label": "Piattaforma",
+                "placeholder": "YouTube, Kick, ecc."
+            },
+            "loop": {
+                "label": "Ripeti",
+                "placeholder": "Il video deve essere ripetuto in loop?",
+                "true": "Sì",
+                "false": "No"
+            },
+            "volume": {
+                "label": "Volume",
+                "placeholder": "Imposta il volume predefinito (0-100)"
+            },
+            "videourl": {
+                "label": "URL video / stream",
+                "placeholder": "Inserisci l'URL del video / stream"
+            },
+            "controlable": {
+                "label": "Controllabile",
+                "tooltip": "Consenti agli utenti di controllare la TV (riproduci, pausa, ecc.)"
+            },
+            "defaultvideo": {
+                "label": "Video predefinito",
+                "tooltip": "Se viene riprodotto un video predefinito o meno"
+            },
+            "jobs": {
+                "label": "Lavori / Gruppi",
+                "placeholder": "Lavori/gruppi autorizzati a usare questa TV (lascia vuoto per tutti)"
+            }
+        }
+    },
+    "stream": "In diretta",
+    "recently": "Recenti",
+    "favorites": "Preferiti",
+    "no_favorites": "Nessun video preferito.",
+    "no_recently": "Nessun video riprodotto di recente.",
+    "televisions": "Televisioni"
+}

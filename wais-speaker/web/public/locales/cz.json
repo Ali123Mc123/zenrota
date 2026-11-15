@@ -1,0 +1,18 @@
+{
+    "menu": {
+        "header": {
+            "title": "Daddy",
+            "subtitle": "Menu reproduktoru",
+            "search_placeholder": "https://www.youtube.com"
+        },
+        "favorites": {
+            "title": "Oblíbené",
+            "show_all": "Zobrazit vše",
+            "show_less": "Zobrazit méně"
+        },
+        "footer": {
+            "no_music": "Žádná hudba",
+            "no_author": "Neznámý umělec"
+        }
+    }
+}

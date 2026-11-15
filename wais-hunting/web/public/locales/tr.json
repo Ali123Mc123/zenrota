@@ -1,0 +1,43 @@
+{
+    "xp": "XP",
+    "name": "Oyuncu Adı",
+    "level": "Seviye",
+    "start": "İşe Başla",
+    "accept": "Kabul Et",
+    "cancel": "İptal",
+    "awards": "Ödüller:",
+    "invite": "Oyuncu Davet Et [ID]",
+    "hunting": "Avcılık",
+    "hunting_desc": "%s sizi bir gruba davet etti. Dilerseniz kabul edip birlikte avlanabilirsiniz.",
+    "unknowns": {
+        "label": "Bilinmiyor",
+        "level": "Bilinmiyor",
+        "description": "Açıklama mevcut değil."
+    },
+    "progress": {
+        "title": "Seviye İlerlemesi",
+        "description": "Avcılık becerilerinizi geliştirme"
+    },
+    "cancel_job": "İşi İptal Et",
+
+    "header": {
+        "title": "Avcılık İşi",
+        "description": "Avcılığa hoş geldiniz, buradan bir av başlatabilir ve görevlere göz atabilirsiniz. İyi şanslar!"
+    },
+    "sections": {
+        "profile": "Profil",
+        "mission": "Görevler",
+        "player_list": "Oyuncu Listesi",
+        "job_details": "İş Detayları"
+    },
+
+    "steps": {
+        "progress": "İlerleme",
+        "information": "Ne yapmanız gerektiğini öğrenmek için belirtilen tuşa basın. Daha fazla detay için basın.",
+        "details": {
+            "step1": "Avcılık bölgesine gidin ve araçtan silahlarınızı alın. [Target] tuşunu kullanın,",
+            "step2": "Hayvanları öldürün ve [TARGET] ile hayvanları yüzün (Eğer görev varsa, ilerleyecektir),",
+            "step3": "Mesleğinize başladığınız alana gidin, [TARGET] ile NPC'ye bakın ve hayvan parçalarını satmak için 'Hayvan parçalarını sat' seçeneğine tıklayın."
+        }
+    }
+}

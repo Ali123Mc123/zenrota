@@ -1,0 +1,56 @@
+{
+    "cchat": {
+        "input": "Fareyi 🖱️ etkinleştirmek için ALT tuşuna bas"
+    },
+    "gchat": {
+        "title": "Genel Sohbet",
+        "input": "💬 bir şey yaz...",
+        "wait": "🛑 lütfen bekle...",
+        "time": {
+            "null": "Bilinmiyor",
+            "invdate": "Geçersiz tarih",
+            "now": "Az önce",
+            "minutes": "dakika önce",
+            "hours": "saat önce",
+            "days": "gün önce",
+            "invformat": "Geçersiz tarih formatı"
+        },
+        "profileSettings": {
+            "title": "Profil Resmi",
+            "placeholder": "Resim URL'si",
+            "save": "Profil resmi başarıyla kaydedildi",
+            "warning": "Lütfen geçerli bir resim URL'si girin. URL .jpg veya .png ile bitmelidir"
+        }
+    },
+    "settings": {
+        "title": "Ayarlar",
+        "settings1": {
+            "title": "Konumlandırma",
+            "desc": "Butona bastığınızda konumlandırma aktif olur ve sohbet penceresini tutup sürükleyebilirsiniz. İstediğiniz yere yerleştirdikten sonra tekrar butona basın"
+        },
+        "settings2": {
+            "title": "Renk Paleti",
+            "desc": "Varsayılan renkleri değiştirmek için renk paletini kullanabilirsiniz"
+        },
+        "settings3": {
+            "title": "Bildirimler",
+            "desc": "Sohbet penceresi bildirimlerini almak istemiyorsanız bunu kapatabilirsiniz"
+        },
+        "settings4": {
+            "title": "Sesler",
+            "desc": "Yazma sesi ve diğer sesleri kapatabilirsiniz"
+        },
+        "settings5": {
+            "title": "Spoiler Modu",
+            "desc": "Tüm GIF'leri spoiler olarak görmek istiyorsanız bunu işaretleyin"
+        },
+        "settings6": {
+            "title": "Ayarları Sıfırla",
+            "desc": "Tüm ayarları varsayılana döndürür"
+        },
+        "settings7": {
+            "title": "Ölçek Ayarı",
+            "desc": "Buradan sohbetin boyutunu kendinize göre ayarlayabilirsiniz"
+        }
+    }
+}
